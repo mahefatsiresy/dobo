@@ -25,16 +25,24 @@ List<WaterIssue> waterIssues({
 }) {
   WaterIssue? outOfRange(WaterParam param, double? v, Range<double> range) {
     if (v == null || range.contains(v)) return null;
-    return WaterIssue(param, Severity.warning,
-        value: v, direction: v < range.min ? Direction.low : Direction.high);
+    return WaterIssue(
+      param,
+      Severity.warning,
+      value: v,
+      direction: v < range.min ? Direction.low : Direction.high,
+    );
   }
 
   return [
     ?outOfRange(WaterParam.temperature, temperatureC, config.temperatureC),
     ?outOfRange(WaterParam.ph, ph, config.ph),
     if (oxygenMgL != null && oxygenMgL < config.minOxygenMgL)
-      WaterIssue(WaterParam.oxygen, Severity.danger,
-          value: oxygenMgL, direction: Direction.low),
+      WaterIssue(
+        WaterParam.oxygen,
+        Severity.danger,
+        value: oxygenMgL,
+        direction: Direction.low,
+      ),
     if (colour == WaterColour.darkGreen || colour == WaterColour.brownTurbid)
       const WaterIssue(WaterParam.colour, Severity.warning),
   ];

@@ -37,8 +37,10 @@ SampleResult? sampleResult({
   required DomainConfig config,
 }) {
   if (fishCount <= 0 || totalWeightG <= 0) return null;
-  return SampleResult(totalWeightG / fishCount,
-      smallSample: fishCount < config.sampleMinFish);
+  return SampleResult(
+    totalWeightG / fishCount,
+    smallSample: fishCount < config.sampleMinFish,
+  );
 }
 
 int biomassG({required int liveCount, required double avgWeightG}) =>

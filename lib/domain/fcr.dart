@@ -24,15 +24,13 @@ FcrResult periodFcr({
   required int biomassNowG,
   int outWeightG = 0,
   int inWeightG = 0,
-}) =>
-    _ratio(feedG, (biomassNowG + outWeightG) - (biomassPrevG + inWeightG));
+}) => _ratio(feedG, (biomassNowG + outWeightG) - (biomassPrevG + inWeightG));
 
 FcrResult cycleFcr({
   required int totalFeedG,
   required int harvestedG,
   required int stockedG,
-}) =>
-    _ratio(totalFeedG, harvestedG - stockedG);
+}) => _ratio(totalFeedG, harvestedG - stockedG);
 
 /// True when FCR rose at each of the last two samples. DOMAIN §Alert rules.
 bool isFcrWorsening(List<FcrResult> chronological) {
