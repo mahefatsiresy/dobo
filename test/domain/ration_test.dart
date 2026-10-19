@@ -7,11 +7,12 @@ void main() {
   const cfg = DomainConfig.defaults;
   int r(Phase p, {int biomass = 100000, Leftover? left, bool fast = false}) =>
       suggestedRationG(
-          biomassG: biomass,
-          phase: p,
-          lastLeftover: left,
-          lastAteFast: fast,
-          config: cfg);
+        biomassG: biomass,
+        phase: p,
+        lastLeftover: left,
+        lastAteFast: fast,
+        config: cfg,
+      );
 
   test('base ration is biomass times the phase rate', () {
     expect(r(Phase.growout), 4000);
