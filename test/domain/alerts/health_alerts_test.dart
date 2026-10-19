@@ -76,7 +76,9 @@ void main() {
       m(3, List.filled(7, 0), 10000),
       isNull,
     ); // zero average never multiplies
-    expect(m(3, const [], 100), isNotNull); // 3 > 0.5
+    expect(m(5, const [], 100), isNotNull); // 5 > 0.5, meets the minimum
+    expect(m(4, const [], 100), isNull); // below the 5-death minimum
+    expect(m(1, const [0, 0, 0, 0, 0, 0, 1], 10000), isNull); // routine loss
     expect(
       m(15, [100, ...List.filled(7, 5)], 10000),
       isNotNull,
@@ -95,6 +97,8 @@ void main() {
     });
     expect(s(DateTime(2026, 3, 7), {WarningSign.rubbing}), isNull);
     expect(s(DateTime(2026, 3, 9), const {}), isNull);
+    // A wrong phone clock must not hide a sign.
+    expect(s(DateTime(2026, 3, 12), {WarningSign.whiteSpots}), isNotNull);
   });
 
   test('density out of range', () {

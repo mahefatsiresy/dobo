@@ -28,6 +28,7 @@ class DomainConfig {
     required this.lowStockDays,
     required this.mortalitySpikeShare,
     required this.mortalitySpikeMultiplier,
+    required this.mortalitySpikeMinDeaths,
     required this.mortalityTrailingDays,
     required this.warningSignLookbackDays,
     required this.quarantineDays,
@@ -99,6 +100,7 @@ class DomainConfig {
     lowStockDays: 7,
     mortalitySpikeShare: 0.005,
     mortalitySpikeMultiplier: 3.0,
+    mortalitySpikeMinDeaths: 5,
     mortalityTrailingDays: 7,
     warningSignLookbackDays: 3,
     quarantineDays: Range(7, 10),
@@ -161,6 +163,9 @@ class DomainConfig {
   /// DOMAIN §Alert rules [default].
   final double mortalitySpikeShare;
   final double mortalitySpikeMultiplier;
+
+  /// Fewer deaths than this in a day never count as a spike.
+  final int mortalitySpikeMinDeaths;
   final int mortalityTrailingDays;
   final int warningSignLookbackDays;
 

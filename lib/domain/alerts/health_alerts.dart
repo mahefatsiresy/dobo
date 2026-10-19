@@ -55,6 +55,7 @@ Alert? mortalitySpikeAlert({
   required int liveCountAtDayStart,
   required DomainConfig config,
 }) {
+  if (deathsToday < config.mortalitySpikeMinDeaths) return null;
   final n = config.mortalityTrailingDays;
   final window = previousDailyDeaths.length > n
       ? previousDailyDeaths.sublist(previousDailyDeaths.length - n)
@@ -75,6 +76,7 @@ Alert? mortalitySpikeAlert({
   );
 }
 
+/// Future-dated entries count too: a wrong phone clock must not hide a sign.
 Alert? warningSignAlert({
   required String pondId,
   required List<DatedSigns> recent,
@@ -84,7 +86,7 @@ Alert? warningSignAlert({
   final signs = <WarningSign>{
     for (final r in recent)
       if (daysBetween(r.date, today) case final d
-          when d >= 0 && d < config.warningSignLookbackDays)
+          when d < config.warningSignLookbackDays)
         ...r.signs,
   };
   if (signs.isEmpty) return null;

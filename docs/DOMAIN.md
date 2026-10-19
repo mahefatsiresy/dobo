@@ -146,8 +146,8 @@ Computed on the device from local records; never synced. Each has a severity (`d
 | Water out of range | latest reading outside the temperature, pH or oxygen target | danger for oxygen, warning otherwise |
 | FCR worsening | period FCR increased at 2 consecutive samples [5.4] | danger |
 | Growth stalled | biomass gain ≤ 0 between samples | danger |
-| Mortality spike | **[default]** one day's deaths > 0.5 % of live count, or ≥ 3× the trailing 7-day daily average | danger |
-| Warning sign seen | any warning sign recorded in the last 3 days **[default]** | danger |
+| Mortality spike | **[default]** at least 5 deaths in the day, and either > 0.5 % of live count or ≥ 3× the trailing 7-day daily average | danger |
+| Warning sign seen | any warning sign recorded in the last 3 days **[default]**, or dated in the future (wrong phone clock) | danger |
 | Sample due | ≥ 14 days since last sample of an active batch | warning |
 | Water check due | ≥ 7 days since last water reading of a stocked pond | warning |
 | Density out of range | density outside the structure's range | warning |
