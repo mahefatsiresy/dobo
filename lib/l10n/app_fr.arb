@@ -1,0 +1,7 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Dobo",
+  "@appTitle": {"description": "Application name"},
+  "homeWelcome": "Bienvenue",
+  "@homeWelcome": {"description": "Greeting on the home screen"}
+}
