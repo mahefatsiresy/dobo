@@ -46,7 +46,7 @@ test/                 mirrors lib/
 docs/                 SPEC.md, DOMAIN.md
 ```
 
-Code generation (Drift, Riverpod, l10n): `dart run build_runner build --delete-conflicting-outputs` after changing tables or annotated providers.
+Code generation (Drift, Riverpod, l10n): `dart run build_runner build --delete-conflicting-outputs` after changing tables or annotated providers. After any table change, bump `schemaVersion`, write the migration, and run `dart run drift_dev make-migrations`; commit the new `drift_schemas/` snapshot and the generated migration tests in `test/db/` (generated from schema v2 on).
 
 ## Glossary
 
