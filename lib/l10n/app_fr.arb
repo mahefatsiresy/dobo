@@ -10,5 +10,94 @@
   "setupStart": "Commencer",
   "tabPonds": "Étangs",
   "tabMore": "Plus",
-  "fieldRequired": "Obligatoire"
+  "fieldRequired": "Obligatoire",
+  "estimated": "estimé",
+  "pondStatusEmpty": "Vide",
+  "pondStatusPreparing": "En préparation",
+  "pondStatusReady": "Prêt",
+  "pondStatusStocked": "Empoissonné",
+  "pondStatusIsolated": "Isolé",
+  "structureEarth": "Étang en terre",
+  "structureTank": "Bassin",
+  "structureCage": "Cage flottante",
+  "roleBreeding": "Reproduction",
+  "roleNursery": "Frayère (alevins)",
+  "rolePregrow": "Prégrossissement",
+  "roleGrowout": "Grossissement",
+  "roleHolding": "Stockage avant vente",
+  "roleQuarantine": "Quarantaine",
+  "supplyBarrage": "Barrage",
+  "supplyDerivation": "Dérivation",
+  "supplyMarsh": "Marais",
+  "colourBlue": "Bleu",
+  "colourGreen": "Vert",
+  "colourYellow": "Jaune",
+  "colourOrange": "Orange",
+  "colourRed": "Rouge",
+  "colourPurple": "Violet",
+  "colourBrown": "Marron",
+  "colourBlack": "Noir",
+  "batchStatusQuarantine": "Quarantaine",
+  "batchStatusActive": "Actif",
+  "batchStatusHarvesting": "En récolte",
+  "batchStatusClosed": "Clôturé",
+  "phaseFry": "Alevinage",
+  "phasePregrow": "Prégrossissement",
+  "phaseGrowout": "Grossissement",
+  "phaseFinishing": "Finition",
+  "densityBelow": "Densité trop faible",
+  "densityWithin": "Densité correcte",
+  "densityAbove": "Densité trop forte",
+  "warnSurfaceTooSmall": "Surface sous {min} m² (conseillé : {min} à {max} m²)",
+  "@warnSurfaceTooSmall": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "warnSurfaceTooLarge": "Surface au-dessus de {max} m² (conseillé : {min} à {max} m²)",
+  "@warnSurfaceTooLarge": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "warnNotElongated": "Étang peu allongé (conseillé : longueur = {min} à {max} fois la largeur)",
+  "@warnNotElongated": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "warnTooElongated": "Étang très allongé (conseillé : longueur = {min} à {max} fois la largeur)",
+  "@warnTooElongated": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "warnTooShallow": "Profondeur moyenne sous {min} m",
+  "@warnTooShallow": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -145,6 +145,258 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Obligatoire'**
   String get fieldRequired;
+
+  /// No description provided for @estimated.
+  ///
+  /// In fr, this message translates to:
+  /// **'estimé'**
+  String get estimated;
+
+  /// No description provided for @pondStatusEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vide'**
+  String get pondStatusEmpty;
+
+  /// No description provided for @pondStatusPreparing.
+  ///
+  /// In fr, this message translates to:
+  /// **'En préparation'**
+  String get pondStatusPreparing;
+
+  /// No description provided for @pondStatusReady.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prêt'**
+  String get pondStatusReady;
+
+  /// No description provided for @pondStatusStocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonné'**
+  String get pondStatusStocked;
+
+  /// No description provided for @pondStatusIsolated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Isolé'**
+  String get pondStatusIsolated;
+
+  /// No description provided for @structureEarth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang en terre'**
+  String get structureEarth;
+
+  /// No description provided for @structureTank.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bassin'**
+  String get structureTank;
+
+  /// No description provided for @structureCage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cage flottante'**
+  String get structureCage;
+
+  /// No description provided for @roleBreeding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reproduction'**
+  String get roleBreeding;
+
+  /// No description provided for @roleNursery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Frayère (alevins)'**
+  String get roleNursery;
+
+  /// No description provided for @rolePregrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prégrossissement'**
+  String get rolePregrow;
+
+  /// No description provided for @roleGrowout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Grossissement'**
+  String get roleGrowout;
+
+  /// No description provided for @roleHolding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stockage avant vente'**
+  String get roleHolding;
+
+  /// No description provided for @roleQuarantine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quarantaine'**
+  String get roleQuarantine;
+
+  /// No description provided for @supplyBarrage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Barrage'**
+  String get supplyBarrage;
+
+  /// No description provided for @supplyDerivation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dérivation'**
+  String get supplyDerivation;
+
+  /// No description provided for @supplyMarsh.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marais'**
+  String get supplyMarsh;
+
+  /// No description provided for @colourBlue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bleu'**
+  String get colourBlue;
+
+  /// No description provided for @colourGreen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vert'**
+  String get colourGreen;
+
+  /// No description provided for @colourYellow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jaune'**
+  String get colourYellow;
+
+  /// No description provided for @colourOrange.
+  ///
+  /// In fr, this message translates to:
+  /// **'Orange'**
+  String get colourOrange;
+
+  /// No description provided for @colourRed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rouge'**
+  String get colourRed;
+
+  /// No description provided for @colourPurple.
+  ///
+  /// In fr, this message translates to:
+  /// **'Violet'**
+  String get colourPurple;
+
+  /// No description provided for @colourBrown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marron'**
+  String get colourBrown;
+
+  /// No description provided for @colourBlack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Noir'**
+  String get colourBlack;
+
+  /// No description provided for @batchStatusQuarantine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quarantaine'**
+  String get batchStatusQuarantine;
+
+  /// No description provided for @batchStatusActive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Actif'**
+  String get batchStatusActive;
+
+  /// No description provided for @batchStatusHarvesting.
+  ///
+  /// In fr, this message translates to:
+  /// **'En récolte'**
+  String get batchStatusHarvesting;
+
+  /// No description provided for @batchStatusClosed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clôturé'**
+  String get batchStatusClosed;
+
+  /// No description provided for @phaseFry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alevinage'**
+  String get phaseFry;
+
+  /// No description provided for @phasePregrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prégrossissement'**
+  String get phasePregrow;
+
+  /// No description provided for @phaseGrowout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Grossissement'**
+  String get phaseGrowout;
+
+  /// No description provided for @phaseFinishing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Finition'**
+  String get phaseFinishing;
+
+  /// No description provided for @densityBelow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité trop faible'**
+  String get densityBelow;
+
+  /// No description provided for @densityWithin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité correcte'**
+  String get densityWithin;
+
+  /// No description provided for @densityAbove.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité trop forte'**
+  String get densityAbove;
+
+  /// No description provided for @warnSurfaceTooSmall.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface sous {min} m² (conseillé : {min} à {max} m²)'**
+  String warnSurfaceTooSmall(String min, String max);
+
+  /// No description provided for @warnSurfaceTooLarge.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface au-dessus de {max} m² (conseillé : {min} à {max} m²)'**
+  String warnSurfaceTooLarge(String min, String max);
+
+  /// No description provided for @warnNotElongated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang peu allongé (conseillé : longueur = {min} à {max} fois la largeur)'**
+  String warnNotElongated(String min, String max);
+
+  /// No description provided for @warnTooElongated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang très allongé (conseillé : longueur = {min} à {max} fois la largeur)'**
+  String warnTooElongated(String min, String max);
+
+  /// No description provided for @warnTooShallow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profondeur moyenne sous {min} m'**
+  String warnTooShallow(String min);
 }
 
 class _AppLocalizationsDelegate
