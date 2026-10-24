@@ -42,9 +42,42 @@ void appTest(
 ProviderContainer appContainer(WidgetTester tester) =>
     ProviderScope.containerOf(tester.element(find.byType(DoboApp)));
 
-/// Taps [finder] (scrolling to it first) and waits for the app to settle.
-Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
+/// Scrolls [finder] into view, even in a lazily built list.
+Future<void> _reveal(WidgetTester tester, Finder finder) async {
+  if (finder.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      finder,
+      200,
+      scrollable: _verticalScrollable,
+    );
+  }
   await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
+}
+
+/// Taps [finder] and waits for the app to settle.
+Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
+  await _reveal(tester, finder);
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
+
+/// Types [text] into [finder] and waits for the app to settle.
+Future<void> enterAndSettle(
+  WidgetTester tester,
+  Finder finder,
+  String text,
+) async {
+  await _reveal(tester, finder);
+  await tester.enterText(finder, text);
+  await tester.pumpAndSettle();
+}
+
+/// The innermost vertical list on screen; text fields scroll sideways.
+final _verticalScrollable = find
+    .byWidgetPredicate(
+      (w) =>
+          w is Scrollable &&
+          axisDirectionToAxis(w.axisDirection) == Axis.vertical,
+    )
+    .last;

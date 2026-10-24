@@ -28,12 +28,11 @@ extension EventWrites on AppDatabase {
     TableInfo<T, D> table,
     String oldId,
     Insertable<D> replacement,
-  ) =>
-      _insertNew(table, {
-        ...replacement.toColumns(true),
-        'supersedes_id': Variable<String>(oldId),
-        'is_tombstone': const Variable<bool>(false),
-      });
+  ) => _insertNew(table, {
+    ...replacement.toColumns(true),
+    'supersedes_id': Variable<String>(oldId),
+    'is_tombstone': const Variable<bool>(false),
+  });
 
   /// Marks [id] deleted with a copy of it flagged as a tombstone, written by
   /// [session]; returns the tombstone's id.
@@ -41,24 +40,23 @@ extension EventWrites on AppDatabase {
     TableInfo<T, D> table,
     String id,
     Session session,
-  ) =>
-      transaction(() async {
-        final target = await (select(table)
-              ..where((t) => (t as SyncedRow).id.equals(id)))
-            .getSingle();
-        return _insertNew(table, {
-          ...(target as Insertable<D>).toColumns(false),
-          'supersedes_id': Variable<String>(id),
-          'is_tombstone': const Variable<bool>(true),
-          'entered_by': Variable<String>(session.userId),
-          'observed_by': const Variable<String>(null),
-          'device_id': Variable<String>(session.deviceId),
-          'server_received_at': const Variable<DateTime>(null),
-          'server_seq': const Variable<int>(null),
-          'sync_state': Variable<String>(SyncState.pending.name),
-          'sync_error': const Variable<String>(null),
-        });
-      });
+  ) => transaction(() async {
+    final target = await (select(
+      table,
+    )..where((t) => (t as SyncedRow).id.equals(id))).getSingle();
+    return _insertNew(table, {
+      ...(target as Insertable<D>).toColumns(false),
+      'supersedes_id': Variable<String>(id),
+      'is_tombstone': const Variable<bool>(true),
+      'entered_by': Variable<String>(session.userId),
+      'observed_by': const Variable<String>(null),
+      'device_id': Variable<String>(session.deviceId),
+      'server_received_at': const Variable<DateTime>(null),
+      'server_seq': const Variable<int>(null),
+      'sync_state': Variable<String>(SyncState.pending.name),
+      'sync_error': const Variable<String>(null),
+    });
+  });
 
   /// Inserts [columns] as a new row with a fresh id and device timestamp.
   Future<String> _insertNew<T extends Table, D>(
@@ -66,11 +64,13 @@ extension EventWrites on AppDatabase {
     Map<String, Expression> columns,
   ) async {
     final id = newId();
-    await into(table).insert(RawValuesInsertable<D>({
-      ...columns,
-      'id': Variable<String>(id),
-      'created_at_device': Variable<DateTime>(utcNow()),
-    }));
+    await into(table).insert(
+      RawValuesInsertable<D>({
+        ...columns,
+        'id': Variable<String>(id),
+        'created_at_device': Variable<DateTime>(utcNow()),
+      }),
+    );
     return id;
   }
 }

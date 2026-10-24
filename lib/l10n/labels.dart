@@ -72,8 +72,7 @@ extension EnumLabels on AppLocalizations {
   /// Soft design guidance, quoting the DOMAIN ranges from [config].
   String pondDesignWarning(PondDesignWarning w, DomainConfig config) {
     final locale = Locale(localeName);
-    String n(double v) => formatDecimal(v, locale, decimals: 0);
-    String d(double v) => formatGrams(v, locale).replaceAll(' g', '');
+    String n(double v) => formatNumber(v, locale);
     return switch (w) {
       PondDesignWarning.surfaceTooSmall => warnSurfaceTooSmall(
         n(config.pondSurfaceM2.min),
@@ -84,14 +83,14 @@ extension EnumLabels on AppLocalizations {
         n(config.pondSurfaceM2.max),
       ),
       PondDesignWarning.notElongated => warnNotElongated(
-        d(config.pondLengthWidthRatio.min),
-        d(config.pondLengthWidthRatio.max),
+        n(config.pondLengthWidthRatio.min),
+        n(config.pondLengthWidthRatio.max),
       ),
       PondDesignWarning.tooElongated => warnTooElongated(
-        d(config.pondLengthWidthRatio.min),
-        d(config.pondLengthWidthRatio.max),
+        n(config.pondLengthWidthRatio.min),
+        n(config.pondLengthWidthRatio.max),
       ),
-      PondDesignWarning.tooShallow => warnTooShallow(d(config.minDepthM)),
+      PondDesignWarning.tooShallow => warnTooShallow(n(config.minDepthM)),
     };
   }
 }

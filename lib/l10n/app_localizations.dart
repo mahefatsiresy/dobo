@@ -457,6 +457,198 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune personne : ajoutez les ouvriers et les membres'**
   String get peopleEmpty;
+
+  /// No description provided for @pondAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter un étang'**
+  String get pondAdd;
+
+  /// No description provided for @pondsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun étang : ajoutez le premier'**
+  String get pondsEmpty;
+
+  /// No description provided for @pondCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code'**
+  String get pondCode;
+
+  /// No description provided for @pondColourLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couleur'**
+  String get pondColourLabel;
+
+  /// No description provided for @pondStructure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type'**
+  String get pondStructure;
+
+  /// No description provided for @pondRoleLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rôle'**
+  String get pondRoleLabel;
+
+  /// No description provided for @pondWaterSupply.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alimentation en eau'**
+  String get pondWaterSupply;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non précisé'**
+  String get notSpecified;
+
+  /// No description provided for @pondLength.
+  ///
+  /// In fr, this message translates to:
+  /// **'Longueur'**
+  String get pondLength;
+
+  /// No description provided for @pondWidth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Largeur'**
+  String get pondWidth;
+
+  /// No description provided for @pondSurfaceOverride.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface mesurée (facultatif)'**
+  String get pondSurfaceOverride;
+
+  /// No description provided for @pondDepthInlet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profondeur à l\'entrée'**
+  String get pondDepthInlet;
+
+  /// No description provided for @pondDepthOutlet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profondeur à la sortie'**
+  String get pondDepthOutlet;
+
+  /// No description provided for @pondStatusLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'État'**
+  String get pondStatusLabel;
+
+  /// No description provided for @duplicateCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce code existe déjà'**
+  String get duplicateCode;
+
+  /// No description provided for @pondFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons'**
+  String get pondFish;
+
+  /// No description provided for @pondBiomass.
+  ///
+  /// In fr, this message translates to:
+  /// **'Biomasse'**
+  String get pondBiomass;
+
+  /// No description provided for @pondDensity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité'**
+  String get pondDensity;
+
+  /// No description provided for @pondSurface.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface'**
+  String get pondSurface;
+
+  /// No description provided for @inconsistent.
+  ///
+  /// In fr, this message translates to:
+  /// **'À vérifier'**
+  String get inconsistent;
+
+  /// No description provided for @pondStock.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonner'**
+  String get pondStock;
+
+  /// No description provided for @pondTransfer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transférer'**
+  String get pondTransfer;
+
+  /// No description provided for @edit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier'**
+  String get edit;
+
+  /// No description provided for @archive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Archiver'**
+  String get archive;
+
+  /// No description provided for @cancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get cancel;
+
+  /// No description provided for @avgWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen'**
+  String get avgWeight;
+
+  /// No description provided for @pondNoFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de poissons'**
+  String get pondNoFish;
+
+  /// No description provided for @adultFeed.
+  ///
+  /// In fr, this message translates to:
+  /// **'aliment adulte'**
+  String get adultFeed;
+
+  /// No description provided for @pondSurfaceComputed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface calculée : {surface}'**
+  String pondSurfaceComputed(String surface);
+
+  /// No description provided for @densityValue.
+  ///
+  /// In fr, this message translates to:
+  /// **'{density} /m²'**
+  String densityValue(String density);
+
+  /// No description provided for @archiveConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Archiver l\'étang {code} ? Il disparaîtra des listes.'**
+  String archiveConfirm(String code);
+
+  /// No description provided for @feedingGuide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment : {protein} de protéines, granulé {pellet}, {meals} repas par jour'**
+  String feedingGuide(String protein, String pellet, String meals);
 }
 
 class _AppLocalizationsDelegate

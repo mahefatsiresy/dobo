@@ -42,4 +42,13 @@ void main() {
     expect(formatDecimal(3, fr), '3,0');
     expect(formatDecimal(2.222, fr, decimals: 2), '2,22');
   });
+
+  test('plain numbers and numbers for editing', () {
+    expect(formatNumber(1000, fr), '1\u202f000');
+    expect(formatNumber(2.5, fr), '2,5');
+    expect(formatNumber(3, fr), '3');
+    expect(formatForInput(30.5), '30,5');
+    expect(formatForInput(1250), '1250');
+    expect(parseDecimal(formatForInput(0.125)), 0.125);
+  });
 }

@@ -199,4 +199,108 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get peopleEmpty =>
       'Aucune personne : ajoutez les ouvriers et les membres';
+
+  @override
+  String get pondAdd => 'Ajouter un étang';
+
+  @override
+  String get pondsEmpty => 'Aucun étang : ajoutez le premier';
+
+  @override
+  String get pondCode => 'Code';
+
+  @override
+  String get pondColourLabel => 'Couleur';
+
+  @override
+  String get pondStructure => 'Type';
+
+  @override
+  String get pondRoleLabel => 'Rôle';
+
+  @override
+  String get pondWaterSupply => 'Alimentation en eau';
+
+  @override
+  String get notSpecified => 'Non précisé';
+
+  @override
+  String get pondLength => 'Longueur';
+
+  @override
+  String get pondWidth => 'Largeur';
+
+  @override
+  String get pondSurfaceOverride => 'Surface mesurée (facultatif)';
+
+  @override
+  String get pondDepthInlet => 'Profondeur à l\'entrée';
+
+  @override
+  String get pondDepthOutlet => 'Profondeur à la sortie';
+
+  @override
+  String get pondStatusLabel => 'État';
+
+  @override
+  String get duplicateCode => 'Ce code existe déjà';
+
+  @override
+  String get pondFish => 'Poissons';
+
+  @override
+  String get pondBiomass => 'Biomasse';
+
+  @override
+  String get pondDensity => 'Densité';
+
+  @override
+  String get pondSurface => 'Surface';
+
+  @override
+  String get inconsistent => 'À vérifier';
+
+  @override
+  String get pondStock => 'Empoissonner';
+
+  @override
+  String get pondTransfer => 'Transférer';
+
+  @override
+  String get edit => 'Modifier';
+
+  @override
+  String get archive => 'Archiver';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get avgWeight => 'Poids moyen';
+
+  @override
+  String get pondNoFish => 'Pas de poissons';
+
+  @override
+  String get adultFeed => 'aliment adulte';
+
+  @override
+  String pondSurfaceComputed(String surface) {
+    return 'Surface calculée : $surface';
+  }
+
+  @override
+  String densityValue(String density) {
+    return '$density /m²';
+  }
+
+  @override
+  String archiveConfirm(String code) {
+    return 'Archiver l\'étang $code ? Il disparaîtra des listes.';
+  }
+
+  @override
+  String feedingGuide(String protein, String pellet, String meals) {
+    return 'Aliment : $protein de protéines, granulé $pellet, $meals repas par jour';
+  }
 }

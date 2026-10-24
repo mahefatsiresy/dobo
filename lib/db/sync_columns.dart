@@ -9,13 +9,12 @@ mixin SyncedRow on Table {
   TextColumn get associationId => text()();
   TextColumn get enteredBy => text()();
   TextColumn get observedBy => text().nullable()();
-  DateTimeColumn get createdAtDevice =>
-      dateTime().clientDefault(utcNow)();
+  DateTimeColumn get createdAtDevice => dateTime().clientDefault(utcNow)();
   TextColumn get deviceId => text()();
   DateTimeColumn get serverReceivedAt => dateTime().nullable()();
   IntColumn get serverSeq => integer().nullable()();
-  TextColumn get syncState => textEnum<SyncState>()
-      .withDefault(Constant(SyncState.pending.name))();
+  TextColumn get syncState =>
+      textEnum<SyncState>().withDefault(Constant(SyncState.pending.name))();
   TextColumn get syncError => text().nullable()();
 
   @override
@@ -25,8 +24,7 @@ mixin SyncedRow on Table {
 /// Editable reference entities (ponds, batches, people…): last-write-wins.
 /// Apply after [SyncedRow].
 mixin ReferenceRow on Table {
-  DateTimeColumn get updatedAtDevice =>
-      dateTime().clientDefault(utcNow)();
+  DateTimeColumn get updatedAtDevice => dateTime().clientDefault(utcNow)();
 }
 
 /// Append-only event records: corrections supersede, deletions are tombstones.
@@ -34,6 +32,5 @@ mixin ReferenceRow on Table {
 mixin EventRow on Table {
   DateTimeColumn get recordedAt => dateTime()();
   TextColumn get supersedesId => text().nullable()();
-  BoolColumn get isTombstone =>
-      boolean().withDefault(const Constant(false))();
+  BoolColumn get isTombstone => boolean().withDefault(const Constant(false))();
 }

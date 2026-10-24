@@ -109,5 +109,71 @@
   "personInactive": "Inactif",
   "save": "Enregistrer",
   "add": "Ajouter",
-  "peopleEmpty": "Aucune personne : ajoutez les ouvriers et les membres"
+  "peopleEmpty": "Aucune personne : ajoutez les ouvriers et les membres",
+  "pondAdd": "Ajouter un étang",
+  "pondsEmpty": "Aucun étang : ajoutez le premier",
+  "pondCode": "Code",
+  "pondColourLabel": "Couleur",
+  "pondStructure": "Type",
+  "pondRoleLabel": "Rôle",
+  "pondWaterSupply": "Alimentation en eau",
+  "notSpecified": "Non précisé",
+  "pondLength": "Longueur",
+  "pondWidth": "Largeur",
+  "pondSurfaceOverride": "Surface mesurée (facultatif)",
+  "pondDepthInlet": "Profondeur à l'entrée",
+  "pondDepthOutlet": "Profondeur à la sortie",
+  "pondStatusLabel": "État",
+  "duplicateCode": "Ce code existe déjà",
+  "pondFish": "Poissons",
+  "pondBiomass": "Biomasse",
+  "pondDensity": "Densité",
+  "pondSurface": "Surface",
+  "inconsistent": "À vérifier",
+  "pondStock": "Empoissonner",
+  "pondTransfer": "Transférer",
+  "edit": "Modifier",
+  "archive": "Archiver",
+  "cancel": "Annuler",
+  "avgWeight": "Poids moyen",
+  "pondNoFish": "Pas de poissons",
+  "adultFeed": "aliment adulte",
+  "pondSurfaceComputed": "Surface calculée : {surface}",
+  "@pondSurfaceComputed": {
+    "placeholders": {
+      "surface": {
+        "type": "String"
+      }
+    }
+  },
+  "densityValue": "{density} /m²",
+  "@densityValue": {
+    "placeholders": {
+      "density": {
+        "type": "String"
+      }
+    }
+  },
+  "archiveConfirm": "Archiver l'étang {code} ? Il disparaîtra des listes.",
+  "@archiveConfirm": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "feedingGuide": "Aliment : {protein} de protéines, granulé {pellet}, {meals} repas par jour",
+  "@feedingGuide": {
+    "placeholders": {
+      "protein": {
+        "type": "String"
+      },
+      "pellet": {
+        "type": "String"
+      },
+      "meals": {
+        "type": "String"
+      }
+    }
+  }
 }

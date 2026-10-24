@@ -6,6 +6,9 @@ import 'db/repositories/providers.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
+import 'features/ponds/pond_detail_screen.dart';
+import 'features/ponds/pond_form_screen.dart';
+import 'features/ponds/ponds_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/shell/member_shell.dart';
 import 'l10n/app_localizations.dart';
@@ -35,9 +38,25 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/ponds',
-                builder: (context, state) => PlaceholderTab(
-                  title: AppLocalizations.of(context).tabPonds,
-                ),
+                builder: (context, state) => const PondsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => const PondFormScreen(),
+                  ),
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) =>
+                        PondDetailScreen(pondId: state.pathParameters['id']!),
+                    routes: [
+                      GoRoute(
+                        path: 'edit',
+                        builder: (context, state) =>
+                            PondFormScreen(pondId: state.pathParameters['id']),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

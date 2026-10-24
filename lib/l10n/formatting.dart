@@ -36,3 +36,11 @@ String formatDecimal(double v, Locale locale, {int decimals = 1}) =>
       locale: intlLocaleFor(locale),
       decimalDigits: decimals,
     ).format(v);
+
+/// A plain number, decimals only when needed: `1 000`, `2,5`.
+String formatNumber(double v, Locale locale) =>
+    NumberFormat('#,##0.##', intlLocaleFor(locale)).format(v);
+
+/// A number put back into a text field for editing: `30,5`, no grouping,
+/// so [parseDecimal] reads it back unchanged.
+String formatForInput(double v) => NumberFormat('0.###', 'fr').format(v);

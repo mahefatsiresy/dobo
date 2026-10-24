@@ -10,8 +10,9 @@ class Ponds extends Table with SyncedRow, ReferenceRow {
   TextColumn get siteId => text()();
   TextColumn get code => text()();
   TextColumn get colour => textEnum<PondColour>()();
-  TextColumn get structure => textEnum<StructureType>()
-      .withDefault(Constant(StructureType.earth.name))();
+  TextColumn get structure => textEnum<StructureType>().withDefault(
+    Constant(StructureType.earth.name),
+  )();
   TextColumn get role => textEnum<PondRole>()();
   TextColumn get waterSupply => textEnum<WaterSupply>().nullable()();
   RealColumn get lengthM => real().nullable()();
