@@ -661,4 +661,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String sampleAverage(String weight) {
     return 'Poids moyen : $weight';
   }
+
+  @override
+  String get transcription => 'Saisie des fiches';
+
+  @override
+  String get sheetOf => 'Fiche de';
+
+  @override
+  String get previousWeek => 'Semaine précédente';
+
+  @override
+  String get nextWeek => 'Semaine suivante';
+
+  @override
+  String get feedMissing =>
+      'Indiquez l\'aliment pour chaque case remplie (0 si rien n\'a été donné).';
+
+  @override
+  String weekOfLabel(String date) {
+    return 'Semaine du $date';
+  }
 }

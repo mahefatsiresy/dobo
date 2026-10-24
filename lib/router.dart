@@ -19,6 +19,7 @@ import 'features/ponds/ponds_screen.dart';
 import 'features/readings/sample_screen.dart';
 import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
+import 'features/transcription/transcription_screen.dart';
 import 'features/shell/member_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -146,6 +147,15 @@ final routerProvider = Provider<GoRouter>((ref) {
                         ],
                       ),
                     ],
+                  ),
+                  GoRoute(
+                    path: 'transcription',
+                    builder: (context, state) {
+                      final week = state.uri.queryParameters['week'];
+                      return TranscriptionScreen(
+                        week: week == null ? null : DateTime.parse(week),
+                      );
+                    },
                   ),
                   GoRoute(
                     path: 'people',

@@ -453,5 +453,18 @@
         "type": "String"
       }
     }
+  },
+  "transcription": "Saisie des fiches",
+  "sheetOf": "Fiche de",
+  "previousWeek": "Semaine précédente",
+  "nextWeek": "Semaine suivante",
+  "feedMissing": "Indiquez l'aliment pour chaque case remplie (0 si rien n'a été donné).",
+  "weekOfLabel": "Semaine du {date}",
+  "@weekOfLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

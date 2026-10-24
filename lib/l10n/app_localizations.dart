@@ -1291,6 +1291,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Poids moyen : {weight}'**
   String sampleAverage(String weight);
+
+  /// No description provided for @transcription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisie des fiches'**
+  String get transcription;
+
+  /// No description provided for @sheetOf.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de'**
+  String get sheetOf;
+
+  /// No description provided for @previousWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaine précédente'**
+  String get previousWeek;
+
+  /// No description provided for @nextWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaine suivante'**
+  String get nextWeek;
+
+  /// No description provided for @feedMissing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Indiquez l\'aliment pour chaque case remplie (0 si rien n\'a été donné).'**
+  String get feedMissing;
+
+  /// No description provided for @weekOfLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaine du {date}'**
+  String weekOfLabel(String date);
 }
 
 class _AppLocalizationsDelegate
