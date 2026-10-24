@@ -6,6 +6,7 @@ import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import 'people_providers.dart';
+import '../common/save_once.dart';
 
 /// Adds a person, or edits the one with [personId].
 class PersonFormScreen extends ConsumerStatefulWidget {
@@ -17,7 +18,8 @@ class PersonFormScreen extends ConsumerStatefulWidget {
   ConsumerState<PersonFormScreen> createState() => _PersonFormScreenState();
 }
 
-class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
+class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
+    with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _phone = TextEditingController();
@@ -118,7 +120,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: _save,
+              onPressed: saving ? null : () => saveOnce(_save),
               child: Text(l10n.save),
             ),
           ],

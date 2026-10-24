@@ -61,4 +61,21 @@ void main() {
     expect(find.text('Obligatoire'), findsWidgets);
     expect(await db.select(db.batches).get(), isEmpty);
   });
+
+  appTest('back leaves the stock screen', (tester, db) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    await PondRepository(db, session).create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('E1'));
+    await tapAndSettle(tester, find.text('Empoissonner'));
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text('Empoissonner'), findsOneWidget);
+    expect(find.text('Archiver'), findsOneWidget);
+  });
 }

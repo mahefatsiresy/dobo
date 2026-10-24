@@ -16,12 +16,15 @@ import '../common/notice.dart';
 import '../common/number_field.dart';
 import '../common/pond_colour.dart';
 import 'pond_overview.dart';
+import '../common/save_once.dart';
 
-/// Statuses a member sets by hand; `stocked` and `isolated` follow events.
+/// Statuses a member sets by hand, also to fix one a correction left wrong.
+/// `isolated` is set and lifted only by health events (SPEC F9).
 const _manualStatuses = [
   PondStatus.empty,
   PondStatus.preparing,
   PondStatus.ready,
+  PondStatus.stocked,
 ];
 
 /// Adds a pond, or edits the one with [pondId] (SPEC F1).
@@ -34,7 +37,7 @@ class PondFormScreen extends ConsumerStatefulWidget {
   ConsumerState<PondFormScreen> createState() => _PondFormScreenState();
 }
 
-class _PondFormScreenState extends ConsumerState<PondFormScreen> {
+class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _scroll = ScrollController();
   final _code = TextEditingController();
@@ -304,7 +307,7 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: () => _save(colour),
+              onPressed: saving ? null : () => saveOnce(() => _save(colour)),
               child: Text(l10n.save),
             ),
           ],

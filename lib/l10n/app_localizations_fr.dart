@@ -459,4 +459,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String destDensity(String pond, String density, String min, String max) {
     return 'Densité de $pond après transfert : $density /m² (conseillé : $min à $max)';
   }
+
+  @override
+  String get pondNotEmpty =>
+      'Cet étang contient encore des poissons : transférez-les d\'abord.';
 }

@@ -138,4 +138,42 @@ void main() {
     final b = await db.select(db.batches).getSingle();
     expect((b.strain, b.monosex, b.code), ('GIFT', true, 'L26-01'));
   });
+
+  appTest('a double tap when correcting keeps one version', (tester, db) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e1 = await PondRepository(db, session).create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    await BatchRepository(db, session).stockBatch(
+      StockInput(
+        code: 'L26-01',
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 12500,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Lots'));
+    await tapAndSettle(tester, find.text('L26-01'));
+    await tapAndSettle(tester, find.text('Corriger'));
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, "Nombre d'alevins"),
+      '900',
+    );
+    final save = find.text('Enregistrer');
+    await tester.ensureVisible(save);
+    await tester.tap(save);
+    await tester.tap(save, warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    final rows = await db.select(db.stockings).get();
+    expect([for (final r in rows) r.count]..sort(), [900, 1000]);
+  });
 }

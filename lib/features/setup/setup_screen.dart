@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../common/save_once.dart';
 
 class SetupScreen extends ConsumerStatefulWidget {
   const SetupScreen({super.key});
@@ -11,11 +12,10 @@ class SetupScreen extends ConsumerStatefulWidget {
   ConsumerState<SetupScreen> createState() => _SetupScreenState();
 }
 
-class _SetupScreenState extends ConsumerState<SetupScreen> {
+class _SetupScreenState extends ConsumerState<SetupScreen> with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _location = TextEditingController();
-  var _saving = false;
 
   @override
   void dispose() {
@@ -26,7 +26,6 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
 
   Future<void> _start() async {
     if (!_form.currentState!.validate()) return;
-    setState(() => _saving = true);
     final location = _location.text.trim();
     await ref
         .read(setupRepositoryProvider)
@@ -64,7 +63,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: _saving ? null : _start,
+              onPressed: saving ? null : () => saveOnce(_start),
               child: Text(l10n.setupStart),
             ),
           ],

@@ -241,7 +241,7 @@ class BatchRepository {
               acclimatised: input.acclimatised,
             ),
           );
-      await _setPondStatus(input.pondId, PondStatus.stocked);
+      await _markStocked(pond);
       return batchId;
     });
   }
@@ -286,7 +286,7 @@ class BatchRepository {
       final id = newId();
       await db.into(db.transfers).insert(_transfer(input, id: id));
 
-      await _setPondStatus(to.id, PondStatus.stocked);
+      await _markStocked(to);
       final leftInSource = (await _placements())
           .where((p) => p.pondId == from.id)
           .fold(0, (n, p) => n + p.live.count);
@@ -376,40 +376,22 @@ class BatchRepository {
         avgWeightMg: Value(input.avgWeightMg),
       );
 
-  Future<List<Stocking>> _currentStockings() => (db.select(
-    db.stockings,
-  )..where((_) => isCurrentEvent(db.stockings))).get();
+  Future<List<Stocking>> _currentStockings() => _currentStockingsIn(db);
 
-  Future<List<Transfer>> _currentTransfers() => (db.select(
-    db.transfers,
-  )..where((_) => isCurrentEvent(db.transfers))).get();
+  Future<List<Transfer>> _currentTransfers() => _currentTransfersIn(db);
 
-  Future<List<Placement>> _placements() async => placements(
-    stockings: [
-      for (final s in await _currentStockings())
-        StockingFact(
-          batchId: s.batchId,
-          pondId: s.pondId,
-          count: s.count,
-          avgWeightG: s.avgWeightMg / 1000,
-          date: s.recordedAt,
-        ),
-    ],
-    transfers: [
-      for (final t in await _currentTransfers())
-        TransferFact(
-          batchId: t.batchId,
-          fromPondId: t.fromPondId,
-          toPondId: t.toPondId,
-          count: t.count,
-          avgWeightG: t.avgWeightMg == null ? null : t.avgWeightMg! / 1000,
-          date: t.recordedAt,
-        ),
-    ],
-  );
+  Future<List<Placement>> _placements() => currentPlacements(db);
 
   Future<Pond> _pond(String id) =>
       (db.select(db.ponds)..where((p) => p.id.equals(id))).getSingle();
+
+  /// Fish arrived in [pond]. Isolation is only lifted by a health event
+  /// (SPEC F9), never by fish coming in.
+  Future<void> _markStocked(Pond pond) async {
+    if (pond.status != PondStatus.isolated) {
+      await _setPondStatus(pond.id, PondStatus.stocked);
+    }
+  }
 
   Future<void> _setPondStatus(String id, PondStatus status) =>
       (db.update(db.ponds)..where((p) => p.id.equals(id))).write(
@@ -458,3 +440,34 @@ class BatchRepository {
     }
   }
 }
+
+/// Fish per (batch, pond) from the current stockings and moves.
+Future<List<Placement>> currentPlacements(AppDatabase db) async => placements(
+  stockings: [
+    for (final s in await _currentStockingsIn(db))
+      StockingFact(
+        batchId: s.batchId,
+        pondId: s.pondId,
+        count: s.count,
+        avgWeightG: s.avgWeightMg / 1000,
+        date: s.recordedAt,
+      ),
+  ],
+  transfers: [
+    for (final t in await _currentTransfersIn(db))
+      TransferFact(
+        batchId: t.batchId,
+        fromPondId: t.fromPondId,
+        toPondId: t.toPondId,
+        count: t.count,
+        avgWeightG: t.avgWeightMg == null ? null : t.avgWeightMg! / 1000,
+        date: t.recordedAt,
+      ),
+  ],
+);
+
+Future<List<Stocking>> _currentStockingsIn(AppDatabase db) =>
+    (db.select(db.stockings)..where((_) => isCurrentEvent(db.stockings))).get();
+
+Future<List<Transfer>> _currentTransfersIn(AppDatabase db) =>
+    (db.select(db.transfers)..where((_) => isCurrentEvent(db.transfers))).get();

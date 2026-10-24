@@ -14,6 +14,7 @@ import '../common/pond_colour.dart';
 import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
+import '../common/save_once.dart';
 
 class BatchDetailScreen extends ConsumerWidget {
   const BatchDetailScreen({super.key, required this.batchId});
@@ -216,7 +217,8 @@ class BatchFormScreen extends ConsumerStatefulWidget {
   ConsumerState<BatchFormScreen> createState() => _BatchFormScreenState();
 }
 
-class _BatchFormScreenState extends ConsumerState<BatchFormScreen> {
+class _BatchFormScreenState extends ConsumerState<BatchFormScreen>
+    with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _identity = BatchIdentity();
   Batch? _batch;
@@ -278,7 +280,7 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: _save,
+              onPressed: saving ? null : () => saveOnce(_save),
               child: Text(l10n.save),
             ),
           ],

@@ -18,6 +18,7 @@ import '../common/number_field.dart';
 import '../ponds/pond_overview.dart';
 import 'batch_providers.dart';
 import 'stocking_warnings.dart';
+import '../common/save_once.dart';
 
 /// Moves fish of [batchId] out of [fromPondId] (SPEC F2), or, with
 /// [transferId], corrects that move.
@@ -37,7 +38,7 @@ class TransferScreen extends ConsumerStatefulWidget {
   ConsumerState<TransferScreen> createState() => _TransferScreenState();
 }
 
-class _TransferScreenState extends ConsumerState<TransferScreen> {
+class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _count = TextEditingController();
   final _weight = TextEditingController();
@@ -237,7 +238,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(56),
                 ),
-                onPressed: _save,
+                onPressed: saving ? null : () => saveOnce(_save),
                 child: Text(l10n.save),
               ),
           ],

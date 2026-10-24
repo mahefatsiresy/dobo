@@ -913,6 +913,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Densité de {pond} après transfert : {density} /m² (conseillé : {min} à {max})'**
   String destDensity(String pond, String density, String min, String max);
+
+  /// No description provided for @pondNotEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet étang contient encore des poissons : transférez-les d\'abord.'**
+  String get pondNotEmpty;
 }
 
 class _AppLocalizationsDelegate

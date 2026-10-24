@@ -107,4 +107,24 @@ void main() {
     expect(find.textContaining('600'), findsWidgets);
     expect(await db.select(db.transfers).get(), hasLength(2));
   });
+
+  appTest('back leaves the transfer screen', (tester, db) async {
+    await farm(tester, db);
+    await openTransfer(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text('Empoissonner'), findsOneWidget);
+  });
+
+  appTest('a double tap on Save records one move', (tester, db) async {
+    await farm(tester, db);
+    await openTransfer(tester);
+    await pickDestination(tester);
+    await enterAndSettle(tester, countField(), '1000');
+    final save = find.text('Enregistrer');
+    await tester.ensureVisible(save);
+    await tester.tap(save);
+    await tester.tap(save, warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(await db.select(db.transfers).get(), hasLength(1));
+  });
 }

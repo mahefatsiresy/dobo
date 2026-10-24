@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/repositories/errors.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/config.dart';
 import '../../domain/phase.dart';
@@ -42,8 +43,15 @@ class PondDetailScreen extends ConsumerWidget {
       ),
     );
     if (ok != true) return;
-    await ref.read(pondRepositoryProvider).archive(pondId);
-    if (context.mounted) context.go('/ponds');
+    try {
+      await ref.read(pondRepositoryProvider).archive(pondId);
+      if (context.mounted) context.go('/ponds');
+    } on PondNotEmptyException {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l10n.pondNotEmpty)));
+      }
+    }
   }
 
   @override
@@ -130,7 +138,7 @@ class PondDetailScreen extends ConsumerWidget {
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(56),
                       ),
-                      onPressed: () => context.go(
+                      onPressed: () => context.push(
                         '/transfer?batchId=${b.batch.id}&fromPondId=${pond.id}',
                       ),
                       icon: const Icon(Icons.swap_horiz),
@@ -144,7 +152,7 @@ class PondDetailScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           FilledButton.icon(
             style: wide,
-            onPressed: () => context.go('/stock?pondId=${pond.id}'),
+            onPressed: () => context.push('/stock?pondId=${pond.id}'),
             icon: const Icon(Icons.add),
             label: Text(l10n.pondStock),
           ),

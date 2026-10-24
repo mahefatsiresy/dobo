@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import 'database.dart';
 import 'ids.dart';
+import 'repositories/errors.dart';
 import 'session.dart';
 import 'sync_columns.dart';
 import 'sync_state.dart';
@@ -24,26 +25,29 @@ Expression<bool> isCurrentEvent(TableInfo<Table, Object?> table) {
 /// new row and never touch the old one.
 extension EventWrites on AppDatabase {
   /// Inserts [replacement] as the new version of [oldId]; returns its id.
+  /// Throws [StaleEventException] when [oldId] is no longer current.
   Future<String> supersede<T extends Table, D>(
     TableInfo<T, D> table,
     String oldId,
     Insertable<D> replacement,
-  ) => _insertNew(table, {
-    ...replacement.toColumns(true),
-    'supersedes_id': Variable<String>(oldId),
-    'is_tombstone': const Variable<bool>(false),
+  ) => transaction(() async {
+    await _currentOrThrow(table, oldId);
+    return _insertNew(table, {
+      ...replacement.toColumns(true),
+      'supersedes_id': Variable<String>(oldId),
+      'is_tombstone': const Variable<bool>(false),
+    });
   });
 
   /// Marks [id] deleted with a copy of it flagged as a tombstone, written by
-  /// [session]; returns the tombstone's id.
+  /// [session]; returns the tombstone's id. Throws [StaleEventException]
+  /// when [id] is no longer current.
   Future<String> tombstone<T extends Table, D extends DataClass>(
     TableInfo<T, D> table,
     String id,
     Session session,
   ) => transaction(() async {
-    final target = await (select(
-      table,
-    )..where((t) => (t as SyncedRow).id.equals(id))).getSingle();
+    final target = await _currentOrThrow(table, id);
     return _insertNew(table, {
       ...(target as Insertable<D>).toColumns(false),
       'supersedes_id': Variable<String>(id),
@@ -57,6 +61,19 @@ extension EventWrites on AppDatabase {
       'sync_error': const Variable<String>(null),
     });
   });
+
+  Future<D> _currentOrThrow<T extends Table, D>(
+    TableInfo<T, D> table,
+    String id,
+  ) async {
+    final row =
+        await (select(table)..where(
+              (t) => (t as SyncedRow).id.equals(id) & isCurrentEvent(table),
+            ))
+            .getSingleOrNull();
+    if (row == null) throw StaleEventException(id);
+    return row;
+  }
 
   /// Inserts [columns] as a new row with a fresh id and device timestamp.
   Future<String> _insertNew<T extends Table, D>(

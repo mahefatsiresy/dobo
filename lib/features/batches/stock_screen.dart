@@ -18,6 +18,7 @@ import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
 import 'stocking_warnings.dart';
+import '../common/save_once.dart';
 
 /// Stocks a new batch into a pond (SPEC F2), or, with [stockingId], corrects
 /// that stocking of [batchId] (identity fields hidden).
@@ -32,7 +33,7 @@ class StockScreen extends ConsumerStatefulWidget {
   ConsumerState<StockScreen> createState() => _StockScreenState();
 }
 
-class _StockScreenState extends ConsumerState<StockScreen> {
+class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _scroll = ScrollController();
   final _identity = BatchIdentity();
@@ -288,7 +289,7 @@ class _StockScreenState extends ConsumerState<StockScreen> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: _save,
+              onPressed: saving ? null : () => saveOnce(_save),
               child: Text(l10n.save),
             ),
           ],

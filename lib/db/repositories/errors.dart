@@ -20,3 +20,24 @@ class PondIsolatedException implements Exception {
 
 /// Codes match whatever the case and surrounding spaces.
 String normaliseCode(String code) => code.trim().toLowerCase();
+
+/// The record was already corrected or deleted (a double tap, or another
+/// phone): only the current version may be superseded.
+class StaleEventException implements Exception {
+  const StaleEventException(this.id);
+
+  final String id;
+
+  @override
+  String toString() => 'StaleEventException: $id';
+}
+
+/// A pond still holding fish can't be archived: they would be unreachable.
+class PondNotEmptyException implements Exception {
+  const PondNotEmptyException(this.pondId);
+
+  final String pondId;
+
+  @override
+  String toString() => 'PondNotEmptyException: $pondId';
+}

@@ -339,5 +339,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "pondNotEmpty": "Cet étang contient encore des poissons : transférez-les d'abord."
 }

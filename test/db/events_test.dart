@@ -1,3 +1,4 @@
+import 'package:dobo/db/repositories/errors.dart';
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/events.dart';
 import 'package:dobo/db/session.dart';
@@ -86,7 +87,8 @@ void main() {
     () async {
       final a = await insert(1000);
       await db.supersede(db.stockings, a, stocking(900));
-      await db.supersede(db.stockings, a, stocking(950));
+      // The other phone's correction arrives by sync, as a plain insert.
+      await db.into(db.stockings).insert(stocking(950, supersedes: a));
       expect(await currentCounts(), {900, 950});
     },
   );
@@ -118,5 +120,25 @@ void main() {
       db.stockings,
     )..where((s) => s.id.equals(b))).getSingle();
     expect((row.supersedesId, row.isTombstone), (a, false));
+  });
+
+  test('superseding a record that is no longer current is refused', () async {
+    final a = await insert(1000);
+    await db.supersede(db.stockings, a, stocking(900));
+    await expectLater(
+      db.supersede(db.stockings, a, stocking(800)),
+      throwsA(isA<StaleEventException>()),
+    );
+    expect(await currentCounts(), {900});
+  });
+
+  test('deleting a record twice is refused', () async {
+    final a = await insert(1000);
+    await db.tombstone(db.stockings, a, session);
+    await expectLater(
+      db.tombstone(db.stockings, a, session),
+      throwsA(isA<StaleEventException>()),
+    );
+    expect(await db.select(db.stockings).get(), hasLength(2));
   });
 }

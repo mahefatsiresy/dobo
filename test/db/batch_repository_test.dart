@@ -192,4 +192,46 @@ void main() {
     expect(batches.suggestBatchCode(all, DateTime(2026, 3, 1)), 'L26-08');
     expect(batches.suggestBatchCode(all, DateTime(2027, 1, 1)), 'L27-01');
   });
+
+  test(
+    'correcting the same stocking twice keeps one current version',
+    () async {
+      final l1 = await batches.stockBatch(stockInput('L26-01', pondId: e1));
+      final st1 = (await summaryOf(l1)).firstStocking!.id;
+      final fix = StockingCorrection(
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 900,
+        avgWeightMg: 12500,
+      );
+      await batches.correctStocking(st1, fix);
+      await expectLater(
+        batches.correctStocking(st1, fix),
+        throwsA(isA<StaleEventException>()),
+      );
+      expect((await summaryOf(l1)).liveCount, 900);
+    },
+  );
+
+  test(
+    'stocking or moving fish into an isolated pond keeps it isolated',
+    () async {
+      await ponds.setStatus(e2, PondStatus.isolated);
+      final l1 = await batches.stockBatch(stockInput('L26-01', pondId: e2));
+      expect((await ponds.get(e2)).status, PondStatus.isolated);
+      final l2 = await batches.stockBatch(stockInput('L26-02', pondId: e1));
+      await batches.transfer(moveInput(l2, from: e1, to: e2, count: 10));
+      expect((await ponds.get(e2)).status, PondStatus.isolated);
+      expect(l1, isNotEmpty);
+    },
+  );
+
+  test('a pond with fish cannot be archived; an emptied one can', () async {
+    final l1 = await batches.stockBatch(stockInput('L26-01', pondId: e1));
+    await expectLater(ponds.archive(e1), throwsA(isA<PondNotEmptyException>()));
+    expect((await ponds.get(e1)).archived, isFalse);
+    await batches.transfer(moveInput(l1, from: e1, to: e2, count: 1000));
+    await ponds.archive(e1);
+    expect((await ponds.get(e1)).archived, isTrue);
+  });
 }

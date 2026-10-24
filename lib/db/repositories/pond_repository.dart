@@ -5,6 +5,7 @@ import '../database.dart';
 import '../ids.dart';
 import '../session.dart';
 import '../sync_state.dart';
+import 'batch_repository.dart';
 import 'errors.dart';
 
 /// The editable fields of a pond.
@@ -103,8 +104,15 @@ class PondRepository {
   Future<void> setStatus(String id, PondStatus status) =>
       _write(id, PondsCompanion(status: Value(status)));
 
-  Future<void> archive(String id) =>
-      _write(id, const PondsCompanion(archived: Value(true)));
+  /// Throws [PondNotEmptyException] while the pond holds fish (or its
+  /// records don't add up): they would become unreachable.
+  Future<void> archive(String id) => db.transaction(() async {
+    final occupied = (await currentPlacements(
+      db,
+    )).any((p) => p.pondId == id && (p.live.count > 0 || p.live.inconsistent));
+    if (occupied) throw PondNotEmptyException(id);
+    await _write(id, const PondsCompanion(archived: Value(true)));
+  });
 
   Future<void> _write(String id, PondsCompanion fields) =>
       (db.update(db.ponds)..where((p) => p.id.equals(id))).write(

@@ -35,6 +35,15 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
   }
 
+  /// The Ponds tab returns to the page it was on; a second tap shows the
+  /// list.
+  Future<void> pondsList(WidgetTester tester) async {
+    await tapAndSettle(tester, find.text('Étangs'));
+    if (find.text('Ajouter un étang').evaluate().isEmpty) {
+      await tapAndSettle(tester, find.text('Étangs'));
+    }
+  }
+
   testWidgets('set up, stock, move, correct', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: DoboApp()));
     await tester.pumpAndSettle();
@@ -55,7 +64,7 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     expect(find.text('Rakoto'), findsOneWidget);
 
-    await tapAndSettle(tester, find.text('Étangs'));
+    await pondsList(tester);
     await tapAndSettle(tester, find.text('Q1'));
     await tapAndSettle(tester, find.text('Empoissonner'));
     await enterAndSettle(tester, field("Nombre d'alevins"), '1000');
@@ -63,7 +72,7 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     expect(find.text('Quarantaine'), findsOneWidget);
 
-    await tapAndSettle(tester, find.text('Étangs'));
+    await pondsList(tester);
     await tapAndSettle(tester, find.text('Q1'));
     await tapAndSettle(tester, find.text('Transférer'));
     await choose(tester, "Vers l'étang", 'E1 ·');
@@ -77,7 +86,7 @@ void main() {
     expect(find.textContaining('1\u202f100'), findsWidgets);
 
     // The correction leaves 100 fish in Q1; E1 keeps the 1 000 moved.
-    await tapAndSettle(tester, find.text('Étangs'));
+    await pondsList(tester);
     expect(find.text('100'), findsOneWidget);
     expect(find.text('1\u202f000'), findsOneWidget);
   });
