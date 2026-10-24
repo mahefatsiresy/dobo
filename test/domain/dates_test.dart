@@ -28,11 +28,15 @@ void main() {
 
   test('a date entered by hand is stored as noon in Madagascar', () {
     expect(farmDateToUtc(DateTime(2026, 3, 1)), DateTime.utc(2026, 3, 1, 9));
-    expect(farmDateToUtc(DateTime(2026, 3, 1, 23, 30)),
-        DateTime.utc(2026, 3, 1, 9));
     expect(
-      daysBetween(farmDateToUtc(DateTime(2026, 3, 1)),
-          farmDateToUtc(DateTime(2026, 3, 15))),
+      farmDateToUtc(DateTime(2026, 3, 1, 23, 30)),
+      DateTime.utc(2026, 3, 1, 9),
+    );
+    expect(
+      daysBetween(
+        farmDateToUtc(DateTime(2026, 3, 1)),
+        farmDateToUtc(DateTime(2026, 3, 15)),
+      ),
       14,
     );
   });

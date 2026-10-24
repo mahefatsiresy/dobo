@@ -21,9 +21,13 @@ class MemberShell extends StatelessWidget {
             shell.goBranch(i, initialLocation: i == shell.currentIndex),
         destinations: [
           NavigationDestination(
-              icon: const Icon(Icons.water), label: l10n.tabPonds),
+            icon: const Icon(Icons.water),
+            label: l10n.tabPonds,
+          ),
           NavigationDestination(
-              icon: const Icon(Icons.menu), label: l10n.tabMore),
+            icon: const Icon(Icons.menu),
+            label: l10n.tabMore,
+          ),
         ],
       ),
     );

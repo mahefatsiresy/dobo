@@ -99,5 +99,15 @@
         "type": "String"
       }
     }
-  }
+  },
+  "morePeople": "Personnes",
+  "moreBatches": "Lots",
+  "personName": "Nom",
+  "personPhone": "Téléphone",
+  "personNote": "Note",
+  "personActive": "Actif",
+  "personInactive": "Inactif",
+  "save": "Enregistrer",
+  "add": "Ajouter",
+  "peopleEmpty": "Aucune personne : ajoutez les ouvriers et les membres"
 }

@@ -168,4 +168,35 @@ class AppLocalizationsFr extends AppLocalizations {
   String warnTooShallow(String min) {
     return 'Profondeur moyenne sous $min m';
   }
+
+  @override
+  String get morePeople => 'Personnes';
+
+  @override
+  String get moreBatches => 'Lots';
+
+  @override
+  String get personName => 'Nom';
+
+  @override
+  String get personPhone => 'Téléphone';
+
+  @override
+  String get personNote => 'Note';
+
+  @override
+  String get personActive => 'Actif';
+
+  @override
+  String get personInactive => 'Inactif';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get add => 'Ajouter';
+
+  @override
+  String get peopleEmpty =>
+      'Aucune personne : ajoutez les ouvriers et les membres';
 }

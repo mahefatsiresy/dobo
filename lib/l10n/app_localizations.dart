@@ -397,6 +397,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Profondeur moyenne sous {min} m'**
   String warnTooShallow(String min);
+
+  /// No description provided for @morePeople.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personnes'**
+  String get morePeople;
+
+  /// No description provided for @moreBatches.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lots'**
+  String get moreBatches;
+
+  /// No description provided for @personName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get personName;
+
+  /// No description provided for @personPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get personPhone;
+
+  /// No description provided for @personNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Note'**
+  String get personNote;
+
+  /// No description provided for @personActive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Actif'**
+  String get personActive;
+
+  /// No description provided for @personInactive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inactif'**
+  String get personInactive;
+
+  /// No description provided for @save.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get save;
+
+  /// No description provided for @add.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter'**
+  String get add;
+
+  /// No description provided for @peopleEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune personne : ajoutez les ouvriers et les membres'**
+  String get peopleEmpty;
 }
 
 class _AppLocalizationsDelegate

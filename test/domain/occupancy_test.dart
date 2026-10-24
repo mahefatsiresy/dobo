@@ -7,20 +7,35 @@ void main() {
   Placement at(List<Placement> ps, String b, String p) =>
       ps.singleWhere((x) => x.batchId == b && x.pondId == p);
 
-  StockingFact stock(String b, String p, int count, double g,
-          [DateTime? date]) =>
-      StockingFact(
-          batchId: b, pondId: p, count: count, avgWeightG: g, date: date ?? d1);
+  StockingFact stock(
+    String b,
+    String p,
+    int count,
+    double g, [
+    DateTime? date,
+  ]) => StockingFact(
+    batchId: b,
+    pondId: p,
+    count: count,
+    avgWeightG: g,
+    date: date ?? d1,
+  );
 
-  TransferFact move(String b, String from, String to, int count,
-          {double? g, DateTime? date}) =>
-      TransferFact(
-          batchId: b,
-          fromPondId: from,
-          toPondId: to,
-          count: count,
-          avgWeightG: g,
-          date: date ?? d2);
+  TransferFact move(
+    String b,
+    String from,
+    String to,
+    int count, {
+    double? g,
+    DateTime? date,
+  }) => TransferFact(
+    batchId: b,
+    fromPondId: from,
+    toPondId: to,
+    count: count,
+    avgWeightG: g,
+    date: date ?? d2,
+  );
 
   test('a move splits the batch between ponds', () {
     final ps = placements(
@@ -67,8 +82,10 @@ void main() {
       stockings: [stock('L1', 'E1', 500, 12.5)],
       transfers: [move('L1', 'E1', 'E2', 800)],
     );
-    expect((at(ps, 'L1', 'E1').live.count, at(ps, 'L1', 'E1').live.inconsistent),
-        (0, true));
+    expect(
+      (at(ps, 'L1', 'E1').live.count, at(ps, 'L1', 'E1').live.inconsistent),
+      (0, true),
+    );
     expect(at(ps, 'L1', 'E2').live.count, 800);
   });
 

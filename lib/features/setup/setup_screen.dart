@@ -28,7 +28,9 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
     if (!_form.currentState!.validate()) return;
     setState(() => _saving = true);
     final location = _location.text.trim();
-    await ref.read(setupRepositoryProvider).completeSetup(
+    await ref
+        .read(setupRepositoryProvider)
+        .completeSetup(
           siteName: _name.text.trim(),
           locationNote: location.isEmpty ? null : location,
         );
@@ -60,7 +62,8 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(56)),
+                minimumSize: const Size.fromHeight(56),
+              ),
               onPressed: _saving ? null : _start,
               child: Text(l10n.setupStart),
             ),

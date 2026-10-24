@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/more/more_screen.dart';
+import 'features/people/people_screen.dart';
+import 'features/people/person_form_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/shell/member_shell.dart';
 import 'l10n/app_localizations.dart';
@@ -28,20 +31,48 @@ final routerProvider = Provider<GoRouter>((ref) {
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => MemberShell(shell: shell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/ponds',
-              builder: (context, state) => PlaceholderTab(
-                  title: AppLocalizations.of(context).tabPonds),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/more',
-              builder: (context, state) =>
-                  PlaceholderTab(title: AppLocalizations.of(context).tabMore),
-            ),
-          ]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/ponds',
+                builder: (context, state) => PlaceholderTab(
+                  title: AppLocalizations.of(context).tabPonds,
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/more',
+                builder: (context, state) => const MoreScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'batches',
+                    builder: (context, state) => PlaceholderTab(
+                      title: AppLocalizations.of(context).moreBatches,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'people',
+                    builder: (context, state) => const PeopleScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'new',
+                        builder: (context, state) => const PersonFormScreen(),
+                      ),
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) => PersonFormScreen(
+                          personId: state.pathParameters['id'],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     ],
