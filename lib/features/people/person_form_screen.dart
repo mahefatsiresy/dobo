@@ -7,6 +7,7 @@ import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import 'people_providers.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 /// Adds a person, or edits the one with [personId].
 class PersonFormScreen extends ConsumerStatefulWidget {
@@ -87,8 +88,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
       appBar: AppBar(title: Text(id == null ? l10n.add : _name.text)),
       body: Form(
         key: _form,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: FormBody(
           children: [
             TextFormField(
               controller: _name,

@@ -109,6 +109,23 @@ class DailyLogRepository {
             ..limit(1))
           .getSingleOrNull();
 
+  /// Each pond's most recent log in the [days] before [date]: its leftovers
+  /// adjust that day's ration.
+  Stream<Map<String, DailyLog>> watchLatestBefore(
+    DateTime date, {
+    int days = 30,
+  }) =>
+      (_current()
+            ..where(
+              (l) => l.recordedAt.isBetweenValues(
+                farmDateToUtc(date.subtract(Duration(days: days))),
+                farmDateToUtc(date.subtract(const Duration(days: 1))),
+              ),
+            )
+            ..orderBy([(l) => OrderingTerm.asc(l.recordedAt)]))
+          .watch()
+          .map((logs) => {for (final l in logs) l.pondId: l});
+
   Future<void> delete(String id) => db.tombstone(db.dailyLogs, id, session);
 
   SimpleSelectStatement<$DailyLogsTable, DailyLog> _current() =>

@@ -1099,6 +1099,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Autre'**
   String get obsOther;
+
+  /// No description provided for @workerMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode ouvrier'**
+  String get workerMode;
+
+  /// No description provided for @workerToday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aujourd\'hui'**
+  String get workerToday;
+
+  /// No description provided for @workerExit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get workerExit;
+
+  /// No description provided for @dailyLog.
+  ///
+  /// In fr, this message translates to:
+  /// **'Journal du jour'**
+  String get dailyLog;
+
+  /// No description provided for @feedGiven.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment donné'**
+  String get feedGiven;
+
+  /// No description provided for @feedings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repas donnés'**
+  String get feedings;
+
+  /// No description provided for @leftovers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reste'**
+  String get leftovers;
+
+  /// No description provided for @deaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'Morts'**
+  String get deaths;
+
+  /// No description provided for @deathAppearance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aspect des morts'**
+  String get deathAppearance;
+
+  /// No description provided for @signsSeen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signes'**
+  String get signsSeen;
+
+  /// No description provided for @waterColourLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couleur de l\'eau'**
+  String get waterColourLabel;
+
+  /// No description provided for @addNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une note'**
+  String get addNote;
+
+  /// No description provided for @noteLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Note'**
+  String get noteLabel;
+
+  /// No description provided for @saved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistré'**
+  String get saved;
+
+  /// No description provided for @pondIsolatedBanner.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang isolé'**
+  String get pondIsolatedBanner;
+
+  /// No description provided for @rationHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'≈ {amount}'**
+  String rationHint(String amount);
 }
 
 class _AppLocalizationsDelegate

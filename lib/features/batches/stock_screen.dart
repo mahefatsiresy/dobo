@@ -19,6 +19,7 @@ import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
 import 'stocking_warnings.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 /// Stocks a new batch into a pond (SPEC F2), or, with [stockingId], corrects
 /// that stocking of [batchId] (identity fields hidden).
@@ -192,9 +193,8 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
       ),
       body: Form(
         key: _form,
-        child: ListView(
+        child: FormBody(
           controller: _scroll,
-          padding: const EdgeInsets.all(16),
           children: [
             Card(
               color: Theme.of(context).colorScheme.secondaryContainer,

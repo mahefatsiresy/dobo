@@ -1,0 +1,145 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../domain/types.dart';
+import '../../l10n/app_localizations.dart';
+import '../../l10n/formatting.dart';
+import '../../locale_controller.dart';
+import '../common/pond_colour.dart';
+import '../ponds/pond_overview.dart';
+import 'daily_log_providers.dart';
+
+/// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
+/// those already logged. Until accounts (M4) a member reaches it from More
+/// and leaves with the exit button.
+class WorkerHomeScreen extends ConsumerWidget {
+  const WorkerHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final overviews = ref.watch(pondOverviewsProvider).value;
+    final logged = ref.watch(loggedTodayProvider).value ?? const {};
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.workerToday),
+            Text(
+              formatDate(farmToday()),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            tooltip: l10n.workerExit,
+            iconSize: 32,
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              ref
+                  .read(localeControllerProvider.notifier)
+                  .set(const Locale('fr'));
+              context.go('/more');
+            },
+          ),
+        ],
+      ),
+      body: overviews == null
+          ? const Center(child: CircularProgressIndicator())
+          : GridView.count(
+              padding: const EdgeInsets.all(16),
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              children: [
+                for (final o in overviews)
+                  _PondTile(
+                    overview: o,
+                    logged: logged.contains(o.pond.id),
+                    onTap: () => context.push('/log/${o.pond.id}'),
+                  ),
+              ],
+            ),
+    );
+  }
+}
+
+class _PondTile extends StatelessWidget {
+  const _PondTile({
+    required this.overview,
+    required this.logged,
+    required this.onTap,
+  });
+
+  final PondOverview overview;
+  final bool logged;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final pond = overview.pond;
+    final isolated = overview.status == PondStatus.isolated;
+    final background = pondColourValue(pond.colour);
+    final ink = background.computeLuminance() > 0.4
+        ? Colors.black
+        : Colors.white;
+    return Material(
+      color: background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: isolated
+            ? BorderSide(color: Colors.red.shade700, width: 6)
+            : BorderSide.none,
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    pond.code,
+                    style: Theme.of(context).textTheme.displayMedium
+                        ?.copyWith(color: ink, fontWeight: FontWeight.bold),
+                  ),
+                  if (isolated)
+                    Container(
+                      color: Colors.red.shade700,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context).pondIsolatedBanner,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            if (logged)
+              const Positioned(
+                top: 8,
+                right: 8,
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.task_alt,
+                    color: Colors.green,
+                    size: 36,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

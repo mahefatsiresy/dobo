@@ -4,9 +4,11 @@ import '../../db/database.dart';
 import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/config.dart';
+import '../../domain/dates.dart';
 import '../../domain/occupancy.dart';
 import '../../domain/phase.dart';
 import '../../domain/pond.dart';
+import '../../domain/ration.dart';
 import '../../domain/stock.dart';
 import '../../domain/types.dart';
 
@@ -39,6 +41,7 @@ class PondOverview {
     required this.biomassG,
     required this.density,
     required this.densityStatus,
+    required this.rationG,
   });
 
   final Pond pond;
@@ -59,14 +62,20 @@ class PondOverview {
 
   /// Null when the pond has no fish or no surface.
   final DensityStatus? densityStatus;
+
+  /// Today's suggested feed in grams over the batches with a known weight,
+  /// after the last day's leftovers; 0 without fish.
+  final int rationG;
 }
 
 PondOverview buildPondOverview(
   Pond pond,
   List<Placement> placements,
   Map<String, Batch> batches,
-  DomainConfig config,
-) {
+  DomainConfig config, {
+  Leftover? lastLeftover,
+  bool lastAteFast = false,
+}) {
   final here = [
     for (final p in placements)
       if (p.pondId == pond.id &&
@@ -111,6 +120,16 @@ PondOverview buildPondOverview(
             structure: pond.structure,
             config: config,
           ),
+    rationG: pondRationG(
+      batches: [
+        for (final b in here)
+          if (b.biomassG != null && b.phase != null)
+            (biomassG: b.biomassG!, phase: b.phase!),
+      ],
+      lastLeftover: lastLeftover,
+      lastAteFast: lastAteFast,
+      config: config,
+    ),
   );
 }
 
@@ -126,6 +145,14 @@ final batchSummariesProvider = StreamProvider<List<BatchSummary>>(
   (ref) => ref.watch(batchRepositoryProvider).watchAll(),
 );
 
+/// Today in Madagascar.
+DateTime farmToday() => farmDate(DateTime.now().toUtc());
+
+/// Each pond's last daily log before today.
+final lastLogsProvider = StreamProvider<Map<String, DailyLog>>(
+  (ref) => ref.watch(dailyLogRepositoryProvider).watchLatestBefore(farmToday()),
+);
+
 /// Every active pond with what it holds, by code.
 final pondOverviewsProvider = Provider<AsyncValue<List<PondOverview>>>((ref) {
   final ponds = ref.watch(pondsProvider);
@@ -135,8 +162,16 @@ final pondOverviewsProvider = Provider<AsyncValue<List<PondOverview>>>((ref) {
     return const AsyncLoading();
   }
   final batches = {for (final s in summaries.value!) s.batch.id: s.batch};
+  final lastLogs = ref.watch(lastLogsProvider).value ?? const {};
   return AsyncData([
     for (final p in ponds.value!)
-      buildPondOverview(p, placements.value!, batches, DomainConfig.defaults),
+      buildPondOverview(
+        p,
+        placements.value!,
+        batches,
+        DomainConfig.defaults,
+        lastLeftover: lastLogs[p.id]?.leftover,
+        lastAteFast: lastLogs[p.id]?.ateFast ?? false,
+      ),
   ]);
 });

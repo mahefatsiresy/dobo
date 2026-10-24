@@ -24,6 +24,7 @@ void main() {
     biomassG: 0,
     density: null,
     densityStatus: null,
+    rationG: 0,
   );
 
   test('a ready pond at the right density and weight: no warning', () {

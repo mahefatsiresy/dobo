@@ -11,6 +11,7 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../common/estimated.dart';
+import '../common/notice.dart';
 import '../common/pond_colour.dart';
 import 'pond_figures.dart';
 import 'pond_overview.dart';
@@ -98,6 +99,8 @@ class PondDetailScreen extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
+          if (o.status == PondStatus.isolated)
+            Notice(l10n.pondIsolatedBanner, danger: true),
           PondFigures(overview: o),
           for (final b in o.batches) ...[
             const SizedBox(height: 16),
@@ -150,6 +153,13 @@ class PondDetailScreen extends ConsumerWidget {
             ),
           ],
           const SizedBox(height: 24),
+          FilledButton.icon(
+            style: wide,
+            onPressed: () => context.push('/log/${pond.id}'),
+            icon: const Icon(Icons.edit_calendar),
+            label: Text(l10n.dailyLog),
+          ),
+          const SizedBox(height: 8),
           FilledButton.icon(
             style: wide,
             onPressed: () => context.push('/stock?pondId=${pond.id}'),

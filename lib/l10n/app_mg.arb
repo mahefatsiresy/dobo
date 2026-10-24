@@ -23,5 +23,21 @@
   "waterLightGreen": "Maitso mavana",
   "waterMediumGreen": "Maitso",
   "waterDarkGreen": "Maitso matroka",
-  "waterBrownTurbid": "Volontany, manjavozavo"
+  "waterBrownTurbid": "Volontany, manjavozavo",
+  "workerToday": "Androany",
+  "workerExit": "Hiala",
+  "feedGiven": "Sakafo nomena",
+  "feedings": "Impiry nanome sakafo",
+  "leftovers": "Sisa",
+  "deaths": "Maty",
+  "deathAppearance": "Endriky ny maty",
+  "signsSeen": "Famantarana",
+  "waterColourLabel": "Loko ny rano",
+  "addNote": "Fanamarihana",
+  "noteLabel": "Fanamarihana",
+  "saved": "Voatahiry",
+  "pondIsolatedBanner": "Dobo mitokana",
+  "save": "Tehirizo",
+  "fieldRequired": "Ilaina",
+  "dailyLog": "Diarin'ny andro"
 }

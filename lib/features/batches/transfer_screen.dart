@@ -19,6 +19,7 @@ import '../ponds/pond_overview.dart';
 import 'batch_providers.dart';
 import 'stocking_warnings.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 /// Moves fish of [batchId] out of [fromPondId] (SPEC F2), or, with
 /// [transferId], corrects that move.
@@ -164,8 +165,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
       ),
       body: Form(
         key: _form,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: FormBody(
           children: [
             if (blocked) Notice(l10n.isolatedSource, danger: true),
             if (source != null)

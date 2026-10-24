@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 class SetupScreen extends ConsumerStatefulWidget {
   const SetupScreen({super.key});
@@ -43,8 +44,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> with SaveOnce {
       appBar: AppBar(title: Text(l10n.setupTitle)),
       body: Form(
         key: _form,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: FormBody(
           children: [
             TextFormField(
               controller: _name,

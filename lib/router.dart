@@ -7,11 +7,14 @@ import 'features/batches/batch_detail_screen.dart';
 import 'features/batches/batches_screen.dart';
 import 'features/batches/stock_screen.dart';
 import 'features/batches/transfer_screen.dart';
+import 'features/daily_log/daily_log_screen.dart';
+import 'features/daily_log/worker_home_screen.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
 import 'features/ponds/pond_detail_screen.dart';
 import 'features/ponds/pond_form_screen.dart';
+import 'features/ponds/pond_overview.dart';
 import 'features/ponds/ponds_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/shell/member_shell.dart';
@@ -34,6 +37,20 @@ final routerProvider = Provider<GoRouter>((ref) {
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       GoRoute(path: '/setup', builder: (context, state) => const SetupScreen()),
+      GoRoute(
+        path: '/worker',
+        builder: (context, state) => const WorkerHomeScreen(),
+      ),
+      GoRoute(
+        path: '/log/:pondId',
+        builder: (context, state) {
+          final date = state.uri.queryParameters['date'];
+          return DailyLogScreen(
+            pondId: state.pathParameters['pondId']!,
+            date: date == null ? farmToday() : DateTime.parse(date),
+          );
+        },
+      ),
       GoRoute(
         path: '/transfer',
         builder: (context, state) => TransferScreen(

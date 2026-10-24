@@ -17,6 +17,7 @@ import '../common/number_field.dart';
 import '../common/pond_colour.dart';
 import 'pond_overview.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 /// Statuses a member sets by hand on a pond without fish. Fish decide
 /// `stocked`; health events set and lift `isolated` (SPEC F9).
@@ -156,9 +157,8 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
       appBar: AppBar(title: Text(id == null ? l10n.pondAdd : _code.text)),
       body: Form(
         key: _form,
-        child: ListView(
+        child: FormBody(
           controller: _scroll,
-          padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
               controller: _code,

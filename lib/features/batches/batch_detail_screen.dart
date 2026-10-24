@@ -15,6 +15,7 @@ import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
 import '../common/save_once.dart';
+import '../common/form_body.dart';
 
 class BatchDetailScreen extends ConsumerWidget {
   const BatchDetailScreen({super.key, required this.batchId});
@@ -267,8 +268,7 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen>
       appBar: AppBar(title: Text(l10n.batchEdit)),
       body: Form(
         key: _form,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+        child: FormBody(
           children: [
             ...batchIdentityFields(
               context,

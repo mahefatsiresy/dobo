@@ -370,5 +370,28 @@
   "obsGrass": "Herbe",
   "obsPredators": "Prédateurs",
   "obsTheft": "Vol",
-  "obsOther": "Autre"
+  "obsOther": "Autre",
+  "workerMode": "Mode ouvrier",
+  "workerToday": "Aujourd'hui",
+  "workerExit": "Quitter",
+  "dailyLog": "Journal du jour",
+  "feedGiven": "Aliment donné",
+  "feedings": "Repas donnés",
+  "leftovers": "Reste",
+  "deaths": "Morts",
+  "deathAppearance": "Aspect des morts",
+  "signsSeen": "Signes",
+  "waterColourLabel": "Couleur de l'eau",
+  "addNote": "Ajouter une note",
+  "noteLabel": "Note",
+  "saved": "Enregistré",
+  "pondIsolatedBanner": "Étang isolé",
+  "rationHint": "≈ {amount}",
+  "@rationHint": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

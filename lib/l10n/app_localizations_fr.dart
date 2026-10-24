@@ -553,4 +553,54 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get obsOther => 'Autre';
+
+  @override
+  String get workerMode => 'Mode ouvrier';
+
+  @override
+  String get workerToday => 'Aujourd\'hui';
+
+  @override
+  String get workerExit => 'Quitter';
+
+  @override
+  String get dailyLog => 'Journal du jour';
+
+  @override
+  String get feedGiven => 'Aliment donné';
+
+  @override
+  String get feedings => 'Repas donnés';
+
+  @override
+  String get leftovers => 'Reste';
+
+  @override
+  String get deaths => 'Morts';
+
+  @override
+  String get deathAppearance => 'Aspect des morts';
+
+  @override
+  String get signsSeen => 'Signes';
+
+  @override
+  String get waterColourLabel => 'Couleur de l\'eau';
+
+  @override
+  String get addNote => 'Ajouter une note';
+
+  @override
+  String get noteLabel => 'Note';
+
+  @override
+  String get saved => 'Enregistré';
+
+  @override
+  String get pondIsolatedBanner => 'Étang isolé';
+
+  @override
+  String rationHint(String amount) {
+    return '≈ $amount';
+  }
 }

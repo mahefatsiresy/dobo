@@ -31,7 +31,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get tabMore => 'Plus';
 
   @override
-  String get fieldRequired => 'Obligatoire';
+  String get fieldRequired => 'Ilaina';
 
   @override
   String get estimated => 'estimé';
@@ -191,7 +191,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get personInactive => 'Inactif';
 
   @override
-  String get save => 'Enregistrer';
+  String get save => 'Tehirizo';
 
   @override
   String get add => 'Ajouter';
@@ -553,4 +553,54 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get obsOther => 'Autre';
+
+  @override
+  String get workerMode => 'Mode ouvrier';
+
+  @override
+  String get workerToday => 'Androany';
+
+  @override
+  String get workerExit => 'Hiala';
+
+  @override
+  String get dailyLog => 'Diarin\'ny andro';
+
+  @override
+  String get feedGiven => 'Sakafo nomena';
+
+  @override
+  String get feedings => 'Impiry nanome sakafo';
+
+  @override
+  String get leftovers => 'Sisa';
+
+  @override
+  String get deaths => 'Maty';
+
+  @override
+  String get deathAppearance => 'Endriky ny maty';
+
+  @override
+  String get signsSeen => 'Famantarana';
+
+  @override
+  String get waterColourLabel => 'Loko ny rano';
+
+  @override
+  String get addNote => 'Fanamarihana';
+
+  @override
+  String get noteLabel => 'Fanamarihana';
+
+  @override
+  String get saved => 'Voatahiry';
+
+  @override
+  String get pondIsolatedBanner => 'Dobo mitokana';
+
+  @override
+  String rationHint(String amount) {
+    return '≈ $amount';
+  }
 }
