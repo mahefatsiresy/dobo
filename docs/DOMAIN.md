@@ -28,7 +28,7 @@ Every value the app computes with or compares against maps to one constant in `l
 - Design guidance, shown as soft warnings at pond setup, never blocking [2.2, 2.4]:
   - surface 200–1,000 m² per pond;
   - rectangular, length:width 2:1 to 3:1;
-  - depth ≥ 1 m; 0.8–1 m at inlet, 1.2–1.5 m at outlet.
+  - depth ≥ 1 m, checked on the mean of inlet and outlet depths when both are entered; 0.8–1 m at inlet, 1.2–1.5 m at outlet.
 
 ## Phases
 
@@ -143,7 +143,7 @@ Computed on the device from local records; never synced. Each has a severity (`d
 
 | Alert | Trigger | Severity |
 |---|---|---|
-| Water out of range | latest reading outside the temperature, pH or oxygen target | danger for oxygen, warning otherwise |
+| Water out of range | latest reading outside the temperature, pH or oxygen target, or water colour `dark_green` or `brown_turbid` (renew water) | danger for oxygen, warning otherwise |
 | FCR worsening | period FCR increased at 2 consecutive samples [5.4] | danger |
 | Growth stalled | biomass gain ≤ 0 between samples | danger |
 | Mortality spike | **[default]** at least 5 deaths in the day, and either > 0.5 % of live count or ≥ 3× the trailing 7-day daily average | danger |
