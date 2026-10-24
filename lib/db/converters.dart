@@ -13,12 +13,17 @@ class EnumSetConverter<E extends Enum> extends TypeConverter<Set<E>, String> {
   @override
   Set<E> fromSql(String fromDb) {
     final names = fromDb.split(',').toSet();
-    return {for (final v in values) if (names.contains(v.name)) v};
+    return {
+      for (final v in values)
+        if (names.contains(v.name)) v,
+    };
   }
 
   @override
-  String toSql(Set<E> value) =>
-      [for (final v in values) if (value.contains(v)) v.name].join(',');
+  String toSql(Set<E> value) => [
+    for (final v in values)
+      if (value.contains(v)) v.name,
+  ].join(',');
 }
 
 const warningSignsConverter = EnumSetConverter(WarningSign.values);

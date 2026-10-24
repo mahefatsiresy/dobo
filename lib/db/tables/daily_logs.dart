@@ -19,12 +19,10 @@ class DailyLogs extends Table with SyncedRow, EventRow {
   TextColumn get leftover => textEnum<Leftover>().nullable()();
   BoolColumn get ateFast => boolean().withDefault(const Constant(false))();
   IntColumn get deaths => integer().withDefault(const Constant(0))();
-  TextColumn get deathSigns => text()
-      .map(warningSignsConverter)
-      .withDefault(const Constant(''))();
-  TextColumn get warningSigns => text()
-      .map(warningSignsConverter)
-      .withDefault(const Constant(''))();
+  TextColumn get deathSigns =>
+      text().map(warningSignsConverter).withDefault(const Constant(''))();
+  TextColumn get warningSigns =>
+      text().map(warningSignsConverter).withDefault(const Constant(''))();
   TextColumn get waterColour => textEnum<WaterColour>().nullable()();
   TextColumn get note => text().nullable()();
 }

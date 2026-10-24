@@ -8,6 +8,7 @@ import '../database.dart';
 import '../events.dart';
 import '../ids.dart';
 import '../session.dart';
+import '../sync_columns.dart';
 import '../sync_state.dart';
 import 'errors.dart';
 
@@ -153,7 +154,7 @@ class BatchRepository {
   final Session session;
 
   Stream<List<BatchSummary>> watchAll() =>
-      _watch({db.batches, db.stockings, db.transfers}, () async {
+      _watch({db.batches, ...placementTables(db)}, () async {
         final stockings = await _currentStockings();
         final live = <String, int>{};
         for (final p in await _placements()) {
@@ -187,7 +188,7 @@ class BatchRepository {
       });
 
   Stream<List<Placement>> watchPlacements() =>
-      _watch({db.stockings, db.transfers}, _placements);
+      _watch(placementTables(db), _placements);
 
   /// Current stockings and moves of [batchId], newest first.
   Stream<List<BatchEvent>> watchHistory(String batchId) =>
@@ -441,7 +442,8 @@ class BatchRepository {
   }
 }
 
-/// Fish per (batch, pond) from the current stockings and moves.
+/// Fish per (batch, pond) from the current stockings, moves, samples and
+/// daily-log deaths.
 Future<List<Placement>> currentPlacements(AppDatabase db) async => placements(
   stockings: [
     for (final s in await _currentStockingsIn(db))
@@ -464,10 +466,53 @@ Future<List<Placement>> currentPlacements(AppDatabase db) async => placements(
         date: t.recordedAt,
       ),
   ],
+  samples: [
+    for (final s in await _current(db, db.samples).get())
+      SampleFact(
+        batchId: s.batchId,
+        pondId: s.pondId,
+        avgWeightG: s.totalWeightG / s.fishCount,
+        date: s.recordedAt,
+      ),
+  ],
+  deaths: [
+    for (final l in await (_current(
+      db,
+      db.dailyLogs,
+    )..where((l) => l.deaths.isBiggerThanValue(0))).get())
+      DeathFact(pondId: l.pondId, count: l.deaths, date: l.recordedAt),
+  ],
 );
 
+/// Tables whose changes move fish or their weight.
+Set<TableInfo<Table, Object?>> placementTables(AppDatabase db) => {
+  db.stockings,
+  db.transfers,
+  db.samples,
+  db.dailyLogs,
+};
+
 Future<List<Stocking>> _currentStockingsIn(AppDatabase db) =>
-    (db.select(db.stockings)..where((_) => isCurrentEvent(db.stockings))).get();
+    _current(db, db.stockings).get();
 
 Future<List<Transfer>> _currentTransfersIn(AppDatabase db) =>
-    (db.select(db.transfers)..where((_) => isCurrentEvent(db.transfers))).get();
+    _current(db, db.transfers).get();
+
+/// Current rows of an event table in a fixed order: recorded date, then
+/// device creation time, then id, so same-day facts don't depend on
+/// SQLite's row order.
+SimpleSelectStatement<T, D> _current<T extends HasResultSet, D>(
+  AppDatabase db,
+  ResultSetImplementation<T, D> table,
+) {
+  final info = table as TableInfo<Table, D>;
+  final cols = info as SyncedRow;
+  final event = info as EventRow;
+  return db.select(table)
+    ..where((_) => isCurrentEvent(info))
+    ..orderBy([
+      (_) => OrderingTerm.asc(event.recordedAt),
+      (_) => OrderingTerm.asc(cols.createdAtDevice),
+      (_) => OrderingTerm.asc(cols.id),
+    ]);
+}

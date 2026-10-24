@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../database_provider.dart';
 import '../session.dart';
 import 'batch_repository.dart';
+import 'daily_log_repository.dart';
 import 'person_repository.dart';
 import 'pond_repository.dart';
+import 'reading_repository.dart';
 import 'setup_repository.dart';
 
 final setupRepositoryProvider = Provider<SetupRepository>(
@@ -38,6 +40,20 @@ final pondRepositoryProvider = Provider<PondRepository>(
 
 final batchRepositoryProvider = Provider<BatchRepository>(
   (ref) => BatchRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+  ),
+);
+
+final dailyLogRepositoryProvider = Provider<DailyLogRepository>(
+  (ref) => DailyLogRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+  ),
+);
+
+final readingRepositoryProvider = Provider<ReadingRepository>(
+  (ref) => ReadingRepository(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
   ),
