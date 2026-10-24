@@ -33,14 +33,3 @@ class MemberShell extends StatelessWidget {
     );
   }
 }
-
-/// Stand-in for a tab whose screen comes in a later task.
-class PlaceholderTab extends StatelessWidget {
-  const PlaceholderTab({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) =>
-      Scaffold(appBar: AppBar(title: Text(title)));
-}

@@ -1,0 +1,289 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../db/database.dart';
+import '../../db/repositories/batch_repository.dart';
+import '../../db/repositories/errors.dart';
+import '../../db/repositories/providers.dart';
+import '../../l10n/app_localizations.dart';
+import '../../l10n/formatting.dart';
+import '../../l10n/labels.dart';
+import '../common/estimated.dart';
+import '../common/pond_colour.dart';
+import '../ponds/pond_overview.dart';
+import 'batch_identity_fields.dart';
+import 'batch_providers.dart';
+
+class BatchDetailScreen extends ConsumerWidget {
+  const BatchDetailScreen({super.key, required this.batchId});
+
+  final String batchId;
+
+  Future<void> _delete(
+    BuildContext context,
+    WidgetRef ref,
+    BatchEvent event,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l10n.deleteConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    final repo = ref.read(batchRepositoryProvider);
+    switch (event) {
+      case StockingEvent(:final stocking):
+        await repo.deleteStocking(stocking.id);
+      case TransferEvent(:final transfer):
+        await repo.deleteTransfer(transfer.id);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
+    final theme = Theme.of(context);
+    final summary = ref
+        .watch(batchSummariesProvider)
+        .value
+        ?.where((s) => s.batch.id == batchId)
+        .firstOrNull;
+    final placements = ref.watch(placementsProvider).value;
+    final ponds = ref.watch(allPondsByIdProvider).value;
+    final history = ref.watch(batchHistoryProvider(batchId)).value;
+    if (summary == null ||
+        placements == null ||
+        ponds == null ||
+        history == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final b = summary.batch;
+    final first = summary.firstStocking;
+    final here = [
+      for (final p in placements)
+        if (p.batchId == batchId && (p.live.count > 0 || p.live.inconsistent))
+          p,
+    ];
+    String pondCode(String id) => ponds[id]?.code ?? '?';
+    Widget badge(String pondId) {
+      final pond = ponds[pondId];
+      return pond == null
+          ? const SizedBox(width: 56)
+          : PondBadge(code: pond.code, colour: pond.colour);
+    }
+
+    final identity = [
+      l10n.batchStatus(b.status),
+      if (b.strain != null) b.strain!,
+      if (b.hatchery != null) b.hatchery!,
+      if (b.certificateNo != null) b.certificateNo!,
+      if (b.monosex == true) l10n.monosex,
+      if (b.plannedHarvestOn != null)
+        l10n.plannedHarvestOn(formatDate(b.plannedHarvestOn!)),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(b.code),
+        actions: [
+          IconButton(
+            tooltip: l10n.batchEdit,
+            icon: const Icon(Icons.edit),
+            onPressed: () => context.go('/more/batches/$batchId/edit'),
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          for (final line in identity) Text(line),
+          if (first != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.initialStock(
+                formatCount(first.count, locale),
+                formatGrams(first.avgWeightMg / 1000, locale),
+                formatDate(first.recordedAt),
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+          Text(l10n.fishPerPond, style: theme.textTheme.titleMedium),
+          for (final p in here)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  badge(p.pondId),
+                  const SizedBox(width: 12),
+                  EstimatedLabel(value: formatCount(p.live.count, locale)),
+                  if (p.live.inconsistent) ...[
+                    const SizedBox(width: 12),
+                    Text(
+                      l10n.inconsistent,
+                      style: TextStyle(
+                        color: Colors.red.shade800,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          const SizedBox(height: 16),
+          Text(l10n.history, style: theme.textTheme.titleMedium),
+          for (final event in history)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(switch (event) {
+                      StockingEvent(:final stocking) =>
+                        '${formatDate(stocking.recordedAt)} · '
+                            '${l10n.eventStocking} ${pondCode(stocking.pondId)}',
+                      TransferEvent(:final transfer) =>
+                        '${formatDate(transfer.recordedAt)} · '
+                            '${l10n.eventTransfer} ${pondCode(transfer.fromPondId)}'
+                            ' → ${pondCode(transfer.toPondId)}',
+                    }),
+                    Text(switch (event) {
+                      StockingEvent(:final stocking) =>
+                        '${formatCount(stocking.count, locale)} · '
+                            '${formatGrams(stocking.avgWeightMg / 1000, locale)}',
+                      TransferEvent(:final transfer) => [
+                        formatCount(transfer.count, locale),
+                        if (transfer.avgWeightMg != null)
+                          formatGrams(transfer.avgWeightMg! / 1000, locale),
+                      ].join(' · '),
+                    }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(88, 56),
+                          ),
+                          onPressed: () => context.go(switch (event) {
+                            StockingEvent(:final stocking) =>
+                              '/more/batches/$batchId/stockings/${stocking.id}/edit',
+                            TransferEvent(:final transfer) =>
+                              '/more/batches/$batchId/transfers/${transfer.id}/edit',
+                          }),
+                          child: Text(l10n.correct),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(88, 56),
+                          ),
+                          onPressed: () => _delete(context, ref, event),
+                          child: Text(l10n.delete),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Edits a batch's identity fields.
+class BatchFormScreen extends ConsumerStatefulWidget {
+  const BatchFormScreen({super.key, required this.batchId});
+
+  final String batchId;
+
+  @override
+  ConsumerState<BatchFormScreen> createState() => _BatchFormScreenState();
+}
+
+class _BatchFormScreenState extends ConsumerState<BatchFormScreen> {
+  final _form = GlobalKey<FormState>();
+  final _identity = BatchIdentity();
+  Batch? _batch;
+
+  @override
+  void dispose() {
+    _identity.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    setState(() => _identity.codeError = null);
+    if (!_form.currentState!.validate()) return;
+    try {
+      await ref
+          .read(batchRepositoryProvider)
+          .updateBatch(widget.batchId, _identity.input());
+      if (mounted) context.go('/more/batches/${widget.batchId}');
+    } on DuplicateCodeException {
+      if (mounted) {
+        setState(
+          () =>
+              _identity.codeError = AppLocalizations.of(context).duplicateCode,
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (_batch == null) {
+      final b = ref
+          .watch(batchSummariesProvider)
+          .value
+          ?.where((s) => s.batch.id == widget.batchId)
+          .firstOrNull
+          ?.batch;
+      if (b == null) {
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
+      _batch = b;
+      _identity.load(b);
+    }
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.batchEdit)),
+      body: Form(
+        key: _form,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            ...batchIdentityFields(
+              context,
+              _identity,
+              onChanged: () => setState(() {}),
+            ),
+            const SizedBox(height: 24),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              onPressed: _save,
+              child: Text(l10n.save),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

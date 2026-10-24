@@ -303,4 +303,122 @@ class AppLocalizationsMg extends AppLocalizations {
   String feedingGuide(String protein, String pellet, String meals) {
     return 'Aliment : $protein de protéines, granulé $pellet, $meals repas par jour';
   }
+
+  @override
+  String get stockTitle => 'Empoissonner';
+
+  @override
+  String get batchCode => 'Code du lot';
+
+  @override
+  String get stockDate => 'Date d\'empoissonnement';
+
+  @override
+  String get stockCount => 'Nombre d\'alevins';
+
+  @override
+  String get strain => 'Souche (ex. GIFT)';
+
+  @override
+  String get hatchery => 'Écloserie';
+
+  @override
+  String get certificate => 'N° de certificat sanitaire';
+
+  @override
+  String get monosex => 'Tout mâle (monosexe)';
+
+  @override
+  String get yes => 'Oui';
+
+  @override
+  String get no => 'Non';
+
+  @override
+  String get unknown => 'Ne sait pas';
+
+  @override
+  String get plannedHarvest => 'Récolte prévue (facultatif)';
+
+  @override
+  String get pickPond => 'Étang';
+
+  @override
+  String get warnPondIsolated => 'Étang isolé : à éviter';
+
+  @override
+  String get warnDensityBelow => 'Densité sous le minimum conseillé';
+
+  @override
+  String get warnDensityAbove => 'Densité au-dessus du maximum conseillé';
+
+  @override
+  String get batchesEmpty => 'Aucun lot : empoissonnez un étang depuis sa page';
+
+  @override
+  String get history => 'Historique';
+
+  @override
+  String get eventStocking => 'Empoissonnement';
+
+  @override
+  String get eventTransfer => 'Transfert';
+
+  @override
+  String get correct => 'Corriger';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get deleteConfirm => 'Supprimer cet enregistrement ?';
+
+  @override
+  String get fishPerPond => 'Poissons par étang';
+
+  @override
+  String get batchEdit => 'Modifier le lot';
+
+  @override
+  String get correctionTitle => 'Corriger';
+
+  @override
+  String acclimatised(String min, String max) {
+    return 'Acclimatés $min à $max min';
+  }
+
+  @override
+  String acclimatiseReminder(String min, String max) {
+    return 'Faire flotter le sac fermé $min à $max min sur l\'étang avant de lâcher les alevins.';
+  }
+
+  @override
+  String densityResult(String density, String min, String max) {
+    return 'Densité après empoissonnement : $density /m² (conseillé : $min à $max)';
+  }
+
+  @override
+  String warnPondNotReady(String status) {
+    return 'L\'étang n\'est pas marqué prêt ($status)';
+  }
+
+  @override
+  String warnWeightOutsideRange(String min, String max) {
+    return 'Poids moyen hors des $min à $max g conseillés';
+  }
+
+  @override
+  String stockedOn(String date) {
+    return 'Empoissonné le $date';
+  }
+
+  @override
+  String initialStock(String count, String weight, String date) {
+    return 'Départ : $count alevins de $weight, le $date';
+  }
+
+  @override
+  String plannedHarvestOn(String date) {
+    return 'Récolte prévue le $date';
+  }
 }

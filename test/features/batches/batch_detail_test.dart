@@ -1,0 +1,141 @@
+import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/pond_repository.dart';
+import 'package:dobo/db/repositories/setup_repository.dart';
+import 'package:dobo/domain/types.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../helpers.dart';
+
+void main() {
+  appTest('a stocking corrected below what was moved out is flagged', (
+    tester,
+    db,
+  ) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final ponds = PondRepository(db, session);
+    final batches = BatchRepository(db, session);
+    final e1 = await ponds.create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    final e2 = await ponds.create(
+      const PondInput(
+        code: 'E2',
+        colour: PondColour.green,
+        role: PondRole.growout,
+      ),
+    );
+    final l1 = await batches.stockBatch(
+      StockInput(
+        code: 'L26-01',
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 12500,
+      ),
+    );
+    await batches.transfer(
+      TransferInput(
+        batchId: l1,
+        fromPondId: e1,
+        toPondId: e2,
+        date: DateTime(2026, 3, 10),
+        count: 800,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Lots'));
+    await tapAndSettle(tester, find.text('L26-01'));
+    expect(find.text('Historique'), findsOneWidget);
+
+    await tapAndSettle(tester, find.text('Corriger').last);
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, "Nombre d'alevins"),
+      '500',
+    );
+    await tapAndSettle(tester, find.text('Enregistrer'));
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('À vérifier'), findsOneWidget);
+    expect(find.textContaining('800'), findsWidgets);
+    final stockings = await db.select(db.stockings).get();
+    expect(stockings, hasLength(2));
+  });
+
+  appTest('deleting the stocking empties the batch', (tester, db) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e1 = await PondRepository(db, session).create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    await BatchRepository(db, session).stockBatch(
+      StockInput(
+        code: 'L26-01',
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 12500,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Lots'));
+    await tapAndSettle(tester, find.text('L26-01'));
+    await tapAndSettle(tester, find.text('Supprimer'));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text('Supprimer'),
+      ),
+    );
+    expect(find.text('Corriger'), findsNothing);
+    final rows = await db.select(db.stockings).get();
+    expect(rows.where((r) => r.isTombstone), hasLength(1));
+  });
+
+  appTest('edit a batch\'s identity', (tester, db) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e1 = await PondRepository(db, session).create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    await BatchRepository(db, session).stockBatch(
+      StockInput(
+        code: 'L26-01',
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 12500,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Lots'));
+    await tapAndSettle(tester, find.text('L26-01'));
+    await tapAndSettle(tester, find.byTooltip('Modifier le lot'));
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, 'Souche (ex. GIFT)'),
+      'GIFT',
+    );
+    await tapAndSettle(tester, find.text('Oui'));
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    expect(find.text('GIFT'), findsOneWidget);
+    final b = await db.select(db.batches).getSingle();
+    expect((b.strain, b.monosex, b.code), ('GIFT', true, 'L26-01'));
+  });
+}

@@ -175,5 +175,116 @@
         "type": "String"
       }
     }
+  },
+  "stockTitle": "Empoissonner",
+  "batchCode": "Code du lot",
+  "stockDate": "Date d'empoissonnement",
+  "stockCount": "Nombre d'alevins",
+  "strain": "Souche (ex. GIFT)",
+  "hatchery": "Écloserie",
+  "certificate": "N° de certificat sanitaire",
+  "monosex": "Tout mâle (monosexe)",
+  "yes": "Oui",
+  "no": "Non",
+  "unknown": "Ne sait pas",
+  "plannedHarvest": "Récolte prévue (facultatif)",
+  "pickPond": "Étang",
+  "warnPondIsolated": "Étang isolé : à éviter",
+  "warnDensityBelow": "Densité sous le minimum conseillé",
+  "warnDensityAbove": "Densité au-dessus du maximum conseillé",
+  "batchesEmpty": "Aucun lot : empoissonnez un étang depuis sa page",
+  "history": "Historique",
+  "eventStocking": "Empoissonnement",
+  "eventTransfer": "Transfert",
+  "correct": "Corriger",
+  "delete": "Supprimer",
+  "deleteConfirm": "Supprimer cet enregistrement ?",
+  "fishPerPond": "Poissons par étang",
+  "batchEdit": "Modifier le lot",
+  "correctionTitle": "Corriger",
+  "acclimatised": "Acclimatés {min} à {max} min",
+  "@acclimatised": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "acclimatiseReminder": "Faire flotter le sac fermé {min} à {max} min sur l'étang avant de lâcher les alevins.",
+  "@acclimatiseReminder": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "densityResult": "Densité après empoissonnement : {density} /m² (conseillé : {min} à {max})",
+  "@densityResult": {
+    "placeholders": {
+      "density": {
+        "type": "String"
+      },
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "warnPondNotReady": "L'étang n'est pas marqué prêt ({status})",
+  "@warnPondNotReady": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "warnWeightOutsideRange": "Poids moyen hors des {min} à {max} g conseillés",
+  "@warnWeightOutsideRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "stockedOn": "Empoissonné le {date}",
+  "@stockedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "initialStock": "Départ : {count} alevins de {weight}, le {date}",
+  "@initialStock": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "weight": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "plannedHarvestOn": "Récolte prévue le {date}",
+  "@plannedHarvestOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

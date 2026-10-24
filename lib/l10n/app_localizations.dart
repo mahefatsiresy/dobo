@@ -649,6 +649,210 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aliment : {protein} de protéines, granulé {pellet}, {meals} repas par jour'**
   String feedingGuide(String protein, String pellet, String meals);
+
+  /// No description provided for @stockTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonner'**
+  String get stockTitle;
+
+  /// No description provided for @batchCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code du lot'**
+  String get batchCode;
+
+  /// No description provided for @stockDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date d\'empoissonnement'**
+  String get stockDate;
+
+  /// No description provided for @stockCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre d\'alevins'**
+  String get stockCount;
+
+  /// No description provided for @strain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Souche (ex. GIFT)'**
+  String get strain;
+
+  /// No description provided for @hatchery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écloserie'**
+  String get hatchery;
+
+  /// No description provided for @certificate.
+  ///
+  /// In fr, this message translates to:
+  /// **'N° de certificat sanitaire'**
+  String get certificate;
+
+  /// No description provided for @monosex.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout mâle (monosexe)'**
+  String get monosex;
+
+  /// No description provided for @yes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oui'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non'**
+  String get no;
+
+  /// No description provided for @unknown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne sait pas'**
+  String get unknown;
+
+  /// No description provided for @plannedHarvest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte prévue (facultatif)'**
+  String get plannedHarvest;
+
+  /// No description provided for @pickPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get pickPond;
+
+  /// No description provided for @warnPondIsolated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang isolé : à éviter'**
+  String get warnPondIsolated;
+
+  /// No description provided for @warnDensityBelow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité sous le minimum conseillé'**
+  String get warnDensityBelow;
+
+  /// No description provided for @warnDensityAbove.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité au-dessus du maximum conseillé'**
+  String get warnDensityAbove;
+
+  /// No description provided for @batchesEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun lot : empoissonnez un étang depuis sa page'**
+  String get batchesEmpty;
+
+  /// No description provided for @history.
+  ///
+  /// In fr, this message translates to:
+  /// **'Historique'**
+  String get history;
+
+  /// No description provided for @eventStocking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonnement'**
+  String get eventStocking;
+
+  /// No description provided for @eventTransfer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transfert'**
+  String get eventTransfer;
+
+  /// No description provided for @correct.
+  ///
+  /// In fr, this message translates to:
+  /// **'Corriger'**
+  String get correct;
+
+  /// No description provided for @delete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get delete;
+
+  /// No description provided for @deleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer cet enregistrement ?'**
+  String get deleteConfirm;
+
+  /// No description provided for @fishPerPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons par étang'**
+  String get fishPerPond;
+
+  /// No description provided for @batchEdit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier le lot'**
+  String get batchEdit;
+
+  /// No description provided for @correctionTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Corriger'**
+  String get correctionTitle;
+
+  /// No description provided for @acclimatised.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acclimatés {min} à {max} min'**
+  String acclimatised(String min, String max);
+
+  /// No description provided for @acclimatiseReminder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faire flotter le sac fermé {min} à {max} min sur l\'étang avant de lâcher les alevins.'**
+  String acclimatiseReminder(String min, String max);
+
+  /// No description provided for @densityResult.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité après empoissonnement : {density} /m² (conseillé : {min} à {max})'**
+  String densityResult(String density, String min, String max);
+
+  /// No description provided for @warnPondNotReady.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'étang n\'est pas marqué prêt ({status})'**
+  String warnPondNotReady(String status);
+
+  /// No description provided for @warnWeightOutsideRange.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen hors des {min} à {max} g conseillés'**
+  String warnWeightOutsideRange(String min, String max);
+
+  /// No description provided for @stockedOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonné le {date}'**
+  String stockedOn(String date);
+
+  /// No description provided for @initialStock.
+  ///
+  /// In fr, this message translates to:
+  /// **'Départ : {count} alevins de {weight}, le {date}'**
+  String initialStock(String count, String weight, String date);
+
+  /// No description provided for @plannedHarvestOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte prévue le {date}'**
+  String plannedHarvestOn(String date);
 }
 
 class _AppLocalizationsDelegate

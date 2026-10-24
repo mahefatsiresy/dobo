@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/batches/batch_detail_screen.dart';
+import 'features/batches/batches_screen.dart';
+import 'features/batches/stock_screen.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
@@ -11,7 +14,6 @@ import 'features/ponds/pond_form_screen.dart';
 import 'features/ponds/ponds_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/shell/member_shell.dart';
-import 'l10n/app_localizations.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
@@ -31,6 +33,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       GoRoute(path: '/setup', builder: (context, state) => const SetupScreen()),
+      GoRoute(
+        path: '/stock',
+        builder: (context, state) =>
+            StockScreen(pondId: state.uri.queryParameters['pondId']),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => MemberShell(shell: shell),
         branches: [
@@ -68,9 +75,30 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'batches',
-                    builder: (context, state) => PlaceholderTab(
-                      title: AppLocalizations.of(context).moreBatches,
-                    ),
+                    builder: (context, state) => const BatchesScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) => BatchDetailScreen(
+                          batchId: state.pathParameters['id']!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            builder: (context, state) => BatchFormScreen(
+                              batchId: state.pathParameters['id']!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'stockings/:stockingId/edit',
+                            builder: (context, state) => StockScreen(
+                              batchId: state.pathParameters['id'],
+                              stockingId: state.pathParameters['stockingId'],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'people',

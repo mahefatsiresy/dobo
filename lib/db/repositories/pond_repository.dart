@@ -70,6 +70,11 @@ class PondRepository {
   Stream<List<Pond>> watchActive() =>
       (_active()..orderBy([(p) => OrderingTerm.asc(p.code.lower())])).watch();
 
+  /// The site's ponds, archived ones included.
+  Stream<List<Pond>> watchAll() => (db.select(
+    db.ponds,
+  )..where((p) => p.siteId.equals(session.siteId))).watch();
+
   Future<Pond> get(String id) =>
       (db.select(db.ponds)..where((p) => p.id.equals(id))).getSingle();
 
