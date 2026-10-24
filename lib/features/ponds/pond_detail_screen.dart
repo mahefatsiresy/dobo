@@ -15,6 +15,8 @@ import '../common/notice.dart';
 import '../common/pond_colour.dart';
 import 'pond_figures.dart';
 import 'pond_overview.dart';
+import '../../domain/water.dart';
+import '../readings/reading_providers.dart';
 
 class PondDetailScreen extends ConsumerWidget {
   const PondDetailScreen({super.key, required this.pondId});
@@ -102,6 +104,7 @@ class PondDetailScreen extends ConsumerWidget {
           if (o.status == PondStatus.isolated)
             Notice(l10n.pondIsolatedBanner, danger: true),
           PondFigures(overview: o),
+          _LatestReading(pondId: pond.id),
           for (final b in o.batches) ...[
             const SizedBox(height: 16),
             Card(
@@ -147,12 +150,32 @@ class PondDetailScreen extends ConsumerWidget {
                       icon: const Icon(Icons.swap_horiz),
                       label: Text(l10n.pondTransfer),
                     ),
+                    const SizedBox(height: 8),
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(56),
+                      ),
+                      onPressed: () => context.push(
+                        '/ponds/${pond.id}/sample?batchId=${b.batch.id}',
+                      ),
+                      icon: const Icon(Icons.scale),
+                      label: Text(l10n.sampling),
+                    ),
                   ],
                 ),
               ),
             ),
           ],
           const SizedBox(height: 24),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: () => context.push('/ponds/${pond.id}/water'),
+            icon: const Icon(Icons.water_drop),
+            label: Text(l10n.waterReading),
+          ),
+          const SizedBox(height: 8),
           FilledButton.icon(
             style: wide,
             onPressed: () => context.push('/log/${pond.id}'),
@@ -200,5 +223,50 @@ class PondDetailScreen extends ConsumerWidget {
         : '${n(g.pelletMinMm)}–${n(g.pelletMaxMm!)} mm';
     final meals = '${g.feedingsPerDay.min} à ${g.feedingsPerDay.max}';
     return l10n.feedingGuide(protein, pellet, meals);
+  }
+}
+
+/// The pond's latest water reading, values out of target in red.
+class _LatestReading extends ConsumerWidget {
+  const _LatestReading({required this.pondId});
+
+  final String pondId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final r = ref.watch(latestReadingProvider(pondId)).value;
+    if (r == null) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
+    final issues = {
+      for (final i in waterIssues(
+        temperatureC: r.temperatureC,
+        ph: r.ph,
+        oxygenMgL: r.oxygenMgL,
+        colour: r.colour,
+        config: DomainConfig.defaults,
+      ))
+        i.param,
+    };
+    final red = TextStyle(color: Colors.red.shade800);
+    String n(double v) => formatNumber(v, locale);
+    Widget part(String text, WaterParam param) =>
+        Text(text, style: issues.contains(param) ? red : null);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Wrap(
+        spacing: 12,
+        children: [
+          Text(l10n.lastReading(formatDate(r.recordedAt))),
+          if (r.temperatureC != null)
+            part('${n(r.temperatureC!)} °C', WaterParam.temperature),
+          if (r.ph != null) part('pH ${n(r.ph!)}', WaterParam.ph),
+          if (r.oxygenMgL != null)
+            part('O₂ ${n(r.oxygenMgL!)} mg/L', WaterParam.oxygen),
+          if (r.colour != null)
+            part(l10n.waterColour(r.colour!), WaterParam.colour),
+        ],
+      ),
+    );
   }
 }

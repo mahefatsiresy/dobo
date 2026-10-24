@@ -1195,6 +1195,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'≈ {amount}'**
   String rationHint(String amount);
+
+  /// No description provided for @waterReading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relevé d\'eau'**
+  String get waterReading;
+
+  /// No description provided for @sampling.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échantillonnage'**
+  String get sampling;
+
+  /// No description provided for @temperature.
+  ///
+  /// In fr, this message translates to:
+  /// **'Température'**
+  String get temperature;
+
+  /// No description provided for @ph.
+  ///
+  /// In fr, this message translates to:
+  /// **'pH'**
+  String get ph;
+
+  /// No description provided for @oxygen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oxygène dissous'**
+  String get oxygen;
+
+  /// No description provided for @renewedPct.
+  ///
+  /// In fr, this message translates to:
+  /// **'Eau renouvelée'**
+  String get renewedPct;
+
+  /// No description provided for @readingTime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Heure du relevé'**
+  String get readingTime;
+
+  /// No description provided for @sampleFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons pesés'**
+  String get sampleFish;
+
+  /// No description provided for @sampleWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids total'**
+  String get sampleWeight;
+
+  /// No description provided for @sampleDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de pesée'**
+  String get sampleDate;
+
+  /// No description provided for @renewWater.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couleur : renouveler l\'eau'**
+  String get renewWater;
+
+  /// No description provided for @targetRange.
+  ///
+  /// In fr, this message translates to:
+  /// **'cible {min} à {max} {unit}'**
+  String targetRange(String min, String max, String unit);
+
+  /// No description provided for @targetMin.
+  ///
+  /// In fr, this message translates to:
+  /// **'cible {min} {unit} ou plus'**
+  String targetMin(String min, String unit);
+
+  /// No description provided for @lastReading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernier relevé, le {date} :'**
+  String lastReading(String date);
+
+  /// No description provided for @smallSample.
+  ///
+  /// In fr, this message translates to:
+  /// **'Petit échantillon (moins de {min} poissons)'**
+  String smallSample(String min);
+
+  /// No description provided for @sampleAverage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen : {weight}'**
+  String sampleAverage(String weight);
 }
 
 class _AppLocalizationsDelegate

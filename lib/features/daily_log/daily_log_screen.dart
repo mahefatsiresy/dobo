@@ -53,7 +53,8 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     // The last save's confirmation belongs to the tiles; here it would
     // cover Save.
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar());
+      (_) => ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar(),
+    );
   }
 
   @override

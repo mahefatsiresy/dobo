@@ -28,3 +28,12 @@ DateTime farmDate(DateTime t) {
 /// Madagascar time in UTC.
 DateTime farmDateToUtc(DateTime date) =>
     DateTime.utc(date.year, date.month, date.day, 12).subtract(farmUtcOffset);
+
+/// A time read on the farm clock ([hour]:[minute] on [date]'s day), in UTC.
+DateTime farmTimeToUtc(DateTime date, int hour, int minute) => DateTime.utc(
+  date.year,
+  date.month,
+  date.day,
+  hour,
+  minute,
+).subtract(farmUtcOffset);

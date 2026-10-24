@@ -46,4 +46,15 @@ void main() {
     expect(farmDate(DateTime.utc(2026, 3, 1, 20, 59)), DateTime(2026, 3, 1));
     expect(farmDate(DateTime(2026, 3, 1, 23, 59)), DateTime(2026, 3, 1));
   });
+
+  test('a time read on the farm clock is stored in UTC', () {
+    expect(
+      farmTimeToUtc(DateTime(2026, 3, 2), 6, 30),
+      DateTime.utc(2026, 3, 2, 3, 30),
+    );
+    expect(
+      farmTimeToUtc(DateTime(2026, 3, 2), 1, 0),
+      DateTime.utc(2026, 3, 1, 22),
+    );
+  });
 }

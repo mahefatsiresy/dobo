@@ -11,6 +11,7 @@ class NumberField extends StatelessWidget {
     this.suffix,
     this.validator,
     this.onChanged,
+    this.alert,
   });
 
   final String label;
@@ -19,6 +20,9 @@ class NumberField extends StatelessWidget {
   final String? suffix;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
+
+  /// Shown in red under the field, e.g. a value outside its target.
+  final String? alert;
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
@@ -31,7 +35,13 @@ class NumberField extends StatelessWidget {
           decimal ? RegExp(r'[\d.,\s]') : RegExp(r'[\d\s]'),
         ),
       ],
-      decoration: InputDecoration(labelText: label, suffixText: suffix),
+      decoration: InputDecoration(
+        labelText: label,
+        suffixText: suffix,
+        helperText: alert,
+        helperStyle: TextStyle(color: Colors.red.shade800),
+        helperMaxLines: 2,
+      ),
       validator: validator,
       onChanged: onChanged,
     ),

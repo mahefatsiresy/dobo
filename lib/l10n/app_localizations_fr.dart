@@ -603,4 +603,62 @@ class AppLocalizationsFr extends AppLocalizations {
   String rationHint(String amount) {
     return '≈ $amount';
   }
+
+  @override
+  String get waterReading => 'Relevé d\'eau';
+
+  @override
+  String get sampling => 'Échantillonnage';
+
+  @override
+  String get temperature => 'Température';
+
+  @override
+  String get ph => 'pH';
+
+  @override
+  String get oxygen => 'Oxygène dissous';
+
+  @override
+  String get renewedPct => 'Eau renouvelée';
+
+  @override
+  String get readingTime => 'Heure du relevé';
+
+  @override
+  String get sampleFish => 'Poissons pesés';
+
+  @override
+  String get sampleWeight => 'Poids total';
+
+  @override
+  String get sampleDate => 'Date de pesée';
+
+  @override
+  String get renewWater => 'Couleur : renouveler l\'eau';
+
+  @override
+  String targetRange(String min, String max, String unit) {
+    return 'cible $min à $max $unit';
+  }
+
+  @override
+  String targetMin(String min, String unit) {
+    return 'cible $min $unit ou plus';
+  }
+
+  @override
+  String lastReading(String date) {
+    return 'Dernier relevé, le $date :';
+  }
+
+  @override
+  String smallSample(String min) {
+    return 'Petit échantillon (moins de $min poissons)';
+  }
+
+  @override
+  String sampleAverage(String weight) {
+    return 'Poids moyen : $weight';
+  }
 }

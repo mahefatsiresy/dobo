@@ -393,5 +393,65 @@
         "type": "String"
       }
     }
+  },
+  "waterReading": "Relevé d'eau",
+  "sampling": "Échantillonnage",
+  "temperature": "Température",
+  "ph": "pH",
+  "oxygen": "Oxygène dissous",
+  "renewedPct": "Eau renouvelée",
+  "readingTime": "Heure du relevé",
+  "sampleFish": "Poissons pesés",
+  "sampleWeight": "Poids total",
+  "sampleDate": "Date de pesée",
+  "renewWater": "Couleur : renouveler l'eau",
+  "targetRange": "cible {min} à {max} {unit}",
+  "@targetRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "targetMin": "cible {min} {unit} ou plus",
+  "@targetMin": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "lastReading": "Dernier relevé, le {date} :",
+  "@lastReading": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "smallSample": "Petit échantillon (moins de {min} poissons)",
+  "@smallSample": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "sampleAverage": "Poids moyen : {weight}",
+  "@sampleAverage": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
   }
 }

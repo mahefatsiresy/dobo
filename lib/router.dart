@@ -16,6 +16,8 @@ import 'features/ponds/pond_detail_screen.dart';
 import 'features/ponds/pond_form_screen.dart';
 import 'features/ponds/pond_overview.dart';
 import 'features/ponds/ponds_screen.dart';
+import 'features/readings/sample_screen.dart';
+import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/shell/member_shell.dart';
 
@@ -85,6 +87,19 @@ final routerProvider = Provider<GoRouter>((ref) {
                         path: 'edit',
                         builder: (context, state) =>
                             PondFormScreen(pondId: state.pathParameters['id']),
+                      ),
+                      GoRoute(
+                        path: 'water',
+                        builder: (context, state) => WaterReadingScreen(
+                          pondId: state.pathParameters['id']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'sample',
+                        builder: (context, state) => SampleScreen(
+                          pondId: state.pathParameters['id']!,
+                          batchId: state.uri.queryParameters['batchId']!,
+                        ),
                       ),
                     ],
                   ),

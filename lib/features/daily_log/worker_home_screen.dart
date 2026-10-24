@@ -130,11 +130,7 @@ class _PondTile extends StatelessWidget {
                 right: 8,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.task_alt,
-                    color: Colors.green,
-                    size: 36,
-                  ),
+                  child: Icon(Icons.task_alt, color: Colors.green, size: 36),
                 ),
               ),
           ],
