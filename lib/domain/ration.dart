@@ -19,3 +19,23 @@ int suggestedRationG({
   }
   return (biomassG * min(rate, config.maxRationRate)).round();
 }
+
+/// Today's ration for a pond: [suggestedRationG] for each batch in it,
+/// adjusted by the pond's last leftover report, added up.
+int pondRationG({
+  required List<({int biomassG, Phase phase})> batches,
+  Leftover? lastLeftover,
+  bool lastAteFast = false,
+  required DomainConfig config,
+}) => batches.fold(
+  0,
+  (sum, b) =>
+      sum +
+      suggestedRationG(
+        biomassG: b.biomassG,
+        phase: b.phase,
+        lastLeftover: lastLeftover,
+        lastAteFast: lastAteFast,
+        config: config,
+      ),
+);

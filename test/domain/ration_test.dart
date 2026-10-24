@@ -34,4 +34,26 @@ void main() {
   test('leftovers win over fast eating', () {
     expect(r(Phase.growout, left: Leftover.some, fast: true), 3400);
   });
+
+  test('a pond\'s ration adds up its batches', () {
+    expect(
+      pondRationG(
+        batches: [
+          (biomassG: 100000, phase: Phase.growout),
+          (biomassG: 50000, phase: Phase.fry),
+        ],
+        config: cfg,
+      ),
+      6500,
+    );
+    expect(
+      pondRationG(
+        batches: [(biomassG: 100000, phase: Phase.growout)],
+        lastLeftover: Leftover.lots,
+        config: cfg,
+      ),
+      3400,
+    );
+    expect(pondRationG(batches: const [], config: cfg), 0);
+  });
 }
