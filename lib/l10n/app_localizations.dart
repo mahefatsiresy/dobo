@@ -104,11 +104,47 @@ abstract class AppLocalizations {
   /// **'Dobo'**
   String get appTitle;
 
-  /// Greeting on the home screen
+  /// No description provided for @setupTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Bienvenue'**
-  String get homeWelcome;
+  /// **'Installation'**
+  String get setupTitle;
+
+  /// No description provided for @setupSiteName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom du site'**
+  String get setupSiteName;
+
+  /// No description provided for @setupLocationNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu (facultatif)'**
+  String get setupLocationNote;
+
+  /// No description provided for @setupStart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get setupStart;
+
+  /// No description provided for @tabPonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étangs'**
+  String get tabPonds;
+
+  /// No description provided for @tabMore.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus'**
+  String get tabMore;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Obligatoire'**
+  String get fieldRequired;
 }
 
 class _AppLocalizationsDelegate

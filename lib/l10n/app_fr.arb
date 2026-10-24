@@ -1,7 +1,14 @@
 {
   "@@locale": "fr",
   "appTitle": "Dobo",
-  "@appTitle": {"description": "Application name"},
-  "homeWelcome": "Bienvenue",
-  "@homeWelcome": {"description": "Greeting on the home screen"}
+  "@appTitle": {
+    "description": "Application name"
+  },
+  "setupTitle": "Installation",
+  "setupSiteName": "Nom du site",
+  "setupLocationNote": "Lieu (facultatif)",
+  "setupStart": "Commencer",
+  "tabPonds": "Étangs",
+  "tabMore": "Plus",
+  "fieldRequired": "Obligatoire"
 }

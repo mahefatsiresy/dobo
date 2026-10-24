@@ -1,12 +1,52 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'features/home/home_screen.dart';
+import 'db/repositories/providers.dart';
+import 'features/setup/setup_screen.dart';
+import 'features/shell/member_shell.dart';
+import 'l10n/app_localizations.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final router = GoRouter(routes: [
-    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-  ]);
+  final router = GoRouter(
+    initialLocation: '/',
+    redirect: (context, state) {
+      final session = ref.read(sessionProvider);
+      final at = state.matchedLocation;
+      if (!session.hasValue) return at == '/' ? null : '/';
+      if (session.value == null) return at == '/setup' ? null : '/setup';
+      if (at == '/' || at == '/setup') return '/ponds';
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
+      ),
+      GoRoute(path: '/setup', builder: (context, state) => const SetupScreen()),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => MemberShell(shell: shell),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/ponds',
+              builder: (context, state) => PlaceholderTab(
+                  title: AppLocalizations.of(context).tabPonds),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/more',
+              builder: (context, state) =>
+                  PlaceholderTab(title: AppLocalizations.of(context).tabMore),
+            ),
+          ]),
+        ],
+      ),
+    ],
+  );
+  ref.listen(sessionProvider, (_, _) => router.refresh());
   ref.onDispose(router.dispose);
   return router;
 });

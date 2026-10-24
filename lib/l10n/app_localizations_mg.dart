@@ -13,5 +13,23 @@ class AppLocalizationsMg extends AppLocalizations {
   String get appTitle => 'Dobo';
 
   @override
-  String get homeWelcome => 'Tongasoa';
+  String get setupTitle => 'Installation';
+
+  @override
+  String get setupSiteName => 'Nom du site';
+
+  @override
+  String get setupLocationNote => 'Lieu (facultatif)';
+
+  @override
+  String get setupStart => 'Commencer';
+
+  @override
+  String get tabPonds => 'Étangs';
+
+  @override
+  String get tabMore => 'Plus';
+
+  @override
+  String get fieldRequired => 'Obligatoire';
 }

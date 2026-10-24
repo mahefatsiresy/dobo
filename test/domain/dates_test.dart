@@ -25,4 +25,21 @@ void main() {
     expect(daysBetween(DateTime(2026, 3, 1, 23), afterMidnight), 1);
     expect(daysBetween(afterMidnight, DateTime(2026, 3, 2, 8)), 0);
   });
+
+  test('a date entered by hand is stored as noon in Madagascar', () {
+    expect(farmDateToUtc(DateTime(2026, 3, 1)), DateTime.utc(2026, 3, 1, 9));
+    expect(farmDateToUtc(DateTime(2026, 3, 1, 23, 30)),
+        DateTime.utc(2026, 3, 1, 9));
+    expect(
+      daysBetween(farmDateToUtc(DateTime(2026, 3, 1)),
+          farmDateToUtc(DateTime(2026, 3, 15))),
+      14,
+    );
+  });
+
+  test('farmDate gives the Madagascar calendar day', () {
+    expect(farmDate(DateTime.utc(2026, 3, 1, 21, 30)), DateTime(2026, 3, 2));
+    expect(farmDate(DateTime.utc(2026, 3, 1, 20, 59)), DateTime(2026, 3, 1));
+    expect(farmDate(DateTime(2026, 3, 1, 23, 59)), DateTime(2026, 3, 1));
+  });
 }
