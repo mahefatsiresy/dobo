@@ -37,23 +37,41 @@ void main() {
     }
   });
 
-  // The following template shows how to write tests ensuring your migrations
-  // preserve existing data.
-  // Testing this can be useful for migrations that change existing columns
-  // (e.g. by alterating their type or constraints). Migrations that only add
-  // tables or columns typically don't need these advanced tests. For more
-  // information, see https://drift.simonbinder.eu/migrations/tests/#verifying-data-integrity
-  // TODO: This generated template shows how these tests could be written. Adopt
-  // it to your own needs when testing migrations with data integrity.
-  test('migration from v1 to v2 does not corrupt data', () async {
-    // Add data to insert into the old database, and the expected rows after the
-    // migration.
-    // TODO: Fill these lists
-    final oldSitesData = <v1.SitesData>[];
-    final expectedNewSitesData = <v2.SitesData>[];
+  // v2 only adds tables; this pins that the site and the device id survive.
+  test('migration from v1 to v2 keeps the site and device id', () async {
+    const siteId = '0190d5a0-0000-7000-8000-000000000001';
+    const at = '2026-03-01T09:00:00.000Z';
+    final oldSitesData = <v1.SitesData>[
+      const v1.SitesData(
+        id: siteId,
+        associationId: 'a1',
+        enteredBy: 'u1',
+        createdAtDevice: at,
+        deviceId: 'd1',
+        syncState: 'pending',
+        updatedAtDevice: at,
+        name: 'Ambohidratrimo',
+      ),
+    ];
+    final expectedNewSitesData = <v2.SitesData>[
+      const v2.SitesData(
+        id: siteId,
+        associationId: 'a1',
+        enteredBy: 'u1',
+        createdAtDevice: at,
+        deviceId: 'd1',
+        syncState: 'pending',
+        updatedAtDevice: at,
+        name: 'Ambohidratrimo',
+      ),
+    ];
 
-    final oldLocalMetaData = <v1.LocalMetaData>[];
-    final expectedNewLocalMetaData = <v2.LocalMetaData>[];
+    final oldLocalMetaData = <v1.LocalMetaData>[
+      const v1.LocalMetaData(key: 'device_id', value: 'd1'),
+    ];
+    final expectedNewLocalMetaData = <v2.LocalMetaData>[
+      const v2.LocalMetaData(key: 'device_id', value: 'd1'),
+    ];
 
     await verifier.testWithDataIntegrity(
       oldVersion: 1,
