@@ -919,6 +919,186 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cet étang contient encore des poissons : transférez-les d\'abord.'**
   String get pondNotEmpty;
+
+  /// No description provided for @signNoAppetite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne mange pas'**
+  String get signNoAppetite;
+
+  /// No description provided for @signSurfaceSwimming.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nage en surface'**
+  String get signSurfaceSwimming;
+
+  /// No description provided for @signNearBanks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reste près des bords'**
+  String get signNearBanks;
+
+  /// No description provided for @signErraticOrCircling.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nage en rond'**
+  String get signErraticOrCircling;
+
+  /// No description provided for @signAbnormalColour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couleur anormale'**
+  String get signAbnormalColour;
+
+  /// No description provided for @signSkinLesions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plaies sur la peau'**
+  String get signSkinLesions;
+
+  /// No description provided for @signPaleOrSwollenGills.
+  ///
+  /// In fr, this message translates to:
+  /// **'Branchies pâles ou gonflées'**
+  String get signPaleOrSwollenGills;
+
+  /// No description provided for @signGroupedDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'Morts en groupe'**
+  String get signGroupedDeaths;
+
+  /// No description provided for @signRubbing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se frotte'**
+  String get signRubbing;
+
+  /// No description provided for @signExcessMucus.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de mucus'**
+  String get signExcessMucus;
+
+  /// No description provided for @signWhiteSpots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Points blancs'**
+  String get signWhiteSpots;
+
+  /// No description provided for @signBulgingEyes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Yeux gonflés'**
+  String get signBulgingEyes;
+
+  /// No description provided for @signFinBleeding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nageoires qui saignent'**
+  String get signFinBleeding;
+
+  /// No description provided for @leftoverNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout mangé'**
+  String get leftoverNone;
+
+  /// No description provided for @leftoverSome.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un peu de reste'**
+  String get leftoverSome;
+
+  /// No description provided for @leftoverLots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Beaucoup de reste'**
+  String get leftoverLots;
+
+  /// No description provided for @ateFast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mangé très vite'**
+  String get ateFast;
+
+  /// No description provided for @waterClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Claire'**
+  String get waterClear;
+
+  /// No description provided for @waterLightGreen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vert clair'**
+  String get waterLightGreen;
+
+  /// No description provided for @waterMediumGreen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vert'**
+  String get waterMediumGreen;
+
+  /// No description provided for @waterDarkGreen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vert foncé'**
+  String get waterDarkGreen;
+
+  /// No description provided for @waterBrownTurbid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marron, trouble'**
+  String get waterBrownTurbid;
+
+  /// No description provided for @obsDike.
+  ///
+  /// In fr, this message translates to:
+  /// **'Digues'**
+  String get obsDike;
+
+  /// No description provided for @obsInletScreen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Grilles d\'entrée'**
+  String get obsInletScreen;
+
+  /// No description provided for @obsPredatorNets.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filets anti-prédateurs'**
+  String get obsPredatorNets;
+
+  /// No description provided for @obsFence.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clôture'**
+  String get obsFence;
+
+  /// No description provided for @obsGrass.
+  ///
+  /// In fr, this message translates to:
+  /// **'Herbe'**
+  String get obsGrass;
+
+  /// No description provided for @obsPredators.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prédateurs'**
+  String get obsPredators;
+
+  /// No description provided for @obsTheft.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vol'**
+  String get obsTheft;
+
+  /// No description provided for @obsOther.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autre'**
+  String get obsOther;
 }
 
 class _AppLocalizationsDelegate

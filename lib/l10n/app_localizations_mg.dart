@@ -463,4 +463,94 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String get pondNotEmpty =>
       'Cet étang contient encore des poissons : transférez-les d\'abord.';
+
+  @override
+  String get signNoAppetite => 'Tsy mihinana';
+
+  @override
+  String get signSurfaceSwimming => 'Milomano ambony';
+
+  @override
+  String get signNearBanks => 'Eny amoron-drano';
+
+  @override
+  String get signErraticOrCircling => 'Mihodinkodina';
+
+  @override
+  String get signAbnormalColour => 'Loko hafahafa';
+
+  @override
+  String get signSkinLesions => 'Ratra amin\'ny hoditra';
+
+  @override
+  String get signPaleOrSwollenGills => 'Mivonto na hatsatra ny akorandoha';
+
+  @override
+  String get signGroupedDeaths => 'Maty maromaro';
+
+  @override
+  String get signRubbing => 'Mikosokosoka';
+
+  @override
+  String get signExcessMucus => 'Be lalotra';
+
+  @override
+  String get signWhiteSpots => 'Teboka fotsy';
+
+  @override
+  String get signBulgingEyes => 'Maso mivonto';
+
+  @override
+  String get signFinBleeding => 'Elatra mandeha ra';
+
+  @override
+  String get leftoverNone => 'Lany daholo';
+
+  @override
+  String get leftoverSome => 'Misy sisa kely';
+
+  @override
+  String get leftoverLots => 'Be sisa';
+
+  @override
+  String get ateFast => 'Lany haingana';
+
+  @override
+  String get waterClear => 'Mangarahara';
+
+  @override
+  String get waterLightGreen => 'Maitso mavana';
+
+  @override
+  String get waterMediumGreen => 'Maitso';
+
+  @override
+  String get waterDarkGreen => 'Maitso matroka';
+
+  @override
+  String get waterBrownTurbid => 'Volontany, manjavozavo';
+
+  @override
+  String get obsDike => 'Digues';
+
+  @override
+  String get obsInletScreen => 'Grilles d\'entrée';
+
+  @override
+  String get obsPredatorNets => 'Filets anti-prédateurs';
+
+  @override
+  String get obsFence => 'Clôture';
+
+  @override
+  String get obsGrass => 'Herbe';
+
+  @override
+  String get obsPredators => 'Prédateurs';
+
+  @override
+  String get obsTheft => 'Vol';
+
+  @override
+  String get obsOther => 'Autre';
 }

@@ -93,4 +93,45 @@ extension EnumLabels on AppLocalizations {
       PondDesignWarning.tooShallow => warnTooShallow(n(config.minDepthM)),
     };
   }
+
+  String warningSign(WarningSign s) => switch (s) {
+    WarningSign.noAppetite => signNoAppetite,
+    WarningSign.surfaceSwimming => signSurfaceSwimming,
+    WarningSign.nearBanks => signNearBanks,
+    WarningSign.erraticOrCircling => signErraticOrCircling,
+    WarningSign.abnormalColour => signAbnormalColour,
+    WarningSign.skinLesions => signSkinLesions,
+    WarningSign.paleOrSwollenGills => signPaleOrSwollenGills,
+    WarningSign.groupedDeaths => signGroupedDeaths,
+    WarningSign.rubbing => signRubbing,
+    WarningSign.excessMucus => signExcessMucus,
+    WarningSign.whiteSpots => signWhiteSpots,
+    WarningSign.bulgingEyes => signBulgingEyes,
+    WarningSign.finBleeding => signFinBleeding,
+  };
+
+  String leftover(Leftover l) => switch (l) {
+    Leftover.none => leftoverNone,
+    Leftover.some => leftoverSome,
+    Leftover.lots => leftoverLots,
+  };
+
+  String waterColour(WaterColour c) => switch (c) {
+    WaterColour.clear => waterClear,
+    WaterColour.lightGreen => waterLightGreen,
+    WaterColour.mediumGreen => waterMediumGreen,
+    WaterColour.darkGreen => waterDarkGreen,
+    WaterColour.brownTurbid => waterBrownTurbid,
+  };
+
+  String observationCategory(ObservationCategory c) => switch (c) {
+    ObservationCategory.dike => obsDike,
+    ObservationCategory.inletScreen => obsInletScreen,
+    ObservationCategory.predatorNets => obsPredatorNets,
+    ObservationCategory.fence => obsFence,
+    ObservationCategory.grass => obsGrass,
+    ObservationCategory.predators => obsPredators,
+    ObservationCategory.theft => obsTheft,
+    ObservationCategory.other => obsOther,
+  };
 }

@@ -1,4 +1,27 @@
 {
   "@@locale": "mg",
-  "appTitle": "Dobo"
+  "appTitle": "Dobo",
+  "@@x-review": "Malagasy strings are Claude's unreviewed drafts: review with the family in M8.",
+  "signNoAppetite": "Tsy mihinana",
+  "signSurfaceSwimming": "Milomano ambony",
+  "signNearBanks": "Eny amoron-drano",
+  "signErraticOrCircling": "Mihodinkodina",
+  "signAbnormalColour": "Loko hafahafa",
+  "signSkinLesions": "Ratra amin'ny hoditra",
+  "signPaleOrSwollenGills": "Mivonto na hatsatra ny akorandoha",
+  "signGroupedDeaths": "Maty maromaro",
+  "signRubbing": "Mikosokosoka",
+  "signExcessMucus": "Be lalotra",
+  "signWhiteSpots": "Teboka fotsy",
+  "signBulgingEyes": "Maso mivonto",
+  "signFinBleeding": "Elatra mandeha ra",
+  "leftoverNone": "Lany daholo",
+  "leftoverSome": "Misy sisa kely",
+  "leftoverLots": "Be sisa",
+  "ateFast": "Lany haingana",
+  "waterClear": "Mangarahara",
+  "waterLightGreen": "Maitso mavana",
+  "waterMediumGreen": "Maitso",
+  "waterDarkGreen": "Maitso matroka",
+  "waterBrownTurbid": "Volontany, manjavozavo"
 }

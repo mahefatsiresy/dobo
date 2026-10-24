@@ -463,4 +463,94 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get pondNotEmpty =>
       'Cet étang contient encore des poissons : transférez-les d\'abord.';
+
+  @override
+  String get signNoAppetite => 'Ne mange pas';
+
+  @override
+  String get signSurfaceSwimming => 'Nage en surface';
+
+  @override
+  String get signNearBanks => 'Reste près des bords';
+
+  @override
+  String get signErraticOrCircling => 'Nage en rond';
+
+  @override
+  String get signAbnormalColour => 'Couleur anormale';
+
+  @override
+  String get signSkinLesions => 'Plaies sur la peau';
+
+  @override
+  String get signPaleOrSwollenGills => 'Branchies pâles ou gonflées';
+
+  @override
+  String get signGroupedDeaths => 'Morts en groupe';
+
+  @override
+  String get signRubbing => 'Se frotte';
+
+  @override
+  String get signExcessMucus => 'Trop de mucus';
+
+  @override
+  String get signWhiteSpots => 'Points blancs';
+
+  @override
+  String get signBulgingEyes => 'Yeux gonflés';
+
+  @override
+  String get signFinBleeding => 'Nageoires qui saignent';
+
+  @override
+  String get leftoverNone => 'Tout mangé';
+
+  @override
+  String get leftoverSome => 'Un peu de reste';
+
+  @override
+  String get leftoverLots => 'Beaucoup de reste';
+
+  @override
+  String get ateFast => 'Mangé très vite';
+
+  @override
+  String get waterClear => 'Claire';
+
+  @override
+  String get waterLightGreen => 'Vert clair';
+
+  @override
+  String get waterMediumGreen => 'Vert';
+
+  @override
+  String get waterDarkGreen => 'Vert foncé';
+
+  @override
+  String get waterBrownTurbid => 'Marron, trouble';
+
+  @override
+  String get obsDike => 'Digues';
+
+  @override
+  String get obsInletScreen => 'Grilles d\'entrée';
+
+  @override
+  String get obsPredatorNets => 'Filets anti-prédateurs';
+
+  @override
+  String get obsFence => 'Clôture';
+
+  @override
+  String get obsGrass => 'Herbe';
+
+  @override
+  String get obsPredators => 'Prédateurs';
+
+  @override
+  String get obsTheft => 'Vol';
+
+  @override
+  String get obsOther => 'Autre';
 }
