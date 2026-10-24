@@ -49,9 +49,11 @@ Set<PondDesignWarning> pondDesignWarnings({
       warnings.add(PondDesignWarning.tooElongated);
     }
   }
-  final depths = [?depthInletM, ?depthOutletM];
-  if (depths.isNotEmpty &&
-      depths.reduce((a, b) => a + b) / depths.length < config.minDepthM) {
+  // Inlet and outlet differ by design (0.8–1 m vs 1.2–1.5 m), so one depth
+  // alone says nothing about the mean.
+  if (depthInletM != null &&
+      depthOutletM != null &&
+      (depthInletM + depthOutletM) / 2 < config.minDepthM) {
     warnings.add(PondDesignWarning.tooShallow);
   }
   return warnings;

@@ -42,6 +42,8 @@ void main() {
       PondDesignWarning.notElongated,
     });
     expect(w(dIn: 0.6, dOut: 0.9), {PondDesignWarning.tooShallow});
+    expect(w(dIn: 0.9), isEmpty); // within the 0.8–1 m inlet guidance
+    expect(w(dOut: 0.9), isEmpty); // one depth can't give the mean
     expect(w(), isEmpty);
   });
 }
