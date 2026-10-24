@@ -76,14 +76,20 @@ Future<void> enterAndSettle(
 ) async {
   await _reveal(tester, finder);
   await tester.enterText(finder, text);
+  // Done typing: on a device the keyboard and selection handles would
+  // otherwise cover what comes next.
+  FocusManager.instance.primaryFocus?.unfocus();
   await tester.pumpAndSettle();
 }
 
-/// The innermost vertical list on screen; text fields scroll sideways.
+/// The innermost vertical list on screen. Text fields have their own
+/// scrollables (restoration id "editable"), sideways or, when multi-line,
+/// vertical: they are skipped.
 final _verticalScrollable = find
     .byWidgetPredicate(
       (w) =>
           w is Scrollable &&
+          w.restorationId != 'editable' &&
           axisDirectionToAxis(w.axisDirection) == Axis.vertical,
     )
     .last;
