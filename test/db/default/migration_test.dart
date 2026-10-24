@@ -9,6 +9,7 @@ import 'generated/schema.dart';
 
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -89,6 +90,69 @@ void main() {
           expectedNewLocalMetaData,
           await newDb.select(newDb.localMeta).get(),
         );
+      },
+    );
+  });
+
+  // v3 only adds tables; a pond and its stocking survive unchanged.
+  test('migration from v2 to v3 keeps ponds and stockings', () async {
+    const at = '2026-03-01T09:00:00.000Z';
+    const pondId = '0190d5a0-0000-7000-8000-000000000002';
+    const stockingId = '0190d5a0-0000-7000-8000-000000000003';
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.ponds,
+          const v2.PondsData(
+            id: pondId,
+            associationId: 'a1',
+            enteredBy: 'u1',
+            createdAtDevice: at,
+            deviceId: 'd1',
+            syncState: 'pending',
+            updatedAtDevice: at,
+            siteId: 's1',
+            code: 'E1',
+            colour: 'blue',
+            structure: 'earth',
+            role: 'growout',
+            lengthM: 25,
+            status: 'stocked',
+            archived: 0,
+          ),
+        );
+        batch.insert(
+          oldDb.stockings,
+          const v2.StockingsData(
+            id: stockingId,
+            associationId: 'a1',
+            enteredBy: 'u1',
+            createdAtDevice: at,
+            deviceId: 'd1',
+            syncState: 'pending',
+            recordedAt: at,
+            isTombstone: 0,
+            batchId: 'b1',
+            pondId: pondId,
+            count: 1000,
+            avgWeightMg: 12500,
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final pond = await newDb.select(newDb.ponds).getSingle();
+        expect((pond.id, pond.code, pond.lengthM, pond.status),
+            (pondId, 'E1', 25.0, 'stocked'));
+        final stocking = await newDb.select(newDb.stockings).getSingle();
+        expect((stocking.id, stocking.count, stocking.avgWeightMg),
+            (stockingId, 1000, 12500));
+        expect(await newDb.select(newDb.dailyLogs).get(), isEmpty);
       },
     );
   });

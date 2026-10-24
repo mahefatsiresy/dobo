@@ -66,3 +66,27 @@ enum BatchStatus { quarantine, active, harvesting, closed }
 /// Pond tags for worker screens and paper sheets: colours that stay distinct
 /// on paper and in sunlight.
 enum PondColour { blue, green, yellow, orange, red, purple, brown, black }
+
+/// What a visit's condition check or observation is about (SPEC F5).
+enum ObservationCategory {
+  dike,
+  inletScreen,
+  predatorNets,
+  fence,
+  grass,
+  predators,
+  theft,
+  other,
+}
+
+enum HealthAction { isolated, technicianCalled, released }
+
+/// Signs seen on dead fish themselves (DOMAIN §Health, mortality handling).
+const deathSigns = {
+  WarningSign.skinLesions,
+  WarningSign.paleOrSwollenGills,
+  WarningSign.whiteSpots,
+  WarningSign.bulgingEyes,
+  WarningSign.finBleeding,
+  WarningSign.abnormalColour,
+};

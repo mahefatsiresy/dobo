@@ -6405,6 +6405,7668 @@ class TransfersCompanion extends UpdateCompanion<Transfer> {
   }
 }
 
+class $DailyLogsTable extends DailyLogs
+    with TableInfo<$DailyLogsTable, DailyLog> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyLogsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($DailyLogsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _feedGivenGMeta = const VerificationMeta(
+    'feedGivenG',
+  );
+  @override
+  late final GeneratedColumn<int> feedGivenG = GeneratedColumn<int>(
+    'feed_given_g',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _feedLotIdMeta = const VerificationMeta(
+    'feedLotId',
+  );
+  @override
+  late final GeneratedColumn<String> feedLotId = GeneratedColumn<String>(
+    'feed_lot_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _feedingsMeta = const VerificationMeta(
+    'feedings',
+  );
+  @override
+  late final GeneratedColumn<int> feedings = GeneratedColumn<int>(
+    'feedings',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Leftover?, String> leftover =
+      GeneratedColumn<String>(
+        'leftover',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<Leftover?>($DailyLogsTable.$converterleftovern);
+  static const VerificationMeta _ateFastMeta = const VerificationMeta(
+    'ateFast',
+  );
+  @override
+  late final GeneratedColumn<bool> ateFast = GeneratedColumn<bool>(
+    'ate_fast',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("ate_fast" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _deathsMeta = const VerificationMeta('deaths');
+  @override
+  late final GeneratedColumn<int> deaths = GeneratedColumn<int>(
+    'deaths',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Set<WarningSign>, String>
+  deathSigns = GeneratedColumn<String>(
+    'death_signs',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  ).withConverter<Set<WarningSign>>($DailyLogsTable.$converterdeathSigns);
+  @override
+  late final GeneratedColumnWithTypeConverter<Set<WarningSign>, String>
+  warningSigns = GeneratedColumn<String>(
+    'warning_signs',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  ).withConverter<Set<WarningSign>>($DailyLogsTable.$converterwarningSigns);
+  @override
+  late final GeneratedColumnWithTypeConverter<WaterColour?, String>
+  waterColour = GeneratedColumn<String>(
+    'water_colour',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<WaterColour?>($DailyLogsTable.$converterwaterColourn);
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    feedGivenG,
+    feedLotId,
+    feedings,
+    leftover,
+    ateFast,
+    deaths,
+    deathSigns,
+    warningSigns,
+    waterColour,
+    note,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_logs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyLog> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pondIdMeta);
+    }
+    if (data.containsKey('feed_given_g')) {
+      context.handle(
+        _feedGivenGMeta,
+        feedGivenG.isAcceptableOrUnknown(
+          data['feed_given_g']!,
+          _feedGivenGMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_feedGivenGMeta);
+    }
+    if (data.containsKey('feed_lot_id')) {
+      context.handle(
+        _feedLotIdMeta,
+        feedLotId.isAcceptableOrUnknown(data['feed_lot_id']!, _feedLotIdMeta),
+      );
+    }
+    if (data.containsKey('feedings')) {
+      context.handle(
+        _feedingsMeta,
+        feedings.isAcceptableOrUnknown(data['feedings']!, _feedingsMeta),
+      );
+    }
+    if (data.containsKey('ate_fast')) {
+      context.handle(
+        _ateFastMeta,
+        ateFast.isAcceptableOrUnknown(data['ate_fast']!, _ateFastMeta),
+      );
+    }
+    if (data.containsKey('deaths')) {
+      context.handle(
+        _deathsMeta,
+        deaths.isAcceptableOrUnknown(data['deaths']!, _deathsMeta),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DailyLog map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyLog(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $DailyLogsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      )!,
+      feedGivenG: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}feed_given_g'],
+      )!,
+      feedLotId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feed_lot_id'],
+      ),
+      feedings: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}feedings'],
+      ),
+      leftover: $DailyLogsTable.$converterleftovern.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}leftover'],
+        ),
+      ),
+      ateFast: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}ate_fast'],
+      )!,
+      deaths: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}deaths'],
+      )!,
+      deathSigns: $DailyLogsTable.$converterdeathSigns.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}death_signs'],
+        )!,
+      ),
+      warningSigns: $DailyLogsTable.$converterwarningSigns.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}warning_signs'],
+        )!,
+      ),
+      waterColour: $DailyLogsTable.$converterwaterColourn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}water_colour'],
+        ),
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+    );
+  }
+
+  @override
+  $DailyLogsTable createAlias(String alias) {
+    return $DailyLogsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static JsonTypeConverter2<Leftover, String, String> $converterleftover =
+      const EnumNameConverter<Leftover>(Leftover.values);
+  static JsonTypeConverter2<Leftover?, String?, String?> $converterleftovern =
+      JsonTypeConverter2.asNullable($converterleftover);
+  static TypeConverter<Set<WarningSign>, String> $converterdeathSigns =
+      warningSignsConverter;
+  static TypeConverter<Set<WarningSign>, String> $converterwarningSigns =
+      warningSignsConverter;
+  static JsonTypeConverter2<WaterColour, String, String> $converterwaterColour =
+      const EnumNameConverter<WaterColour>(WaterColour.values);
+  static JsonTypeConverter2<WaterColour?, String?, String?>
+  $converterwaterColourn = JsonTypeConverter2.asNullable($converterwaterColour);
+}
+
+class DailyLog extends DataClass implements Insertable<DailyLog> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String pondId;
+  final int feedGivenG;
+
+  /// Feed lot drawn from (M7).
+  final String? feedLotId;
+  final int? feedings;
+  final Leftover? leftover;
+  final bool ateFast;
+  final int deaths;
+  final Set<WarningSign> deathSigns;
+  final Set<WarningSign> warningSigns;
+  final WaterColour? waterColour;
+  final String? note;
+  const DailyLog({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.pondId,
+    required this.feedGivenG,
+    this.feedLotId,
+    this.feedings,
+    this.leftover,
+    required this.ateFast,
+    required this.deaths,
+    required this.deathSigns,
+    required this.warningSigns,
+    this.waterColour,
+    this.note,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $DailyLogsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['pond_id'] = Variable<String>(pondId);
+    map['feed_given_g'] = Variable<int>(feedGivenG);
+    if (!nullToAbsent || feedLotId != null) {
+      map['feed_lot_id'] = Variable<String>(feedLotId);
+    }
+    if (!nullToAbsent || feedings != null) {
+      map['feedings'] = Variable<int>(feedings);
+    }
+    if (!nullToAbsent || leftover != null) {
+      map['leftover'] = Variable<String>(
+        $DailyLogsTable.$converterleftovern.toSql(leftover),
+      );
+    }
+    map['ate_fast'] = Variable<bool>(ateFast);
+    map['deaths'] = Variable<int>(deaths);
+    {
+      map['death_signs'] = Variable<String>(
+        $DailyLogsTable.$converterdeathSigns.toSql(deathSigns),
+      );
+    }
+    {
+      map['warning_signs'] = Variable<String>(
+        $DailyLogsTable.$converterwarningSigns.toSql(warningSigns),
+      );
+    }
+    if (!nullToAbsent || waterColour != null) {
+      map['water_colour'] = Variable<String>(
+        $DailyLogsTable.$converterwaterColourn.toSql(waterColour),
+      );
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    return map;
+  }
+
+  DailyLogsCompanion toCompanion(bool nullToAbsent) {
+    return DailyLogsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      pondId: Value(pondId),
+      feedGivenG: Value(feedGivenG),
+      feedLotId: feedLotId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feedLotId),
+      feedings: feedings == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feedings),
+      leftover: leftover == null && nullToAbsent
+          ? const Value.absent()
+          : Value(leftover),
+      ateFast: Value(ateFast),
+      deaths: Value(deaths),
+      deathSigns: Value(deathSigns),
+      warningSigns: Value(warningSigns),
+      waterColour: waterColour == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waterColour),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+    );
+  }
+
+  factory DailyLog.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyLog(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $DailyLogsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      pondId: serializer.fromJson<String>(json['pondId']),
+      feedGivenG: serializer.fromJson<int>(json['feedGivenG']),
+      feedLotId: serializer.fromJson<String?>(json['feedLotId']),
+      feedings: serializer.fromJson<int?>(json['feedings']),
+      leftover: $DailyLogsTable.$converterleftovern.fromJson(
+        serializer.fromJson<String?>(json['leftover']),
+      ),
+      ateFast: serializer.fromJson<bool>(json['ateFast']),
+      deaths: serializer.fromJson<int>(json['deaths']),
+      deathSigns: serializer.fromJson<Set<WarningSign>>(json['deathSigns']),
+      warningSigns: serializer.fromJson<Set<WarningSign>>(json['warningSigns']),
+      waterColour: $DailyLogsTable.$converterwaterColourn.fromJson(
+        serializer.fromJson<String?>(json['waterColour']),
+      ),
+      note: serializer.fromJson<String?>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $DailyLogsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'pondId': serializer.toJson<String>(pondId),
+      'feedGivenG': serializer.toJson<int>(feedGivenG),
+      'feedLotId': serializer.toJson<String?>(feedLotId),
+      'feedings': serializer.toJson<int?>(feedings),
+      'leftover': serializer.toJson<String?>(
+        $DailyLogsTable.$converterleftovern.toJson(leftover),
+      ),
+      'ateFast': serializer.toJson<bool>(ateFast),
+      'deaths': serializer.toJson<int>(deaths),
+      'deathSigns': serializer.toJson<Set<WarningSign>>(deathSigns),
+      'warningSigns': serializer.toJson<Set<WarningSign>>(warningSigns),
+      'waterColour': serializer.toJson<String?>(
+        $DailyLogsTable.$converterwaterColourn.toJson(waterColour),
+      ),
+      'note': serializer.toJson<String?>(note),
+    };
+  }
+
+  DailyLog copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? pondId,
+    int? feedGivenG,
+    Value<String?> feedLotId = const Value.absent(),
+    Value<int?> feedings = const Value.absent(),
+    Value<Leftover?> leftover = const Value.absent(),
+    bool? ateFast,
+    int? deaths,
+    Set<WarningSign>? deathSigns,
+    Set<WarningSign>? warningSigns,
+    Value<WaterColour?> waterColour = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+  }) => DailyLog(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    pondId: pondId ?? this.pondId,
+    feedGivenG: feedGivenG ?? this.feedGivenG,
+    feedLotId: feedLotId.present ? feedLotId.value : this.feedLotId,
+    feedings: feedings.present ? feedings.value : this.feedings,
+    leftover: leftover.present ? leftover.value : this.leftover,
+    ateFast: ateFast ?? this.ateFast,
+    deaths: deaths ?? this.deaths,
+    deathSigns: deathSigns ?? this.deathSigns,
+    warningSigns: warningSigns ?? this.warningSigns,
+    waterColour: waterColour.present ? waterColour.value : this.waterColour,
+    note: note.present ? note.value : this.note,
+  );
+  DailyLog copyWithCompanion(DailyLogsCompanion data) {
+    return DailyLog(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      feedGivenG: data.feedGivenG.present
+          ? data.feedGivenG.value
+          : this.feedGivenG,
+      feedLotId: data.feedLotId.present ? data.feedLotId.value : this.feedLotId,
+      feedings: data.feedings.present ? data.feedings.value : this.feedings,
+      leftover: data.leftover.present ? data.leftover.value : this.leftover,
+      ateFast: data.ateFast.present ? data.ateFast.value : this.ateFast,
+      deaths: data.deaths.present ? data.deaths.value : this.deaths,
+      deathSigns: data.deathSigns.present
+          ? data.deathSigns.value
+          : this.deathSigns,
+      warningSigns: data.warningSigns.present
+          ? data.warningSigns.value
+          : this.warningSigns,
+      waterColour: data.waterColour.present
+          ? data.waterColour.value
+          : this.waterColour,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyLog(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('feedGivenG: $feedGivenG, ')
+          ..write('feedLotId: $feedLotId, ')
+          ..write('feedings: $feedings, ')
+          ..write('leftover: $leftover, ')
+          ..write('ateFast: $ateFast, ')
+          ..write('deaths: $deaths, ')
+          ..write('deathSigns: $deathSigns, ')
+          ..write('warningSigns: $warningSigns, ')
+          ..write('waterColour: $waterColour, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    feedGivenG,
+    feedLotId,
+    feedings,
+    leftover,
+    ateFast,
+    deaths,
+    deathSigns,
+    warningSigns,
+    waterColour,
+    note,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyLog &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.pondId == this.pondId &&
+          other.feedGivenG == this.feedGivenG &&
+          other.feedLotId == this.feedLotId &&
+          other.feedings == this.feedings &&
+          other.leftover == this.leftover &&
+          other.ateFast == this.ateFast &&
+          other.deaths == this.deaths &&
+          other.deathSigns == this.deathSigns &&
+          other.warningSigns == this.warningSigns &&
+          other.waterColour == this.waterColour &&
+          other.note == this.note);
+}
+
+class DailyLogsCompanion extends UpdateCompanion<DailyLog> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> pondId;
+  final Value<int> feedGivenG;
+  final Value<String?> feedLotId;
+  final Value<int?> feedings;
+  final Value<Leftover?> leftover;
+  final Value<bool> ateFast;
+  final Value<int> deaths;
+  final Value<Set<WarningSign>> deathSigns;
+  final Value<Set<WarningSign>> warningSigns;
+  final Value<WaterColour?> waterColour;
+  final Value<String?> note;
+  final Value<int> rowid;
+  const DailyLogsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.feedGivenG = const Value.absent(),
+    this.feedLotId = const Value.absent(),
+    this.feedings = const Value.absent(),
+    this.leftover = const Value.absent(),
+    this.ateFast = const Value.absent(),
+    this.deaths = const Value.absent(),
+    this.deathSigns = const Value.absent(),
+    this.warningSigns = const Value.absent(),
+    this.waterColour = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyLogsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String pondId,
+    required int feedGivenG,
+    this.feedLotId = const Value.absent(),
+    this.feedings = const Value.absent(),
+    this.leftover = const Value.absent(),
+    this.ateFast = const Value.absent(),
+    this.deaths = const Value.absent(),
+    this.deathSigns = const Value.absent(),
+    this.warningSigns = const Value.absent(),
+    this.waterColour = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       pondId = Value(pondId),
+       feedGivenG = Value(feedGivenG);
+  static Insertable<DailyLog> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? pondId,
+    Expression<int>? feedGivenG,
+    Expression<String>? feedLotId,
+    Expression<int>? feedings,
+    Expression<String>? leftover,
+    Expression<bool>? ateFast,
+    Expression<int>? deaths,
+    Expression<String>? deathSigns,
+    Expression<String>? warningSigns,
+    Expression<String>? waterColour,
+    Expression<String>? note,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (pondId != null) 'pond_id': pondId,
+      if (feedGivenG != null) 'feed_given_g': feedGivenG,
+      if (feedLotId != null) 'feed_lot_id': feedLotId,
+      if (feedings != null) 'feedings': feedings,
+      if (leftover != null) 'leftover': leftover,
+      if (ateFast != null) 'ate_fast': ateFast,
+      if (deaths != null) 'deaths': deaths,
+      if (deathSigns != null) 'death_signs': deathSigns,
+      if (warningSigns != null) 'warning_signs': warningSigns,
+      if (waterColour != null) 'water_colour': waterColour,
+      if (note != null) 'note': note,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyLogsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? pondId,
+    Value<int>? feedGivenG,
+    Value<String?>? feedLotId,
+    Value<int?>? feedings,
+    Value<Leftover?>? leftover,
+    Value<bool>? ateFast,
+    Value<int>? deaths,
+    Value<Set<WarningSign>>? deathSigns,
+    Value<Set<WarningSign>>? warningSigns,
+    Value<WaterColour?>? waterColour,
+    Value<String?>? note,
+    Value<int>? rowid,
+  }) {
+    return DailyLogsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      pondId: pondId ?? this.pondId,
+      feedGivenG: feedGivenG ?? this.feedGivenG,
+      feedLotId: feedLotId ?? this.feedLotId,
+      feedings: feedings ?? this.feedings,
+      leftover: leftover ?? this.leftover,
+      ateFast: ateFast ?? this.ateFast,
+      deaths: deaths ?? this.deaths,
+      deathSigns: deathSigns ?? this.deathSigns,
+      warningSigns: warningSigns ?? this.warningSigns,
+      waterColour: waterColour ?? this.waterColour,
+      note: note ?? this.note,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $DailyLogsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (feedGivenG.present) {
+      map['feed_given_g'] = Variable<int>(feedGivenG.value);
+    }
+    if (feedLotId.present) {
+      map['feed_lot_id'] = Variable<String>(feedLotId.value);
+    }
+    if (feedings.present) {
+      map['feedings'] = Variable<int>(feedings.value);
+    }
+    if (leftover.present) {
+      map['leftover'] = Variable<String>(
+        $DailyLogsTable.$converterleftovern.toSql(leftover.value),
+      );
+    }
+    if (ateFast.present) {
+      map['ate_fast'] = Variable<bool>(ateFast.value);
+    }
+    if (deaths.present) {
+      map['deaths'] = Variable<int>(deaths.value);
+    }
+    if (deathSigns.present) {
+      map['death_signs'] = Variable<String>(
+        $DailyLogsTable.$converterdeathSigns.toSql(deathSigns.value),
+      );
+    }
+    if (warningSigns.present) {
+      map['warning_signs'] = Variable<String>(
+        $DailyLogsTable.$converterwarningSigns.toSql(warningSigns.value),
+      );
+    }
+    if (waterColour.present) {
+      map['water_colour'] = Variable<String>(
+        $DailyLogsTable.$converterwaterColourn.toSql(waterColour.value),
+      );
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyLogsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('feedGivenG: $feedGivenG, ')
+          ..write('feedLotId: $feedLotId, ')
+          ..write('feedings: $feedings, ')
+          ..write('leftover: $leftover, ')
+          ..write('ateFast: $ateFast, ')
+          ..write('deaths: $deaths, ')
+          ..write('deathSigns: $deathSigns, ')
+          ..write('warningSigns: $warningSigns, ')
+          ..write('waterColour: $waterColour, ')
+          ..write('note: $note, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WaterReadingsTable extends WaterReadings
+    with TableInfo<$WaterReadingsTable, WaterReading> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WaterReadingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($WaterReadingsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _temperatureCMeta = const VerificationMeta(
+    'temperatureC',
+  );
+  @override
+  late final GeneratedColumn<double> temperatureC = GeneratedColumn<double>(
+    'temperature_c',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _phMeta = const VerificationMeta('ph');
+  @override
+  late final GeneratedColumn<double> ph = GeneratedColumn<double>(
+    'ph',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _oxygenMgLMeta = const VerificationMeta(
+    'oxygenMgL',
+  );
+  @override
+  late final GeneratedColumn<double> oxygenMgL = GeneratedColumn<double>(
+    'oxygen_mg_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<WaterColour?, String> colour =
+      GeneratedColumn<String>(
+        'colour',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<WaterColour?>($WaterReadingsTable.$convertercolourn);
+  static const VerificationMeta _renewedPctMeta = const VerificationMeta(
+    'renewedPct',
+  );
+  @override
+  late final GeneratedColumn<int> renewedPct = GeneratedColumn<int>(
+    'renewed_pct',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    temperatureC,
+    ph,
+    oxygenMgL,
+    colour,
+    renewedPct,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'water_readings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WaterReading> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pondIdMeta);
+    }
+    if (data.containsKey('temperature_c')) {
+      context.handle(
+        _temperatureCMeta,
+        temperatureC.isAcceptableOrUnknown(
+          data['temperature_c']!,
+          _temperatureCMeta,
+        ),
+      );
+    }
+    if (data.containsKey('ph')) {
+      context.handle(_phMeta, ph.isAcceptableOrUnknown(data['ph']!, _phMeta));
+    }
+    if (data.containsKey('oxygen_mg_l')) {
+      context.handle(
+        _oxygenMgLMeta,
+        oxygenMgL.isAcceptableOrUnknown(data['oxygen_mg_l']!, _oxygenMgLMeta),
+      );
+    }
+    if (data.containsKey('renewed_pct')) {
+      context.handle(
+        _renewedPctMeta,
+        renewedPct.isAcceptableOrUnknown(data['renewed_pct']!, _renewedPctMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  WaterReading map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WaterReading(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $WaterReadingsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      )!,
+      temperatureC: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}temperature_c'],
+      ),
+      ph: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}ph'],
+      ),
+      oxygenMgL: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}oxygen_mg_l'],
+      ),
+      colour: $WaterReadingsTable.$convertercolourn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}colour'],
+        ),
+      ),
+      renewedPct: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}renewed_pct'],
+      ),
+    );
+  }
+
+  @override
+  $WaterReadingsTable createAlias(String alias) {
+    return $WaterReadingsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static JsonTypeConverter2<WaterColour, String, String> $convertercolour =
+      const EnumNameConverter<WaterColour>(WaterColour.values);
+  static JsonTypeConverter2<WaterColour?, String?, String?> $convertercolourn =
+      JsonTypeConverter2.asNullable($convertercolour);
+}
+
+class WaterReading extends DataClass implements Insertable<WaterReading> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String pondId;
+  final double? temperatureC;
+  final double? ph;
+  final double? oxygenMgL;
+  final WaterColour? colour;
+  final int? renewedPct;
+  const WaterReading({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.pondId,
+    this.temperatureC,
+    this.ph,
+    this.oxygenMgL,
+    this.colour,
+    this.renewedPct,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $WaterReadingsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['pond_id'] = Variable<String>(pondId);
+    if (!nullToAbsent || temperatureC != null) {
+      map['temperature_c'] = Variable<double>(temperatureC);
+    }
+    if (!nullToAbsent || ph != null) {
+      map['ph'] = Variable<double>(ph);
+    }
+    if (!nullToAbsent || oxygenMgL != null) {
+      map['oxygen_mg_l'] = Variable<double>(oxygenMgL);
+    }
+    if (!nullToAbsent || colour != null) {
+      map['colour'] = Variable<String>(
+        $WaterReadingsTable.$convertercolourn.toSql(colour),
+      );
+    }
+    if (!nullToAbsent || renewedPct != null) {
+      map['renewed_pct'] = Variable<int>(renewedPct);
+    }
+    return map;
+  }
+
+  WaterReadingsCompanion toCompanion(bool nullToAbsent) {
+    return WaterReadingsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      pondId: Value(pondId),
+      temperatureC: temperatureC == null && nullToAbsent
+          ? const Value.absent()
+          : Value(temperatureC),
+      ph: ph == null && nullToAbsent ? const Value.absent() : Value(ph),
+      oxygenMgL: oxygenMgL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oxygenMgL),
+      colour: colour == null && nullToAbsent
+          ? const Value.absent()
+          : Value(colour),
+      renewedPct: renewedPct == null && nullToAbsent
+          ? const Value.absent()
+          : Value(renewedPct),
+    );
+  }
+
+  factory WaterReading.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WaterReading(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $WaterReadingsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      pondId: serializer.fromJson<String>(json['pondId']),
+      temperatureC: serializer.fromJson<double?>(json['temperatureC']),
+      ph: serializer.fromJson<double?>(json['ph']),
+      oxygenMgL: serializer.fromJson<double?>(json['oxygenMgL']),
+      colour: $WaterReadingsTable.$convertercolourn.fromJson(
+        serializer.fromJson<String?>(json['colour']),
+      ),
+      renewedPct: serializer.fromJson<int?>(json['renewedPct']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $WaterReadingsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'pondId': serializer.toJson<String>(pondId),
+      'temperatureC': serializer.toJson<double?>(temperatureC),
+      'ph': serializer.toJson<double?>(ph),
+      'oxygenMgL': serializer.toJson<double?>(oxygenMgL),
+      'colour': serializer.toJson<String?>(
+        $WaterReadingsTable.$convertercolourn.toJson(colour),
+      ),
+      'renewedPct': serializer.toJson<int?>(renewedPct),
+    };
+  }
+
+  WaterReading copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? pondId,
+    Value<double?> temperatureC = const Value.absent(),
+    Value<double?> ph = const Value.absent(),
+    Value<double?> oxygenMgL = const Value.absent(),
+    Value<WaterColour?> colour = const Value.absent(),
+    Value<int?> renewedPct = const Value.absent(),
+  }) => WaterReading(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    pondId: pondId ?? this.pondId,
+    temperatureC: temperatureC.present ? temperatureC.value : this.temperatureC,
+    ph: ph.present ? ph.value : this.ph,
+    oxygenMgL: oxygenMgL.present ? oxygenMgL.value : this.oxygenMgL,
+    colour: colour.present ? colour.value : this.colour,
+    renewedPct: renewedPct.present ? renewedPct.value : this.renewedPct,
+  );
+  WaterReading copyWithCompanion(WaterReadingsCompanion data) {
+    return WaterReading(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      temperatureC: data.temperatureC.present
+          ? data.temperatureC.value
+          : this.temperatureC,
+      ph: data.ph.present ? data.ph.value : this.ph,
+      oxygenMgL: data.oxygenMgL.present ? data.oxygenMgL.value : this.oxygenMgL,
+      colour: data.colour.present ? data.colour.value : this.colour,
+      renewedPct: data.renewedPct.present
+          ? data.renewedPct.value
+          : this.renewedPct,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WaterReading(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('temperatureC: $temperatureC, ')
+          ..write('ph: $ph, ')
+          ..write('oxygenMgL: $oxygenMgL, ')
+          ..write('colour: $colour, ')
+          ..write('renewedPct: $renewedPct')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    temperatureC,
+    ph,
+    oxygenMgL,
+    colour,
+    renewedPct,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WaterReading &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.pondId == this.pondId &&
+          other.temperatureC == this.temperatureC &&
+          other.ph == this.ph &&
+          other.oxygenMgL == this.oxygenMgL &&
+          other.colour == this.colour &&
+          other.renewedPct == this.renewedPct);
+}
+
+class WaterReadingsCompanion extends UpdateCompanion<WaterReading> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> pondId;
+  final Value<double?> temperatureC;
+  final Value<double?> ph;
+  final Value<double?> oxygenMgL;
+  final Value<WaterColour?> colour;
+  final Value<int?> renewedPct;
+  final Value<int> rowid;
+  const WaterReadingsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.temperatureC = const Value.absent(),
+    this.ph = const Value.absent(),
+    this.oxygenMgL = const Value.absent(),
+    this.colour = const Value.absent(),
+    this.renewedPct = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WaterReadingsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String pondId,
+    this.temperatureC = const Value.absent(),
+    this.ph = const Value.absent(),
+    this.oxygenMgL = const Value.absent(),
+    this.colour = const Value.absent(),
+    this.renewedPct = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       pondId = Value(pondId);
+  static Insertable<WaterReading> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? pondId,
+    Expression<double>? temperatureC,
+    Expression<double>? ph,
+    Expression<double>? oxygenMgL,
+    Expression<String>? colour,
+    Expression<int>? renewedPct,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (pondId != null) 'pond_id': pondId,
+      if (temperatureC != null) 'temperature_c': temperatureC,
+      if (ph != null) 'ph': ph,
+      if (oxygenMgL != null) 'oxygen_mg_l': oxygenMgL,
+      if (colour != null) 'colour': colour,
+      if (renewedPct != null) 'renewed_pct': renewedPct,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WaterReadingsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? pondId,
+    Value<double?>? temperatureC,
+    Value<double?>? ph,
+    Value<double?>? oxygenMgL,
+    Value<WaterColour?>? colour,
+    Value<int?>? renewedPct,
+    Value<int>? rowid,
+  }) {
+    return WaterReadingsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      pondId: pondId ?? this.pondId,
+      temperatureC: temperatureC ?? this.temperatureC,
+      ph: ph ?? this.ph,
+      oxygenMgL: oxygenMgL ?? this.oxygenMgL,
+      colour: colour ?? this.colour,
+      renewedPct: renewedPct ?? this.renewedPct,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $WaterReadingsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (temperatureC.present) {
+      map['temperature_c'] = Variable<double>(temperatureC.value);
+    }
+    if (ph.present) {
+      map['ph'] = Variable<double>(ph.value);
+    }
+    if (oxygenMgL.present) {
+      map['oxygen_mg_l'] = Variable<double>(oxygenMgL.value);
+    }
+    if (colour.present) {
+      map['colour'] = Variable<String>(
+        $WaterReadingsTable.$convertercolourn.toSql(colour.value),
+      );
+    }
+    if (renewedPct.present) {
+      map['renewed_pct'] = Variable<int>(renewedPct.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WaterReadingsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('temperatureC: $temperatureC, ')
+          ..write('ph: $ph, ')
+          ..write('oxygenMgL: $oxygenMgL, ')
+          ..write('colour: $colour, ')
+          ..write('renewedPct: $renewedPct, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SamplesTable extends Samples with TableInfo<$SamplesTable, Sample> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SamplesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($SamplesTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _batchIdMeta = const VerificationMeta(
+    'batchId',
+  );
+  @override
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fishCountMeta = const VerificationMeta(
+    'fishCount',
+  );
+  @override
+  late final GeneratedColumn<int> fishCount = GeneratedColumn<int>(
+    'fish_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalWeightGMeta = const VerificationMeta(
+    'totalWeightG',
+  );
+  @override
+  late final GeneratedColumn<int> totalWeightG = GeneratedColumn<int>(
+    'total_weight_g',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    batchId,
+    pondId,
+    fishCount,
+    totalWeightG,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'samples';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Sample> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('batch_id')) {
+      context.handle(
+        _batchIdMeta,
+        batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_batchIdMeta);
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pondIdMeta);
+    }
+    if (data.containsKey('fish_count')) {
+      context.handle(
+        _fishCountMeta,
+        fishCount.isAcceptableOrUnknown(data['fish_count']!, _fishCountMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fishCountMeta);
+    }
+    if (data.containsKey('total_weight_g')) {
+      context.handle(
+        _totalWeightGMeta,
+        totalWeightG.isAcceptableOrUnknown(
+          data['total_weight_g']!,
+          _totalWeightGMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_totalWeightGMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Sample map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Sample(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $SamplesTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      batchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_id'],
+      )!,
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      )!,
+      fishCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fish_count'],
+      )!,
+      totalWeightG: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_weight_g'],
+      )!,
+    );
+  }
+
+  @override
+  $SamplesTable createAlias(String alias) {
+    return $SamplesTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class Sample extends DataClass implements Insertable<Sample> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String batchId;
+  final String pondId;
+  final int fishCount;
+  final int totalWeightG;
+  const Sample({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.batchId,
+    required this.pondId,
+    required this.fishCount,
+    required this.totalWeightG,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $SamplesTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['batch_id'] = Variable<String>(batchId);
+    map['pond_id'] = Variable<String>(pondId);
+    map['fish_count'] = Variable<int>(fishCount);
+    map['total_weight_g'] = Variable<int>(totalWeightG);
+    return map;
+  }
+
+  SamplesCompanion toCompanion(bool nullToAbsent) {
+    return SamplesCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      batchId: Value(batchId),
+      pondId: Value(pondId),
+      fishCount: Value(fishCount),
+      totalWeightG: Value(totalWeightG),
+    );
+  }
+
+  factory Sample.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Sample(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $SamplesTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      batchId: serializer.fromJson<String>(json['batchId']),
+      pondId: serializer.fromJson<String>(json['pondId']),
+      fishCount: serializer.fromJson<int>(json['fishCount']),
+      totalWeightG: serializer.fromJson<int>(json['totalWeightG']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $SamplesTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'batchId': serializer.toJson<String>(batchId),
+      'pondId': serializer.toJson<String>(pondId),
+      'fishCount': serializer.toJson<int>(fishCount),
+      'totalWeightG': serializer.toJson<int>(totalWeightG),
+    };
+  }
+
+  Sample copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? batchId,
+    String? pondId,
+    int? fishCount,
+    int? totalWeightG,
+  }) => Sample(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    batchId: batchId ?? this.batchId,
+    pondId: pondId ?? this.pondId,
+    fishCount: fishCount ?? this.fishCount,
+    totalWeightG: totalWeightG ?? this.totalWeightG,
+  );
+  Sample copyWithCompanion(SamplesCompanion data) {
+    return Sample(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      batchId: data.batchId.present ? data.batchId.value : this.batchId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      fishCount: data.fishCount.present ? data.fishCount.value : this.fishCount,
+      totalWeightG: data.totalWeightG.present
+          ? data.totalWeightG.value
+          : this.totalWeightG,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Sample(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('batchId: $batchId, ')
+          ..write('pondId: $pondId, ')
+          ..write('fishCount: $fishCount, ')
+          ..write('totalWeightG: $totalWeightG')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    batchId,
+    pondId,
+    fishCount,
+    totalWeightG,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Sample &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.batchId == this.batchId &&
+          other.pondId == this.pondId &&
+          other.fishCount == this.fishCount &&
+          other.totalWeightG == this.totalWeightG);
+}
+
+class SamplesCompanion extends UpdateCompanion<Sample> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> batchId;
+  final Value<String> pondId;
+  final Value<int> fishCount;
+  final Value<int> totalWeightG;
+  final Value<int> rowid;
+  const SamplesCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.batchId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.fishCount = const Value.absent(),
+    this.totalWeightG = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SamplesCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String batchId,
+    required String pondId,
+    required int fishCount,
+    required int totalWeightG,
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       batchId = Value(batchId),
+       pondId = Value(pondId),
+       fishCount = Value(fishCount),
+       totalWeightG = Value(totalWeightG);
+  static Insertable<Sample> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? batchId,
+    Expression<String>? pondId,
+    Expression<int>? fishCount,
+    Expression<int>? totalWeightG,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (batchId != null) 'batch_id': batchId,
+      if (pondId != null) 'pond_id': pondId,
+      if (fishCount != null) 'fish_count': fishCount,
+      if (totalWeightG != null) 'total_weight_g': totalWeightG,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SamplesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? batchId,
+    Value<String>? pondId,
+    Value<int>? fishCount,
+    Value<int>? totalWeightG,
+    Value<int>? rowid,
+  }) {
+    return SamplesCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      batchId: batchId ?? this.batchId,
+      pondId: pondId ?? this.pondId,
+      fishCount: fishCount ?? this.fishCount,
+      totalWeightG: totalWeightG ?? this.totalWeightG,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $SamplesTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (batchId.present) {
+      map['batch_id'] = Variable<String>(batchId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (fishCount.present) {
+      map['fish_count'] = Variable<int>(fishCount.value);
+    }
+    if (totalWeightG.present) {
+      map['total_weight_g'] = Variable<int>(totalWeightG.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SamplesCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('batchId: $batchId, ')
+          ..write('pondId: $pondId, ')
+          ..write('fishCount: $fishCount, ')
+          ..write('totalWeightG: $totalWeightG, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ObservationsTable extends Observations
+    with TableInfo<$ObservationsTable, Observation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ObservationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($ObservationsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  @override
+  late final GeneratedColumn<String> siteId = GeneratedColumn<String>(
+    'site_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ObservationCategory, String>
+  category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<ObservationCategory>($ObservationsTable.$convertercategory);
+  static const VerificationMeta _okMeta = const VerificationMeta('ok');
+  @override
+  late final GeneratedColumn<bool> ok = GeneratedColumn<bool>(
+    'ok',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("ok" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    siteId,
+    pondId,
+    category,
+    ok,
+    note,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'observations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Observation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('site_id')) {
+      context.handle(
+        _siteIdMeta,
+        siteId.isAcceptableOrUnknown(data['site_id']!, _siteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    }
+    if (data.containsKey('ok')) {
+      context.handle(_okMeta, ok.isAcceptableOrUnknown(data['ok']!, _okMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Observation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Observation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $ObservationsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      siteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_id'],
+      )!,
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      ),
+      category: $ObservationsTable.$convertercategory.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}category'],
+        )!,
+      ),
+      ok: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}ok'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+    );
+  }
+
+  @override
+  $ObservationsTable createAlias(String alias) {
+    return $ObservationsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static JsonTypeConverter2<ObservationCategory, String, String>
+  $convertercategory = const EnumNameConverter<ObservationCategory>(
+    ObservationCategory.values,
+  );
+}
+
+class Observation extends DataClass implements Insertable<Observation> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String siteId;
+  final String? pondId;
+  final ObservationCategory category;
+  final bool? ok;
+  final String? note;
+  const Observation({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.siteId,
+    this.pondId,
+    required this.category,
+    this.ok,
+    this.note,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $ObservationsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['site_id'] = Variable<String>(siteId);
+    if (!nullToAbsent || pondId != null) {
+      map['pond_id'] = Variable<String>(pondId);
+    }
+    {
+      map['category'] = Variable<String>(
+        $ObservationsTable.$convertercategory.toSql(category),
+      );
+    }
+    if (!nullToAbsent || ok != null) {
+      map['ok'] = Variable<bool>(ok);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    return map;
+  }
+
+  ObservationsCompanion toCompanion(bool nullToAbsent) {
+    return ObservationsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      siteId: Value(siteId),
+      pondId: pondId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pondId),
+      category: Value(category),
+      ok: ok == null && nullToAbsent ? const Value.absent() : Value(ok),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+    );
+  }
+
+  factory Observation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Observation(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $ObservationsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      siteId: serializer.fromJson<String>(json['siteId']),
+      pondId: serializer.fromJson<String?>(json['pondId']),
+      category: $ObservationsTable.$convertercategory.fromJson(
+        serializer.fromJson<String>(json['category']),
+      ),
+      ok: serializer.fromJson<bool?>(json['ok']),
+      note: serializer.fromJson<String?>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $ObservationsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'siteId': serializer.toJson<String>(siteId),
+      'pondId': serializer.toJson<String?>(pondId),
+      'category': serializer.toJson<String>(
+        $ObservationsTable.$convertercategory.toJson(category),
+      ),
+      'ok': serializer.toJson<bool?>(ok),
+      'note': serializer.toJson<String?>(note),
+    };
+  }
+
+  Observation copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? siteId,
+    Value<String?> pondId = const Value.absent(),
+    ObservationCategory? category,
+    Value<bool?> ok = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+  }) => Observation(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    siteId: siteId ?? this.siteId,
+    pondId: pondId.present ? pondId.value : this.pondId,
+    category: category ?? this.category,
+    ok: ok.present ? ok.value : this.ok,
+    note: note.present ? note.value : this.note,
+  );
+  Observation copyWithCompanion(ObservationsCompanion data) {
+    return Observation(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      category: data.category.present ? data.category.value : this.category,
+      ok: data.ok.present ? data.ok.value : this.ok,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Observation(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('siteId: $siteId, ')
+          ..write('pondId: $pondId, ')
+          ..write('category: $category, ')
+          ..write('ok: $ok, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    siteId,
+    pondId,
+    category,
+    ok,
+    note,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Observation &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.siteId == this.siteId &&
+          other.pondId == this.pondId &&
+          other.category == this.category &&
+          other.ok == this.ok &&
+          other.note == this.note);
+}
+
+class ObservationsCompanion extends UpdateCompanion<Observation> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> siteId;
+  final Value<String?> pondId;
+  final Value<ObservationCategory> category;
+  final Value<bool?> ok;
+  final Value<String?> note;
+  final Value<int> rowid;
+  const ObservationsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.siteId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.category = const Value.absent(),
+    this.ok = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ObservationsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String siteId,
+    this.pondId = const Value.absent(),
+    required ObservationCategory category,
+    this.ok = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       siteId = Value(siteId),
+       category = Value(category);
+  static Insertable<Observation> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? siteId,
+    Expression<String>? pondId,
+    Expression<String>? category,
+    Expression<bool>? ok,
+    Expression<String>? note,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (siteId != null) 'site_id': siteId,
+      if (pondId != null) 'pond_id': pondId,
+      if (category != null) 'category': category,
+      if (ok != null) 'ok': ok,
+      if (note != null) 'note': note,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ObservationsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? siteId,
+    Value<String?>? pondId,
+    Value<ObservationCategory>? category,
+    Value<bool?>? ok,
+    Value<String?>? note,
+    Value<int>? rowid,
+  }) {
+    return ObservationsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      siteId: siteId ?? this.siteId,
+      pondId: pondId ?? this.pondId,
+      category: category ?? this.category,
+      ok: ok ?? this.ok,
+      note: note ?? this.note,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $ObservationsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (siteId.present) {
+      map['site_id'] = Variable<String>(siteId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(
+        $ObservationsTable.$convertercategory.toSql(category.value),
+      );
+    }
+    if (ok.present) {
+      map['ok'] = Variable<bool>(ok.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ObservationsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('siteId: $siteId, ')
+          ..write('pondId: $pondId, ')
+          ..write('category: $category, ')
+          ..write('ok: $ok, ')
+          ..write('note: $note, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HealthEventsTable extends HealthEvents
+    with TableInfo<$HealthEventsTable, HealthEvent> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HealthEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($HealthEventsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Set<WarningSign>, String> signs =
+      GeneratedColumn<String>(
+        'signs',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      ).withConverter<Set<WarningSign>>($HealthEventsTable.$convertersigns);
+  static const VerificationMeta _suspectedIssueMeta = const VerificationMeta(
+    'suspectedIssue',
+  );
+  @override
+  late final GeneratedColumn<String> suspectedIssue = GeneratedColumn<String>(
+    'suspected_issue',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<Set<HealthAction>, String>
+  actions = GeneratedColumn<String>(
+    'actions',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<Set<HealthAction>>($HealthEventsTable.$converteractions);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    signs,
+    suspectedIssue,
+    actions,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'health_events';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HealthEvent> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pondIdMeta);
+    }
+    if (data.containsKey('suspected_issue')) {
+      context.handle(
+        _suspectedIssueMeta,
+        suspectedIssue.isAcceptableOrUnknown(
+          data['suspected_issue']!,
+          _suspectedIssueMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HealthEvent map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HealthEvent(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $HealthEventsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      )!,
+      signs: $HealthEventsTable.$convertersigns.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}signs'],
+        )!,
+      ),
+      suspectedIssue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}suspected_issue'],
+      ),
+      actions: $HealthEventsTable.$converteractions.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}actions'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $HealthEventsTable createAlias(String alias) {
+    return $HealthEventsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static TypeConverter<Set<WarningSign>, String> $convertersigns =
+      warningSignsConverter;
+  static TypeConverter<Set<HealthAction>, String> $converteractions =
+      healthActionsConverter;
+}
+
+class HealthEvent extends DataClass implements Insertable<HealthEvent> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String pondId;
+  final Set<WarningSign> signs;
+  final String? suspectedIssue;
+  final Set<HealthAction> actions;
+  const HealthEvent({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.pondId,
+    required this.signs,
+    this.suspectedIssue,
+    required this.actions,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $HealthEventsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['pond_id'] = Variable<String>(pondId);
+    {
+      map['signs'] = Variable<String>(
+        $HealthEventsTable.$convertersigns.toSql(signs),
+      );
+    }
+    if (!nullToAbsent || suspectedIssue != null) {
+      map['suspected_issue'] = Variable<String>(suspectedIssue);
+    }
+    {
+      map['actions'] = Variable<String>(
+        $HealthEventsTable.$converteractions.toSql(actions),
+      );
+    }
+    return map;
+  }
+
+  HealthEventsCompanion toCompanion(bool nullToAbsent) {
+    return HealthEventsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      pondId: Value(pondId),
+      signs: Value(signs),
+      suspectedIssue: suspectedIssue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(suspectedIssue),
+      actions: Value(actions),
+    );
+  }
+
+  factory HealthEvent.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HealthEvent(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $HealthEventsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      pondId: serializer.fromJson<String>(json['pondId']),
+      signs: serializer.fromJson<Set<WarningSign>>(json['signs']),
+      suspectedIssue: serializer.fromJson<String?>(json['suspectedIssue']),
+      actions: serializer.fromJson<Set<HealthAction>>(json['actions']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $HealthEventsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'pondId': serializer.toJson<String>(pondId),
+      'signs': serializer.toJson<Set<WarningSign>>(signs),
+      'suspectedIssue': serializer.toJson<String?>(suspectedIssue),
+      'actions': serializer.toJson<Set<HealthAction>>(actions),
+    };
+  }
+
+  HealthEvent copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? pondId,
+    Set<WarningSign>? signs,
+    Value<String?> suspectedIssue = const Value.absent(),
+    Set<HealthAction>? actions,
+  }) => HealthEvent(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    pondId: pondId ?? this.pondId,
+    signs: signs ?? this.signs,
+    suspectedIssue: suspectedIssue.present
+        ? suspectedIssue.value
+        : this.suspectedIssue,
+    actions: actions ?? this.actions,
+  );
+  HealthEvent copyWithCompanion(HealthEventsCompanion data) {
+    return HealthEvent(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      signs: data.signs.present ? data.signs.value : this.signs,
+      suspectedIssue: data.suspectedIssue.present
+          ? data.suspectedIssue.value
+          : this.suspectedIssue,
+      actions: data.actions.present ? data.actions.value : this.actions,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HealthEvent(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('signs: $signs, ')
+          ..write('suspectedIssue: $suspectedIssue, ')
+          ..write('actions: $actions')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    signs,
+    suspectedIssue,
+    actions,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HealthEvent &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.pondId == this.pondId &&
+          other.signs == this.signs &&
+          other.suspectedIssue == this.suspectedIssue &&
+          other.actions == this.actions);
+}
+
+class HealthEventsCompanion extends UpdateCompanion<HealthEvent> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> pondId;
+  final Value<Set<WarningSign>> signs;
+  final Value<String?> suspectedIssue;
+  final Value<Set<HealthAction>> actions;
+  final Value<int> rowid;
+  const HealthEventsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.signs = const Value.absent(),
+    this.suspectedIssue = const Value.absent(),
+    this.actions = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HealthEventsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String pondId,
+    this.signs = const Value.absent(),
+    this.suspectedIssue = const Value.absent(),
+    required Set<HealthAction> actions,
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       pondId = Value(pondId),
+       actions = Value(actions);
+  static Insertable<HealthEvent> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? pondId,
+    Expression<String>? signs,
+    Expression<String>? suspectedIssue,
+    Expression<String>? actions,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (pondId != null) 'pond_id': pondId,
+      if (signs != null) 'signs': signs,
+      if (suspectedIssue != null) 'suspected_issue': suspectedIssue,
+      if (actions != null) 'actions': actions,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HealthEventsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? pondId,
+    Value<Set<WarningSign>>? signs,
+    Value<String?>? suspectedIssue,
+    Value<Set<HealthAction>>? actions,
+    Value<int>? rowid,
+  }) {
+    return HealthEventsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      pondId: pondId ?? this.pondId,
+      signs: signs ?? this.signs,
+      suspectedIssue: suspectedIssue ?? this.suspectedIssue,
+      actions: actions ?? this.actions,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $HealthEventsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (signs.present) {
+      map['signs'] = Variable<String>(
+        $HealthEventsTable.$convertersigns.toSql(signs.value),
+      );
+    }
+    if (suspectedIssue.present) {
+      map['suspected_issue'] = Variable<String>(suspectedIssue.value);
+    }
+    if (actions.present) {
+      map['actions'] = Variable<String>(
+        $HealthEventsTable.$converteractions.toSql(actions.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HealthEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('signs: $signs, ')
+          ..write('suspectedIssue: $suspectedIssue, ')
+          ..write('actions: $actions, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TreatmentsTable extends Treatments
+    with TableInfo<$TreatmentsTable, Treatment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TreatmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($TreatmentsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pondIdMeta = const VerificationMeta('pondId');
+  @override
+  late final GeneratedColumn<String> pondId = GeneratedColumn<String>(
+    'pond_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _batchIdMeta = const VerificationMeta(
+    'batchId',
+  );
+  @override
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _productMeta = const VerificationMeta(
+    'product',
+  );
+  @override
+  late final GeneratedColumn<String> product = GeneratedColumn<String>(
+    'product',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _doseMeta = const VerificationMeta('dose');
+  @override
+  late final GeneratedColumn<String> dose = GeneratedColumn<String>(
+    'dose',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _advisedByMeta = const VerificationMeta(
+    'advisedBy',
+  );
+  @override
+  late final GeneratedColumn<String> advisedBy = GeneratedColumn<String>(
+    'advised_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    batchId,
+    product,
+    dose,
+    advisedBy,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'treatments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Treatment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    }
+    if (data.containsKey('pond_id')) {
+      context.handle(
+        _pondIdMeta,
+        pondId.isAcceptableOrUnknown(data['pond_id']!, _pondIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pondIdMeta);
+    }
+    if (data.containsKey('batch_id')) {
+      context.handle(
+        _batchIdMeta,
+        batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
+      );
+    }
+    if (data.containsKey('product')) {
+      context.handle(
+        _productMeta,
+        product.isAcceptableOrUnknown(data['product']!, _productMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_productMeta);
+    }
+    if (data.containsKey('dose')) {
+      context.handle(
+        _doseMeta,
+        dose.isAcceptableOrUnknown(data['dose']!, _doseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_doseMeta);
+    }
+    if (data.containsKey('advised_by')) {
+      context.handle(
+        _advisedByMeta,
+        advisedBy.isAcceptableOrUnknown(data['advised_by']!, _advisedByMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Treatment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Treatment(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $TreatmentsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      ),
+      pondId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pond_id'],
+      )!,
+      batchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_id'],
+      ),
+      product: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product'],
+      )!,
+      dose: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dose'],
+      )!,
+      advisedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}advised_by'],
+      ),
+    );
+  }
+
+  @override
+  $TreatmentsTable createAlias(String alias) {
+    return $TreatmentsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class Treatment extends DataClass implements Insertable<Treatment> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+
+  /// The visit it was entered during, if any (SPEC F5).
+  final String? visitId;
+  final String pondId;
+  final String? batchId;
+  final String product;
+  final String dose;
+  final String? advisedBy;
+  const Treatment({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    this.visitId,
+    required this.pondId,
+    this.batchId,
+    required this.product,
+    required this.dose,
+    this.advisedBy,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $TreatmentsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    if (!nullToAbsent || visitId != null) {
+      map['visit_id'] = Variable<String>(visitId);
+    }
+    map['pond_id'] = Variable<String>(pondId);
+    if (!nullToAbsent || batchId != null) {
+      map['batch_id'] = Variable<String>(batchId);
+    }
+    map['product'] = Variable<String>(product);
+    map['dose'] = Variable<String>(dose);
+    if (!nullToAbsent || advisedBy != null) {
+      map['advised_by'] = Variable<String>(advisedBy);
+    }
+    return map;
+  }
+
+  TreatmentsCompanion toCompanion(bool nullToAbsent) {
+    return TreatmentsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: visitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visitId),
+      pondId: Value(pondId),
+      batchId: batchId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(batchId),
+      product: Value(product),
+      dose: Value(dose),
+      advisedBy: advisedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(advisedBy),
+    );
+  }
+
+  factory Treatment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Treatment(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $TreatmentsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String?>(json['visitId']),
+      pondId: serializer.fromJson<String>(json['pondId']),
+      batchId: serializer.fromJson<String?>(json['batchId']),
+      product: serializer.fromJson<String>(json['product']),
+      dose: serializer.fromJson<String>(json['dose']),
+      advisedBy: serializer.fromJson<String?>(json['advisedBy']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $TreatmentsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String?>(visitId),
+      'pondId': serializer.toJson<String>(pondId),
+      'batchId': serializer.toJson<String?>(batchId),
+      'product': serializer.toJson<String>(product),
+      'dose': serializer.toJson<String>(dose),
+      'advisedBy': serializer.toJson<String?>(advisedBy),
+    };
+  }
+
+  Treatment copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    Value<String?> visitId = const Value.absent(),
+    String? pondId,
+    Value<String?> batchId = const Value.absent(),
+    String? product,
+    String? dose,
+    Value<String?> advisedBy = const Value.absent(),
+  }) => Treatment(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId.present ? visitId.value : this.visitId,
+    pondId: pondId ?? this.pondId,
+    batchId: batchId.present ? batchId.value : this.batchId,
+    product: product ?? this.product,
+    dose: dose ?? this.dose,
+    advisedBy: advisedBy.present ? advisedBy.value : this.advisedBy,
+  );
+  Treatment copyWithCompanion(TreatmentsCompanion data) {
+    return Treatment(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      pondId: data.pondId.present ? data.pondId.value : this.pondId,
+      batchId: data.batchId.present ? data.batchId.value : this.batchId,
+      product: data.product.present ? data.product.value : this.product,
+      dose: data.dose.present ? data.dose.value : this.dose,
+      advisedBy: data.advisedBy.present ? data.advisedBy.value : this.advisedBy,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Treatment(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('batchId: $batchId, ')
+          ..write('product: $product, ')
+          ..write('dose: $dose, ')
+          ..write('advisedBy: $advisedBy')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    pondId,
+    batchId,
+    product,
+    dose,
+    advisedBy,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Treatment &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.pondId == this.pondId &&
+          other.batchId == this.batchId &&
+          other.product == this.product &&
+          other.dose == this.dose &&
+          other.advisedBy == this.advisedBy);
+}
+
+class TreatmentsCompanion extends UpdateCompanion<Treatment> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String?> visitId;
+  final Value<String> pondId;
+  final Value<String?> batchId;
+  final Value<String> product;
+  final Value<String> dose;
+  final Value<String?> advisedBy;
+  final Value<int> rowid;
+  const TreatmentsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.pondId = const Value.absent(),
+    this.batchId = const Value.absent(),
+    this.product = const Value.absent(),
+    this.dose = const Value.absent(),
+    this.advisedBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TreatmentsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    required String pondId,
+    this.batchId = const Value.absent(),
+    required String product,
+    required String dose,
+    this.advisedBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       pondId = Value(pondId),
+       product = Value(product),
+       dose = Value(dose);
+  static Insertable<Treatment> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? pondId,
+    Expression<String>? batchId,
+    Expression<String>? product,
+    Expression<String>? dose,
+    Expression<String>? advisedBy,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (pondId != null) 'pond_id': pondId,
+      if (batchId != null) 'batch_id': batchId,
+      if (product != null) 'product': product,
+      if (dose != null) 'dose': dose,
+      if (advisedBy != null) 'advised_by': advisedBy,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TreatmentsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String?>? visitId,
+    Value<String>? pondId,
+    Value<String?>? batchId,
+    Value<String>? product,
+    Value<String>? dose,
+    Value<String?>? advisedBy,
+    Value<int>? rowid,
+  }) {
+    return TreatmentsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      pondId: pondId ?? this.pondId,
+      batchId: batchId ?? this.batchId,
+      product: product ?? this.product,
+      dose: dose ?? this.dose,
+      advisedBy: advisedBy ?? this.advisedBy,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $TreatmentsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (pondId.present) {
+      map['pond_id'] = Variable<String>(pondId.value);
+    }
+    if (batchId.present) {
+      map['batch_id'] = Variable<String>(batchId.value);
+    }
+    if (product.present) {
+      map['product'] = Variable<String>(product.value);
+    }
+    if (dose.present) {
+      map['dose'] = Variable<String>(dose.value);
+    }
+    if (advisedBy.present) {
+      map['advised_by'] = Variable<String>(advisedBy.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('pondId: $pondId, ')
+          ..write('batchId: $batchId, ')
+          ..write('product: $product, ')
+          ..write('dose: $dose, ')
+          ..write('advisedBy: $advisedBy, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $VisitsTable extends Visits with TableInfo<$VisitsTable, Visit> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VisitsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($VisitsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtDeviceMeta = const VerificationMeta(
+    'updatedAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAtDevice =
+      GeneratedColumn<DateTime>(
+        'updated_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  @override
+  late final GeneratedColumn<String> siteId = GeneratedColumn<String>(
+    'site_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAt = GeneratedColumn<DateTime>(
+    'started_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endedAtMeta = const VerificationMeta(
+    'endedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> endedAt = GeneratedColumn<DateTime>(
+    'ended_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _summaryMeta = const VerificationMeta(
+    'summary',
+  );
+  @override
+  late final GeneratedColumn<String> summary = GeneratedColumn<String>(
+    'summary',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    siteId,
+    startedAt,
+    endedAt,
+    summary,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'visits';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Visit> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('updated_at_device')) {
+      context.handle(
+        _updatedAtDeviceMeta,
+        updatedAtDevice.isAcceptableOrUnknown(
+          data['updated_at_device']!,
+          _updatedAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('site_id')) {
+      context.handle(
+        _siteIdMeta,
+        siteId.isAcceptableOrUnknown(data['site_id']!, _siteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtMeta);
+    }
+    if (data.containsKey('ended_at')) {
+      context.handle(
+        _endedAtMeta,
+        endedAt.isAcceptableOrUnknown(data['ended_at']!, _endedAtMeta),
+      );
+    }
+    if (data.containsKey('summary')) {
+      context.handle(
+        _summaryMeta,
+        summary.isAcceptableOrUnknown(data['summary']!, _summaryMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Visit map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Visit(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $VisitsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      updatedAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at_device'],
+      )!,
+      siteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_id'],
+      )!,
+      startedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at'],
+      )!,
+      endedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}ended_at'],
+      ),
+      summary: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}summary'],
+      ),
+    );
+  }
+
+  @override
+  $VisitsTable createAlias(String alias) {
+    return $VisitsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class Visit extends DataClass implements Insertable<Visit> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime updatedAtDevice;
+  final String siteId;
+  final DateTime startedAt;
+  final DateTime? endedAt;
+  final String? summary;
+  const Visit({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.updatedAtDevice,
+    required this.siteId,
+    required this.startedAt,
+    this.endedAt,
+    this.summary,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $VisitsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['updated_at_device'] = Variable<DateTime>(updatedAtDevice);
+    map['site_id'] = Variable<String>(siteId);
+    map['started_at'] = Variable<DateTime>(startedAt);
+    if (!nullToAbsent || endedAt != null) {
+      map['ended_at'] = Variable<DateTime>(endedAt);
+    }
+    if (!nullToAbsent || summary != null) {
+      map['summary'] = Variable<String>(summary);
+    }
+    return map;
+  }
+
+  VisitsCompanion toCompanion(bool nullToAbsent) {
+    return VisitsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      updatedAtDevice: Value(updatedAtDevice),
+      siteId: Value(siteId),
+      startedAt: Value(startedAt),
+      endedAt: endedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endedAt),
+      summary: summary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(summary),
+    );
+  }
+
+  factory Visit.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Visit(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $VisitsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      updatedAtDevice: serializer.fromJson<DateTime>(json['updatedAtDevice']),
+      siteId: serializer.fromJson<String>(json['siteId']),
+      startedAt: serializer.fromJson<DateTime>(json['startedAt']),
+      endedAt: serializer.fromJson<DateTime?>(json['endedAt']),
+      summary: serializer.fromJson<String?>(json['summary']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $VisitsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'updatedAtDevice': serializer.toJson<DateTime>(updatedAtDevice),
+      'siteId': serializer.toJson<String>(siteId),
+      'startedAt': serializer.toJson<DateTime>(startedAt),
+      'endedAt': serializer.toJson<DateTime?>(endedAt),
+      'summary': serializer.toJson<String?>(summary),
+    };
+  }
+
+  Visit copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? updatedAtDevice,
+    String? siteId,
+    DateTime? startedAt,
+    Value<DateTime?> endedAt = const Value.absent(),
+    Value<String?> summary = const Value.absent(),
+  }) => Visit(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+    siteId: siteId ?? this.siteId,
+    startedAt: startedAt ?? this.startedAt,
+    endedAt: endedAt.present ? endedAt.value : this.endedAt,
+    summary: summary.present ? summary.value : this.summary,
+  );
+  Visit copyWithCompanion(VisitsCompanion data) {
+    return Visit(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      updatedAtDevice: data.updatedAtDevice.present
+          ? data.updatedAtDevice.value
+          : this.updatedAtDevice,
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
+      endedAt: data.endedAt.present ? data.endedAt.value : this.endedAt,
+      summary: data.summary.present ? data.summary.value : this.summary,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Visit(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('siteId: $siteId, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('summary: $summary')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    siteId,
+    startedAt,
+    endedAt,
+    summary,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Visit &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.updatedAtDevice == this.updatedAtDevice &&
+          other.siteId == this.siteId &&
+          other.startedAt == this.startedAt &&
+          other.endedAt == this.endedAt &&
+          other.summary == this.summary);
+}
+
+class VisitsCompanion extends UpdateCompanion<Visit> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> updatedAtDevice;
+  final Value<String> siteId;
+  final Value<DateTime> startedAt;
+  final Value<DateTime?> endedAt;
+  final Value<String?> summary;
+  final Value<int> rowid;
+  const VisitsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    this.siteId = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.endedAt = const Value.absent(),
+    this.summary = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  VisitsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    required String siteId,
+    required DateTime startedAt,
+    this.endedAt = const Value.absent(),
+    this.summary = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       siteId = Value(siteId),
+       startedAt = Value(startedAt);
+  static Insertable<Visit> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? updatedAtDevice,
+    Expression<String>? siteId,
+    Expression<DateTime>? startedAt,
+    Expression<DateTime>? endedAt,
+    Expression<String>? summary,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (updatedAtDevice != null) 'updated_at_device': updatedAtDevice,
+      if (siteId != null) 'site_id': siteId,
+      if (startedAt != null) 'started_at': startedAt,
+      if (endedAt != null) 'ended_at': endedAt,
+      if (summary != null) 'summary': summary,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  VisitsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? updatedAtDevice,
+    Value<String>? siteId,
+    Value<DateTime>? startedAt,
+    Value<DateTime?>? endedAt,
+    Value<String?>? summary,
+    Value<int>? rowid,
+  }) {
+    return VisitsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+      siteId: siteId ?? this.siteId,
+      startedAt: startedAt ?? this.startedAt,
+      endedAt: endedAt ?? this.endedAt,
+      summary: summary ?? this.summary,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $VisitsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (updatedAtDevice.present) {
+      map['updated_at_device'] = Variable<DateTime>(updatedAtDevice.value);
+    }
+    if (siteId.present) {
+      map['site_id'] = Variable<String>(siteId.value);
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<DateTime>(startedAt.value);
+    }
+    if (endedAt.present) {
+      map['ended_at'] = Variable<DateTime>(endedAt.value);
+    }
+    if (summary.present) {
+      map['summary'] = Variable<String>(summary.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VisitsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('siteId: $siteId, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('summary: $summary, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6415,6 +14077,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $BatchesTable batches = $BatchesTable(this);
   late final $StockingsTable stockings = $StockingsTable(this);
   late final $TransfersTable transfers = $TransfersTable(this);
+  late final $DailyLogsTable dailyLogs = $DailyLogsTable(this);
+  late final $WaterReadingsTable waterReadings = $WaterReadingsTable(this);
+  late final $SamplesTable samples = $SamplesTable(this);
+  late final $ObservationsTable observations = $ObservationsTable(this);
+  late final $HealthEventsTable healthEvents = $HealthEventsTable(this);
+  late final $TreatmentsTable treatments = $TreatmentsTable(this);
+  late final $VisitsTable visits = $VisitsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6427,6 +14096,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     batches,
     stockings,
     transfers,
+    dailyLogs,
+    waterReadings,
+    samples,
+    observations,
+    healthEvents,
+    treatments,
+    visits,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -9343,6 +17019,3453 @@ typedef $$TransfersTableProcessedTableManager =
       Transfer,
       PrefetchHooks Function()
     >;
+typedef $$DailyLogsTableCreateCompanionBuilder = DailyLogsCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  required DateTime recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  required String pondId,
+  required int feedGivenG,
+  Value<String?> feedLotId,
+  Value<int?> feedings,
+  Value<Leftover?> leftover,
+  Value<bool> ateFast,
+  Value<int> deaths,
+  Value<Set<WarningSign>> deathSigns,
+  Value<Set<WarningSign>> warningSigns,
+  Value<WaterColour?> waterColour,
+  Value<String?> note,
+  Value<int> rowid,
+});
+typedef $$DailyLogsTableUpdateCompanionBuilder = DailyLogsCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  Value<String> pondId,
+  Value<int> feedGivenG,
+  Value<String?> feedLotId,
+  Value<int?> feedings,
+  Value<Leftover?> leftover,
+  Value<bool> ateFast,
+  Value<int> deaths,
+  Value<Set<WarningSign>> deathSigns,
+  Value<Set<WarningSign>> warningSigns,
+  Value<WaterColour?> waterColour,
+  Value<String?> note,
+  Value<int> rowid,
+});
+
+class $$DailyLogsTableFilterComposer
+    extends Composer<_$AppDatabase, $DailyLogsTable> {
+  $$DailyLogsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get feedGivenG => $composableBuilder(
+    column: $table.feedGivenG,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get feedLotId => $composableBuilder(
+    column: $table.feedLotId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get feedings => $composableBuilder(
+    column: $table.feedings,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Leftover?, Leftover, String> get leftover =>
+      $composableBuilder(
+        column: $table.leftover,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<bool> get ateFast => $composableBuilder(
+    column: $table.ateFast,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get deaths => $composableBuilder(
+    column: $table.deaths,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Set<WarningSign>, Set<WarningSign>, String>
+  get deathSigns => $composableBuilder(
+    column: $table.deathSigns,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Set<WarningSign>, Set<WarningSign>, String>
+  get warningSigns => $composableBuilder(
+    column: $table.warningSigns,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<WaterColour?, WaterColour, String>
+  get waterColour => $composableBuilder(
+    column: $table.waterColour,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyLogsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DailyLogsTable> {
+  $$DailyLogsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get feedGivenG => $composableBuilder(
+    column: $table.feedGivenG,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get feedLotId => $composableBuilder(
+    column: $table.feedLotId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get feedings => $composableBuilder(
+    column: $table.feedings,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get leftover => $composableBuilder(
+    column: $table.leftover,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get ateFast => $composableBuilder(
+    column: $table.ateFast,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get deaths => $composableBuilder(
+    column: $table.deaths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deathSigns => $composableBuilder(
+    column: $table.deathSigns,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get warningSigns => $composableBuilder(
+    column: $table.warningSigns,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get waterColour => $composableBuilder(
+    column: $table.waterColour,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyLogsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DailyLogsTable> {
+  $$DailyLogsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumn<int> get feedGivenG => $composableBuilder(
+    column: $table.feedGivenG,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get feedLotId =>
+      $composableBuilder(column: $table.feedLotId, builder: (column) => column);
+
+  GeneratedColumn<int> get feedings =>
+      $composableBuilder(column: $table.feedings, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Leftover?, String> get leftover =>
+      $composableBuilder(column: $table.leftover, builder: (column) => column);
+
+  GeneratedColumn<bool> get ateFast =>
+      $composableBuilder(column: $table.ateFast, builder: (column) => column);
+
+  GeneratedColumn<int> get deaths =>
+      $composableBuilder(column: $table.deaths, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Set<WarningSign>, String> get deathSigns =>
+      $composableBuilder(
+        column: $table.deathSigns,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<Set<WarningSign>, String> get warningSigns =>
+      $composableBuilder(
+        column: $table.warningSigns,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<WaterColour?, String> get waterColour =>
+      $composableBuilder(
+        column: $table.waterColour,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+}
+
+class $$DailyLogsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DailyLogsTable,
+          DailyLog,
+          $$DailyLogsTableFilterComposer,
+          $$DailyLogsTableOrderingComposer,
+          $$DailyLogsTableAnnotationComposer,
+          $$DailyLogsTableCreateCompanionBuilder,
+          $$DailyLogsTableUpdateCompanionBuilder,
+          (DailyLog, BaseReferences<_$AppDatabase, $DailyLogsTable, DailyLog>),
+          DailyLog,
+          PrefetchHooks Function()
+        > {
+  $$DailyLogsTableTableManager(_$AppDatabase db, $DailyLogsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyLogsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyLogsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DailyLogsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> pondId = const Value.absent(),
+                Value<int> feedGivenG = const Value.absent(),
+                Value<String?> feedLotId = const Value.absent(),
+                Value<int?> feedings = const Value.absent(),
+                Value<Leftover?> leftover = const Value.absent(),
+                Value<bool> ateFast = const Value.absent(),
+                Value<int> deaths = const Value.absent(),
+                Value<Set<WarningSign>> deathSigns = const Value.absent(),
+                Value<Set<WarningSign>> warningSigns = const Value.absent(),
+                Value<WaterColour?> waterColour = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyLogsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                feedGivenG: feedGivenG,
+                feedLotId: feedLotId,
+                feedings: feedings,
+                leftover: leftover,
+                ateFast: ateFast,
+                deaths: deaths,
+                deathSigns: deathSigns,
+                warningSigns: warningSigns,
+                waterColour: waterColour,
+                note: note,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String pondId,
+                required int feedGivenG,
+                Value<String?> feedLotId = const Value.absent(),
+                Value<int?> feedings = const Value.absent(),
+                Value<Leftover?> leftover = const Value.absent(),
+                Value<bool> ateFast = const Value.absent(),
+                Value<int> deaths = const Value.absent(),
+                Value<Set<WarningSign>> deathSigns = const Value.absent(),
+                Value<Set<WarningSign>> warningSigns = const Value.absent(),
+                Value<WaterColour?> waterColour = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyLogsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                feedGivenG: feedGivenG,
+                feedLotId: feedLotId,
+                feedings: feedings,
+                leftover: leftover,
+                ateFast: ateFast,
+                deaths: deaths,
+                deathSigns: deathSigns,
+                warningSigns: warningSigns,
+                waterColour: waterColour,
+                note: note,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DailyLogsTable, DailyLog>(table),
+                  BaseReferences<_$AppDatabase, $DailyLogsTable, DailyLog>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyLogsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DailyLogsTable,
+      DailyLog,
+      $$DailyLogsTableFilterComposer,
+      $$DailyLogsTableOrderingComposer,
+      $$DailyLogsTableAnnotationComposer,
+      $$DailyLogsTableCreateCompanionBuilder,
+      $$DailyLogsTableUpdateCompanionBuilder,
+      (DailyLog, BaseReferences<_$AppDatabase, $DailyLogsTable, DailyLog>),
+      DailyLog,
+      PrefetchHooks Function()
+    >;
+typedef $$WaterReadingsTableCreateCompanionBuilder =
+    WaterReadingsCompanion Function({
+      Value<String> id,
+      required String associationId,
+      required String enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      required String deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      required DateTime recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      required String pondId,
+      Value<double?> temperatureC,
+      Value<double?> ph,
+      Value<double?> oxygenMgL,
+      Value<WaterColour?> colour,
+      Value<int?> renewedPct,
+      Value<int> rowid,
+    });
+typedef $$WaterReadingsTableUpdateCompanionBuilder =
+    WaterReadingsCompanion Function({
+      Value<String> id,
+      Value<String> associationId,
+      Value<String> enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      Value<String> deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      Value<String> pondId,
+      Value<double?> temperatureC,
+      Value<double?> ph,
+      Value<double?> oxygenMgL,
+      Value<WaterColour?> colour,
+      Value<int?> renewedPct,
+      Value<int> rowid,
+    });
+
+class $$WaterReadingsTableFilterComposer
+    extends Composer<_$AppDatabase, $WaterReadingsTable> {
+  $$WaterReadingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get temperatureC => $composableBuilder(
+    column: $table.temperatureC,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get ph => $composableBuilder(
+    column: $table.ph,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get oxygenMgL => $composableBuilder(
+    column: $table.oxygenMgL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<WaterColour?, WaterColour, String>
+  get colour => $composableBuilder(
+    column: $table.colour,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get renewedPct => $composableBuilder(
+    column: $table.renewedPct,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$WaterReadingsTableOrderingComposer
+    extends Composer<_$AppDatabase, $WaterReadingsTable> {
+  $$WaterReadingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get temperatureC => $composableBuilder(
+    column: $table.temperatureC,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get ph => $composableBuilder(
+    column: $table.ph,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get oxygenMgL => $composableBuilder(
+    column: $table.oxygenMgL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get colour => $composableBuilder(
+    column: $table.colour,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get renewedPct => $composableBuilder(
+    column: $table.renewedPct,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WaterReadingsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WaterReadingsTable> {
+  $$WaterReadingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumn<double> get temperatureC => $composableBuilder(
+    column: $table.temperatureC,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get ph =>
+      $composableBuilder(column: $table.ph, builder: (column) => column);
+
+  GeneratedColumn<double> get oxygenMgL =>
+      $composableBuilder(column: $table.oxygenMgL, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<WaterColour?, String> get colour =>
+      $composableBuilder(column: $table.colour, builder: (column) => column);
+
+  GeneratedColumn<int> get renewedPct => $composableBuilder(
+    column: $table.renewedPct,
+    builder: (column) => column,
+  );
+}
+
+class $$WaterReadingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WaterReadingsTable,
+          WaterReading,
+          $$WaterReadingsTableFilterComposer,
+          $$WaterReadingsTableOrderingComposer,
+          $$WaterReadingsTableAnnotationComposer,
+          $$WaterReadingsTableCreateCompanionBuilder,
+          $$WaterReadingsTableUpdateCompanionBuilder,
+          (
+            WaterReading,
+            BaseReferences<_$AppDatabase, $WaterReadingsTable, WaterReading>,
+          ),
+          WaterReading,
+          PrefetchHooks Function()
+        > {
+  $$WaterReadingsTableTableManager(_$AppDatabase db, $WaterReadingsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WaterReadingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WaterReadingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WaterReadingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> pondId = const Value.absent(),
+                Value<double?> temperatureC = const Value.absent(),
+                Value<double?> ph = const Value.absent(),
+                Value<double?> oxygenMgL = const Value.absent(),
+                Value<WaterColour?> colour = const Value.absent(),
+                Value<int?> renewedPct = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WaterReadingsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                temperatureC: temperatureC,
+                ph: ph,
+                oxygenMgL: oxygenMgL,
+                colour: colour,
+                renewedPct: renewedPct,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String pondId,
+                Value<double?> temperatureC = const Value.absent(),
+                Value<double?> ph = const Value.absent(),
+                Value<double?> oxygenMgL = const Value.absent(),
+                Value<WaterColour?> colour = const Value.absent(),
+                Value<int?> renewedPct = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WaterReadingsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                temperatureC: temperatureC,
+                ph: ph,
+                oxygenMgL: oxygenMgL,
+                colour: colour,
+                renewedPct: renewedPct,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$WaterReadingsTable, WaterReading>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $WaterReadingsTable,
+                    WaterReading
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$WaterReadingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WaterReadingsTable,
+      WaterReading,
+      $$WaterReadingsTableFilterComposer,
+      $$WaterReadingsTableOrderingComposer,
+      $$WaterReadingsTableAnnotationComposer,
+      $$WaterReadingsTableCreateCompanionBuilder,
+      $$WaterReadingsTableUpdateCompanionBuilder,
+      (
+        WaterReading,
+        BaseReferences<_$AppDatabase, $WaterReadingsTable, WaterReading>,
+      ),
+      WaterReading,
+      PrefetchHooks Function()
+    >;
+typedef $$SamplesTableCreateCompanionBuilder = SamplesCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  required DateTime recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  required String batchId,
+  required String pondId,
+  required int fishCount,
+  required int totalWeightG,
+  Value<int> rowid,
+});
+typedef $$SamplesTableUpdateCompanionBuilder = SamplesCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  Value<String> batchId,
+  Value<String> pondId,
+  Value<int> fishCount,
+  Value<int> totalWeightG,
+  Value<int> rowid,
+});
+
+class $$SamplesTableFilterComposer
+    extends Composer<_$AppDatabase, $SamplesTable> {
+  $$SamplesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get batchId => $composableBuilder(
+    column: $table.batchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fishCount => $composableBuilder(
+    column: $table.fishCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalWeightG => $composableBuilder(
+    column: $table.totalWeightG,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SamplesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SamplesTable> {
+  $$SamplesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get batchId => $composableBuilder(
+    column: $table.batchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fishCount => $composableBuilder(
+    column: $table.fishCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalWeightG => $composableBuilder(
+    column: $table.totalWeightG,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SamplesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SamplesTable> {
+  $$SamplesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get batchId =>
+      $composableBuilder(column: $table.batchId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumn<int> get fishCount =>
+      $composableBuilder(column: $table.fishCount, builder: (column) => column);
+
+  GeneratedColumn<int> get totalWeightG => $composableBuilder(
+    column: $table.totalWeightG,
+    builder: (column) => column,
+  );
+}
+
+class $$SamplesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SamplesTable,
+          Sample,
+          $$SamplesTableFilterComposer,
+          $$SamplesTableOrderingComposer,
+          $$SamplesTableAnnotationComposer,
+          $$SamplesTableCreateCompanionBuilder,
+          $$SamplesTableUpdateCompanionBuilder,
+          (Sample, BaseReferences<_$AppDatabase, $SamplesTable, Sample>),
+          Sample,
+          PrefetchHooks Function()
+        > {
+  $$SamplesTableTableManager(_$AppDatabase db, $SamplesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SamplesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SamplesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SamplesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> batchId = const Value.absent(),
+                Value<String> pondId = const Value.absent(),
+                Value<int> fishCount = const Value.absent(),
+                Value<int> totalWeightG = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SamplesCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                batchId: batchId,
+                pondId: pondId,
+                fishCount: fishCount,
+                totalWeightG: totalWeightG,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String batchId,
+                required String pondId,
+                required int fishCount,
+                required int totalWeightG,
+                Value<int> rowid = const Value.absent(),
+              }) => SamplesCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                batchId: batchId,
+                pondId: pondId,
+                fishCount: fishCount,
+                totalWeightG: totalWeightG,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SamplesTable, Sample>(table),
+                  BaseReferences<_$AppDatabase, $SamplesTable, Sample>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SamplesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SamplesTable,
+      Sample,
+      $$SamplesTableFilterComposer,
+      $$SamplesTableOrderingComposer,
+      $$SamplesTableAnnotationComposer,
+      $$SamplesTableCreateCompanionBuilder,
+      $$SamplesTableUpdateCompanionBuilder,
+      (Sample, BaseReferences<_$AppDatabase, $SamplesTable, Sample>),
+      Sample,
+      PrefetchHooks Function()
+    >;
+typedef $$ObservationsTableCreateCompanionBuilder =
+    ObservationsCompanion Function({
+      Value<String> id,
+      required String associationId,
+      required String enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      required String deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      required DateTime recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      required String siteId,
+      Value<String?> pondId,
+      required ObservationCategory category,
+      Value<bool?> ok,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+typedef $$ObservationsTableUpdateCompanionBuilder =
+    ObservationsCompanion Function({
+      Value<String> id,
+      Value<String> associationId,
+      Value<String> enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      Value<String> deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      Value<String> siteId,
+      Value<String?> pondId,
+      Value<ObservationCategory> category,
+      Value<bool?> ok,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+
+class $$ObservationsTableFilterComposer
+    extends Composer<_$AppDatabase, $ObservationsTable> {
+  $$ObservationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    ObservationCategory,
+    ObservationCategory,
+    String
+  >
+  get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get ok => $composableBuilder(
+    column: $table.ok,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ObservationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ObservationsTable> {
+  $$ObservationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get ok => $composableBuilder(
+    column: $table.ok,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ObservationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ObservationsTable> {
+  $$ObservationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get siteId =>
+      $composableBuilder(column: $table.siteId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ObservationCategory, String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<bool> get ok =>
+      $composableBuilder(column: $table.ok, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+}
+
+class $$ObservationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ObservationsTable,
+          Observation,
+          $$ObservationsTableFilterComposer,
+          $$ObservationsTableOrderingComposer,
+          $$ObservationsTableAnnotationComposer,
+          $$ObservationsTableCreateCompanionBuilder,
+          $$ObservationsTableUpdateCompanionBuilder,
+          (
+            Observation,
+            BaseReferences<_$AppDatabase, $ObservationsTable, Observation>,
+          ),
+          Observation,
+          PrefetchHooks Function()
+        > {
+  $$ObservationsTableTableManager(_$AppDatabase db, $ObservationsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ObservationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ObservationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ObservationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> siteId = const Value.absent(),
+                Value<String?> pondId = const Value.absent(),
+                Value<ObservationCategory> category = const Value.absent(),
+                Value<bool?> ok = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                siteId: siteId,
+                pondId: pondId,
+                category: category,
+                ok: ok,
+                note: note,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String siteId,
+                Value<String?> pondId = const Value.absent(),
+                required ObservationCategory category,
+                Value<bool?> ok = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                siteId: siteId,
+                pondId: pondId,
+                category: category,
+                ok: ok,
+                note: note,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ObservationsTable, Observation>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ObservationsTable,
+                    Observation
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ObservationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ObservationsTable,
+      Observation,
+      $$ObservationsTableFilterComposer,
+      $$ObservationsTableOrderingComposer,
+      $$ObservationsTableAnnotationComposer,
+      $$ObservationsTableCreateCompanionBuilder,
+      $$ObservationsTableUpdateCompanionBuilder,
+      (
+        Observation,
+        BaseReferences<_$AppDatabase, $ObservationsTable, Observation>,
+      ),
+      Observation,
+      PrefetchHooks Function()
+    >;
+typedef $$HealthEventsTableCreateCompanionBuilder =
+    HealthEventsCompanion Function({
+      Value<String> id,
+      required String associationId,
+      required String enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      required String deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      required DateTime recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      required String pondId,
+      Value<Set<WarningSign>> signs,
+      Value<String?> suspectedIssue,
+      required Set<HealthAction> actions,
+      Value<int> rowid,
+    });
+typedef $$HealthEventsTableUpdateCompanionBuilder =
+    HealthEventsCompanion Function({
+      Value<String> id,
+      Value<String> associationId,
+      Value<String> enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      Value<String> deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String?> visitId,
+      Value<String> pondId,
+      Value<Set<WarningSign>> signs,
+      Value<String?> suspectedIssue,
+      Value<Set<HealthAction>> actions,
+      Value<int> rowid,
+    });
+
+class $$HealthEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $HealthEventsTable> {
+  $$HealthEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Set<WarningSign>, Set<WarningSign>, String>
+  get signs => $composableBuilder(
+    column: $table.signs,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get suspectedIssue => $composableBuilder(
+    column: $table.suspectedIssue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Set<HealthAction>, Set<HealthAction>, String>
+  get actions => $composableBuilder(
+    column: $table.actions,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$HealthEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HealthEventsTable> {
+  $$HealthEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get signs => $composableBuilder(
+    column: $table.signs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get suspectedIssue => $composableBuilder(
+    column: $table.suspectedIssue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actions => $composableBuilder(
+    column: $table.actions,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HealthEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HealthEventsTable> {
+  $$HealthEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Set<WarningSign>, String> get signs =>
+      $composableBuilder(column: $table.signs, builder: (column) => column);
+
+  GeneratedColumn<String> get suspectedIssue => $composableBuilder(
+    column: $table.suspectedIssue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<Set<HealthAction>, String> get actions =>
+      $composableBuilder(column: $table.actions, builder: (column) => column);
+}
+
+class $$HealthEventsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HealthEventsTable,
+          HealthEvent,
+          $$HealthEventsTableFilterComposer,
+          $$HealthEventsTableOrderingComposer,
+          $$HealthEventsTableAnnotationComposer,
+          $$HealthEventsTableCreateCompanionBuilder,
+          $$HealthEventsTableUpdateCompanionBuilder,
+          (
+            HealthEvent,
+            BaseReferences<_$AppDatabase, $HealthEventsTable, HealthEvent>,
+          ),
+          HealthEvent,
+          PrefetchHooks Function()
+        > {
+  $$HealthEventsTableTableManager(_$AppDatabase db, $HealthEventsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HealthEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HealthEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HealthEventsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> pondId = const Value.absent(),
+                Value<Set<WarningSign>> signs = const Value.absent(),
+                Value<String?> suspectedIssue = const Value.absent(),
+                Value<Set<HealthAction>> actions = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HealthEventsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                signs: signs,
+                suspectedIssue: suspectedIssue,
+                actions: actions,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String pondId,
+                Value<Set<WarningSign>> signs = const Value.absent(),
+                Value<String?> suspectedIssue = const Value.absent(),
+                required Set<HealthAction> actions,
+                Value<int> rowid = const Value.absent(),
+              }) => HealthEventsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                signs: signs,
+                suspectedIssue: suspectedIssue,
+                actions: actions,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HealthEventsTable, HealthEvent>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $HealthEventsTable,
+                    HealthEvent
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HealthEventsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HealthEventsTable,
+      HealthEvent,
+      $$HealthEventsTableFilterComposer,
+      $$HealthEventsTableOrderingComposer,
+      $$HealthEventsTableAnnotationComposer,
+      $$HealthEventsTableCreateCompanionBuilder,
+      $$HealthEventsTableUpdateCompanionBuilder,
+      (
+        HealthEvent,
+        BaseReferences<_$AppDatabase, $HealthEventsTable, HealthEvent>,
+      ),
+      HealthEvent,
+      PrefetchHooks Function()
+    >;
+typedef $$TreatmentsTableCreateCompanionBuilder = TreatmentsCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  required DateTime recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  required String pondId,
+  Value<String?> batchId,
+  required String product,
+  required String dose,
+  Value<String?> advisedBy,
+  Value<int> rowid,
+});
+typedef $$TreatmentsTableUpdateCompanionBuilder = TreatmentsCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<String?> visitId,
+  Value<String> pondId,
+  Value<String?> batchId,
+  Value<String> product,
+  Value<String> dose,
+  Value<String?> advisedBy,
+  Value<int> rowid,
+});
+
+class $$TreatmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get batchId => $composableBuilder(
+    column: $table.batchId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get product => $composableBuilder(
+    column: $table.product,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dose => $composableBuilder(
+    column: $table.dose,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get advisedBy => $composableBuilder(
+    column: $table.advisedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TreatmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pondId => $composableBuilder(
+    column: $table.pondId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get batchId => $composableBuilder(
+    column: $table.batchId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get product => $composableBuilder(
+    column: $table.product,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dose => $composableBuilder(
+    column: $table.dose,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get advisedBy => $composableBuilder(
+    column: $table.advisedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TreatmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TreatmentsTable> {
+  $$TreatmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get pondId =>
+      $composableBuilder(column: $table.pondId, builder: (column) => column);
+
+  GeneratedColumn<String> get batchId =>
+      $composableBuilder(column: $table.batchId, builder: (column) => column);
+
+  GeneratedColumn<String> get product =>
+      $composableBuilder(column: $table.product, builder: (column) => column);
+
+  GeneratedColumn<String> get dose =>
+      $composableBuilder(column: $table.dose, builder: (column) => column);
+
+  GeneratedColumn<String> get advisedBy =>
+      $composableBuilder(column: $table.advisedBy, builder: (column) => column);
+}
+
+class $$TreatmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TreatmentsTable,
+          Treatment,
+          $$TreatmentsTableFilterComposer,
+          $$TreatmentsTableOrderingComposer,
+          $$TreatmentsTableAnnotationComposer,
+          $$TreatmentsTableCreateCompanionBuilder,
+          $$TreatmentsTableUpdateCompanionBuilder,
+          (
+            Treatment,
+            BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>,
+          ),
+          Treatment,
+          PrefetchHooks Function()
+        > {
+  $$TreatmentsTableTableManager(_$AppDatabase db, $TreatmentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TreatmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TreatmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TreatmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                Value<String> pondId = const Value.absent(),
+                Value<String?> batchId = const Value.absent(),
+                Value<String> product = const Value.absent(),
+                Value<String> dose = const Value.absent(),
+                Value<String?> advisedBy = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                batchId: batchId,
+                product: product,
+                dose: dose,
+                advisedBy: advisedBy,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String?> visitId = const Value.absent(),
+                required String pondId,
+                Value<String?> batchId = const Value.absent(),
+                required String product,
+                required String dose,
+                Value<String?> advisedBy = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                pondId: pondId,
+                batchId: batchId,
+                product: product,
+                dose: dose,
+                advisedBy: advisedBy,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TreatmentsTable, Treatment>(table),
+                  BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TreatmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TreatmentsTable,
+      Treatment,
+      $$TreatmentsTableFilterComposer,
+      $$TreatmentsTableOrderingComposer,
+      $$TreatmentsTableAnnotationComposer,
+      $$TreatmentsTableCreateCompanionBuilder,
+      $$TreatmentsTableUpdateCompanionBuilder,
+      (Treatment, BaseReferences<_$AppDatabase, $TreatmentsTable, Treatment>),
+      Treatment,
+      PrefetchHooks Function()
+    >;
+typedef $$VisitsTableCreateCompanionBuilder = VisitsCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  required String siteId,
+  required DateTime startedAt,
+  Value<DateTime?> endedAt,
+  Value<String?> summary,
+  Value<int> rowid,
+});
+typedef $$VisitsTableUpdateCompanionBuilder = VisitsCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  Value<String> siteId,
+  Value<DateTime> startedAt,
+  Value<DateTime?> endedAt,
+  Value<String?> summary,
+  Value<int> rowid,
+});
+
+class $$VisitsTableFilterComposer
+    extends Composer<_$AppDatabase, $VisitsTable> {
+  $$VisitsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get summary => $composableBuilder(
+    column: $table.summary,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$VisitsTableOrderingComposer
+    extends Composer<_$AppDatabase, $VisitsTable> {
+  $$VisitsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get summary => $composableBuilder(
+    column: $table.summary,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$VisitsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $VisitsTable> {
+  $$VisitsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get siteId =>
+      $composableBuilder(column: $table.siteId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endedAt =>
+      $composableBuilder(column: $table.endedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get summary =>
+      $composableBuilder(column: $table.summary, builder: (column) => column);
+}
+
+class $$VisitsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VisitsTable,
+          Visit,
+          $$VisitsTableFilterComposer,
+          $$VisitsTableOrderingComposer,
+          $$VisitsTableAnnotationComposer,
+          $$VisitsTableCreateCompanionBuilder,
+          $$VisitsTableUpdateCompanionBuilder,
+          (Visit, BaseReferences<_$AppDatabase, $VisitsTable, Visit>),
+          Visit,
+          PrefetchHooks Function()
+        > {
+  $$VisitsTableTableManager(_$AppDatabase db, $VisitsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VisitsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VisitsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VisitsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                Value<String> siteId = const Value.absent(),
+                Value<DateTime> startedAt = const Value.absent(),
+                Value<DateTime?> endedAt = const Value.absent(),
+                Value<String?> summary = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VisitsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                siteId: siteId,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                summary: summary,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                required String siteId,
+                required DateTime startedAt,
+                Value<DateTime?> endedAt = const Value.absent(),
+                Value<String?> summary = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VisitsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                siteId: siteId,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                summary: summary,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$VisitsTable, Visit>(table),
+                  BaseReferences<_$AppDatabase, $VisitsTable, Visit>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$VisitsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VisitsTable,
+      Visit,
+      $$VisitsTableFilterComposer,
+      $$VisitsTableOrderingComposer,
+      $$VisitsTableAnnotationComposer,
+      $$VisitsTableCreateCompanionBuilder,
+      $$VisitsTableUpdateCompanionBuilder,
+      (Visit, BaseReferences<_$AppDatabase, $VisitsTable, Visit>),
+      Visit,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9361,4 +20484,18 @@ class $AppDatabaseManager {
       $$StockingsTableTableManager(_db, _db.stockings);
   $$TransfersTableTableManager get transfers =>
       $$TransfersTableTableManager(_db, _db.transfers);
+  $$DailyLogsTableTableManager get dailyLogs =>
+      $$DailyLogsTableTableManager(_db, _db.dailyLogs);
+  $$WaterReadingsTableTableManager get waterReadings =>
+      $$WaterReadingsTableTableManager(_db, _db.waterReadings);
+  $$SamplesTableTableManager get samples =>
+      $$SamplesTableTableManager(_db, _db.samples);
+  $$ObservationsTableTableManager get observations =>
+      $$ObservationsTableTableManager(_db, _db.observations);
+  $$HealthEventsTableTableManager get healthEvents =>
+      $$HealthEventsTableTableManager(_db, _db.healthEvents);
+  $$TreatmentsTableTableManager get treatments =>
+      $$TreatmentsTableTableManager(_db, _db.treatments);
+  $$VisitsTableTableManager get visits =>
+      $$VisitsTableTableManager(_db, _db.visits);
 }
