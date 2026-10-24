@@ -53,7 +53,7 @@ Every synced table carries: `id` (UUIDv7), `association_id`, `entered_by`, `obse
 **Reference entities (editable, last-write-wins):**
 - `Association`, `Group`, `Member` (account, group, flags), `Person` (workers and others; optional link to a Member).
 - `Site`: name, location note. v1 runs one site: the app creates it at setup and hides site pickers; the schema keeps `site_id` everywhere so more sites can be added later.
-- `Pond`: site, code (short, painted on a stake: "E1"), colour tag for worker screens, structure type (defaults to `earth`, editable to `tank` or `cage`), role, water supply type, length, width, surface (computed, overridable), depth inlet/outlet, status (`empty`, `preparing`, `ready`, `stocked`, `isolated`).
+- `Pond`: site, code (short, painted on a stake: "E1"), colour tag for worker screens, structure type (defaults to `earth`, editable to `tank` or `cage`), role, water supply type, length, width, surface (computed, overridable), depth inlet/outlet, status (`empty`, `preparing`, `ready`, `stocked`, `isolated`): a pond holding fish shows `stocked` and one without shows `empty`, derived from its records; `preparing` and `ready` are set by hand on a pond without fish; `isolated` is set and lifted only by health events (F9).
 - `Batch`: code, species/strain, hatchery, certificate number, monosex flag, stocked date, initial count, initial average weight, planned harvest date, status (`quarantine`, `active`, `harvesting`, `closed`).
 - `Customer`: name, type (market, restaurant, supermarket, exporter, individual), contact.
 - `Settings`: per-site overrides of `config.dart` values.

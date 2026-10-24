@@ -67,3 +67,18 @@ double? pondSurfaceM2({double? lengthM, double? widthM, double? overrideM2}) {
   }
   return lengthM * widthM;
 }
+
+/// The status a pond shows. Fish decide `stocked` and `empty`; a health
+/// event's `isolated` and a hand-set `preparing` or `ready` (for a pond
+/// without fish) are kept.
+PondStatus effectivePondStatus({
+  required PondStatus stored,
+  required int liveCount,
+  required bool inconsistent,
+}) {
+  if (stored == PondStatus.isolated) return PondStatus.isolated;
+  if (liveCount > 0 || inconsistent) return PondStatus.stocked;
+  return stored == PondStatus.preparing || stored == PondStatus.ready
+      ? stored
+      : PondStatus.empty;
+}

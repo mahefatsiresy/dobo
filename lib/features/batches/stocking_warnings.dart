@@ -25,7 +25,7 @@ Set<StockingWarning> stockingWarnings({
   double? avgWeightG,
   required DomainConfig config,
 }) {
-  final status = target.pond.status;
+  final status = target.status;
   final density = addedCount > 0 ? densityAfter(target, addedCount) : null;
   return {
     if (status == PondStatus.isolated)

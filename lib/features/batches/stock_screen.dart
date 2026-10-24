@@ -160,8 +160,8 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
     final ponds = [...overviews]
       ..sort((a, b) {
         final ready =
-            (b.pond.status == PondStatus.ready ? 1 : 0) -
-            (a.pond.status == PondStatus.ready ? 1 : 0);
+            (b.status == PondStatus.ready ? 1 : 0) -
+            (a.status == PondStatus.ready ? 1 : 0);
         return ready != 0 ? ready : a.pond.code.compareTo(b.pond.code);
       });
     final target = ponds.where((o) => o.pond.id == _pondId).firstOrNull;
@@ -225,7 +225,7 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
                   DropdownMenuItem(
                     value: o.pond.id,
                     child: Text(
-                      '${o.pond.code} · ${l10n.pondStatus(o.pond.status)}',
+                      '${o.pond.code} · ${l10n.pondStatus(o.status)}',
                     ),
                   ),
               ],
@@ -311,7 +311,7 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
     String Function(num) n,
   ) => switch (w) {
     StockingWarning.pondNotReady => l10n.warnPondNotReady(
-      l10n.pondStatus(target.pond.status),
+      l10n.pondStatus(target.status),
     ),
     StockingWarning.pondIsolated => l10n.warnPondIsolated,
     StockingWarning.weightOutsideRange => l10n.warnWeightOutsideRange(

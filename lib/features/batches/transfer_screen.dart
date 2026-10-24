@@ -139,7 +139,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
     final count = _countValue;
     final blocked =
         !_correcting &&
-        (_refusedIsolated || source?.pond.status == PondStatus.isolated);
+        (_refusedIsolated || source?.status == PondStatus.isolated);
     final destDensity = target == null || count == null
         ? null
         : densityAfter(target, count);
@@ -185,14 +185,14 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
                     DropdownMenuItem(
                       value: o.pond.id,
                       child: Text(
-                        '${o.pond.code} · ${l10n.pondStatus(o.pond.status)}',
+                        '${o.pond.code} · ${l10n.pondStatus(o.status)}',
                       ),
                     ),
               ],
               validator: (v) => v == null ? l10n.fieldRequired : null,
               onChanged: blocked ? null : (v) => setState(() => _toPondId = v),
             ),
-            if (target?.pond.status == PondStatus.isolated)
+            if (target?.status == PondStatus.isolated)
               Notice(l10n.warnDestIsolated),
             gap,
             DateField(

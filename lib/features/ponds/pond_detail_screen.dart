@@ -87,7 +87,7 @@ class PondDetailScreen extends ConsumerWidget {
                       l10n.pondRole(pond.role),
                       style: theme.textTheme.titleMedium,
                     ),
-                    Text(l10n.pondStatus(pond.status)),
+                    Text(l10n.pondStatus(o.status)),
                     Text(
                       '${l10n.structure(pond.structure)}'
                       '${o.surfaceM2 == null ? '' : ' · ${formatNumber(o.surfaceM2!, locale)} m²'}',

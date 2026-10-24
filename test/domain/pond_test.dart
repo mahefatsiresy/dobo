@@ -1,5 +1,6 @@
 import 'package:dobo/domain/config.dart';
 import 'package:dobo/domain/pond.dart';
+import 'package:dobo/domain/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -54,5 +55,22 @@ void main() {
     expect(pondSurfaceM2(lengthM: 30), isNull);
     expect(pondSurfaceM2(lengthM: 30, widthM: 15, overrideM2: 0), 450.0);
     expect(pondSurfaceM2(lengthM: 0, widthM: 15), isNull);
+  });
+
+  test('status follows the fish; isolation and prep are kept', () {
+    PondStatus st(PondStatus stored, int live, {bool inconsistent = false}) =>
+        effectivePondStatus(
+          stored: stored,
+          liveCount: live,
+          inconsistent: inconsistent,
+        );
+    expect(st(PondStatus.empty, 100), PondStatus.stocked);
+    expect(st(PondStatus.ready, 100), PondStatus.stocked);
+    expect(st(PondStatus.stocked, 0), PondStatus.empty);
+    expect(st(PondStatus.empty, 0, inconsistent: true), PondStatus.stocked);
+    expect(st(PondStatus.ready, 0), PondStatus.ready);
+    expect(st(PondStatus.preparing, 0), PondStatus.preparing);
+    expect(st(PondStatus.isolated, 0), PondStatus.isolated);
+    expect(st(PondStatus.isolated, 100), PondStatus.isolated);
   });
 }

@@ -16,6 +16,7 @@ void main() {
     StructureType structure = StructureType.earth,
   }) => PondOverview(
     pond: pondRow('E1', status: status, structure: structure),
+    status: status,
     surfaceM2: surface,
     batches: const [],
     liveCount: live,

@@ -82,4 +82,23 @@ void main() {
     );
     expect((o.liveCount, o.biomassG), (1500, 27500));
   });
+
+  test('the overview carries the status the fish give', () {
+    final stocked = buildPondOverview(
+      pondRow('E1', status: PondStatus.empty),
+      [placementOf('L1', 'E1', 100, 12.5)],
+      batches,
+      cfg,
+    );
+    final emptied = buildPondOverview(
+      pondRow('E2', status: PondStatus.stocked),
+      const [],
+      batches,
+      cfg,
+    );
+    expect(
+      (stocked.status, emptied.status),
+      (PondStatus.stocked, PondStatus.empty),
+    );
+  });
 }

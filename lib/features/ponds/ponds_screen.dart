@@ -50,7 +50,7 @@ class PondsScreen extends ConsumerWidget {
                                         .textTheme
                                         .titleMedium,
                                   ),
-                                  Text(l10n.pondStatus(o.pond.status)),
+                                  Text(l10n.pondStatus(o.status)),
                                   const SizedBox(height: 4),
                                   PondFigures(overview: o),
                                 ],

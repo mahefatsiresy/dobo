@@ -18,13 +18,12 @@ import '../common/pond_colour.dart';
 import 'pond_overview.dart';
 import '../common/save_once.dart';
 
-/// Statuses a member sets by hand, also to fix one a correction left wrong.
-/// `isolated` is set and lifted only by health events (SPEC F9).
+/// Statuses a member sets by hand on a pond without fish. Fish decide
+/// `stocked`; health events set and lift `isolated` (SPEC F9).
 const _manualStatuses = [
   PondStatus.empty,
   PondStatus.preparing,
   PondStatus.ready,
-  PondStatus.stocked,
 ];
 
 /// Adds a pond, or edits the one with [pondId] (SPEC F1).
@@ -63,7 +62,7 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
     super.dispose();
   }
 
-  void _load(Pond p) {
+  void _load(Pond p, PondStatus shown) {
     _editing = p;
     _code.text = p.code;
     String n(double? v) => v == null ? '' : formatForInput(v);
@@ -76,7 +75,7 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
     _structure = p.structure;
     _role = p.role;
     _supply = p.waterSupply;
-    _status = p.status;
+    _status = shown;
   }
 
   PondInput _input(PondColour colour) => PondInput(
@@ -127,11 +126,15 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     if (id != null && _editing == null) {
-      final pond = ponds.where((p) => p.id == id).firstOrNull;
-      if (pond == null) {
+      final overview = ref
+          .watch(pondOverviewsProvider)
+          .value
+          ?.where((o) => o.pond.id == id)
+          .firstOrNull;
+      if (overview == null) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
-      _load(pond);
+      _load(overview.pond, overview.status);
     }
     final colour = _colour ?? nextFreeColour(ponds);
     const config = DomainConfig.defaults;

@@ -31,6 +31,7 @@ class BatchInPond {
 class PondOverview {
   const PondOverview({
     required this.pond,
+    required this.status,
     required this.surfaceM2,
     required this.batches,
     required this.liveCount,
@@ -41,6 +42,10 @@ class PondOverview {
   });
 
   final Pond pond;
+
+  /// What screens show: fish decide stocked/empty (see
+  /// [effectivePondStatus]).
+  final PondStatus status;
   final double? surfaceM2;
   final List<BatchInPond> batches;
   final int liveCount;
@@ -83,12 +88,18 @@ PondOverview buildPondOverview(
   );
   final live = here.fold(0, (n, b) => n + b.placement.live.count);
   final density = densityPerM2(live: live, surfaceM2: surface);
+  final inconsistent = here.any((b) => b.placement.live.inconsistent);
   return PondOverview(
     pond: pond,
+    status: effectivePondStatus(
+      stored: pond.status,
+      liveCount: live,
+      inconsistent: inconsistent,
+    ),
     surfaceM2: surface,
     batches: here,
     liveCount: live,
-    inconsistent: here.any((b) => b.placement.live.inconsistent),
+    inconsistent: inconsistent,
     biomassG: here.any((b) => b.biomassG == null)
         ? null
         : here.fold<int>(0, (n, b) => n + b.biomassG!),
