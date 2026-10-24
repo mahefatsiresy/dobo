@@ -286,5 +286,58 @@
         "type": "String"
       }
     }
+  },
+  "toPond": "Vers l'étang",
+  "transferCount": "Nombre de poissons",
+  "transferDate": "Date du transfert",
+  "avgWeightOptional": "Poids moyen (facultatif)",
+  "warnDestIsolated": "L'étang de destination est isolé",
+  "isolatedSource": "Étang isolé : aucun poisson ne doit en sortir",
+  "transferTitle": "Transférer {code} depuis {pond}",
+  "@transferTitle": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "estimateIn": "≈ {count} dans {pond}",
+  "@estimateIn": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "warnAboveEstimate": "Plus que l'estimation ({count})",
+  "@warnAboveEstimate": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "destDensity": "Densité de {pond} après transfert : {density} /m² (conseillé : {min} à {max})",
+  "@destDensity": {
+    "placeholders": {
+      "pond": {
+        "type": "String"
+      },
+      "density": {
+        "type": "String"
+      },
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
   }
 }

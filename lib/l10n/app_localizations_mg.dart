@@ -421,4 +421,42 @@ class AppLocalizationsMg extends AppLocalizations {
   String plannedHarvestOn(String date) {
     return 'Récolte prévue le $date';
   }
+
+  @override
+  String get toPond => 'Vers l\'étang';
+
+  @override
+  String get transferCount => 'Nombre de poissons';
+
+  @override
+  String get transferDate => 'Date du transfert';
+
+  @override
+  String get avgWeightOptional => 'Poids moyen (facultatif)';
+
+  @override
+  String get warnDestIsolated => 'L\'étang de destination est isolé';
+
+  @override
+  String get isolatedSource => 'Étang isolé : aucun poisson ne doit en sortir';
+
+  @override
+  String transferTitle(String code, String pond) {
+    return 'Transférer $code depuis $pond';
+  }
+
+  @override
+  String estimateIn(String count, String pond) {
+    return '≈ $count dans $pond';
+  }
+
+  @override
+  String warnAboveEstimate(String count) {
+    return 'Plus que l\'estimation ($count)';
+  }
+
+  @override
+  String destDensity(String pond, String density, String min, String max) {
+    return 'Densité de $pond après transfert : $density /m² (conseillé : $min à $max)';
+  }
 }

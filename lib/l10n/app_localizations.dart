@@ -853,6 +853,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Récolte prévue le {date}'**
   String plannedHarvestOn(String date);
+
+  /// No description provided for @toPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vers l\'étang'**
+  String get toPond;
+
+  /// No description provided for @transferCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de poissons'**
+  String get transferCount;
+
+  /// No description provided for @transferDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date du transfert'**
+  String get transferDate;
+
+  /// No description provided for @avgWeightOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen (facultatif)'**
+  String get avgWeightOptional;
+
+  /// No description provided for @warnDestIsolated.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'étang de destination est isolé'**
+  String get warnDestIsolated;
+
+  /// No description provided for @isolatedSource.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang isolé : aucun poisson ne doit en sortir'**
+  String get isolatedSource;
+
+  /// No description provided for @transferTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transférer {code} depuis {pond}'**
+  String transferTitle(String code, String pond);
+
+  /// No description provided for @estimateIn.
+  ///
+  /// In fr, this message translates to:
+  /// **'≈ {count} dans {pond}'**
+  String estimateIn(String count, String pond);
+
+  /// No description provided for @warnAboveEstimate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus que l\'estimation ({count})'**
+  String warnAboveEstimate(String count);
+
+  /// No description provided for @destDensity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité de {pond} après transfert : {density} /m² (conseillé : {min} à {max})'**
+  String destDensity(String pond, String density, String min, String max);
 }
 
 class _AppLocalizationsDelegate

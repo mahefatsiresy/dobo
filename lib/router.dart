@@ -6,6 +6,7 @@ import 'db/repositories/providers.dart';
 import 'features/batches/batch_detail_screen.dart';
 import 'features/batches/batches_screen.dart';
 import 'features/batches/stock_screen.dart';
+import 'features/batches/transfer_screen.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
@@ -33,6 +34,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       GoRoute(path: '/setup', builder: (context, state) => const SetupScreen()),
+      GoRoute(
+        path: '/transfer',
+        builder: (context, state) => TransferScreen(
+          batchId: state.uri.queryParameters['batchId']!,
+          fromPondId: state.uri.queryParameters['fromPondId'],
+        ),
+      ),
       GoRoute(
         path: '/stock',
         builder: (context, state) =>
@@ -87,6 +95,13 @@ final routerProvider = Provider<GoRouter>((ref) {
                             path: 'edit',
                             builder: (context, state) => BatchFormScreen(
                               batchId: state.pathParameters['id']!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'transfers/:transferId/edit',
+                            builder: (context, state) => TransferScreen(
+                              batchId: state.pathParameters['id']!,
+                              transferId: state.pathParameters['transferId'],
                             ),
                           ),
                           GoRoute(
