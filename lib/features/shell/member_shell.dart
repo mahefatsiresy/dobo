@@ -24,6 +24,11 @@ class MemberShell extends StatelessWidget {
             icon: const Icon(Icons.water),
             label: l10n.tabPonds,
           ),
+
+          NavigationDestination(
+            icon: const Icon(Icons.assignment),
+            label: l10n.tabVisit,
+          ),
           NavigationDestination(
             icon: const Icon(Icons.menu),
             label: l10n.tabMore,

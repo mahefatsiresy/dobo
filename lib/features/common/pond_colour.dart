@@ -27,17 +27,22 @@ class PondBadge extends StatelessWidget {
     final light = background.computeLuminance() > 0.4;
     return Container(
       constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
-      alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        code,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: light ? Colors.black : Colors.white,
-          fontWeight: FontWeight.bold,
+      // Sized to the code (at least 56 dp), not to the space offered: as a
+      // list row's leading widget it must not take the whole row.
+      child: Center(
+        widthFactor: 1,
+        heightFactor: 1,
+        child: Text(
+          code,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: light ? Colors.black : Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

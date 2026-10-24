@@ -22,6 +22,8 @@ import 'features/readings/sample_screen.dart';
 import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/transcription/transcription_screen.dart';
+import 'features/visit/condition_check.dart';
+import 'features/visit/visit_screen.dart';
 import 'features/shell/member_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -55,6 +57,18 @@ final routerProvider = Provider<GoRouter>((ref) {
             date: date == null ? farmToday() : DateTime.parse(date),
           );
         },
+      ),
+      GoRoute(
+        path: '/water/:pondId',
+        builder: (context, state) =>
+            WaterReadingScreen(pondId: state.pathParameters['pondId']!),
+      ),
+      GoRoute(
+        path: '/sample/:pondId',
+        builder: (context, state) => SampleScreen(
+          pondId: state.pathParameters['pondId']!,
+          batchId: state.uri.queryParameters['batchId']!,
+        ),
       ),
       GoRoute(
         path: '/transfer',
@@ -103,20 +117,23 @@ final routerProvider = Provider<GoRouter>((ref) {
                           pondId: state.pathParameters['id']!,
                         ),
                       ),
-                      GoRoute(
-                        path: 'water',
-                        builder: (context, state) => WaterReadingScreen(
-                          pondId: state.pathParameters['id']!,
-                        ),
-                      ),
-                      GoRoute(
-                        path: 'sample',
-                        builder: (context, state) => SampleScreen(
-                          pondId: state.pathParameters['id']!,
-                          batchId: state.uri.queryParameters['batchId']!,
-                        ),
-                      ),
                     ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/visit',
+                builder: (context, state) => const VisitScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'conditions/:pondId',
+                    builder: (context, state) => ConditionCheckScreen(
+                      pondId: state.pathParameters['pondId']!,
+                    ),
                   ),
                 ],
               ),

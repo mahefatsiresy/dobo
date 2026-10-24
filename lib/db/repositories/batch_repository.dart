@@ -11,6 +11,7 @@ import '../session.dart';
 import '../sync_columns.dart';
 import '../sync_state.dart';
 import 'errors.dart';
+import 'watch_tables.dart';
 
 /// A new batch and its first stocking (SPEC F2).
 class StockInput {
@@ -428,18 +429,10 @@ class BatchRepository {
 
   DateTime? _date(DateTime? d) => d == null ? null : farmDateToUtc(d);
 
-  /// Emits [load] now and again whenever one of [tables] changes.
   Stream<T> _watch<T>(
     Set<TableInfo<Table, Object?>> tables,
     Future<T> Function() load,
-  ) async* {
-    yield await load();
-    await for (final _ in db.tableUpdates(
-      TableUpdateQuery.onAllTables(tables),
-    )) {
-      yield await load();
-    }
-  }
+  ) => watchTables(db, tables, load);
 }
 
 /// Fish per (batch, pond) from the current stockings, moves, samples and

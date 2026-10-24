@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/errors.dart';
@@ -233,5 +235,22 @@ void main() {
     await batches.transfer(moveInput(l1, from: e1, to: e2, count: 1000));
     await ponds.archive(e1);
     expect((await ponds.get(e1)).archived, isTrue);
+  });
+
+  test('the batch list updates when a batch is edited', () async {
+    final l1 = await batches.stockBatch(stockInput('L26-01', pondId: e1));
+    final first = Completer<void>(), edited = Completer<void>();
+    final sub = batches.watchAll().listen((list) {
+      final strain = list.singleWhere((s) => s.batch.id == l1).batch.strain;
+      if (!first.isCompleted) first.complete();
+      if (strain == 'GIFT' && !edited.isCompleted) edited.complete();
+    });
+    await first.future;
+    await batches.updateBatch(
+      l1,
+      const BatchInput(code: 'L26-01', strain: 'GIFT'),
+    );
+    await edited.future.timeout(const Duration(seconds: 2));
+    await sub.cancel();
   });
 }

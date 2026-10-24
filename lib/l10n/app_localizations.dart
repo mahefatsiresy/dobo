@@ -1471,6 +1471,192 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Lever l\'isolement de {code} ? Les poissons pourront de nouveau en sortir.'**
   String releaseConfirm(String code);
+
+  /// No description provided for @tabVisit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visite'**
+  String get tabVisit;
+
+  /// No description provided for @startVisit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Démarrer une visite'**
+  String get startVisit;
+
+  /// No description provided for @sectionWater.
+  ///
+  /// In fr, this message translates to:
+  /// **'Eau'**
+  String get sectionWater;
+
+  /// No description provided for @sectionSamples.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échantillons'**
+  String get sectionSamples;
+
+  /// No description provided for @sectionConditions.
+  ///
+  /// In fr, this message translates to:
+  /// **'État des étangs'**
+  String get sectionConditions;
+
+  /// No description provided for @sectionBiosecurity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Biosécurité'**
+  String get sectionBiosecurity;
+
+  /// No description provided for @sectionObservations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Observations'**
+  String get sectionObservations;
+
+  /// No description provided for @summary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résumé'**
+  String get summary;
+
+  /// No description provided for @allDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout est fait'**
+  String get allDone;
+
+  /// No description provided for @endVisit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminer la visite'**
+  String get endVisit;
+
+  /// No description provided for @endVisitConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.'**
+  String get endVisitConfirm;
+
+  /// No description provided for @visitEnded.
+  ///
+  /// In fr, this message translates to:
+  /// **'terminée'**
+  String get visitEnded;
+
+  /// No description provided for @visitOngoing.
+  ///
+  /// In fr, this message translates to:
+  /// **'en cours'**
+  String get visitOngoing;
+
+  /// No description provided for @addObservation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une observation'**
+  String get addObservation;
+
+  /// No description provided for @observationText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Observation'**
+  String get observationText;
+
+  /// No description provided for @category.
+  ///
+  /// In fr, this message translates to:
+  /// **'Catégorie'**
+  String get category;
+
+  /// No description provided for @conditionOk.
+  ///
+  /// In fr, this message translates to:
+  /// **'OK'**
+  String get conditionOk;
+
+  /// No description provided for @conditionProblem.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problème'**
+  String get conditionProblem;
+
+  /// No description provided for @pastVisits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visites précédentes'**
+  String get pastVisits;
+
+  /// No description provided for @noVisits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune visite pour l\'instant'**
+  String get noVisits;
+
+  /// No description provided for @bioDisinfect.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)'**
+  String get bioDisinfect;
+
+  /// No description provided for @bioToolsPerPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un jeu d\'outils par étang si possible'**
+  String get bioToolsPerPond;
+
+  /// No description provided for @bioFootbath.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pédiluve ou bottes propres à l\'entrée'**
+  String get bioFootbath;
+
+  /// No description provided for @bioAnimals.
+  ///
+  /// In fr, this message translates to:
+  /// **'Canards et autres animaux tenus à l\'écart'**
+  String get bioAnimals;
+
+  /// No description provided for @bioPredators.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filets anti-prédateurs et petite clôture en place'**
+  String get bioPredators;
+
+  /// No description provided for @bioProtection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gants et bottes pour la chaux et le chlore'**
+  String get bioProtection;
+
+  /// No description provided for @bioNotAlone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne ne travaille seul pendant une vidange ou une grosse pêche'**
+  String get bioNotAlone;
+
+  /// No description provided for @visitOpenSince.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visite en cours depuis {time}'**
+  String visitOpenSince(String time);
+
+  /// No description provided for @sampleOfIn.
+  ///
+  /// In fr, this message translates to:
+  /// **'{batch} dans {pond}'**
+  String sampleOfIn(String batch, String pond);
+
+  /// No description provided for @conditionsOf.
+  ///
+  /// In fr, this message translates to:
+  /// **'État de {pond}'**
+  String conditionsOf(String pond);
+
+  /// No description provided for @visitLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} · {state}'**
+  String visitLine(String date, String state);
 }
 
 class _AppLocalizationsDelegate

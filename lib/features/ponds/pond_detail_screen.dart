@@ -192,7 +192,7 @@ class PondDetailScreen extends ConsumerWidget {
                         minimumSize: const Size.fromHeight(56),
                       ),
                       onPressed: () => context.push(
-                        '/ponds/${pond.id}/sample?batchId=${b.batch.id}',
+                        '/sample/${pond.id}?batchId=${b.batch.id}',
                       ),
                       icon: const Icon(Icons.scale),
                       label: Text(l10n.sampling),
@@ -207,7 +207,7 @@ class PondDetailScreen extends ConsumerWidget {
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(56),
             ),
-            onPressed: () => context.push('/ponds/${pond.id}/water'),
+            onPressed: () => context.push('/water/${pond.id}'),
             icon: const Icon(Icons.water_drop),
             label: Text(l10n.waterReading),
           ),

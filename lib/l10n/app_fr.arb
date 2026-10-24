@@ -497,5 +497,70 @@
         "type": "String"
       }
     }
+  },
+  "tabVisit": "Visite",
+  "startVisit": "Démarrer une visite",
+  "sectionWater": "Eau",
+  "sectionSamples": "Échantillons",
+  "sectionConditions": "État des étangs",
+  "sectionBiosecurity": "Biosécurité",
+  "sectionObservations": "Observations",
+  "summary": "Résumé",
+  "allDone": "Tout est fait",
+  "endVisit": "Terminer la visite",
+  "endVisitConfirm": "Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.",
+  "visitEnded": "terminée",
+  "visitOngoing": "en cours",
+  "addObservation": "Ajouter une observation",
+  "observationText": "Observation",
+  "category": "Catégorie",
+  "conditionOk": "OK",
+  "conditionProblem": "Problème",
+  "pastVisits": "Visites précédentes",
+  "noVisits": "Aucune visite pour l'instant",
+  "bioDisinfect": "Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)",
+  "bioToolsPerPond": "Un jeu d'outils par étang si possible",
+  "bioFootbath": "Pédiluve ou bottes propres à l'entrée",
+  "bioAnimals": "Canards et autres animaux tenus à l'écart",
+  "bioPredators": "Filets anti-prédateurs et petite clôture en place",
+  "bioProtection": "Gants et bottes pour la chaux et le chlore",
+  "bioNotAlone": "Personne ne travaille seul pendant une vidange ou une grosse pêche",
+  "visitOpenSince": "Visite en cours depuis {time}",
+  "@visitOpenSince": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sampleOfIn": "{batch} dans {pond}",
+  "@sampleOfIn": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      },
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "conditionsOf": "État de {pond}",
+  "@conditionsOf": {
+    "placeholders": {
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "visitLine": "{date} · {state}",
+  "@visitLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
   }
 }

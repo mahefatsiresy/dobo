@@ -760,4 +760,109 @@ class AppLocalizationsFr extends AppLocalizations {
   String releaseConfirm(String code) {
     return 'Lever l\'isolement de $code ? Les poissons pourront de nouveau en sortir.';
   }
+
+  @override
+  String get tabVisit => 'Visite';
+
+  @override
+  String get startVisit => 'Démarrer une visite';
+
+  @override
+  String get sectionWater => 'Eau';
+
+  @override
+  String get sectionSamples => 'Échantillons';
+
+  @override
+  String get sectionConditions => 'État des étangs';
+
+  @override
+  String get sectionBiosecurity => 'Biosécurité';
+
+  @override
+  String get sectionObservations => 'Observations';
+
+  @override
+  String get summary => 'Résumé';
+
+  @override
+  String get allDone => 'Tout est fait';
+
+  @override
+  String get endVisit => 'Terminer la visite';
+
+  @override
+  String get endVisitConfirm =>
+      'Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.';
+
+  @override
+  String get visitEnded => 'terminée';
+
+  @override
+  String get visitOngoing => 'en cours';
+
+  @override
+  String get addObservation => 'Ajouter une observation';
+
+  @override
+  String get observationText => 'Observation';
+
+  @override
+  String get category => 'Catégorie';
+
+  @override
+  String get conditionOk => 'OK';
+
+  @override
+  String get conditionProblem => 'Problème';
+
+  @override
+  String get pastVisits => 'Visites précédentes';
+
+  @override
+  String get noVisits => 'Aucune visite pour l\'instant';
+
+  @override
+  String get bioDisinfect =>
+      'Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)';
+
+  @override
+  String get bioToolsPerPond => 'Un jeu d\'outils par étang si possible';
+
+  @override
+  String get bioFootbath => 'Pédiluve ou bottes propres à l\'entrée';
+
+  @override
+  String get bioAnimals => 'Canards et autres animaux tenus à l\'écart';
+
+  @override
+  String get bioPredators =>
+      'Filets anti-prédateurs et petite clôture en place';
+
+  @override
+  String get bioProtection => 'Gants et bottes pour la chaux et le chlore';
+
+  @override
+  String get bioNotAlone =>
+      'Personne ne travaille seul pendant une vidange ou une grosse pêche';
+
+  @override
+  String visitOpenSince(String time) {
+    return 'Visite en cours depuis $time';
+  }
+
+  @override
+  String sampleOfIn(String batch, String pond) {
+    return '$batch dans $pond';
+  }
+
+  @override
+  String conditionsOf(String pond) {
+    return 'État de $pond';
+  }
+
+  @override
+  String visitLine(String date, String state) {
+    return '$date · $state';
+  }
 }

@@ -60,3 +60,54 @@ Placement placementOf(
   live: LiveCount(count, inconsistent: inconsistent),
   avgWeightG: g,
 );
+
+WaterReading readingRow(String pondId, {String? visitId}) => WaterReading(
+  id: 'r-$pondId',
+  associationId: 'a1',
+  enteredBy: 'u1',
+  createdAtDevice: _t,
+  deviceId: 'd1',
+  syncState: SyncState.pending,
+  recordedAt: _t,
+  isTombstone: false,
+  visitId: visitId,
+  pondId: pondId,
+  ph: 7.2,
+);
+
+Sample sampleRow(String batchId, String pondId, {String? visitId}) => Sample(
+  id: 's-$batchId-$pondId',
+  associationId: 'a1',
+  enteredBy: 'u1',
+  createdAtDevice: _t,
+  deviceId: 'd1',
+  syncState: SyncState.pending,
+  recordedAt: _t,
+  isTombstone: false,
+  visitId: visitId,
+  batchId: batchId,
+  pondId: pondId,
+  fishCount: 30,
+  totalWeightG: 900,
+);
+
+Observation observationRow(
+  String? pondId,
+  ObservationCategory category, {
+  bool? ok = true,
+  String? visitId,
+}) => Observation(
+  id: 'o-$pondId-${category.name}',
+  associationId: 'a1',
+  enteredBy: 'u1',
+  createdAtDevice: _t,
+  deviceId: 'd1',
+  syncState: SyncState.pending,
+  recordedAt: _t,
+  isTombstone: false,
+  visitId: visitId,
+  siteId: 's1',
+  pondId: pondId,
+  category: category,
+  ok: ok,
+);

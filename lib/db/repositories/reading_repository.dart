@@ -6,6 +6,7 @@ import '../../domain/types.dart';
 import '../database.dart';
 import '../events.dart';
 import '../session.dart';
+import 'watch_tables.dart';
 
 /// A water reading at a moment (UTC instant).
 class WaterReadingInput {
@@ -107,6 +108,55 @@ class ReadingRepository {
             )
             ..orderBy([(s) => OrderingTerm.desc(s.recordedAt)]))
           .watch();
+
+  Stream<List<WaterReading>> watchReadingsForVisit(String visitId) =>
+      (db.select(db.waterReadings)..where(
+            (r) => isCurrentEvent(db.waterReadings) & r.visitId.equals(visitId),
+          ))
+          .watch();
+
+  Stream<List<Sample>> watchSamplesForVisit(String visitId) =>
+      (db.select(db.samples)..where(
+            (s) => isCurrentEvent(db.samples) & s.visitId.equals(visitId),
+          ))
+          .watch();
+
+  /// For each (batch, pond): its latest sample date, or, never sampled
+  /// there, when fish of the batch first arrived in the pond. Sampling is
+  /// due 14 days after it (DOMAIN §Sampling).
+  Stream<Map<(String, String), DateTime>> watchLastSampleOrStocking() {
+    Future<Map<(String, String), DateTime>> load() async {
+      final arrived = <(String, String), DateTime>{};
+      void arrive((String, String) key, DateTime at) {
+        final seen = arrived[key];
+        if (seen == null || at.isBefore(seen)) arrived[key] = at;
+      }
+
+      for (final s in await (db.select(
+        db.stockings,
+      )..where((_) => isCurrentEvent(db.stockings))).get()) {
+        arrive((s.batchId, s.pondId), s.recordedAt);
+      }
+      for (final t in await (db.select(
+        db.transfers,
+      )..where((_) => isCurrentEvent(db.transfers))).get()) {
+        arrive((t.batchId, t.toPondId), t.recordedAt);
+      }
+      final sampled = <(String, String), DateTime>{};
+      for (final s in await (db.select(
+        db.samples,
+      )..where((_) => isCurrentEvent(db.samples))).get()) {
+        final key = (s.batchId, s.pondId);
+        final seen = sampled[key];
+        if (seen == null || s.recordedAt.isAfter(seen)) {
+          sampled[key] = s.recordedAt;
+        }
+      }
+      return {...arrived, ...sampled};
+    }
+
+    return watchTables(db, {db.stockings, db.transfers, db.samples}, load);
+  }
 
   void _checkReading(WaterReadingInput input) {
     if (input.isEmpty) throw ArgumentError('A water reading needs a value');
