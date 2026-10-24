@@ -46,4 +46,13 @@ void main() {
     expect(w(dOut: 0.9), isEmpty); // one depth can't give the mean
     expect(w(), isEmpty);
   });
+
+  test('surface from length and width, or the override', () {
+    expect(pondSurfaceM2(lengthM: 30, widthM: 15), 450.0);
+    expect(pondSurfaceM2(lengthM: 30, widthM: 15, overrideM2: 420), 420.0);
+    expect(pondSurfaceM2(overrideM2: 420), 420.0);
+    expect(pondSurfaceM2(lengthM: 30), isNull);
+    expect(pondSurfaceM2(lengthM: 30, widthM: 15, overrideM2: 0), 450.0);
+    expect(pondSurfaceM2(lengthM: 0, widthM: 15), isNull);
+  });
 }

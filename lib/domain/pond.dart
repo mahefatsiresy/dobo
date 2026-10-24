@@ -58,3 +58,12 @@ Set<PondDesignWarning> pondDesignWarnings({
   }
   return warnings;
 }
+
+/// Pond surface: the override when given, else length × width.
+double? pondSurfaceM2({double? lengthM, double? widthM, double? overrideM2}) {
+  if (overrideM2 != null && overrideM2 > 0) return overrideM2;
+  if (lengthM == null || widthM == null || lengthM <= 0 || widthM <= 0) {
+    return null;
+  }
+  return lengthM * widthM;
+}
