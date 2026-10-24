@@ -9,6 +9,8 @@ import 'features/batches/stock_screen.dart';
 import 'features/batches/transfer_screen.dart';
 import 'features/daily_log/daily_log_screen.dart';
 import 'features/daily_log/worker_home_screen.dart';
+import 'features/health/report_problem_screen.dart';
+import 'features/health/treatment_screen.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
@@ -88,6 +90,18 @@ final routerProvider = Provider<GoRouter>((ref) {
                         path: 'edit',
                         builder: (context, state) =>
                             PondFormScreen(pondId: state.pathParameters['id']),
+                      ),
+                      GoRoute(
+                        path: 'problem',
+                        builder: (context, state) => ReportProblemScreen(
+                          pondId: state.pathParameters['id']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'treatment',
+                        builder: (context, state) => TreatmentScreen(
+                          pondId: state.pathParameters['id']!,
+                        ),
                       ),
                       GoRoute(
                         path: 'water',

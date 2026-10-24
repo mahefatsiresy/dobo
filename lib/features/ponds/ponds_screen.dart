@@ -7,6 +7,8 @@ import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
 import 'pond_figures.dart';
 import 'pond_overview.dart';
+import '../../domain/types.dart';
+import '../common/notice.dart';
 
 class PondsScreen extends ConsumerWidget {
   const PondsScreen({super.key});
@@ -51,6 +53,11 @@ class PondsScreen extends ConsumerWidget {
                                         .titleMedium,
                                   ),
                                   Text(l10n.pondStatus(o.status)),
+                                  if (o.status == PondStatus.isolated)
+                                    Notice(
+                                      l10n.pondIsolatedBanner,
+                                      danger: true,
+                                    ),
                                   const SizedBox(height: 4),
                                   PondFigures(overview: o),
                                 ],

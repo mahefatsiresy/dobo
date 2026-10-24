@@ -466,5 +466,36 @@
         "type": "String"
       }
     }
+  },
+  "reportProblem": "Signaler un problème",
+  "suspectedIssue": "Problème suspecté (facultatif)",
+  "isolatePond": "Isoler l'étang",
+  "technicianCalled": "Technicien ou vétérinaire appelé",
+  "healthResponse": "Isoler l'étang, ne déplacer ni poissons ni eau vers les autres étangs, appeler un technicien ou un vétérinaire avant tout traitement.",
+  "healthInfoTitle": "Information, pas un diagnostic",
+  "diseaseStrepto": "Streptococcose",
+  "diseaseStreptoSigns": "nage désordonnée, yeux gonflés, mortalité rapide ; favorisée par une forte densité et la chaleur.",
+  "diseaseAeromonas": "Aeromonas",
+  "diseaseAeromonasSigns": "ulcères de la peau, nageoires qui saignent ; liée à une eau de mauvaise qualité ou aux blessures de manipulation.",
+  "diseaseParasites": "Parasites externes (Trichodina, Ich)",
+  "diseaseParasitesSigns": "se frotte aux parois ou au fond, trop de mucus, points blancs.",
+  "releaseIsolation": "Lever l'isolement",
+  "treatment": "Traitement",
+  "product": "Produit",
+  "dose": "Dose",
+  "advisedBy": "Conseillé par",
+  "treatmentDate": "Date du traitement",
+  "healthHistory": "Santé",
+  "actionIsolated": "isolé",
+  "actionTechnician": "technicien appelé",
+  "actionReleased": "isolement levé",
+  "batchOptional": "Lot (facultatif)",
+  "releaseConfirm": "Lever l'isolement de {code} ? Les poissons pourront de nouveau en sortir.",
+  "@releaseConfirm": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   }
 }

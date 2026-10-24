@@ -17,6 +17,7 @@ import 'pond_figures.dart';
 import 'pond_overview.dart';
 import '../../domain/water.dart';
 import '../readings/reading_providers.dart';
+import '../health/health_providers.dart';
 
 class PondDetailScreen extends ConsumerWidget {
   const PondDetailScreen({super.key, required this.pondId});
@@ -57,6 +58,31 @@ class PondDetailScreen extends ConsumerWidget {
     }
   }
 
+  Future<void> _release(
+    BuildContext context,
+    WidgetRef ref,
+    String code,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l10n.releaseConfirm(code)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.releaseIsolation),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) await ref.read(healthRepositoryProvider).release(pondId);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -75,6 +101,18 @@ class PondDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(pond.code)),
+      // The isolation banner stays in view however far the page scrolls.
+      bottomNavigationBar: o.status == PondStatus.isolated
+          ? Material(
+              color: Colors.red.shade50,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Notice(l10n.pondIsolatedBanner, danger: true),
+                ),
+              ),
+            )
+          : null,
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -101,8 +139,6 @@ class PondDetailScreen extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          if (o.status == PondStatus.isolated)
-            Notice(l10n.pondIsolatedBanner, danger: true),
           PondFigures(overview: o),
           _LatestReading(pondId: pond.id),
           for (final b in o.batches) ...[
@@ -176,6 +212,35 @@ class PondDetailScreen extends ConsumerWidget {
             label: Text(l10n.waterReading),
           ),
           const SizedBox(height: 8),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: () => context.push('/ponds/${pond.id}/problem'),
+            icon: const Icon(Icons.report_problem),
+            label: Text(l10n.reportProblem),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: () => context.push('/ponds/${pond.id}/treatment'),
+            icon: const Icon(Icons.medication),
+            label: Text(l10n.treatment),
+          ),
+          if (o.status == PondStatus.isolated) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              onPressed: () => _release(context, ref, pond.code),
+              icon: const Icon(Icons.lock_open),
+              label: Text(l10n.releaseIsolation),
+            ),
+          ],
+          const SizedBox(height: 8),
           FilledButton.icon(
             style: wide,
             onPressed: () => context.push('/log/${pond.id}'),
@@ -205,6 +270,7 @@ class PondDetailScreen extends ConsumerWidget {
             icon: const Icon(Icons.archive),
             label: Text(l10n.archive),
           ),
+          _HealthHistory(pondId: pond.id),
         ],
       ),
     );
@@ -265,6 +331,62 @@ class _LatestReading extends ConsumerWidget {
             part('O₂ ${n(r.oxygenMgL!)} mg/L', WaterParam.oxygen),
           if (r.colour != null)
             part(l10n.waterColour(r.colour!), WaterParam.colour),
+        ],
+      ),
+    );
+  }
+}
+
+/// Health events and treatments of a pond, newest first (SPEC F9).
+class _HealthHistory extends ConsumerWidget {
+  const _HealthHistory({required this.pondId});
+
+  final String pondId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final events = ref.watch(healthEventsProvider(pondId)).value ?? const [];
+    final treatments = ref.watch(treatmentsProvider(pondId)).value ?? const [];
+    if (events.isEmpty && treatments.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
+    String action(HealthAction a) => switch (a) {
+      HealthAction.isolated => l10n.actionIsolated,
+      HealthAction.technicianCalled => l10n.actionTechnician,
+      HealthAction.released => l10n.actionReleased,
+    };
+    final lines = <(DateTime, String)>[
+      for (final e in events)
+        (
+          e.recordedAt,
+          [
+            formatDate(e.recordedAt),
+            ...e.signs.map(l10n.warningSign),
+            ?e.suspectedIssue,
+            ...e.actions.map(action),
+          ].join(' · '),
+        ),
+      for (final t in treatments)
+        (
+          t.recordedAt,
+          '${formatDate(t.recordedAt)} · ${l10n.treatment} : '
+              '${t.product}, ${t.dose}'
+              '${t.advisedBy == null ? '' : ' (${t.advisedBy})'}',
+        ),
+    ]..sort((a, b) => b.$1.compareTo(a.$1));
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.healthHistory,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          for (final (_, text) in lines)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(text),
+            ),
         ],
       ),
     );

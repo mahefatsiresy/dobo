@@ -111,6 +111,7 @@ void main() {
     await tapAndSettle(tester, find.text('Prêt').last);
     await tapAndSettle(tester, find.text('Enregistrer'));
     expect((await ponds.get(e1)).status, PondStatus.ready);
-    expect(find.text('Prêt'), findsOneWidget);
+    await tapAndSettle(tester, find.text('Étangs'));
+    expect(find.text('Prêt'), findsOneWidget); // E1's card
   });
 }

@@ -1327,6 +1327,150 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Semaine du {date}'**
   String weekOfLabel(String date);
+
+  /// No description provided for @reportProblem.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signaler un problème'**
+  String get reportProblem;
+
+  /// No description provided for @suspectedIssue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problème suspecté (facultatif)'**
+  String get suspectedIssue;
+
+  /// No description provided for @isolatePond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Isoler l\'étang'**
+  String get isolatePond;
+
+  /// No description provided for @technicianCalled.
+  ///
+  /// In fr, this message translates to:
+  /// **'Technicien ou vétérinaire appelé'**
+  String get technicianCalled;
+
+  /// No description provided for @healthResponse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Isoler l\'étang, ne déplacer ni poissons ni eau vers les autres étangs, appeler un technicien ou un vétérinaire avant tout traitement.'**
+  String get healthResponse;
+
+  /// No description provided for @healthInfoTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Information, pas un diagnostic'**
+  String get healthInfoTitle;
+
+  /// No description provided for @diseaseStrepto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Streptococcose'**
+  String get diseaseStrepto;
+
+  /// No description provided for @diseaseStreptoSigns.
+  ///
+  /// In fr, this message translates to:
+  /// **'nage désordonnée, yeux gonflés, mortalité rapide ; favorisée par une forte densité et la chaleur.'**
+  String get diseaseStreptoSigns;
+
+  /// No description provided for @diseaseAeromonas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aeromonas'**
+  String get diseaseAeromonas;
+
+  /// No description provided for @diseaseAeromonasSigns.
+  ///
+  /// In fr, this message translates to:
+  /// **'ulcères de la peau, nageoires qui saignent ; liée à une eau de mauvaise qualité ou aux blessures de manipulation.'**
+  String get diseaseAeromonasSigns;
+
+  /// No description provided for @diseaseParasites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parasites externes (Trichodina, Ich)'**
+  String get diseaseParasites;
+
+  /// No description provided for @diseaseParasitesSigns.
+  ///
+  /// In fr, this message translates to:
+  /// **'se frotte aux parois ou au fond, trop de mucus, points blancs.'**
+  String get diseaseParasitesSigns;
+
+  /// No description provided for @releaseIsolation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lever l\'isolement'**
+  String get releaseIsolation;
+
+  /// No description provided for @treatment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traitement'**
+  String get treatment;
+
+  /// No description provided for @product.
+  ///
+  /// In fr, this message translates to:
+  /// **'Produit'**
+  String get product;
+
+  /// No description provided for @dose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dose'**
+  String get dose;
+
+  /// No description provided for @advisedBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conseillé par'**
+  String get advisedBy;
+
+  /// No description provided for @treatmentDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date du traitement'**
+  String get treatmentDate;
+
+  /// No description provided for @healthHistory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Santé'**
+  String get healthHistory;
+
+  /// No description provided for @actionIsolated.
+  ///
+  /// In fr, this message translates to:
+  /// **'isolé'**
+  String get actionIsolated;
+
+  /// No description provided for @actionTechnician.
+  ///
+  /// In fr, this message translates to:
+  /// **'technicien appelé'**
+  String get actionTechnician;
+
+  /// No description provided for @actionReleased.
+  ///
+  /// In fr, this message translates to:
+  /// **'isolement levé'**
+  String get actionReleased;
+
+  /// No description provided for @batchOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot (facultatif)'**
+  String get batchOptional;
+
+  /// No description provided for @releaseConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lever l\'isolement de {code} ? Les poissons pourront de nouveau en sortir.'**
+  String releaseConfirm(String code);
 }
 
 class _AppLocalizationsDelegate

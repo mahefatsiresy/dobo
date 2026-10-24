@@ -42,14 +42,20 @@ void appTest(
 ProviderContainer appContainer(WidgetTester tester) =>
     ProviderScope.containerOf(tester.element(find.byType(DoboApp)));
 
-/// Scrolls [finder] into view, even in a lazily built list.
+/// Scrolls [finder] into view, down or up, even in a lazily built list.
 Future<void> _reveal(WidgetTester tester, Finder finder) async {
-  if (finder.evaluate().isEmpty) {
-    await tester.scrollUntilVisible(
-      finder,
-      200,
-      scrollable: _verticalScrollable,
-    );
+  for (final delta in const [200.0, -200.0]) {
+    if (finder.evaluate().isNotEmpty) break;
+    try {
+      await tester.scrollUntilVisible(
+        finder,
+        delta,
+        scrollable: _verticalScrollable,
+        maxScrolls: 30,
+      );
+    } on StateError {
+      // Not that way; try the other.
+    }
   }
   await tester.ensureVisible(finder);
   await tester.pumpAndSettle();

@@ -682,4 +682,82 @@ class AppLocalizationsMg extends AppLocalizations {
   String weekOfLabel(String date) {
     return 'Semaine du $date';
   }
+
+  @override
+  String get reportProblem => 'Signaler un problème';
+
+  @override
+  String get suspectedIssue => 'Problème suspecté (facultatif)';
+
+  @override
+  String get isolatePond => 'Isoler l\'étang';
+
+  @override
+  String get technicianCalled => 'Technicien ou vétérinaire appelé';
+
+  @override
+  String get healthResponse =>
+      'Isoler l\'étang, ne déplacer ni poissons ni eau vers les autres étangs, appeler un technicien ou un vétérinaire avant tout traitement.';
+
+  @override
+  String get healthInfoTitle => 'Information, pas un diagnostic';
+
+  @override
+  String get diseaseStrepto => 'Streptococcose';
+
+  @override
+  String get diseaseStreptoSigns =>
+      'nage désordonnée, yeux gonflés, mortalité rapide ; favorisée par une forte densité et la chaleur.';
+
+  @override
+  String get diseaseAeromonas => 'Aeromonas';
+
+  @override
+  String get diseaseAeromonasSigns =>
+      'ulcères de la peau, nageoires qui saignent ; liée à une eau de mauvaise qualité ou aux blessures de manipulation.';
+
+  @override
+  String get diseaseParasites => 'Parasites externes (Trichodina, Ich)';
+
+  @override
+  String get diseaseParasitesSigns =>
+      'se frotte aux parois ou au fond, trop de mucus, points blancs.';
+
+  @override
+  String get releaseIsolation => 'Lever l\'isolement';
+
+  @override
+  String get treatment => 'Traitement';
+
+  @override
+  String get product => 'Produit';
+
+  @override
+  String get dose => 'Dose';
+
+  @override
+  String get advisedBy => 'Conseillé par';
+
+  @override
+  String get treatmentDate => 'Date du traitement';
+
+  @override
+  String get healthHistory => 'Santé';
+
+  @override
+  String get actionIsolated => 'isolé';
+
+  @override
+  String get actionTechnician => 'technicien appelé';
+
+  @override
+  String get actionReleased => 'isolement levé';
+
+  @override
+  String get batchOptional => 'Lot (facultatif)';
+
+  @override
+  String releaseConfirm(String code) {
+    return 'Lever l\'isolement de $code ? Les poissons pourront de nouveau en sortir.';
+  }
 }
