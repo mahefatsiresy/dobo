@@ -20,17 +20,22 @@ void main() {
 
   test('setup creates the site and a session that persists', () async {
     final s = await repo.completeSetup(
-        siteName: 'Ambohidratrimo', locationNote: 'Route RN4');
+      siteName: 'Ambohidratrimo',
+      locationNote: 'Route RN4',
+    );
     expect(
-        await repo.currentSession(),
-        isA<Session>()
-            .having((x) => x.siteId, 'siteId', s.siteId)
-            .having((x) => x.userId, 'userId', s.userId)
-            .having((x) => x.associationId, 'associationId', s.associationId));
+      await repo.currentSession(),
+      isA<Session>()
+          .having((x) => x.siteId, 'siteId', s.siteId)
+          .having((x) => x.userId, 'userId', s.userId)
+          .having((x) => x.associationId, 'associationId', s.associationId),
+    );
     expect(s.deviceId, await db.deviceId());
     final site = await db.select(db.sites).getSingle();
-    expect((site.id, site.name, site.locationNote, site.enteredBy),
-        (s.siteId, 'Ambohidratrimo', 'Route RN4', s.userId));
+    expect(
+      (site.id, site.name, site.locationNote, site.enteredBy),
+      (s.siteId, 'Ambohidratrimo', 'Route RN4', s.userId),
+    );
     expect(site.associationId, s.associationId);
   });
 

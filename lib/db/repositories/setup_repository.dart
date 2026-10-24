@@ -18,7 +18,7 @@ class SetupRepository {
 
   Future<Session?> currentSession() async {
     final meta = {
-      for (final row in await db.select(db.localMeta).get()) row.key: row.value
+      for (final row in await db.select(db.localMeta).get()) row.key: row.value,
     };
     final associationId = meta[_associationKey];
     final userId = meta[_userKey];
@@ -37,34 +37,37 @@ class SetupRepository {
   Future<Session> completeSetup({
     required String siteName,
     String? locationNote,
-  }) =>
-      db.transaction(() async {
-        if (await currentSession() != null) {
-          throw StateError('Setup already done');
-        }
-        final session = Session(
-          associationId: newId(),
-          userId: newId(),
-          deviceId: await db.deviceId(),
-          siteId: newId(),
+  }) => db.transaction(() async {
+    if (await currentSession() != null) {
+      throw StateError('Setup already done');
+    }
+    final session = Session(
+      associationId: newId(),
+      userId: newId(),
+      deviceId: await db.deviceId(),
+      siteId: newId(),
+    );
+    await db
+        .into(db.sites)
+        .insert(
+          SitesCompanion.insert(
+            id: Value(session.siteId),
+            associationId: session.associationId,
+            enteredBy: session.userId,
+            deviceId: session.deviceId,
+            name: siteName,
+            locationNote: Value(locationNote),
+          ),
         );
-        await db.into(db.sites).insert(SitesCompanion.insert(
-              id: Value(session.siteId),
-              associationId: session.associationId,
-              enteredBy: session.userId,
-              deviceId: session.deviceId,
-              name: siteName,
-              locationNote: Value(locationNote),
-            ));
-        for (final (key, value) in [
-          (_associationKey, session.associationId),
-          (_userKey, session.userId),
-          (_siteKey, session.siteId),
-        ]) {
-          await db
-              .into(db.localMeta)
-              .insert(LocalMetaCompanion.insert(key: key, value: value));
-        }
-        return session;
-      });
+    for (final (key, value) in [
+      (_associationKey, session.associationId),
+      (_userKey, session.userId),
+      (_siteKey, session.siteId),
+    ]) {
+      await db
+          .into(db.localMeta)
+          .insert(LocalMetaCompanion.insert(key: key, value: value));
+    }
+    return session;
+  });
 }
