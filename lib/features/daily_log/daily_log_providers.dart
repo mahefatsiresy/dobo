@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
-import '../ponds/pond_overview.dart';
+import '../common/farm_today.dart';
 
 /// The current log of a pond on a farm date, if any.
 final dailyLogForDayProvider = FutureProvider.autoDispose
@@ -13,6 +13,7 @@ final dailyLogForDayProvider = FutureProvider.autoDispose
 
 /// Ponds already logged today.
 final loggedTodayProvider = StreamProvider<Set<String>>(
-  (ref) =>
-      ref.watch(dailyLogRepositoryProvider).watchLoggedPondsOn(farmToday()),
+  (ref) => ref
+      .watch(dailyLogRepositoryProvider)
+      .watchLoggedPondsOn(ref.watch(farmTodayProvider)),
 );

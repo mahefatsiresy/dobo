@@ -100,6 +100,30 @@ class ObservationRepository {
     return row.id;
   }
 
+  /// Corrects an observation: a new row superseding [id].
+  Future<String> correctObservation(
+    String id, {
+    String? pondId,
+    required ObservationCategory category,
+    bool? ok,
+    String? note,
+  }) => db.supersede(
+    db.observations,
+    id,
+    ObservationsCompanion.insert(
+      associationId: session.associationId,
+      enteredBy: session.userId,
+      deviceId: session.deviceId,
+      recordedAt: utcNow(),
+      visitId: Value(visitId),
+      siteId: session.siteId,
+      pondId: Value(pondId),
+      category: category,
+      ok: Value(ok),
+      note: Value(note),
+    ),
+  );
+
   Future<void> delete(String id) => db.tombstone(db.observations, id, session);
 
   /// Current observations made during [visitId], oldest first.

@@ -6,6 +6,7 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../locale_controller.dart';
+import '../common/farm_today.dart';
 import '../common/pond_colour.dart';
 import '../ponds/pond_overview.dart';
 import 'daily_log_providers.dart';
@@ -28,7 +29,7 @@ class WorkerHomeScreen extends ConsumerWidget {
           children: [
             Text(l10n.workerToday),
             Text(
-              formatDate(farmToday()),
+              formatDate(ref.watch(farmTodayProvider)),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

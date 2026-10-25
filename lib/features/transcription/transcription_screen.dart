@@ -95,7 +95,8 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
   Future<void> _save() async {
     final filled = [
       for (final MapEntry(key: (pondId, day), value: cell) in _cells.entries)
-        if (_days.contains(day) && !cell.isEmpty) (pondId, day, cell),
+        // Every week's cells: input typed before changing week is kept.
+        if (!cell.isEmpty) (pondId, day, cell),
     ];
     final missingFeed = filled.any((f) => parseDecimal(f.$3.kg.text) == null);
     setState(() {

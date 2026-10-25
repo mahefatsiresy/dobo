@@ -45,6 +45,9 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
   var _signs = <WarningSign>{};
   WaterColour? _colour;
   var _showNote = false;
+
+  /// Whose paper sheet the day came from: kept when it is corrected.
+  String? _observedBy;
   var _loaded = false;
 
   @override
@@ -68,6 +71,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
   void _load(DailyLog? log) {
     _loaded = true;
     if (log == null) return;
+    _observedBy = log.observedBy;
     _feed.text = formatForInput(log.feedGivenG / 1000);
     _deaths.text = '${log.deaths}';
     _note.text = log.note ?? '';
@@ -111,6 +115,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
             warningSigns: _signs,
             waterColour: _colour,
             note: note.isEmpty ? null : note,
+            observedBy: _observedBy,
           ),
         );
     ref.invalidate(dailyLogForDayProvider((widget.pondId, widget.date)));

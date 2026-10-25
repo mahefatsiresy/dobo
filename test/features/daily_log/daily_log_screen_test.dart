@@ -127,4 +127,33 @@ void main() {
     await tapAndSettle(tester, find.text('Mode ouvrier'));
     expect(find.text('Dobo mitokana'), findsOneWidget);
   });
+
+  appTest('correcting a transcribed day keeps whose sheet it was', (
+    tester,
+    db,
+  ) async {
+    await stocked(tester, db);
+    await DailyLogRepository(db, session).save(
+      DailyLogInput(
+        pondId: e1,
+        date: farmDate(DateTime.now().toUtc()),
+        feedGivenG: 30000,
+        observedBy: 'p-rakoto',
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('E1'));
+    await tapAndSettle(tester, find.text('Journal du jour'));
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, 'Aliment donné'),
+      '3',
+    );
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    final current = await DailyLogRepository(
+      db,
+      session,
+    ).forDay(e1, farmDate(DateTime.now().toUtc()));
+    expect((current!.feedGivenG, current.observedBy), (3000, 'p-rakoto'));
+  });
 }

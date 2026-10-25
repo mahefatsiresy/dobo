@@ -85,4 +85,20 @@ void main() {
     expect(find.textContaining("Indiquez l'aliment"), findsOneWidget);
     expect(await db.select(db.dailyLogs).get(), hasLength(1));
   });
+
+  appTest('cells typed in two weeks are all saved', (tester, db) async {
+    await openWeek(tester, db);
+    await tapAndSettle(tester, find.byKey(const ValueKey('sheetOf')));
+    await tapAndSettle(tester, find.text('Rakoto').last);
+    await enterAndSettle(tester, cell('kg', '2026-03-31'), '3');
+    await tapAndSettle(tester, find.byTooltip('Semaine suivante'));
+    await enterAndSettle(tester, cell('kg', '2026-04-07'), '4');
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    final days = {
+      for (final l in await db.select(db.dailyLogs).get())
+        farmDate(l.recordedAt): l.feedGivenG,
+    };
+    expect(days[DateTime(2026, 3, 31)], 3000);
+    expect(days[DateTime(2026, 4, 7)], 4000);
+  });
 }

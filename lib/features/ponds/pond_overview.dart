@@ -11,6 +11,7 @@ import '../../domain/pond.dart';
 import '../../domain/ration.dart';
 import '../../domain/stock.dart';
 import '../../domain/types.dart';
+import '../common/farm_today.dart';
 
 /// One batch's share of a pond.
 class BatchInPond {
@@ -150,7 +151,9 @@ DateTime farmToday() => farmDate(DateTime.now().toUtc());
 
 /// Each pond's last daily log before today.
 final lastLogsProvider = StreamProvider<Map<String, DailyLog>>(
-  (ref) => ref.watch(dailyLogRepositoryProvider).watchLatestBefore(farmToday()),
+  (ref) => ref
+      .watch(dailyLogRepositoryProvider)
+      .watchLatestBefore(ref.watch(farmTodayProvider)),
 );
 
 /// Every active pond with what it holds, by code.

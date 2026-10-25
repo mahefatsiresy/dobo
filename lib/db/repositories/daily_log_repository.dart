@@ -72,13 +72,21 @@ class DailyLogRepository {
     }
   });
 
-  /// The current log of [pondId] on the farm date [date].
+  /// The current log of [pondId] on the farm date [date]. Two phones can
+  /// both log a pond-day offline; after sync both are current (flagged in
+  /// M5), and the newest one is the one shown and corrected here.
   Future<DailyLog?> forDay(String pondId, DateTime date) =>
-      (_current()..where(
-            (l) =>
-                l.pondId.equals(pondId) &
-                l.recordedAt.equals(farmDateToUtc(date)),
-          ))
+      (_current()
+            ..where(
+              (l) =>
+                  l.pondId.equals(pondId) &
+                  l.recordedAt.equals(farmDateToUtc(date)),
+            )
+            ..orderBy([
+              (l) => OrderingTerm.desc(l.createdAtDevice),
+              (l) => OrderingTerm.desc(l.id),
+            ])
+            ..limit(1))
           .getSingleOrNull();
 
   /// Current logs dated [from] to [to] (farm dates, both included).

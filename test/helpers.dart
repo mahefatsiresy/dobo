@@ -6,6 +6,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 
 /// A widget test of the whole app on a fresh in-memory database, set up
@@ -17,6 +18,7 @@ void appTest(
   String description,
   Future<void> Function(WidgetTester tester, AppDatabase db) body, {
   bool setUp = true,
+  List<Override> overrides = const [],
 }) {
   testWidgets(description, (tester) async {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -26,7 +28,7 @@ void appTest(
     }
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [databaseProvider.overrideWithValue(db)],
+        overrides: [databaseProvider.overrideWithValue(db), ...overrides],
         child: const DoboApp(),
       ),
     );

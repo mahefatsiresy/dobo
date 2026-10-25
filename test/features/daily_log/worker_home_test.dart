@@ -1,4 +1,6 @@
 import 'package:dobo/db/database.dart';
+import 'package:dobo/db/repositories/daily_log_repository.dart';
+import 'package:dobo/features/common/farm_today.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
@@ -89,5 +91,28 @@ void main() {
     await tapAndSettle(tester, find.byTooltip('Hiala'));
     expect(find.text('Mode ouvrier'), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
+  });
+
+  group('the next morning', () {
+    var now = DateTime.utc(2026, 3, 2, 6); // 09:00 in Madagascar
+    appTest('yesterday\'s ticks are gone', (tester, db) async {
+      await twoPonds(tester, db);
+      final session = (await SetupRepository(db).currentSession())!;
+      final e1 = (await db.select(db.ponds).get())
+          .singleWhere((p) => p.code == 'E1')
+          .id;
+      await DailyLogRepository(db, session).save(
+        DailyLogInput(pondId: e1, date: DateTime(2026, 3, 2), feedGivenG: 4000),
+      );
+      await enterWorkerMode(tester);
+      expect(find.byIcon(Icons.task_alt), findsOneWidget);
+      expect(find.text('02/03/2026'), findsOneWidget);
+
+      now = DateTime.utc(2026, 3, 3, 6);
+      appContainer(tester).read(farmTodayProvider.notifier).refresh();
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.task_alt), findsNothing);
+      expect(find.text('03/03/2026'), findsOneWidget);
+    }, overrides: [clockProvider.overrideWithValue(() => now)]);
   });
 }

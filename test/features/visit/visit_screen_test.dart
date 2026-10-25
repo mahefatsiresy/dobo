@@ -90,4 +90,31 @@ void main() {
       hasLength(5),
     );
   });
+
+  appTest('re-answering a condition corrects it', (tester, db) async {
+    await farm(tester, db);
+    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.byKey(const ValueKey('ok-dike')));
+    await tapAndSettle(tester, find.text('Enregistrer'));
+
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.text('Enregistrer')); // nothing changed
+    expect(await db.select(db.observations).get(), hasLength(1));
+
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.byKey(const ValueKey('problem-dike')));
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    final rows = await db.select(db.observations).get();
+    expect(rows, hasLength(2));
+    final fix = rows.singleWhere((o) => o.supersedesId != null);
+    expect(
+      (fix.ok, fix.category, fix.supersedesId),
+      (
+        false,
+        ObservationCategory.dike,
+        rows.singleWhere((o) => o.ok == true).id,
+      ),
+    );
+  });
 }

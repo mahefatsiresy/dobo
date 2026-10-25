@@ -4,6 +4,8 @@ import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/domain/dates.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'repo_fixtures.dart';
@@ -121,4 +123,32 @@ void main() {
     await inVisit.save(day(DateTime(2026, 3, 1)));
     expect((await db.select(db.dailyLogs).getSingle()).visitId, 'v1');
   });
+
+  test(
+    'two current logs for a day (another phone\'s, by sync): newest wins',
+    () async {
+      final mine = await logs.save(day(DateTime(2026, 3, 1), feedG: 4000));
+      // The other phone's log of the same pond-day arrives as a plain row.
+      await db
+          .into(db.dailyLogs)
+          .insert(
+            DailyLogsCompanion.insert(
+              associationId: session.associationId,
+              enteredBy: 'other-user',
+              deviceId: 'other-phone',
+              createdAtDevice: Value(
+                DateTime.now().toUtc().add(const Duration(minutes: 1)),
+              ),
+              recordedAt: farmDateToUtc(DateTime(2026, 3, 1)),
+              pondId: e1,
+              feedGivenG: 4500,
+            ),
+          );
+      expect((await logs.forDay(e1, DateTime(2026, 3, 1)))!.feedGivenG, 4500);
+      final fixed = await logs.save(day(DateTime(2026, 3, 1), feedG: 4200));
+      final current = await logs.forDay(e1, DateTime(2026, 3, 1));
+      expect((current!.id, current.feedGivenG), (fixed, 4200));
+      expect(mine, isNot(fixed));
+    },
+  );
 }
