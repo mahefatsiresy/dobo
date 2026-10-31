@@ -1,6 +1,8 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/session.dart';
+import 'package:dobo/domain/types.dart';
+import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -43,5 +45,101 @@ void main() {
     await repo.completeSetup(siteName: 'Ambohidratrimo');
     await expectLater(repo.completeSetup(siteName: 'X'), throwsStateError);
     expect(await db.select(db.sites).get(), hasLength(1));
+  });
+
+  group('watchSession', () {
+    test('is null before setup', () async {
+      expect(await repo.watchSession().first, isNull);
+    });
+
+    test('an M3 phone with no role recorded is a member and admin', () async {
+      for (final (k, v) in [
+        ('association_id', 'a1'),
+        ('user_id', 'm1'),
+        ('site_id', 's1'),
+      ]) {
+        await db
+            .into(db.localMeta)
+            .insert(LocalMetaCompanion.insert(key: k, value: v));
+      }
+      final s = (await repo.watchSession().first)!;
+      expect((s.role, s.isAdmin, s.isSales), (MemberRole.member, true, false));
+    });
+
+    test('takes the role written at sign-in', () async {
+      await repo.writeSignIn(
+        associationId: 'a1',
+        memberId: 'm3',
+        siteId: 's1',
+        role: MemberRole.worker,
+        isAdmin: false,
+        isSales: false,
+      );
+      final s = (await repo.watchSession().first)!;
+      expect((s.userId, s.role, s.isWorker), ('m3', MemberRole.worker, true));
+      expect(s.isAdmin, false);
+    });
+
+    test('the member row overrides what sign-in wrote, and re-emits', () async {
+      await repo.writeSignIn(
+        associationId: 'a1',
+        memberId: 'm2',
+        siteId: 's1',
+        role: MemberRole.member,
+        isAdmin: true,
+        isSales: false,
+      );
+      final sessions = repo.watchSession().skip(1).first;
+      await db
+          .into(db.members)
+          .insert(
+            MembersCompanion.insert(
+              id: const Value('m2'),
+              associationId: 'a1',
+              enteredBy: 'm1',
+              deviceId: 'd1',
+              name: 'Soa',
+              role: MemberRole.member,
+              isSales: const Value(true),
+              locale: 'fr',
+            ),
+          );
+      final s = (await sessions)!;
+      expect((s.isAdmin, s.isSales), (false, true));
+    });
+
+    test('clearUser ends the session and keeps everything else', () async {
+      final before = await repo.completeSetup(siteName: 'Ambohidratrimo');
+      final deviceId = await db.deviceId();
+      await repo.clearUser();
+      expect(await repo.watchSession().first, isNull);
+      final meta = {
+        for (final r in await db.select(db.localMeta).get()) r.key: r.value,
+      };
+      expect(meta['association_id'], before.associationId);
+      expect(meta['site_id'], before.siteId);
+      expect(meta['device_id'], deviceId);
+      expect(meta.containsKey('user_id'), false);
+      expect(await db.select(db.sites).get(), hasLength(1));
+    });
+
+    test('completeSetup can reuse given ids and record a role', () async {
+      const ids = Session(
+        associationId: 'a9',
+        userId: 'm9',
+        deviceId: 'ignored',
+        siteId: 's9',
+      );
+      final s = await repo.completeSetup(
+        siteName: 'Ambohidratrimo',
+        ids: ids,
+        role: MemberRole.worker,
+        isAdmin: false,
+      );
+      expect((s.associationId, s.userId, s.siteId), ('a9', 'm9', 's9'));
+      expect(s.deviceId, await db.deviceId());
+      final w = (await repo.watchSession().first)!;
+      expect((w.role, w.isAdmin), (MemberRole.worker, false));
+    });
   });
 }

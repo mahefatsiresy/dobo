@@ -63,6 +63,9 @@ enum PondStatus { empty, preparing, ready, stocked, isolated }
 
 enum BatchStatus { quarantine, active, harvesting, closed }
 
+/// What an account may do (SPEC §3). Admin and sales are flags on a member.
+enum MemberRole { worker, member }
+
 /// Pond tags for worker screens and paper sheets: colours that stay distinct
 /// on paper and in sunlight.
 enum PondColour { blue, green, yellow, orange, red, purple, brown, black }

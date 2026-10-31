@@ -8,11 +8,14 @@ import 'sync_state.dart';
 import 'converters.dart';
 import 'tables/batches.dart';
 import 'tables/daily_logs.dart';
+import 'tables/groups.dart';
 import 'tables/health_events.dart';
 import 'tables/local_meta.dart';
+import 'tables/members.dart';
 import 'tables/observations.dart';
 import 'tables/people.dart';
 import 'tables/samples.dart';
+import 'tables/setting_overrides.dart';
 import 'tables/ponds.dart';
 import 'tables/sites.dart';
 import 'tables/stockings.dart';
@@ -39,6 +42,9 @@ part 'database.g.dart';
     HealthEvents,
     Treatments,
     Visits,
+    Groups,
+    Members,
+    SettingOverrides,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -47,7 +53,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.open() => AppDatabase(driftDatabase(name: 'dobo'));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -67,6 +73,11 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.healthEvents);
         await m.createTable(schema.treatments);
         await m.createTable(schema.visits);
+      },
+      from3To4: (m, schema) async {
+        await m.createTable(schema.groups);
+        await m.createTable(schema.members);
+        await m.createTable(schema.settingOverrides);
       },
     ),
   );

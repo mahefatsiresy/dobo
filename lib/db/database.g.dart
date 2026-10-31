@@ -14067,6 +14067,2693 @@ class VisitsCompanion extends UpdateCompanion<Visit> {
   }
 }
 
+class $GroupsTable extends Groups with TableInfo<$GroupsTable, Group> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GroupsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($GroupsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtDeviceMeta = const VerificationMeta(
+    'updatedAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAtDevice =
+      GeneratedColumn<DateTime>(
+        'updated_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    name,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'groups';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Group> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('updated_at_device')) {
+      context.handle(
+        _updatedAtDeviceMeta,
+        updatedAtDevice.isAcceptableOrUnknown(
+          data['updated_at_device']!,
+          _updatedAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Group map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Group(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $GroupsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      updatedAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at_device'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+    );
+  }
+
+  @override
+  $GroupsTable createAlias(String alias) {
+    return $GroupsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class Group extends DataClass implements Insertable<Group> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime updatedAtDevice;
+  final String name;
+  const Group({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.updatedAtDevice,
+    required this.name,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $GroupsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['updated_at_device'] = Variable<DateTime>(updatedAtDevice);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  GroupsCompanion toCompanion(bool nullToAbsent) {
+    return GroupsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      updatedAtDevice: Value(updatedAtDevice),
+      name: Value(name),
+    );
+  }
+
+  factory Group.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Group(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $GroupsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      updatedAtDevice: serializer.fromJson<DateTime>(json['updatedAtDevice']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $GroupsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'updatedAtDevice': serializer.toJson<DateTime>(updatedAtDevice),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  Group copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? updatedAtDevice,
+    String? name,
+  }) => Group(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+    name: name ?? this.name,
+  );
+  Group copyWithCompanion(GroupsCompanion data) {
+    return Group(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      updatedAtDevice: data.updatedAtDevice.present
+          ? data.updatedAtDevice.value
+          : this.updatedAtDevice,
+      name: data.name.present ? data.name.value : this.name,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Group(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    name,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Group &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.updatedAtDevice == this.updatedAtDevice &&
+          other.name == this.name);
+}
+
+class GroupsCompanion extends UpdateCompanion<Group> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> updatedAtDevice;
+  final Value<String> name;
+  final Value<int> rowid;
+  const GroupsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GroupsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    required String name,
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       name = Value(name);
+  static Insertable<Group> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? updatedAtDevice,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (updatedAtDevice != null) 'updated_at_device': updatedAtDevice,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GroupsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? updatedAtDevice,
+    Value<String>? name,
+    Value<int>? rowid,
+  }) {
+    return GroupsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $GroupsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (updatedAtDevice.present) {
+      map['updated_at_device'] = Variable<DateTime>(updatedAtDevice.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GroupsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MembersTable extends Members with TableInfo<$MembersTable, Member> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MembersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($MembersTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtDeviceMeta = const VerificationMeta(
+    'updatedAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAtDevice =
+      GeneratedColumn<DateTime>(
+        'updated_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _groupIdMeta = const VerificationMeta(
+    'groupId',
+  );
+  @override
+  late final GeneratedColumn<String> groupId = GeneratedColumn<String>(
+    'group_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _personIdMeta = const VerificationMeta(
+    'personId',
+  );
+  @override
+  late final GeneratedColumn<String> personId = GeneratedColumn<String>(
+    'person_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<MemberRole, String> role =
+      GeneratedColumn<String>(
+        'role',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<MemberRole>($MembersTable.$converterrole);
+  static const VerificationMeta _isAdminMeta = const VerificationMeta(
+    'isAdmin',
+  );
+  @override
+  late final GeneratedColumn<bool> isAdmin = GeneratedColumn<bool>(
+    'is_admin',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_admin" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _isSalesMeta = const VerificationMeta(
+    'isSales',
+  );
+  @override
+  late final GeneratedColumn<bool> isSales = GeneratedColumn<bool>(
+    'is_sales',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_sales" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _activeMeta = const VerificationMeta('active');
+  @override
+  late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
+    'active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _localeMeta = const VerificationMeta('locale');
+  @override
+  late final GeneratedColumn<String> locale = GeneratedColumn<String>(
+    'locale',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _loginMeta = const VerificationMeta('login');
+  @override
+  late final GeneratedColumn<String> login = GeneratedColumn<String>(
+    'login',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    name,
+    groupId,
+    personId,
+    role,
+    isAdmin,
+    isSales,
+    active,
+    locale,
+    login,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'members';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Member> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('updated_at_device')) {
+      context.handle(
+        _updatedAtDeviceMeta,
+        updatedAtDevice.isAcceptableOrUnknown(
+          data['updated_at_device']!,
+          _updatedAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('group_id')) {
+      context.handle(
+        _groupIdMeta,
+        groupId.isAcceptableOrUnknown(data['group_id']!, _groupIdMeta),
+      );
+    }
+    if (data.containsKey('person_id')) {
+      context.handle(
+        _personIdMeta,
+        personId.isAcceptableOrUnknown(data['person_id']!, _personIdMeta),
+      );
+    }
+    if (data.containsKey('is_admin')) {
+      context.handle(
+        _isAdminMeta,
+        isAdmin.isAcceptableOrUnknown(data['is_admin']!, _isAdminMeta),
+      );
+    }
+    if (data.containsKey('is_sales')) {
+      context.handle(
+        _isSalesMeta,
+        isSales.isAcceptableOrUnknown(data['is_sales']!, _isSalesMeta),
+      );
+    }
+    if (data.containsKey('active')) {
+      context.handle(
+        _activeMeta,
+        active.isAcceptableOrUnknown(data['active']!, _activeMeta),
+      );
+    }
+    if (data.containsKey('locale')) {
+      context.handle(
+        _localeMeta,
+        locale.isAcceptableOrUnknown(data['locale']!, _localeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localeMeta);
+    }
+    if (data.containsKey('login')) {
+      context.handle(
+        _loginMeta,
+        login.isAcceptableOrUnknown(data['login']!, _loginMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Member map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Member(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $MembersTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      updatedAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at_device'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      groupId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}group_id'],
+      ),
+      personId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}person_id'],
+      ),
+      role: $MembersTable.$converterrole.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}role'],
+        )!,
+      ),
+      isAdmin: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_admin'],
+      )!,
+      isSales: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_sales'],
+      )!,
+      active: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}active'],
+      )!,
+      locale: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}locale'],
+      )!,
+      login: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}login'],
+      ),
+    );
+  }
+
+  @override
+  $MembersTable createAlias(String alias) {
+    return $MembersTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static JsonTypeConverter2<MemberRole, String, String> $converterrole =
+      const EnumNameConverter<MemberRole>(MemberRole.values);
+}
+
+class Member extends DataClass implements Insertable<Member> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime updatedAtDevice;
+  final String name;
+  final String? groupId;
+
+  /// The `Person` this account belongs to, for a worker.
+  final String? personId;
+  final MemberRole role;
+  final bool isAdmin;
+  final bool isSales;
+  final bool active;
+
+  /// `fr` or `mg` (SPEC §9).
+  final String locale;
+
+  /// Email for a member, username for a worker.
+  final String? login;
+  const Member({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.updatedAtDevice,
+    required this.name,
+    this.groupId,
+    this.personId,
+    required this.role,
+    required this.isAdmin,
+    required this.isSales,
+    required this.active,
+    required this.locale,
+    this.login,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $MembersTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['updated_at_device'] = Variable<DateTime>(updatedAtDevice);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || groupId != null) {
+      map['group_id'] = Variable<String>(groupId);
+    }
+    if (!nullToAbsent || personId != null) {
+      map['person_id'] = Variable<String>(personId);
+    }
+    {
+      map['role'] = Variable<String>($MembersTable.$converterrole.toSql(role));
+    }
+    map['is_admin'] = Variable<bool>(isAdmin);
+    map['is_sales'] = Variable<bool>(isSales);
+    map['active'] = Variable<bool>(active);
+    map['locale'] = Variable<String>(locale);
+    if (!nullToAbsent || login != null) {
+      map['login'] = Variable<String>(login);
+    }
+    return map;
+  }
+
+  MembersCompanion toCompanion(bool nullToAbsent) {
+    return MembersCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      updatedAtDevice: Value(updatedAtDevice),
+      name: Value(name),
+      groupId: groupId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(groupId),
+      personId: personId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(personId),
+      role: Value(role),
+      isAdmin: Value(isAdmin),
+      isSales: Value(isSales),
+      active: Value(active),
+      locale: Value(locale),
+      login: login == null && nullToAbsent
+          ? const Value.absent()
+          : Value(login),
+    );
+  }
+
+  factory Member.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Member(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $MembersTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      updatedAtDevice: serializer.fromJson<DateTime>(json['updatedAtDevice']),
+      name: serializer.fromJson<String>(json['name']),
+      groupId: serializer.fromJson<String?>(json['groupId']),
+      personId: serializer.fromJson<String?>(json['personId']),
+      role: $MembersTable.$converterrole.fromJson(
+        serializer.fromJson<String>(json['role']),
+      ),
+      isAdmin: serializer.fromJson<bool>(json['isAdmin']),
+      isSales: serializer.fromJson<bool>(json['isSales']),
+      active: serializer.fromJson<bool>(json['active']),
+      locale: serializer.fromJson<String>(json['locale']),
+      login: serializer.fromJson<String?>(json['login']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $MembersTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'updatedAtDevice': serializer.toJson<DateTime>(updatedAtDevice),
+      'name': serializer.toJson<String>(name),
+      'groupId': serializer.toJson<String?>(groupId),
+      'personId': serializer.toJson<String?>(personId),
+      'role': serializer.toJson<String>(
+        $MembersTable.$converterrole.toJson(role),
+      ),
+      'isAdmin': serializer.toJson<bool>(isAdmin),
+      'isSales': serializer.toJson<bool>(isSales),
+      'active': serializer.toJson<bool>(active),
+      'locale': serializer.toJson<String>(locale),
+      'login': serializer.toJson<String?>(login),
+    };
+  }
+
+  Member copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? updatedAtDevice,
+    String? name,
+    Value<String?> groupId = const Value.absent(),
+    Value<String?> personId = const Value.absent(),
+    MemberRole? role,
+    bool? isAdmin,
+    bool? isSales,
+    bool? active,
+    String? locale,
+    Value<String?> login = const Value.absent(),
+  }) => Member(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+    name: name ?? this.name,
+    groupId: groupId.present ? groupId.value : this.groupId,
+    personId: personId.present ? personId.value : this.personId,
+    role: role ?? this.role,
+    isAdmin: isAdmin ?? this.isAdmin,
+    isSales: isSales ?? this.isSales,
+    active: active ?? this.active,
+    locale: locale ?? this.locale,
+    login: login.present ? login.value : this.login,
+  );
+  Member copyWithCompanion(MembersCompanion data) {
+    return Member(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      updatedAtDevice: data.updatedAtDevice.present
+          ? data.updatedAtDevice.value
+          : this.updatedAtDevice,
+      name: data.name.present ? data.name.value : this.name,
+      groupId: data.groupId.present ? data.groupId.value : this.groupId,
+      personId: data.personId.present ? data.personId.value : this.personId,
+      role: data.role.present ? data.role.value : this.role,
+      isAdmin: data.isAdmin.present ? data.isAdmin.value : this.isAdmin,
+      isSales: data.isSales.present ? data.isSales.value : this.isSales,
+      active: data.active.present ? data.active.value : this.active,
+      locale: data.locale.present ? data.locale.value : this.locale,
+      login: data.login.present ? data.login.value : this.login,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Member(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('name: $name, ')
+          ..write('groupId: $groupId, ')
+          ..write('personId: $personId, ')
+          ..write('role: $role, ')
+          ..write('isAdmin: $isAdmin, ')
+          ..write('isSales: $isSales, ')
+          ..write('active: $active, ')
+          ..write('locale: $locale, ')
+          ..write('login: $login')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    name,
+    groupId,
+    personId,
+    role,
+    isAdmin,
+    isSales,
+    active,
+    locale,
+    login,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Member &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.updatedAtDevice == this.updatedAtDevice &&
+          other.name == this.name &&
+          other.groupId == this.groupId &&
+          other.personId == this.personId &&
+          other.role == this.role &&
+          other.isAdmin == this.isAdmin &&
+          other.isSales == this.isSales &&
+          other.active == this.active &&
+          other.locale == this.locale &&
+          other.login == this.login);
+}
+
+class MembersCompanion extends UpdateCompanion<Member> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> updatedAtDevice;
+  final Value<String> name;
+  final Value<String?> groupId;
+  final Value<String?> personId;
+  final Value<MemberRole> role;
+  final Value<bool> isAdmin;
+  final Value<bool> isSales;
+  final Value<bool> active;
+  final Value<String> locale;
+  final Value<String?> login;
+  final Value<int> rowid;
+  const MembersCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    this.name = const Value.absent(),
+    this.groupId = const Value.absent(),
+    this.personId = const Value.absent(),
+    this.role = const Value.absent(),
+    this.isAdmin = const Value.absent(),
+    this.isSales = const Value.absent(),
+    this.active = const Value.absent(),
+    this.locale = const Value.absent(),
+    this.login = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MembersCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    required String name,
+    this.groupId = const Value.absent(),
+    this.personId = const Value.absent(),
+    required MemberRole role,
+    this.isAdmin = const Value.absent(),
+    this.isSales = const Value.absent(),
+    this.active = const Value.absent(),
+    required String locale,
+    this.login = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       name = Value(name),
+       role = Value(role),
+       locale = Value(locale);
+  static Insertable<Member> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? updatedAtDevice,
+    Expression<String>? name,
+    Expression<String>? groupId,
+    Expression<String>? personId,
+    Expression<String>? role,
+    Expression<bool>? isAdmin,
+    Expression<bool>? isSales,
+    Expression<bool>? active,
+    Expression<String>? locale,
+    Expression<String>? login,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (updatedAtDevice != null) 'updated_at_device': updatedAtDevice,
+      if (name != null) 'name': name,
+      if (groupId != null) 'group_id': groupId,
+      if (personId != null) 'person_id': personId,
+      if (role != null) 'role': role,
+      if (isAdmin != null) 'is_admin': isAdmin,
+      if (isSales != null) 'is_sales': isSales,
+      if (active != null) 'active': active,
+      if (locale != null) 'locale': locale,
+      if (login != null) 'login': login,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MembersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? updatedAtDevice,
+    Value<String>? name,
+    Value<String?>? groupId,
+    Value<String?>? personId,
+    Value<MemberRole>? role,
+    Value<bool>? isAdmin,
+    Value<bool>? isSales,
+    Value<bool>? active,
+    Value<String>? locale,
+    Value<String?>? login,
+    Value<int>? rowid,
+  }) {
+    return MembersCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+      name: name ?? this.name,
+      groupId: groupId ?? this.groupId,
+      personId: personId ?? this.personId,
+      role: role ?? this.role,
+      isAdmin: isAdmin ?? this.isAdmin,
+      isSales: isSales ?? this.isSales,
+      active: active ?? this.active,
+      locale: locale ?? this.locale,
+      login: login ?? this.login,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $MembersTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (updatedAtDevice.present) {
+      map['updated_at_device'] = Variable<DateTime>(updatedAtDevice.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (groupId.present) {
+      map['group_id'] = Variable<String>(groupId.value);
+    }
+    if (personId.present) {
+      map['person_id'] = Variable<String>(personId.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(
+        $MembersTable.$converterrole.toSql(role.value),
+      );
+    }
+    if (isAdmin.present) {
+      map['is_admin'] = Variable<bool>(isAdmin.value);
+    }
+    if (isSales.present) {
+      map['is_sales'] = Variable<bool>(isSales.value);
+    }
+    if (active.present) {
+      map['active'] = Variable<bool>(active.value);
+    }
+    if (locale.present) {
+      map['locale'] = Variable<String>(locale.value);
+    }
+    if (login.present) {
+      map['login'] = Variable<String>(login.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembersCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('name: $name, ')
+          ..write('groupId: $groupId, ')
+          ..write('personId: $personId, ')
+          ..write('role: $role, ')
+          ..write('isAdmin: $isAdmin, ')
+          ..write('isSales: $isSales, ')
+          ..write('active: $active, ')
+          ..write('locale: $locale, ')
+          ..write('login: $login, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SettingOverridesTable extends SettingOverrides
+    with TableInfo<$SettingOverridesTable, SettingOverride> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingOverridesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($SettingOverridesTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtDeviceMeta = const VerificationMeta(
+    'updatedAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAtDevice =
+      GeneratedColumn<DateTime>(
+        'updated_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  @override
+  late final GeneratedColumn<String> siteId = GeneratedColumn<String>(
+    'site_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _keyMeta = const VerificationMeta('key');
+  @override
+  late final GeneratedColumn<String> key = GeneratedColumn<String>(
+    'key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
+  @override
+  late final GeneratedColumn<double> value = GeneratedColumn<double>(
+    'value',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    siteId,
+    key,
+    value,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'setting_overrides';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SettingOverride> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('updated_at_device')) {
+      context.handle(
+        _updatedAtDeviceMeta,
+        updatedAtDevice.isAcceptableOrUnknown(
+          data['updated_at_device']!,
+          _updatedAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('site_id')) {
+      context.handle(
+        _siteIdMeta,
+        siteId.isAcceptableOrUnknown(data['site_id']!, _siteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
+    }
+    if (data.containsKey('key')) {
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SettingOverride map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SettingOverride(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $SettingOverridesTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      updatedAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at_device'],
+      )!,
+      siteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_id'],
+      )!,
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}value'],
+      ),
+    );
+  }
+
+  @override
+  $SettingOverridesTable createAlias(String alias) {
+    return $SettingOverridesTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class SettingOverride extends DataClass implements Insertable<SettingOverride> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime updatedAtDevice;
+  final String siteId;
+  final String key;
+
+  /// Null: back to the DOMAIN value.
+  final double? value;
+  const SettingOverride({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.updatedAtDevice,
+    required this.siteId,
+    required this.key,
+    this.value,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $SettingOverridesTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['updated_at_device'] = Variable<DateTime>(updatedAtDevice);
+    map['site_id'] = Variable<String>(siteId);
+    map['key'] = Variable<String>(key);
+    if (!nullToAbsent || value != null) {
+      map['value'] = Variable<double>(value);
+    }
+    return map;
+  }
+
+  SettingOverridesCompanion toCompanion(bool nullToAbsent) {
+    return SettingOverridesCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      updatedAtDevice: Value(updatedAtDevice),
+      siteId: Value(siteId),
+      key: Value(key),
+      value: value == null && nullToAbsent
+          ? const Value.absent()
+          : Value(value),
+    );
+  }
+
+  factory SettingOverride.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingOverride(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $SettingOverridesTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      updatedAtDevice: serializer.fromJson<DateTime>(json['updatedAtDevice']),
+      siteId: serializer.fromJson<String>(json['siteId']),
+      key: serializer.fromJson<String>(json['key']),
+      value: serializer.fromJson<double?>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $SettingOverridesTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'updatedAtDevice': serializer.toJson<DateTime>(updatedAtDevice),
+      'siteId': serializer.toJson<String>(siteId),
+      'key': serializer.toJson<String>(key),
+      'value': serializer.toJson<double?>(value),
+    };
+  }
+
+  SettingOverride copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? updatedAtDevice,
+    String? siteId,
+    String? key,
+    Value<double?> value = const Value.absent(),
+  }) => SettingOverride(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+    siteId: siteId ?? this.siteId,
+    key: key ?? this.key,
+    value: value.present ? value.value : this.value,
+  );
+  SettingOverride copyWithCompanion(SettingOverridesCompanion data) {
+    return SettingOverride(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      updatedAtDevice: data.updatedAtDevice.present
+          ? data.updatedAtDevice.value
+          : this.updatedAtDevice,
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      key: data.key.present ? data.key.value : this.key,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingOverride(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('siteId: $siteId, ')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    updatedAtDevice,
+    siteId,
+    key,
+    value,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingOverride &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.updatedAtDevice == this.updatedAtDevice &&
+          other.siteId == this.siteId &&
+          other.key == this.key &&
+          other.value == this.value);
+}
+
+class SettingOverridesCompanion extends UpdateCompanion<SettingOverride> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> updatedAtDevice;
+  final Value<String> siteId;
+  final Value<String> key;
+  final Value<double?> value;
+  final Value<int> rowid;
+  const SettingOverridesCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    this.siteId = const Value.absent(),
+    this.key = const Value.absent(),
+    this.value = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SettingOverridesCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.updatedAtDevice = const Value.absent(),
+    required String siteId,
+    required String key,
+    this.value = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       siteId = Value(siteId),
+       key = Value(key);
+  static Insertable<SettingOverride> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? updatedAtDevice,
+    Expression<String>? siteId,
+    Expression<String>? key,
+    Expression<double>? value,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (updatedAtDevice != null) 'updated_at_device': updatedAtDevice,
+      if (siteId != null) 'site_id': siteId,
+      if (key != null) 'key': key,
+      if (value != null) 'value': value,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SettingOverridesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? updatedAtDevice,
+    Value<String>? siteId,
+    Value<String>? key,
+    Value<double?>? value,
+    Value<int>? rowid,
+  }) {
+    return SettingOverridesCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      updatedAtDevice: updatedAtDevice ?? this.updatedAtDevice,
+      siteId: siteId ?? this.siteId,
+      key: key ?? this.key,
+      value: value ?? this.value,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $SettingOverridesTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (updatedAtDevice.present) {
+      map['updated_at_device'] = Variable<DateTime>(updatedAtDevice.value);
+    }
+    if (siteId.present) {
+      map['site_id'] = Variable<String>(siteId.value);
+    }
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<double>(value.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingOverridesCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('updatedAtDevice: $updatedAtDevice, ')
+          ..write('siteId: $siteId, ')
+          ..write('key: $key, ')
+          ..write('value: $value, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -14084,6 +16771,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HealthEventsTable healthEvents = $HealthEventsTable(this);
   late final $TreatmentsTable treatments = $TreatmentsTable(this);
   late final $VisitsTable visits = $VisitsTable(this);
+  late final $GroupsTable groups = $GroupsTable(this);
+  late final $MembersTable members = $MembersTable(this);
+  late final $SettingOverridesTable settingOverrides = $SettingOverridesTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -14103,6 +16795,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     healthEvents,
     treatments,
     visits,
+    groups,
+    members,
+    settingOverrides,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -20466,6 +23161,1246 @@ typedef $$VisitsTableProcessedTableManager =
       Visit,
       PrefetchHooks Function()
     >;
+typedef $$GroupsTableCreateCompanionBuilder = GroupsCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  required String name,
+  Value<int> rowid,
+});
+typedef $$GroupsTableUpdateCompanionBuilder = GroupsCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  Value<String> name,
+  Value<int> rowid,
+});
+
+class $$GroupsTableFilterComposer
+    extends Composer<_$AppDatabase, $GroupsTable> {
+  $$GroupsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$GroupsTableOrderingComposer
+    extends Composer<_$AppDatabase, $GroupsTable> {
+  $$GroupsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GroupsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GroupsTable> {
+  $$GroupsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+}
+
+class $$GroupsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GroupsTable,
+          Group,
+          $$GroupsTableFilterComposer,
+          $$GroupsTableOrderingComposer,
+          $$GroupsTableAnnotationComposer,
+          $$GroupsTableCreateCompanionBuilder,
+          $$GroupsTableUpdateCompanionBuilder,
+          (Group, BaseReferences<_$AppDatabase, $GroupsTable, Group>),
+          Group,
+          PrefetchHooks Function()
+        > {
+  $$GroupsTableTableManager(_$AppDatabase db, $GroupsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GroupsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GroupsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GroupsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => GroupsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                name: name,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                required String name,
+                Value<int> rowid = const Value.absent(),
+              }) => GroupsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                name: name,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$GroupsTable, Group>(table),
+                  BaseReferences<_$AppDatabase, $GroupsTable, Group>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$GroupsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GroupsTable,
+      Group,
+      $$GroupsTableFilterComposer,
+      $$GroupsTableOrderingComposer,
+      $$GroupsTableAnnotationComposer,
+      $$GroupsTableCreateCompanionBuilder,
+      $$GroupsTableUpdateCompanionBuilder,
+      (Group, BaseReferences<_$AppDatabase, $GroupsTable, Group>),
+      Group,
+      PrefetchHooks Function()
+    >;
+typedef $$MembersTableCreateCompanionBuilder = MembersCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  required String name,
+  Value<String?> groupId,
+  Value<String?> personId,
+  required MemberRole role,
+  Value<bool> isAdmin,
+  Value<bool> isSales,
+  Value<bool> active,
+  required String locale,
+  Value<String?> login,
+  Value<int> rowid,
+});
+typedef $$MembersTableUpdateCompanionBuilder = MembersCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> updatedAtDevice,
+  Value<String> name,
+  Value<String?> groupId,
+  Value<String?> personId,
+  Value<MemberRole> role,
+  Value<bool> isAdmin,
+  Value<bool> isSales,
+  Value<bool> active,
+  Value<String> locale,
+  Value<String?> login,
+  Value<int> rowid,
+});
+
+class $$MembersTableFilterComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get groupId => $composableBuilder(
+    column: $table.groupId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get personId => $composableBuilder(
+    column: $table.personId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<MemberRole, MemberRole, String> get role =>
+      $composableBuilder(
+        column: $table.role,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<bool> get isAdmin => $composableBuilder(
+    column: $table.isAdmin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isSales => $composableBuilder(
+    column: $table.isSales,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get active => $composableBuilder(
+    column: $table.active,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get locale => $composableBuilder(
+    column: $table.locale,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get login => $composableBuilder(
+    column: $table.login,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MembersTableOrderingComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get groupId => $composableBuilder(
+    column: $table.groupId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get personId => $composableBuilder(
+    column: $table.personId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isAdmin => $composableBuilder(
+    column: $table.isAdmin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isSales => $composableBuilder(
+    column: $table.isSales,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get active => $composableBuilder(
+    column: $table.active,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get locale => $composableBuilder(
+    column: $table.locale,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get login => $composableBuilder(
+    column: $table.login,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MembersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get groupId =>
+      $composableBuilder(column: $table.groupId, builder: (column) => column);
+
+  GeneratedColumn<String> get personId =>
+      $composableBuilder(column: $table.personId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<MemberRole, String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<bool> get isAdmin =>
+      $composableBuilder(column: $table.isAdmin, builder: (column) => column);
+
+  GeneratedColumn<bool> get isSales =>
+      $composableBuilder(column: $table.isSales, builder: (column) => column);
+
+  GeneratedColumn<bool> get active =>
+      $composableBuilder(column: $table.active, builder: (column) => column);
+
+  GeneratedColumn<String> get locale =>
+      $composableBuilder(column: $table.locale, builder: (column) => column);
+
+  GeneratedColumn<String> get login =>
+      $composableBuilder(column: $table.login, builder: (column) => column);
+}
+
+class $$MembersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MembersTable,
+          Member,
+          $$MembersTableFilterComposer,
+          $$MembersTableOrderingComposer,
+          $$MembersTableAnnotationComposer,
+          $$MembersTableCreateCompanionBuilder,
+          $$MembersTableUpdateCompanionBuilder,
+          (Member, BaseReferences<_$AppDatabase, $MembersTable, Member>),
+          Member,
+          PrefetchHooks Function()
+        > {
+  $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MembersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MembersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MembersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> groupId = const Value.absent(),
+                Value<String?> personId = const Value.absent(),
+                Value<MemberRole> role = const Value.absent(),
+                Value<bool> isAdmin = const Value.absent(),
+                Value<bool> isSales = const Value.absent(),
+                Value<bool> active = const Value.absent(),
+                Value<String> locale = const Value.absent(),
+                Value<String?> login = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembersCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                name: name,
+                groupId: groupId,
+                personId: personId,
+                role: role,
+                isAdmin: isAdmin,
+                isSales: isSales,
+                active: active,
+                locale: locale,
+                login: login,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                required String name,
+                Value<String?> groupId = const Value.absent(),
+                Value<String?> personId = const Value.absent(),
+                required MemberRole role,
+                Value<bool> isAdmin = const Value.absent(),
+                Value<bool> isSales = const Value.absent(),
+                Value<bool> active = const Value.absent(),
+                required String locale,
+                Value<String?> login = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembersCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                name: name,
+                groupId: groupId,
+                personId: personId,
+                role: role,
+                isAdmin: isAdmin,
+                isSales: isSales,
+                active: active,
+                locale: locale,
+                login: login,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MembersTable, Member>(table),
+                  BaseReferences<_$AppDatabase, $MembersTable, Member>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MembersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MembersTable,
+      Member,
+      $$MembersTableFilterComposer,
+      $$MembersTableOrderingComposer,
+      $$MembersTableAnnotationComposer,
+      $$MembersTableCreateCompanionBuilder,
+      $$MembersTableUpdateCompanionBuilder,
+      (Member, BaseReferences<_$AppDatabase, $MembersTable, Member>),
+      Member,
+      PrefetchHooks Function()
+    >;
+typedef $$SettingOverridesTableCreateCompanionBuilder =
+    SettingOverridesCompanion Function({
+      Value<String> id,
+      required String associationId,
+      required String enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      required String deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> updatedAtDevice,
+      required String siteId,
+      required String key,
+      Value<double?> value,
+      Value<int> rowid,
+    });
+typedef $$SettingOverridesTableUpdateCompanionBuilder =
+    SettingOverridesCompanion Function({
+      Value<String> id,
+      Value<String> associationId,
+      Value<String> enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      Value<String> deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> updatedAtDevice,
+      Value<String> siteId,
+      Value<String> key,
+      Value<double?> value,
+      Value<int> rowid,
+    });
+
+class $$SettingOverridesTableFilterComposer
+    extends Composer<_$AppDatabase, $SettingOverridesTable> {
+  $$SettingOverridesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SettingOverridesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SettingOverridesTable> {
+  $$SettingOverridesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SettingOverridesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SettingOverridesTable> {
+  $$SettingOverridesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAtDevice => $composableBuilder(
+    column: $table.updatedAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get siteId =>
+      $composableBuilder(column: $table.siteId, builder: (column) => column);
+
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
+
+  GeneratedColumn<double> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
+}
+
+class $$SettingOverridesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SettingOverridesTable,
+          SettingOverride,
+          $$SettingOverridesTableFilterComposer,
+          $$SettingOverridesTableOrderingComposer,
+          $$SettingOverridesTableAnnotationComposer,
+          $$SettingOverridesTableCreateCompanionBuilder,
+          $$SettingOverridesTableUpdateCompanionBuilder,
+          (
+            SettingOverride,
+            BaseReferences<
+              _$AppDatabase,
+              $SettingOverridesTable,
+              SettingOverride
+            >,
+          ),
+          SettingOverride,
+          PrefetchHooks Function()
+        > {
+  $$SettingOverridesTableTableManager(
+    _$AppDatabase db,
+    $SettingOverridesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingOverridesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingOverridesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingOverridesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                Value<String> siteId = const Value.absent(),
+                Value<String> key = const Value.absent(),
+                Value<double?> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingOverridesCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                siteId: siteId,
+                key: key,
+                value: value,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> updatedAtDevice = const Value.absent(),
+                required String siteId,
+                required String key,
+                Value<double?> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingOverridesCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                updatedAtDevice: updatedAtDevice,
+                siteId: siteId,
+                key: key,
+                value: value,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SettingOverridesTable, SettingOverride>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SettingOverridesTable,
+                    SettingOverride
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SettingOverridesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SettingOverridesTable,
+      SettingOverride,
+      $$SettingOverridesTableFilterComposer,
+      $$SettingOverridesTableOrderingComposer,
+      $$SettingOverridesTableAnnotationComposer,
+      $$SettingOverridesTableCreateCompanionBuilder,
+      $$SettingOverridesTableUpdateCompanionBuilder,
+      (
+        SettingOverride,
+        BaseReferences<_$AppDatabase, $SettingOverridesTable, SettingOverride>,
+      ),
+      SettingOverride,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -20498,4 +24433,10 @@ class $AppDatabaseManager {
       $$TreatmentsTableTableManager(_db, _db.treatments);
   $$VisitsTableTableManager get visits =>
       $$VisitsTableTableManager(_db, _db.visits);
+  $$GroupsTableTableManager get groups =>
+      $$GroupsTableTableManager(_db, _db.groups);
+  $$MembersTableTableManager get members =>
+      $$MembersTableTableManager(_db, _db.members);
+  $$SettingOverridesTableTableManager get settingOverrides =>
+      $$SettingOverridesTableTableManager(_db, _db.settingOverrides);
 }

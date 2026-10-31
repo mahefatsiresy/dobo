@@ -10,6 +10,7 @@ import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
+import 'generated/schema_v4.dart' as v4;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -153,6 +154,70 @@ void main() {
         expect((stocking.id, stocking.count, stocking.avgWeightMg),
             (stockingId, 1000, 12500));
         expect(await newDb.select(newDb.dailyLogs).get(), isEmpty);
+      },
+    );
+  });
+
+  // v4 only adds groups, members and setting overrides; a pond and a daily
+  // log survive unchanged.
+  test('migration from v3 to v4 keeps ponds and daily logs', () async {
+    const at = '2026-03-01T09:00:00.000Z';
+    const pondId = '0190d5a0-0000-7000-8000-000000000004';
+    const logId = '0190d5a0-0000-7000-8000-000000000005';
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 3,
+      newVersion: 4,
+      createOld: v3.DatabaseAtV3.new,
+      createNew: v4.DatabaseAtV4.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.ponds,
+          const v3.PondsData(
+            id: pondId,
+            associationId: 'a1',
+            enteredBy: 'u1',
+            createdAtDevice: at,
+            deviceId: 'd1',
+            syncState: 'pending',
+            updatedAtDevice: at,
+            siteId: 's1',
+            code: 'E1',
+            colour: 'blue',
+            structure: 'earth',
+            role: 'growout',
+            status: 'stocked',
+            archived: 0,
+          ),
+        );
+        batch.insert(
+          oldDb.dailyLogs,
+          const v3.DailyLogsData(
+            id: logId,
+            associationId: 'a1',
+            enteredBy: 'u1',
+            createdAtDevice: at,
+            deviceId: 'd1',
+            syncState: 'pending',
+            recordedAt: at,
+            isTombstone: 0,
+            pondId: pondId,
+            feedGivenG: 600,
+            ateFast: 0,
+            deaths: 3,
+            deathSigns: '',
+            warningSigns: 'rubbing',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final pond = await newDb.select(newDb.ponds).getSingle();
+        expect((pond.id, pond.code, pond.status), (pondId, 'E1', 'stocked'));
+        final log = await newDb.select(newDb.dailyLogs).getSingle();
+        expect((log.id, log.feedGivenG, log.deaths, log.warningSigns),
+            (logId, 600, 3, 'rubbing'));
+        expect(await newDb.select(newDb.members).get(), isEmpty);
       },
     );
   });

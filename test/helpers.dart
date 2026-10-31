@@ -2,6 +2,7 @@ import 'package:dobo/app.dart';
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/database_provider.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
+import 'package:dobo/domain/types.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
@@ -18,13 +19,19 @@ void appTest(
   String description,
   Future<void> Function(WidgetTester tester, AppDatabase db) body, {
   bool setUp = true,
+  MemberRole role = MemberRole.member,
+  bool isAdmin = true,
   List<Override> overrides = const [],
 }) {
   testWidgets(description, (tester) async {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
     final db = AppDatabase(NativeDatabase.memory());
     if (setUp) {
-      await SetupRepository(db).completeSetup(siteName: 'Ambohidratrimo');
+      await SetupRepository(db).completeSetup(
+        siteName: 'Ambohidratrimo',
+        role: role,
+        isAdmin: isAdmin,
+      );
     }
     await tester.pumpWidget(
       ProviderScope(

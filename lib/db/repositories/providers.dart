@@ -16,9 +16,10 @@ final setupRepositoryProvider = Provider<SetupRepository>(
   (ref) => SetupRepository(ref.watch(databaseProvider)),
 );
 
-/// Null until first-launch setup is done.
-final sessionProvider = FutureProvider<Session?>(
-  (ref) => ref.watch(setupRepositoryProvider).currentSession(),
+/// Null while nobody is signed in on this phone. Follows sign-in, sign-out
+/// and role changes arriving with the member row.
+final sessionProvider = StreamProvider<Session?>(
+  (ref) => ref.watch(setupRepositoryProvider).watchSession(),
 );
 
 /// The session of a phone that is set up. Only read below the member shell,
