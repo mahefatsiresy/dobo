@@ -324,4 +324,29 @@ void main() {
     final all = alerts(status: BatchStatus.closed);
     expect(ofKind(all, AlertKind.sampleDue), isEmpty);
   });
+
+  test('nextTimedChange: the next fast opening or closing after now', () {
+    final batches = [
+      BatchInfo(id: 'a', status: BatchStatus.active, plannedHarvestOn: d(22)),
+      BatchInfo(id: 'b', status: BatchStatus.active, plannedHarvestOn: d(30)),
+      const BatchInfo(id: 'c', status: BatchStatus.active),
+    ];
+    // 20/03 09:00: the fast for 22/03 is open; it closes 22/03 06:00.
+    expect(
+      nextTimedChange(batches: batches, now: now, config: cfg),
+      farmTimeToUtc(DateTime(2026, 3, 22), 6, 0),
+    );
+    expect(
+      nextTimedChange(
+        batches: batches,
+        now: farmTimeToUtc(DateTime(2026, 3, 19), 9, 0),
+        config: cfg,
+      ),
+      farmTimeToUtc(DateTime(2026, 3, 20), 6, 0),
+    );
+    expect(
+      nextTimedChange(batches: batches.sublist(2), now: now, config: cfg),
+      isNull,
+    );
+  });
 }

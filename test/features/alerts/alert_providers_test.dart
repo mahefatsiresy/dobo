@@ -84,4 +84,42 @@ void main() {
     );
     expect(due((await settled(tester, alertsProvider)).requireValue), isFalse);
   }, overrides: [clockProvider.overrideWithValue(() => now)]);
+
+  group('pre-harvest fast', () {
+    // Harvest planned 22/03: the fast opens 20/03 at 06:00 farm time.
+    var clock = DateTime.utc(2026, 3, 20, 2); // 05:00 in Madagascar
+    appTest('opens at 06:00 with no record saved, closes at the harvest', (
+      tester,
+      db,
+    ) async {
+      final session = (await SetupRepository(db).currentSession())!;
+      final e1 = await PondRepository(db, session).create(pondInput('E1'));
+      await BatchRepository(db, session).stockBatch(
+        StockInput(
+          code: 'L1',
+          pondId: e1,
+          date: DateTime(2026, 3, 10),
+          count: 1000,
+          avgWeightMg: 10000,
+          plannedHarvestOn: DateTime(2026, 3, 22),
+        ),
+      );
+      bool fasting(List<Alert> all) =>
+          all.any((a) => a.kind == AlertKind.preHarvestFast);
+      final sub = appContainer(tester).listen(alertsProvider, (_, _) {});
+      await tester.pumpAndSettle();
+      expect(fasting(sub.read().requireValue), isFalse);
+
+      clock = DateTime.utc(2026, 3, 20, 3, 1); // 06:01
+      await tester.pump(const Duration(minutes: 61));
+      await tester.pumpAndSettle();
+      expect(fasting(sub.read().requireValue), isTrue);
+
+      clock = DateTime.utc(2026, 3, 22, 3, 1); // 06:01 on harvest day
+      await tester.pump(const Duration(hours: 48));
+      await tester.pumpAndSettle();
+      expect(fasting(sub.read().requireValue), isFalse);
+      sub.close();
+    }, overrides: [clockProvider.overrideWithValue(() => clock)]);
+  });
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/database.dart';
@@ -39,6 +41,29 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
   }
   // Recomputed at the farm's midnight and when the app comes back.
   ref.watch(farmTodayProvider);
+  final now = ref.watch(clockProvider)().toUtc();
+  final config = ref.watch(domainConfigProvider);
+  final batchInfos = {
+    for (final s in summaries.requireValue)
+      s.batch.id: BatchInfo(
+        id: s.batch.id,
+        status: s.batch.status,
+        plannedHarvestOn: s.batch.plannedHarvestOn,
+      ),
+  };
+  // A fast opens or closes at a set hour, not when a record changes.
+  final next = nextTimedChange(
+    batches: batchInfos.values,
+    now: now,
+    config: config,
+  );
+  if (next != null) {
+    final timer = Timer(
+      next.difference(now) + const Duration(seconds: 1),
+      ref.invalidateSelf,
+    );
+    ref.onDispose(timer.cancel);
+  }
   return AsyncData(
     farmAlerts(
       facts: facts.requireValue,
@@ -55,14 +80,7 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
             ),
           ),
       ],
-      batches: {
-        for (final s in summaries.requireValue)
-          s.batch.id: BatchInfo(
-            id: s.batch.id,
-            status: s.batch.status,
-            plannedHarvestOn: s.batch.plannedHarvestOn,
-          ),
-      },
+      batches: batchInfos,
       latestReadings: {
         for (final MapEntry(key: pondId, value: r)
             in readings.requireValue.entries)
@@ -79,8 +97,8 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
           if (e.signs.isNotEmpty)
             PondSigns(e.pondId, DatedSigns(e.recordedAt, e.signs)),
       ],
-      now: ref.watch(clockProvider)().toUtc(),
-      config: ref.watch(domainConfigProvider),
+      now: now,
+      config: config,
     ),
   );
 });

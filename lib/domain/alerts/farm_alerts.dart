@@ -297,16 +297,39 @@ List<Alert> _batchAlerts(
       ?preHarvestFastAlert(
         pondId: pond.id,
         batchId: batch.id,
-        plannedHarvestAt: farmTimeToUtc(
-          farmDate(batch.plannedHarvestOn!),
-          config.harvestHour,
-          0,
-        ),
+        plannedHarvestAt: plannedHarvestAt(batch.plannedHarvestOn!, config),
         now: now,
         lastFeedingAt: lastFeedingAt,
         config: config,
       ),
   ];
+}
+
+/// When a harvest planned for the farm date [plannedHarvestOn] starts:
+/// `harvestHour` that morning (DOMAIN §Harvest and delivery).
+DateTime plannedHarvestAt(DateTime plannedHarvestOn, DomainConfig config) =>
+    farmTimeToUtc(farmDate(plannedHarvestOn), config.harvestHour, 0);
+
+/// The next moment after [now] an alert changes with no new record: a
+/// pre-harvest fast opening or closing. Null when none is coming.
+DateTime? nextTimedChange({
+  required Iterable<BatchInfo> batches,
+  required DateTime now,
+  required DomainConfig config,
+}) {
+  DateTime? next;
+  for (final b in batches) {
+    final on = b.plannedHarvestOn;
+    if (on == null || b.status == BatchStatus.closed) continue;
+    final at = plannedHarvestAt(on, config);
+    for (final t in [
+      at.subtract(Duration(hours: config.preHarvestFastHours)),
+      at,
+    ]) {
+      if (t.isAfter(now) && (next == null || t.isBefore(next))) next = t;
+    }
+  }
+  return next;
 }
 
 /// One alert per pond-day with more than one current log; facts carry the
