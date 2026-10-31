@@ -23,7 +23,7 @@ Source handbook (French): `Dossier_Elevage_Tilapia_Etangs.docx`. `docs/DOMAIN.md
 
 Flutter, Drift, Supabase and a custom sync were chosen by the user; the packages named for state, routing, i18n and PDF are Claude's planning defaults.
 
-- Flutter (stable), Dart with sound null safety, Android only. Phones are low-end and a few years old: test on a 2 GB RAM emulator, keep the APK small, avoid heavy animations. **[Claude's call]** `minSdk` 26 (Android 8).
+- Flutter (stable), Dart with sound null safety, Android only. Phones are low-end and a few years old: test on a 2 GB RAM emulator, keep the APK moderate in size (a well-chosen package is fine; it needn't be minimal), avoid heavy animations. **[Claude's call]** `minSdk` 26 (Android 8).
 - Local database: SQLite via Drift (`drift`, `drift_flutter`), with versioned schema migrations and a migration test per version.
 - Backend: Supabase (`supabase_flutter`: Postgres, Auth, Storage). Row-level security enforces roles server-side; the app hides what a role can't do, the server refuses it.
 - Sync: a custom push/pull engine in `lib/sync/` (SPEC §Sync), no third-party sync service.
