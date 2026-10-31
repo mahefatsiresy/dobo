@@ -18,8 +18,11 @@ tool/server_test.sh                # Dart tests tagged `server`
 ```
 
 - SELinux blocks the edge runtime from reading the bind-mounted function
-  folder. Label it once with `chcon -Rt container_file_t supabase/functions`.
-  `restorecon -R supabase/functions` undoes it.
+  folder. Label it with `chcon -Rt container_file_t supabase/functions`.
+  `restorecon -R supabase/functions` undoes it. A file git writes anew (a
+  checkout or merge that adds it) loses the label: when `create-account`
+  answers 503 and the edge runtime logs "failed to determine entrypoint",
+  run the `chcon` again.
 - `env/local.json` points the Android emulator at the host
   (`http://10.0.2.2:54321`). `env/host.json` is for tools on the host. Both
   hold the local anon key from `supabase status` and are gitignored.
