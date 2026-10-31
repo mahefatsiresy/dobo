@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/errors.dart';
 import '../../db/repositories/providers.dart';
-import '../../domain/config.dart';
 import '../../domain/dates.dart';
 import '../../domain/stock.dart';
 import '../../domain/types.dart';
@@ -128,7 +127,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
     if (overviews == null || summary == null || !_loadOnce()) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    const config = DomainConfig.defaults;
+    final config = ref.watch(domainConfigProvider);
     String n(num v) => formatNumber(v.toDouble(), locale);
     final source = overviews.where((o) => o.pond.id == _fromPondId).firstOrNull;
     final target = overviews.where((o) => o.pond.id == _toPondId).firstOrNull;

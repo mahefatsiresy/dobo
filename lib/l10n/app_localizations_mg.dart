@@ -1149,4 +1149,186 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get groupsEmpty => 'Aucune branche';
+
+  @override
+  String get adminSettings => 'Réglages';
+
+  @override
+  String get settingsIntro =>
+      'Laissez vide pour garder la valeur du dossier d\'élevage.';
+
+  @override
+  String get settingMin => 'min';
+
+  @override
+  String get settingMax => 'max';
+
+  @override
+  String settingDefault(String value) {
+    return 'Dossier : $value';
+  }
+
+  @override
+  String get settingsSaved => 'Réglages enregistrés';
+
+  @override
+  String get cfgFryMaxG => 'Fin de l\'alevinage (g)';
+
+  @override
+  String get cfgPregrowMaxG => 'Fin du prégrossissement (g)';
+
+  @override
+  String get cfgGrowoutMaxG => 'Fin du grossissement (g)';
+
+  @override
+  String get cfgRationRateFry => 'Ration en alevinage (part de la biomasse)';
+
+  @override
+  String get cfgRationRatePregrow =>
+      'Ration en prégrossissement (part de la biomasse)';
+
+  @override
+  String get cfgRationRateGrowout =>
+      'Ration en grossissement (part de la biomasse)';
+
+  @override
+  String get cfgRationRateFinishing =>
+      'Ration en finition (part de la biomasse)';
+
+  @override
+  String get cfgMaxRationRate => 'Ration maximale (part de la biomasse)';
+
+  @override
+  String get cfgLeftoverReduction => 'Baisse après des restes (part)';
+
+  @override
+  String get cfgAteFastIncrease => 'Hausse si tout est mangé vite (part)';
+
+  @override
+  String get cfgDensityPerM2Earth => 'Densité en étang de terre (poissons/m²)';
+
+  @override
+  String get cfgDensityPerM2Tank => 'Densité en bassin (poissons/m²)';
+
+  @override
+  String get cfgDensityPerM2Cage => 'Densité en cage (poissons/m²)';
+
+  @override
+  String get cfgTemperatureC => 'Température (°C)';
+
+  @override
+  String get cfgPh => 'pH';
+
+  @override
+  String get cfgMinOxygenMgL => 'Oxygène minimum (mg/L)';
+
+  @override
+  String get cfgWaterRenewalPctPerWeek =>
+      'Renouvellement de l\'eau (% par semaine)';
+
+  @override
+  String get cfgSampleIntervalDays => 'Jours entre deux échantillonnages';
+
+  @override
+  String get cfgSampleMinFish => 'Poissons pesés, au moins';
+
+  @override
+  String get cfgSampleMaxFish => 'Poissons pesés, au plus';
+
+  @override
+  String get cfgWaterCheckIntervalDays => 'Jours entre deux relevés d\'eau';
+
+  @override
+  String get cfgFcrTarget => 'IC visé';
+
+  @override
+  String get cfgFeedAgeWarnDays => 'Aliment vieux : alerte (jours)';
+
+  @override
+  String get cfgFeedAgeDangerDays => 'Aliment trop vieux (jours)';
+
+  @override
+  String get cfgLowStockDays => 'Stock bas (jours restants)';
+
+  @override
+  String get cfgMortalitySpikeShare => 'Pic de mortalité : part des poissons';
+
+  @override
+  String get cfgMortalitySpikeMultiplier =>
+      'Pic de mortalité : fois la moyenne';
+
+  @override
+  String get cfgMortalitySpikeMinDeaths => 'Pic de mortalité : morts au moins';
+
+  @override
+  String get cfgMortalityTrailingDays => 'Pic de mortalité : jours de moyenne';
+
+  @override
+  String get cfgWarningSignLookbackDays => 'Signes d\'alerte récents (jours)';
+
+  @override
+  String get cfgQuarantineDays => 'Quarantaine (jours)';
+
+  @override
+  String get cfgDryingDays => 'Assèchement (jours)';
+
+  @override
+  String get cfgRestDays => 'Repos après remplissage (jours)';
+
+  @override
+  String get cfgPreHarvestFastHours => 'Jeûne avant la récolte (heures)';
+
+  @override
+  String get cfgLimeKgPerM2 => 'Chaux (kg/m²)';
+
+  @override
+  String get cfgManureKgPerM2 => 'Fumier (kg/m²)';
+
+  @override
+  String get cfgPondSurfaceM2 => 'Surface d\'un étang (m²)';
+
+  @override
+  String get cfgPondLengthWidthRatio => 'Rapport longueur / largeur';
+
+  @override
+  String get cfgMinDepthM => 'Profondeur minimale (m)';
+
+  @override
+  String get cfgStockingWeightG => 'Poids à l\'empoissonnement (g)';
+
+  @override
+  String get cfgAcclimatisationMinutes => 'Acclimatation (minutes)';
+
+  @override
+  String get cfgSectionPhases => 'Phases';
+
+  @override
+  String get cfgSectionFeeding => 'Alimentation';
+
+  @override
+  String get cfgSectionPonds => 'Étangs';
+
+  @override
+  String get cfgSectionWaterQuality => 'Qualité de l\'eau';
+
+  @override
+  String get cfgSectionSampling => 'Échantillonnage';
+
+  @override
+  String get cfgSectionAlertRules => 'Alertes';
+
+  @override
+  String get cfgSectionFormulas => 'Calculs';
+
+  @override
+  String get cfgSectionFeedStock => 'Stock d\'aliment';
+
+  @override
+  String get cfgSectionSpeciesAndFingerlings => 'Alevins';
+
+  @override
+  String get cfgSectionPondPreparation => 'Préparation des étangs';
+
+  @override
+  String get cfgSectionHarvestAndDelivery => 'Récolte';
 }

@@ -174,7 +174,14 @@ class PondDetailScreen extends ConsumerWidget {
                         ],
                       ),
                     if (b.phase != null)
-                      Text(_feedingGuide(l10n, b.phase!, locale)),
+                      Text(
+                        _feedingGuide(
+                          l10n,
+                          b.phase!,
+                          locale,
+                          ref.watch(domainConfigProvider),
+                        ),
+                      ),
                     const SizedBox(height: 8),
                     OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
@@ -278,8 +285,13 @@ class PondDetailScreen extends ConsumerWidget {
     );
   }
 
-  String _feedingGuide(AppLocalizations l10n, Phase phase, Locale locale) {
-    final g = feedingGuideFor(phase, DomainConfig.defaults);
+  String _feedingGuide(
+    AppLocalizations l10n,
+    Phase phase,
+    Locale locale,
+    DomainConfig config,
+  ) {
+    final g = feedingGuideFor(phase, config);
     String n(num v) => formatNumber(v.toDouble(), locale);
     final protein = g.proteinPct == null
         ? l10n.adultFeed
@@ -312,7 +324,7 @@ class _LatestReading extends ConsumerWidget {
         ph: r.ph,
         oxygenMgL: r.oxygenMgL,
         colour: r.colour,
-        config: DomainConfig.defaults,
+        config: ref.watch(domainConfigProvider),
       ))
         i.param,
     };

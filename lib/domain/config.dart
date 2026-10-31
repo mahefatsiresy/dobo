@@ -2,7 +2,7 @@ import 'types.dart';
 
 /// Every farming number the app computes with or compares against.
 /// Values and section references come from docs/DOMAIN.md; change both
-/// together. Admins can override per site (later milestones).
+/// together. Admins can override per site (`config_overrides.dart`).
 class DomainConfig {
   const DomainConfig({
     required this.fryMaxG,
@@ -189,4 +189,90 @@ class DomainConfig {
   /// DOMAIN §Species and fingerlings.
   final Range<int> stockingWeightG;
   final Range<int> acclimatisationMinutes;
+
+  /// This config with the given numbers replaced (admins' per-site
+  /// overrides, SPEC F14).
+  DomainConfig copyWith({
+    double? fryMaxG,
+    double? pregrowMaxG,
+    double? growoutMaxG,
+    Map<Phase, double>? rationRate,
+    double? maxRationRate,
+    double? leftoverReduction,
+    double? ateFastIncrease,
+    Map<Phase, FeedingGuide>? feedingGuides,
+    Map<StructureType, Range<double>>? densityPerM2,
+    Range<double>? temperatureC,
+    Range<double>? ph,
+    double? minOxygenMgL,
+    Range<int>? waterRenewalPctPerWeek,
+    int? sampleIntervalDays,
+    int? sampleMinFish,
+    int? sampleMaxFish,
+    int? waterCheckIntervalDays,
+    Range<double>? fcrTarget,
+    int? feedAgeWarnDays,
+    int? feedAgeDangerDays,
+    int? lowStockDays,
+    double? mortalitySpikeShare,
+    double? mortalitySpikeMultiplier,
+    int? mortalitySpikeMinDeaths,
+    int? mortalityTrailingDays,
+    int? warningSignLookbackDays,
+    Range<int>? quarantineDays,
+    Range<int>? dryingDays,
+    Range<int>? restDays,
+    int? preHarvestFastHours,
+    Range<double>? limeKgPerM2,
+    Range<double>? manureKgPerM2,
+    Range<double>? pondSurfaceM2,
+    Range<double>? pondLengthWidthRatio,
+    double? minDepthM,
+    Range<int>? stockingWeightG,
+    Range<int>? acclimatisationMinutes,
+  }) => DomainConfig(
+    fryMaxG: fryMaxG ?? this.fryMaxG,
+    pregrowMaxG: pregrowMaxG ?? this.pregrowMaxG,
+    growoutMaxG: growoutMaxG ?? this.growoutMaxG,
+    rationRate: rationRate ?? this.rationRate,
+    maxRationRate: maxRationRate ?? this.maxRationRate,
+    leftoverReduction: leftoverReduction ?? this.leftoverReduction,
+    ateFastIncrease: ateFastIncrease ?? this.ateFastIncrease,
+    feedingGuides: feedingGuides ?? this.feedingGuides,
+    densityPerM2: densityPerM2 ?? this.densityPerM2,
+    temperatureC: temperatureC ?? this.temperatureC,
+    ph: ph ?? this.ph,
+    minOxygenMgL: minOxygenMgL ?? this.minOxygenMgL,
+    waterRenewalPctPerWeek:
+        waterRenewalPctPerWeek ?? this.waterRenewalPctPerWeek,
+    sampleIntervalDays: sampleIntervalDays ?? this.sampleIntervalDays,
+    sampleMinFish: sampleMinFish ?? this.sampleMinFish,
+    sampleMaxFish: sampleMaxFish ?? this.sampleMaxFish,
+    waterCheckIntervalDays:
+        waterCheckIntervalDays ?? this.waterCheckIntervalDays,
+    fcrTarget: fcrTarget ?? this.fcrTarget,
+    feedAgeWarnDays: feedAgeWarnDays ?? this.feedAgeWarnDays,
+    feedAgeDangerDays: feedAgeDangerDays ?? this.feedAgeDangerDays,
+    lowStockDays: lowStockDays ?? this.lowStockDays,
+    mortalitySpikeShare: mortalitySpikeShare ?? this.mortalitySpikeShare,
+    mortalitySpikeMultiplier:
+        mortalitySpikeMultiplier ?? this.mortalitySpikeMultiplier,
+    mortalitySpikeMinDeaths:
+        mortalitySpikeMinDeaths ?? this.mortalitySpikeMinDeaths,
+    mortalityTrailingDays: mortalityTrailingDays ?? this.mortalityTrailingDays,
+    warningSignLookbackDays:
+        warningSignLookbackDays ?? this.warningSignLookbackDays,
+    quarantineDays: quarantineDays ?? this.quarantineDays,
+    dryingDays: dryingDays ?? this.dryingDays,
+    restDays: restDays ?? this.restDays,
+    preHarvestFastHours: preHarvestFastHours ?? this.preHarvestFastHours,
+    limeKgPerM2: limeKgPerM2 ?? this.limeKgPerM2,
+    manureKgPerM2: manureKgPerM2 ?? this.manureKgPerM2,
+    pondSurfaceM2: pondSurfaceM2 ?? this.pondSurfaceM2,
+    pondLengthWidthRatio: pondLengthWidthRatio ?? this.pondLengthWidthRatio,
+    minDepthM: minDepthM ?? this.minDepthM,
+    stockingWeightG: stockingWeightG ?? this.stockingWeightG,
+    acclimatisationMinutes:
+        acclimatisationMinutes ?? this.acclimatisationMinutes,
+  );
 }

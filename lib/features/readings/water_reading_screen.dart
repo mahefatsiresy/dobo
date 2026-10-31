@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../db/repositories/reading_repository.dart';
-import '../../domain/config.dart';
 import '../../domain/dates.dart';
 import '../../domain/types.dart';
 import '../../domain/water.dart';
@@ -80,7 +79,7 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    const config = DomainConfig.defaults;
+    final config = ref.watch(domainConfigProvider);
     final input = _input;
     final issues = {
       for (final i in waterIssues(

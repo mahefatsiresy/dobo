@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../database.dart';
 import '../database_provider.dart';
 import '../session.dart';
+import '../../domain/config.dart';
+import '../../domain/config_overrides.dart';
 import '../../sync/providers.dart';
 import 'account_repository.dart';
 import 'batch_repository.dart';
@@ -12,6 +14,7 @@ import 'member_repository.dart';
 import 'person_repository.dart';
 import 'pond_repository.dart';
 import 'reading_repository.dart';
+import 'settings_repository.dart';
 import 'setup_repository.dart';
 import 'visit_repository.dart';
 
@@ -124,5 +127,25 @@ final groupRepositoryProvider = Provider<GroupRepository>(
   (ref) => GroupRepository(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
+  ),
+);
+
+final settingsRepositoryProvider = Provider<SettingsRepository>(
+  (ref) => SettingsRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+  ),
+);
+
+final settingOverridesProvider = StreamProvider<Map<String, num>>(
+  (ref) => ref.watch(settingsRepositoryProvider).watch(),
+);
+
+/// The farming numbers for this site: DOMAIN's, with the admins'
+/// overrides (SPEC F14). Every screen and calculation reads this.
+final domainConfigProvider = Provider<DomainConfig>(
+  (ref) => applyOverrides(
+    DomainConfig.defaults,
+    ref.watch(settingOverridesProvider).value ?? const {},
   ),
 );

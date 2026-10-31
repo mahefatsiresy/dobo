@@ -6,7 +6,6 @@ import '../../db/database.dart';
 import '../../db/repositories/errors.dart';
 import '../../db/repositories/pond_repository.dart';
 import '../../db/repositories/providers.dart';
-import '../../domain/config.dart';
 import '../../domain/pond.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
@@ -138,7 +137,7 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
       _load(overview.pond, overview.status);
     }
     final colour = _colour ?? nextFreeColour(ponds);
-    const config = DomainConfig.defaults;
+    final config = ref.watch(domainConfigProvider);
     final surface = pondSurfaceM2(
       lengthM: parseDecimal(_length.text),
       widthM: parseDecimal(_width.text),

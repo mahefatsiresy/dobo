@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
-import '../../domain/config.dart';
 import '../common/farm_today.dart';
 import '../ponds/pond_overview.dart';
 import 'visit_checklist.dart';
@@ -56,6 +55,6 @@ final checklistProvider = Provider.family<VisitChecklist?, String>((
     observationsThisVisit: observations,
     lastSampleOrStocking: last,
     today: ref.watch(farmTodayProvider),
-    config: DomainConfig.defaults,
+    config: ref.watch(domainConfigProvider),
   );
 });

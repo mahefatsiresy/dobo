@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../db/repositories/reading_repository.dart';
-import '../../domain/config.dart';
 import '../../domain/stock.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
@@ -69,7 +68,7 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    const config = DomainConfig.defaults;
+    final config = ref.watch(domainConfigProvider);
     final fish = _fish, grams = _grams;
     final result = fish == null || grams == null
         ? null

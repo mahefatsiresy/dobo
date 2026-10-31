@@ -23,6 +23,7 @@ class AdminScreen extends StatelessWidget {
         children: [
           tile(Icons.group, l10n.adminMembers, '/more/admin/members'),
           tile(Icons.family_restroom, l10n.adminGroups, '/more/admin/groups'),
+          tile(Icons.tune, l10n.adminSettings, '/more/admin/settings'),
         ],
       ),
     );

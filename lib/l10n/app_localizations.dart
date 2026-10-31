@@ -2185,6 +2185,354 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune branche'**
   String get groupsEmpty;
+
+  /// No description provided for @adminSettings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get adminSettings;
+
+  /// No description provided for @settingsIntro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Laissez vide pour garder la valeur du dossier d\'élevage.'**
+  String get settingsIntro;
+
+  /// No description provided for @settingMin.
+  ///
+  /// In fr, this message translates to:
+  /// **'min'**
+  String get settingMin;
+
+  /// No description provided for @settingMax.
+  ///
+  /// In fr, this message translates to:
+  /// **'max'**
+  String get settingMax;
+
+  /// No description provided for @settingDefault.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dossier : {value}'**
+  String settingDefault(String value);
+
+  /// No description provided for @settingsSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages enregistrés'**
+  String get settingsSaved;
+
+  /// No description provided for @cfgFryMaxG.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin de l\'alevinage (g)'**
+  String get cfgFryMaxG;
+
+  /// No description provided for @cfgPregrowMaxG.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin du prégrossissement (g)'**
+  String get cfgPregrowMaxG;
+
+  /// No description provided for @cfgGrowoutMaxG.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin du grossissement (g)'**
+  String get cfgGrowoutMaxG;
+
+  /// No description provided for @cfgRationRateFry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration en alevinage (part de la biomasse)'**
+  String get cfgRationRateFry;
+
+  /// No description provided for @cfgRationRatePregrow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration en prégrossissement (part de la biomasse)'**
+  String get cfgRationRatePregrow;
+
+  /// No description provided for @cfgRationRateGrowout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration en grossissement (part de la biomasse)'**
+  String get cfgRationRateGrowout;
+
+  /// No description provided for @cfgRationRateFinishing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration en finition (part de la biomasse)'**
+  String get cfgRationRateFinishing;
+
+  /// No description provided for @cfgMaxRationRate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration maximale (part de la biomasse)'**
+  String get cfgMaxRationRate;
+
+  /// No description provided for @cfgLeftoverReduction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Baisse après des restes (part)'**
+  String get cfgLeftoverReduction;
+
+  /// No description provided for @cfgAteFastIncrease.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hausse si tout est mangé vite (part)'**
+  String get cfgAteFastIncrease;
+
+  /// No description provided for @cfgDensityPerM2Earth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité en étang de terre (poissons/m²)'**
+  String get cfgDensityPerM2Earth;
+
+  /// No description provided for @cfgDensityPerM2Tank.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité en bassin (poissons/m²)'**
+  String get cfgDensityPerM2Tank;
+
+  /// No description provided for @cfgDensityPerM2Cage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Densité en cage (poissons/m²)'**
+  String get cfgDensityPerM2Cage;
+
+  /// No description provided for @cfgTemperatureC.
+  ///
+  /// In fr, this message translates to:
+  /// **'Température (°C)'**
+  String get cfgTemperatureC;
+
+  /// No description provided for @cfgPh.
+  ///
+  /// In fr, this message translates to:
+  /// **'pH'**
+  String get cfgPh;
+
+  /// No description provided for @cfgMinOxygenMgL.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oxygène minimum (mg/L)'**
+  String get cfgMinOxygenMgL;
+
+  /// No description provided for @cfgWaterRenewalPctPerWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renouvellement de l\'eau (% par semaine)'**
+  String get cfgWaterRenewalPctPerWeek;
+
+  /// No description provided for @cfgSampleIntervalDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jours entre deux échantillonnages'**
+  String get cfgSampleIntervalDays;
+
+  /// No description provided for @cfgSampleMinFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons pesés, au moins'**
+  String get cfgSampleMinFish;
+
+  /// No description provided for @cfgSampleMaxFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons pesés, au plus'**
+  String get cfgSampleMaxFish;
+
+  /// No description provided for @cfgWaterCheckIntervalDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jours entre deux relevés d\'eau'**
+  String get cfgWaterCheckIntervalDays;
+
+  /// No description provided for @cfgFcrTarget.
+  ///
+  /// In fr, this message translates to:
+  /// **'IC visé'**
+  String get cfgFcrTarget;
+
+  /// No description provided for @cfgFeedAgeWarnDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment vieux : alerte (jours)'**
+  String get cfgFeedAgeWarnDays;
+
+  /// No description provided for @cfgFeedAgeDangerDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment trop vieux (jours)'**
+  String get cfgFeedAgeDangerDays;
+
+  /// No description provided for @cfgLowStockDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stock bas (jours restants)'**
+  String get cfgLowStockDays;
+
+  /// No description provided for @cfgMortalitySpikeShare.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pic de mortalité : part des poissons'**
+  String get cfgMortalitySpikeShare;
+
+  /// No description provided for @cfgMortalitySpikeMultiplier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pic de mortalité : fois la moyenne'**
+  String get cfgMortalitySpikeMultiplier;
+
+  /// No description provided for @cfgMortalitySpikeMinDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pic de mortalité : morts au moins'**
+  String get cfgMortalitySpikeMinDeaths;
+
+  /// No description provided for @cfgMortalityTrailingDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pic de mortalité : jours de moyenne'**
+  String get cfgMortalityTrailingDays;
+
+  /// No description provided for @cfgWarningSignLookbackDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signes d\'alerte récents (jours)'**
+  String get cfgWarningSignLookbackDays;
+
+  /// No description provided for @cfgQuarantineDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quarantaine (jours)'**
+  String get cfgQuarantineDays;
+
+  /// No description provided for @cfgDryingDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Assèchement (jours)'**
+  String get cfgDryingDays;
+
+  /// No description provided for @cfgRestDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repos après remplissage (jours)'**
+  String get cfgRestDays;
+
+  /// No description provided for @cfgPreHarvestFastHours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeûne avant la récolte (heures)'**
+  String get cfgPreHarvestFastHours;
+
+  /// No description provided for @cfgLimeKgPerM2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaux (kg/m²)'**
+  String get cfgLimeKgPerM2;
+
+  /// No description provided for @cfgManureKgPerM2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fumier (kg/m²)'**
+  String get cfgManureKgPerM2;
+
+  /// No description provided for @cfgPondSurfaceM2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Surface d\'un étang (m²)'**
+  String get cfgPondSurfaceM2;
+
+  /// No description provided for @cfgPondLengthWidthRatio.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport longueur / largeur'**
+  String get cfgPondLengthWidthRatio;
+
+  /// No description provided for @cfgMinDepthM.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profondeur minimale (m)'**
+  String get cfgMinDepthM;
+
+  /// No description provided for @cfgStockingWeightG.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids à l\'empoissonnement (g)'**
+  String get cfgStockingWeightG;
+
+  /// No description provided for @cfgAcclimatisationMinutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acclimatation (minutes)'**
+  String get cfgAcclimatisationMinutes;
+
+  /// No description provided for @cfgSectionPhases.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phases'**
+  String get cfgSectionPhases;
+
+  /// No description provided for @cfgSectionFeeding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alimentation'**
+  String get cfgSectionFeeding;
+
+  /// No description provided for @cfgSectionPonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étangs'**
+  String get cfgSectionPonds;
+
+  /// No description provided for @cfgSectionWaterQuality.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qualité de l\'eau'**
+  String get cfgSectionWaterQuality;
+
+  /// No description provided for @cfgSectionSampling.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échantillonnage'**
+  String get cfgSectionSampling;
+
+  /// No description provided for @cfgSectionAlertRules.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alertes'**
+  String get cfgSectionAlertRules;
+
+  /// No description provided for @cfgSectionFormulas.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calculs'**
+  String get cfgSectionFormulas;
+
+  /// No description provided for @cfgSectionFeedStock.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stock d\'aliment'**
+  String get cfgSectionFeedStock;
+
+  /// No description provided for @cfgSectionSpeciesAndFingerlings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alevins'**
+  String get cfgSectionSpeciesAndFingerlings;
+
+  /// No description provided for @cfgSectionPondPreparation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparation des étangs'**
+  String get cfgSectionPondPreparation;
+
+  /// No description provided for @cfgSectionHarvestAndDelivery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte'**
+  String get cfgSectionHarvestAndDelivery;
 }
 
 class _AppLocalizationsDelegate

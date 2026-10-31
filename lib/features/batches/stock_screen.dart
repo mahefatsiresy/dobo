@@ -156,7 +156,7 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
     if (overviews == null || !_loadOnce()) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    const config = DomainConfig.defaults;
+    final config = ref.watch(domainConfigProvider);
     // Ready ponds first, then by code.
     final ponds = [...overviews]
       ..sort((a, b) {

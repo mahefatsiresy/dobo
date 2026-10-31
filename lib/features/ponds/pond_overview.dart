@@ -172,7 +172,7 @@ final pondOverviewsProvider = Provider<AsyncValue<List<PondOverview>>>((ref) {
         p,
         placements.value!,
         batches,
-        DomainConfig.defaults,
+        ref.watch(domainConfigProvider),
         lastLeftover: lastLogs[p.id]?.leftover,
         lastAteFast: lastLogs[p.id]?.ateFast ?? false,
       ),
