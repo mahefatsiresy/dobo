@@ -41,7 +41,7 @@ void main() {
   setUpAll(() async {
     env = ServerEnv.fromEnvironment();
     founder = await env.signedUpClient('founder$stamp@test.mg', 'motdepasse1');
-    await founder.rpc(
+    await founder.rpc<void>(
       'create_association',
       params: {
         'p_association_id': newId(),
