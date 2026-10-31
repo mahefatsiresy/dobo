@@ -213,4 +213,28 @@ void main() {
       expect(auth.createdAssociations, isEmpty);
     },
   );
+
+  test('the founder retries after a lost answer and ends linked, with the '
+      'same ids', () async {
+    auth.loseNextAssociationAnswer = true;
+    Future<void> create() => repo.createAssociation(
+      associationName: 'Famille Rabe',
+      groupName: 'Branche 1',
+      memberName: 'Soa',
+      email: 'soa@a.mg',
+      password: 'motdepasse',
+      siteName: 'Ambohidratrimo',
+    );
+    await expectLater(create(), throwsA(isA<SyncOffline>()));
+    expect(await setup.currentSession(), isNull);
+    await create();
+    final [first, second] = auth.createdAssociations;
+    for (final key in ['associationId', 'memberId', 'groupId']) {
+      expect(second[key], first[key], reason: key);
+    }
+    final s = (await setup.currentSession())!;
+    expect(s.associationId, first['associationId']);
+    expect((await meta())['linked'], '1');
+    expect((await meta()).keys.where((k) => k.startsWith('planned_')), isEmpty);
+  });
 }

@@ -104,16 +104,29 @@ class AccountRepository {
       if (e.code != 'user_already_exists') rethrow;
       await auth.signIn(email: login, password: password);
     }
+    // Ids are planned once and kept until it works: if the server created
+    // the association but its answer was lost, the retry sends the same
+    // ids and the server knows them as this founder's.
+    Future<String> planned(String key, String? current) async {
+      if (current != null) return current;
+      final kept = await _meta('planned_$key');
+      if (kept != null) return kept;
+      final id = newId();
+      await _setMeta('planned_$key', id);
+      return id;
+    }
+
     final ids = Session(
-      associationId: existing?.associationId ?? newId(),
-      userId: existing?.userId ?? newId(),
+      associationId: await planned('association_id', existing?.associationId),
+      userId: await planned('member_id', existing?.userId),
       deviceId: await db.deviceId(),
-      siteId: existing?.siteId ?? newId(),
+      siteId: await planned('site_id', existing?.siteId),
     );
+    final groupId = await planned('group_id', null);
     await auth.createAssociation(
       associationId: ids.associationId,
       associationName: associationName.trim(),
-      groupId: newId(),
+      groupId: groupId,
       groupName: groupName.trim(),
       memberId: ids.userId,
       memberName: memberName.trim(),
@@ -139,6 +152,18 @@ class AccountRepository {
       }
       await _setMeta(linkedKey, '1');
       await _setMeta(_lastMemberKey, ids.userId);
+      await (db.delete(db.localMeta)..where(
+            (m) => m.key.isIn([
+              for (final k in [
+                'association_id',
+                'member_id',
+                'site_id',
+                'group_id',
+              ])
+                'planned_$k',
+            ]),
+          ))
+          .go();
     });
   }
 

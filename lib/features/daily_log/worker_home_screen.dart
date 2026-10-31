@@ -63,18 +63,40 @@ class WorkerHomeScreen extends ConsumerWidget {
       ),
       body: overviews == null
           ? const Center(child: CircularProgressIndicator())
-          : GridView.count(
-              padding: const EdgeInsets.all(16),
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+          : Column(
               children: [
-                for (final o in overviews)
-                  _PondTile(
-                    overview: o,
-                    logged: logged.contains(o.pond.id),
-                    onTap: () => context.push('/log/${o.pond.id}'),
+                // The account's session ended: records wait on the phone
+                // until the worker signs in again.
+                if (ref.watch(syncControllerProvider).state ==
+                    SyncRunState.signedOut)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    child: FilledButton.icon(
+                      key: const Key('workerRelogin'),
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(64),
+                      ),
+                      icon: const Icon(Icons.login, size: 32),
+                      label: Text(l10n.syncRelogin),
+                      onPressed: () => context.push('/welcome/login?worker=1'),
+                    ),
                   ),
+                Expanded(
+                  child: GridView.count(
+                    padding: const EdgeInsets.all(16),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    children: [
+                      for (final o in overviews)
+                        _PondTile(
+                          overview: o,
+                          logged: logged.contains(o.pond.id),
+                          onTap: () => context.push('/log/${o.pond.id}'),
+                        ),
+                    ],
+                  ),
+                ),
               ],
             ),
     );

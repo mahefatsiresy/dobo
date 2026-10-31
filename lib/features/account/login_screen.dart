@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../../sync/sync_controller.dart';
 import '../common/form_body.dart';
 import '../common/save_once.dart';
 import 'account_errors.dart';
@@ -45,6 +48,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SaveOnce {
             secret: _secret.text,
             worker: widget.worker,
           );
+      // Signing in again on the same account leaves the session as it
+      // was, so nothing else would start the sync it was waiting for.
+      unawaited(ref.read(syncControllerProvider.notifier).syncNow());
       if (mounted) context.go(widget.worker ? '/worker' : '/ponds');
     } catch (e) {
       setState(() => _error = accountErrorText(l10n, e));

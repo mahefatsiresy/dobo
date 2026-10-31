@@ -30,11 +30,11 @@ values
    'empty', false);
 
 select ok(
-  (select server_seq from ponds where code = 'E2')
-    > (select server_seq from ponds where code = 'E1'),
+  (select server_seq from ponds where id = '00000000-0000-0000-0000-000000000002')
+    > (select server_seq from ponds where id = '00000000-0000-0000-0000-000000000001'),
   'later insert gets a higher server_seq');
 select isnt(
-  (select server_received_at from ponds where code = 'E1'), null,
+  (select server_received_at from ponds where id = '00000000-0000-0000-0000-000000000001'), null,
   'server_received_at is stamped');
 select ok(
   exists(select 1 from pg_locks
@@ -42,10 +42,10 @@ select ok(
   'a write holds the association''s advisory lock until commit');
 
 create temp table seq_before as
-  select server_seq from ponds where code = 'E1';
-update ponds set code = 'E9' where code = 'E1';
+  select server_seq from ponds where id = '00000000-0000-0000-0000-000000000001';
+update ponds set code = 'E9' where id = '00000000-0000-0000-0000-000000000001';
 select ok(
-  (select server_seq from ponds where code = 'E9')
+  (select server_seq from ponds where id = '00000000-0000-0000-0000-000000000001')
     > (select server_seq from seq_before),
   'an update gets a new server_seq');
 select is(
@@ -62,7 +62,8 @@ values ('00000000-0000-0000-0000-0000000000f1', '00000000-0000-0000-0000-0000000
   '00000000-0000-0000-0000-0000000000b1', now(), '00000000-0000-0000-0000-0000000000d1',
   now(), false, '00000000-0000-0000-0000-000000000001', 600, false, 3, '', '');
 select throws_ok(
-  $$update daily_logs set deaths = 9$$,
+  $$update daily_logs set deaths = 9
+    where id = '00000000-0000-0000-0000-0000000000f1'$$,
   'P0001', 'event rows are immutable',
   'event rows cannot be updated');
 

@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
 import '../../sync/fake_auth_gateway.dart';
+import '../../sync/fake_sync_api.dart';
 
 void main() {
   appTest(
@@ -102,5 +103,25 @@ void main() {
     },
     setUp: false,
     overrides: [authGatewayProvider.overrideWithValue(FakeAuthGateway())],
+  );
+
+  appTest(
+    'a worker whose session ended signs back in from the worker home',
+    (tester, db) async {
+      await db
+          .into(db.localMeta)
+          .insert(LocalMetaCompanion.insert(key: 'linked', value: '1'));
+      await tester.pumpAndSettle();
+      expect(find.byType(WorkerHomeScreen), findsOneWidget);
+      await tapAndSettle(tester, find.byKey(const Key('workerRelogin')));
+      expect(find.byKey(const Key('secret')), findsOneWidget);
+      expect(find.text('Kaody PIN (isa 6)'), findsOneWidget);
+    },
+    role: MemberRole.worker,
+    isAdmin: false,
+    overrides: [
+      authGatewayProvider.overrideWithValue(FakeAuthGateway()),
+      syncApiProvider.overrideWithValue(FakeSyncApi()),
+    ],
   );
 }

@@ -117,4 +117,39 @@ void main() {
     final m = await db.select(db.members).getSingle();
     expect((m.locale, m.syncState), ('mg', SyncState.pending));
   });
+
+  appTest(
+    'an admin cannot change their own role, admin flag or activity',
+    (tester, db) async {
+      final s = (await appContainer(tester).read(sessionProvider.future))!;
+      await db
+          .into(db.members)
+          .insert(
+            MembersCompanion.insert(
+              id: Value(s.userId),
+              associationId: s.associationId,
+              enteredBy: s.userId,
+              deviceId: s.deviceId,
+              name: 'Soa',
+              role: MemberRole.member,
+              isAdmin: const Value(true),
+              locale: 'fr',
+              syncState: const Value(SyncState.synced),
+            ),
+          );
+      await openMembers(tester);
+      await tapAndSettle(tester, find.text('Soa'));
+      final role = tester.widget<SegmentedButton<MemberRole>>(
+        find.byType(SegmentedButton<MemberRole>),
+      );
+      expect(role.onSelectionChanged, isNull);
+      for (final label in ['Administrateur', 'Actif']) {
+        final tile = tester.widget<SwitchListTile>(
+          find.widgetWithText(SwitchListTile, label),
+        );
+        expect(tile.onChanged, isNull, reason: label);
+      }
+    },
+    overrides: [authGatewayProvider.overrideWith((ref) => auth)],
+  );
 }

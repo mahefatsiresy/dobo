@@ -4,6 +4,7 @@ import '../../domain/types.dart';
 import '../database.dart';
 import '../ids.dart';
 import '../session.dart';
+import '../sync_state.dart';
 
 /// The phone's session, kept in `local_meta`: which association, member and
 /// site it records for, and that member's role. Signing out removes only the
@@ -31,11 +32,14 @@ class SetupRepository {
     if (associationId == null || userId == null || siteId == null) {
       return null;
     }
-    final member = await (db.select(
+    final row = await (db.select(
       db.members,
     )..where((m) => m.id.equals(userId))).getSingleOrNull();
-    // The member row, once synced, is the truth; before it arrives, what
-    // sign-in recorded; a phone from before accounts is its founder's.
+    // The member row as the server holds it is the truth; a local edit not
+    // yet accepted (or refused) never changes what this phone may do.
+    // Before the row arrives, what sign-in recorded; a phone from before
+    // accounts is its founder's.
+    final member = row?.syncState == SyncState.synced ? row : null;
     final role = member?.role ?? _role(meta[_roleKey]) ?? MemberRole.member;
     return Session(
       associationId: associationId,

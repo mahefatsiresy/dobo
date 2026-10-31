@@ -2,7 +2,7 @@
 -- an association (Task 2).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(24);
+select plan(28);
 
 -- Association A: admin (b1), member (b2), worker (b3). Association B: b4.
 -- b5 and b6 have accounts but no member row yet.
@@ -124,10 +124,13 @@ $$, 'a member can change their own language');
 select is((select locale from members
            where id = '00000000-0000-0000-0000-0000000000e2'),
   'mg', 'the language change is stored');
-select throws_ok($$
-  update members set is_admin = true
-  where id = '00000000-0000-0000-0000-0000000000e2'
-$$, '42501', 'only_locale', 'a member cannot make themselves admin');
+-- Anything else a member sends for their own row is ignored, not refused:
+-- a refused row would stay stuck on their phone.
+update members set is_admin = true
+where id = '00000000-0000-0000-0000-0000000000e2';
+select is((select is_admin from members
+           where id = '00000000-0000-0000-0000-0000000000e2'),
+  false, 'a member cannot make themselves admin');
 
 -- The admin --------------------------------------------------------------
 select set_config('request.jwt.claims',
@@ -157,6 +160,27 @@ select throws_ok($$
   update members set is_admin = false
   where id = '00000000-0000-0000-0000-0000000000e1'
 $$, 'P0001', 'last_admin', 'the last admin cannot step down');
+select throws_ok($$
+  update members set role = 'worker'
+  where id = '00000000-0000-0000-0000-0000000000e1'
+$$, 'P0001', 'last_admin', 'the last admin cannot become a worker');
+
+-- The admin moves the member to sales; the member's phone, not yet
+-- synced, then sends its language change with the old flags.
+update members set is_sales = true
+where id = '00000000-0000-0000-0000-0000000000e2';
+select set_config('request.jwt.claims',
+  '{"sub":"00000000-0000-0000-0000-0000000000b2"}', true);
+update members set locale = 'fr', is_sales = false
+where id = '00000000-0000-0000-0000-0000000000e2';
+select is((select (locale, is_sales)::text from members
+           where id = '00000000-0000-0000-0000-0000000000e2'),
+  '(fr,t)', 'a stale language change keeps the admin''s edit');
+select set_config('request.jwt.claims',
+  '{"sub":"00000000-0000-0000-0000-0000000000b1"}', true);
+select is((select count(*)::int from members
+           where id = '00000000-0000-0000-0000-0000000000e2'), 1,
+  'the admin still sees the member');
 select lives_ok($$
   update members set active = false
   where id = '00000000-0000-0000-0000-0000000000e2'
@@ -185,6 +209,12 @@ $$, 'a new account can create an association');
 select is((select is_admin from members
            where id = '00000000-0000-0000-0000-0000000000e5'),
   true, 'the founder is an admin of it');
+select lives_ok($$
+  select create_association('00000000-0000-0000-0000-0000000000a3', 'C',
+    '00000000-0000-0000-0000-0000000000f7', 'Branche 1',
+    '00000000-0000-0000-0000-0000000000e5', 'Founder', 'fr',
+    '00000000-0000-0000-0000-0000000000d5')
+$$, 'the founder may retry after a lost answer');
 select throws_ok($$
   select create_association('00000000-0000-0000-0000-0000000000a4', 'D',
     '00000000-0000-0000-0000-0000000000f8', 'Branche 1',

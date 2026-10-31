@@ -1,6 +1,7 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/session.dart';
+import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
@@ -104,6 +105,7 @@ void main() {
               role: MemberRole.member,
               isSales: const Value(true),
               locale: 'fr',
+              syncState: const Value(SyncState.synced),
             ),
           );
       await pumpEventQueue();
@@ -159,6 +161,34 @@ void main() {
       await pumpEventQueue();
       await sub.cancel();
       expect(seen, hasLength(1));
+    });
+
+    test('an own member row not accepted by the server does not decide the '
+        'role', () async {
+      await repo.writeSignIn(
+        associationId: 'a1',
+        memberId: 'm1',
+        siteId: 's1',
+        role: MemberRole.member,
+        isAdmin: true,
+        isSales: false,
+      );
+      await db
+          .into(db.members)
+          .insert(
+            MembersCompanion.insert(
+              id: const Value('m1'),
+              associationId: 'a1',
+              enteredBy: 'm1',
+              deviceId: 'd1',
+              name: 'Soa',
+              role: MemberRole.worker,
+              locale: 'fr',
+              syncState: const Value(SyncState.rejected),
+            ),
+          );
+      final s = (await repo.watchSession().first)!;
+      expect((s.role, s.isAdmin), (MemberRole.member, true));
     });
   });
 }

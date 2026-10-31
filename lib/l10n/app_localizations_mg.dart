@@ -998,7 +998,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get syncRetry => 'Réessayer les refusés';
 
   @override
-  String get syncRelogin => 'Se reconnecter';
+  String get syncRelogin => 'Hiditra indray';
 
   @override
   String get syncLink => 'Créer le compte de l\'association';

@@ -142,6 +142,9 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
     final groups = ref.watch(groupsProvider).value ?? const <Group>[];
     final people = ref.watch(peopleProvider).value ?? const <Person>[];
     final worker = _role == MemberRole.worker;
+    // Nobody removes their own rights: one wrong tap could leave the
+    // association without an admin.
+    final own = widget.memberId == ref.watch(sessionProvider).value?.userId;
     return Scaffold(
       appBar: AppBar(title: Text(_isNew ? l10n.memberNew : _name.text)),
       body: FormBody(
@@ -165,10 +168,14 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
               ),
             ],
             selected: {_role},
-            onSelectionChanged: (s) => setState(() {
-              _role = s.single;
-              if (_isNew) _locale = _role == MemberRole.worker ? 'mg' : 'fr';
-            }),
+            onSelectionChanged: own
+                ? null
+                : (s) => setState(() {
+                    _role = s.single;
+                    if (_isNew) {
+                      _locale = _role == MemberRole.worker ? 'mg' : 'fr';
+                    }
+                  }),
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String?>(
@@ -185,7 +192,7 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
           SwitchListTile(
             title: Text(l10n.roleAdmin),
             value: _admin,
-            onChanged: (v) => setState(() => _admin = v),
+            onChanged: own ? null : (v) => setState(() => _admin = v),
           ),
           SwitchListTile(
             title: Text(l10n.roleSales),
@@ -196,7 +203,7 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
             SwitchListTile(
               title: Text(l10n.memberActive),
               value: _active,
-              onChanged: (v) => setState(() => _active = v),
+              onChanged: own ? null : (v) => setState(() => _active = v),
             ),
           const SizedBox(height: 8),
           Text(l10n.moreLanguage),

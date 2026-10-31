@@ -19,7 +19,11 @@ class FakeAuthGateway implements AuthGateway {
   /// Every call fails as if the phone had no network.
   bool offline = false;
 
+  /// The next createAssociation is applied, then its answer is lost.
+  bool loseNextAssociationAnswer = false;
+
   bool signedIn = false;
+  final _signedUp = <String>{};
   String? lastEmail;
   final createdAssociations = <Map<String, String>>[];
   final createdAccounts = <NewAccount>[];
@@ -44,9 +48,10 @@ class FakeAuthGateway implements AuthGateway {
   @override
   Future<void> signUp({required String email, required String password}) async {
     _net();
-    if (existingEmails.contains(email)) {
+    if (existingEmails.contains(email) || _signedUp.contains(email)) {
       throw const AuthFailed('user_already_exists');
     }
+    _signedUp.add(email);
     lastEmail = email;
     signedIn = true;
   }
@@ -93,6 +98,10 @@ class FakeAuthGateway implements AuthGateway {
       isSales: false,
       locale: locale,
     );
+    if (loseNextAssociationAnswer) {
+      loseNextAssociationAnswer = false;
+      throw SyncOffline();
+    }
   }
 
   @override
