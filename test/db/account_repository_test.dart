@@ -88,28 +88,30 @@ void main() {
     expect(await db.select(db.dailyLogs).get(), hasLength(3));
   });
 
-  test('a different member signing in puts refused rows back in the queue',
-      () async {
-    final local = await setup.completeSetup(siteName: 'Ambohidratrimo');
-    await db
-        .into(db.waterReadings)
-        .insert(
-          WaterReadingsCompanion.insert(
-            associationId: local.associationId,
-            enteredBy: local.userId,
-            deviceId: 'd0',
-            recordedAt: DateTime.utc(2026, 3, 1, 9),
-            pondId: 'p1',
-            syncState: const Value(SyncState.rejected),
-            syncError: const Value('42501: refused'),
-          ),
-        );
-    await repo.signOut();
-    auth.member = remoteMember(id: 'm2', associationId: local.associationId);
-    await repo.signIn(login: 'soa@a.mg', secret: 'motdepasse', worker: false);
-    final r = await db.select(db.waterReadings).getSingle();
-    expect(r.syncState, SyncState.pending);
-  });
+  test(
+    'a different member signing in puts refused rows back in the queue',
+    () async {
+      final local = await setup.completeSetup(siteName: 'Ambohidratrimo');
+      await db
+          .into(db.waterReadings)
+          .insert(
+            WaterReadingsCompanion.insert(
+              associationId: local.associationId,
+              enteredBy: local.userId,
+              deviceId: 'd0',
+              recordedAt: DateTime.utc(2026, 3, 1, 9),
+              pondId: 'p1',
+              syncState: const Value(SyncState.rejected),
+              syncError: const Value('42501: refused'),
+            ),
+          );
+      await repo.signOut();
+      auth.member = remoteMember(id: 'm2', associationId: local.associationId);
+      await repo.signIn(login: 'soa@a.mg', secret: 'motdepasse', worker: false);
+      final r = await db.select(db.waterReadings).getSingle();
+      expect(r.syncState, SyncState.pending);
+    },
+  );
 
   test('creating the association from an M3 phone keeps its ids', () async {
     final local = await setup.completeSetup(siteName: 'Ambohidratrimo');
@@ -133,22 +135,31 @@ void main() {
     expect((await meta())['linked'], '1');
   });
 
-  test('creating the association on an empty phone sets the phone up', () async {
-    await repo.createAssociation(
-      associationName: 'Famille Rabe',
-      groupName: 'Branche 1',
-      memberName: 'Soa',
-      email: 'soa@a.mg',
-      password: 'motdepasse',
-      siteName: 'Ambohidratrimo',
-      locationNote: 'RN4',
-    );
-    final sent = auth.createdAssociations.single;
-    final s = (await setup.currentSession())!;
-    expect((s.associationId, s.userId), (sent['associationId'], sent['memberId']));
-    final site = await db.select(db.sites).getSingle();
-    expect((site.id, site.name, site.locationNote), (s.siteId, 'Ambohidratrimo', 'RN4'));
-  });
+  test(
+    'creating the association on an empty phone sets the phone up',
+    () async {
+      await repo.createAssociation(
+        associationName: 'Famille Rabe',
+        groupName: 'Branche 1',
+        memberName: 'Soa',
+        email: 'soa@a.mg',
+        password: 'motdepasse',
+        siteName: 'Ambohidratrimo',
+        locationNote: 'RN4',
+      );
+      final sent = auth.createdAssociations.single;
+      final s = (await setup.currentSession())!;
+      expect(
+        (s.associationId, s.userId),
+        (sent['associationId'], sent['memberId']),
+      );
+      final site = await db.select(db.sites).getSingle();
+      expect(
+        (site.id, site.name, site.locationNote),
+        (s.siteId, 'Ambohidratrimo', 'RN4'),
+      );
+    },
+  );
 
   test('an account already made by a failed attempt is signed into', () async {
     final retry = FakeAuthGateway(existingEmails: {'soa@a.mg'});
@@ -179,25 +190,27 @@ void main() {
     expect(await repo.pendingCount(), 3); // the site and two logs
   });
 
-  test('a signed-out phone with records cannot found a second association',
-      () async {
-    await setup.completeSetup(siteName: 'Ambohidratrimo');
-    await repo.signOut();
-    final before = await meta();
-    await expectLater(
-      repo.createAssociation(
-        associationName: 'Autre',
-        groupName: 'Branche 1',
-        memberName: 'Soa',
-        email: 'soa@x.mg',
-        password: 'motdepasse',
-        siteName: 'X',
-      ),
-      throwsA(
-        isA<AuthFailed>().having((e) => e.code, 'code', 'other_association'),
-      ),
-    );
-    expect(await meta(), before);
-    expect(auth.createdAssociations, isEmpty);
-  });
+  test(
+    'a signed-out phone with records cannot found a second association',
+    () async {
+      await setup.completeSetup(siteName: 'Ambohidratrimo');
+      await repo.signOut();
+      final before = await meta();
+      await expectLater(
+        repo.createAssociation(
+          associationName: 'Autre',
+          groupName: 'Branche 1',
+          memberName: 'Soa',
+          email: 'soa@x.mg',
+          password: 'motdepasse',
+          siteName: 'X',
+        ),
+        throwsA(
+          isA<AuthFailed>().having((e) => e.code, 'code', 'other_association'),
+        ),
+      );
+      expect(await meta(), before);
+      expect(auth.createdAssociations, isEmpty);
+    },
+  );
 }

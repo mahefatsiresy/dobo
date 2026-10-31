@@ -27,11 +27,9 @@ void appTest(
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
     final db = AppDatabase(NativeDatabase.memory());
     if (setUp) {
-      await SetupRepository(db).completeSetup(
-        siteName: 'Ambohidratrimo',
-        role: role,
-        isAdmin: isAdmin,
-      );
+      await SetupRepository(
+        db,
+      ).completeSetup(siteName: 'Ambohidratrimo', role: role, isAdmin: isAdmin);
     }
     await tester.pumpWidget(
       ProviderScope(

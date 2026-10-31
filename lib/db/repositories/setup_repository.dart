@@ -45,6 +45,7 @@ class SetupRepository {
       role: role,
       isAdmin: member?.isAdmin ?? _flag(meta[_adminKey]) ?? true,
       isSales: member?.isSales ?? _flag(meta[_salesKey]) ?? false,
+      isLinked: meta['linked'] == '1',
     );
   }
 

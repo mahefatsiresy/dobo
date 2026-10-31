@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/account/account_locale.dart';
 import 'features/common/farm_today.dart';
+import 'db/repositories/providers.dart';
+import 'sync/sync_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/mg_fallback.dart';
 import 'locale_controller.dart';
@@ -24,8 +26,23 @@ class _DoboAppState extends ConsumerState<DoboApp> {
     super.initState();
     // Back from the background, maybe the next morning: today may have moved.
     _lifecycle = AppLifecycleListener(
-      onResume: () => ref.read(farmTodayProvider.notifier).refresh(),
+      onResume: () {
+        ref.read(farmTodayProvider.notifier).refresh();
+        ref.read(syncControllerProvider.notifier)
+          ..resume()
+          ..syncNow();
+      },
+      onPause: () => ref.read(syncControllerProvider.notifier).pause(),
     );
+    // Sync at start and after every sign-in (plan Decision 11).
+    ref.listenManual(sessionProvider, (previous, next) {
+      final session = next.value;
+      if (session != null && session != previous?.value) {
+        ref.read(syncControllerProvider.notifier)
+          ..resume()
+          ..syncNow();
+      }
+    }, fireImmediately: true);
     // Each account brings its language; a member's worker mode switches
     // it by hand meanwhile.
     ref.listenManual(accountLocaleProvider, (previous, next) {

@@ -25,6 +25,7 @@ import 'features/account/account_screen.dart';
 import 'features/account/create_association_screen.dart';
 import 'features/account/login_screen.dart';
 import 'features/account/welcome_screen.dart';
+import 'features/sync/sync_screen.dart';
 import 'sync/providers.dart';
 import 'features/transcription/transcription_screen.dart';
 import 'features/visit/condition_check.dart';
@@ -232,6 +233,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'account',
                     builder: (context, state) => const AccountScreen(),
+                  ),
+                  GoRoute(
+                    path: 'sync',
+                    builder: (context, state) => const SyncScreen(),
                   ),
                   GoRoute(
                     path: 'people',

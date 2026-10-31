@@ -64,11 +64,10 @@ void main() {
       ),
     );
     final me = await founder.myMember();
-    expect((me.id, me.isAdmin, me.associationName), (
-      founderId,
-      true,
-      'Famille $stamp',
-    ));
+    expect(
+      (me.id, me.isAdmin, me.associationName),
+      (founderId, true, 'Famille $stamp'),
+    );
 
     final workerClient = env.anonClient();
     final worker = SupabaseAuthGateway(workerClient);

@@ -970,4 +970,119 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get roleSales => 'Ventes';
+
+  @override
+  String get moreSync => 'Synchronisation';
+
+  @override
+  String syncLast(String at) {
+    return 'Dernière synchronisation : $at';
+  }
+
+  @override
+  String get syncNever => 'Jamais synchronisé';
+
+  @override
+  String syncPending(int count) {
+    return 'En attente d\'envoi : $count';
+  }
+
+  @override
+  String syncRejectedCount(int count) {
+    return 'Refusés : $count';
+  }
+
+  @override
+  String get syncNow => 'Synchroniser';
+
+  @override
+  String get syncRetry => 'Réessayer les refusés';
+
+  @override
+  String get syncRelogin => 'Se reconnecter';
+
+  @override
+  String get syncLink => 'Créer le compte de l\'association';
+
+  @override
+  String get syncStateRunning => 'Synchronisation en cours…';
+
+  @override
+  String get syncStateOffline =>
+      'Pas de connexion : les données restent sur le téléphone.';
+
+  @override
+  String get syncStateSignedOut =>
+      'Session terminée : reconnectez-vous pour envoyer les données.';
+
+  @override
+  String get syncStateUnlinked => 'Ce téléphone n\'est relié à aucun compte.';
+
+  @override
+  String get syncStateNotConfigured =>
+      'Aucun serveur dans cette version : les données restent sur le téléphone.';
+
+  @override
+  String syncStateFailed(String error) {
+    return 'La synchronisation a échoué : $error';
+  }
+
+  @override
+  String get rejectRole => 'Votre rôle ne permet pas cet enregistrement';
+
+  @override
+  String get rejectLastAdmin => 'Il doit rester au moins un administrateur';
+
+  @override
+  String rejectOther(String reason) {
+    return 'Refusé : $reason';
+  }
+
+  @override
+  String get tableDailyLogs => 'Journal';
+
+  @override
+  String get tableWaterReadings => 'Relevé d\'eau';
+
+  @override
+  String get tableSamples => 'Échantillonnage';
+
+  @override
+  String get tableObservations => 'Observation';
+
+  @override
+  String get tableHealthEvents => 'Problème de santé';
+
+  @override
+  String get tableTreatments => 'Traitement';
+
+  @override
+  String get tableStockings => 'Empoissonnement';
+
+  @override
+  String get tableTransfers => 'Transfert';
+
+  @override
+  String get tablePonds => 'Étang';
+
+  @override
+  String get tableBatches => 'Lot';
+
+  @override
+  String get tablePeople => 'Personne';
+
+  @override
+  String get tableSites => 'Site';
+
+  @override
+  String get tableVisits => 'Visite';
+
+  @override
+  String get tableGroups => 'Branche';
+
+  @override
+  String get tableMembers => 'Membre';
+
+  @override
+  String get tableSettingOverrides => 'Réglage';
 }

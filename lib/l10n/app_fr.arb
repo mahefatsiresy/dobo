@@ -609,5 +609,74 @@
   "roleMember": "Membre",
   "roleWorker": "Ouvrier",
   "roleAdmin": "Administrateur",
-  "roleSales": "Ventes"
+  "roleSales": "Ventes",
+  "moreSync": "Synchronisation",
+  "syncLast": "Dernière synchronisation : {at}",
+  "@syncLast": {
+    "placeholders": {
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNever": "Jamais synchronisé",
+  "syncPending": "En attente d'envoi : {count}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncRejectedCount": "Refusés : {count}",
+  "@syncRejectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncNow": "Synchroniser",
+  "syncRetry": "Réessayer les refusés",
+  "syncRelogin": "Se reconnecter",
+  "syncLink": "Créer le compte de l'association",
+  "syncStateRunning": "Synchronisation en cours…",
+  "syncStateOffline": "Pas de connexion : les données restent sur le téléphone.",
+  "syncStateSignedOut": "Session terminée : reconnectez-vous pour envoyer les données.",
+  "syncStateUnlinked": "Ce téléphone n'est relié à aucun compte.",
+  "syncStateNotConfigured": "Aucun serveur dans cette version : les données restent sur le téléphone.",
+  "syncStateFailed": "La synchronisation a échoué : {error}",
+  "@syncStateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectRole": "Votre rôle ne permet pas cet enregistrement",
+  "rejectLastAdmin": "Il doit rester au moins un administrateur",
+  "rejectOther": "Refusé : {reason}",
+  "@rejectOther": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "tableDailyLogs": "Journal",
+  "tableWaterReadings": "Relevé d'eau",
+  "tableSamples": "Échantillonnage",
+  "tableObservations": "Observation",
+  "tableHealthEvents": "Problème de santé",
+  "tableTreatments": "Traitement",
+  "tableStockings": "Empoissonnement",
+  "tableTransfers": "Transfert",
+  "tablePonds": "Étang",
+  "tableBatches": "Lot",
+  "tablePeople": "Personne",
+  "tableSites": "Site",
+  "tableVisits": "Visite",
+  "tableGroups": "Branche",
+  "tableMembers": "Membre",
+  "tableSettingOverrides": "Réglage"
 }

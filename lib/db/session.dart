@@ -13,6 +13,7 @@ class Session {
     this.role = MemberRole.member,
     this.isAdmin = false,
     this.isSales = false,
+    this.isLinked = false,
   });
 
   final String associationId;
@@ -25,6 +26,10 @@ class Session {
   final bool isAdmin;
   final bool isSales;
 
+  /// The session belongs to a server account. A phone set up before
+  /// accounts (or with no server) isn't, and doesn't sync until it is.
+  final bool isLinked;
+
   bool get isWorker => role == MemberRole.worker;
 
   @override
@@ -36,7 +41,8 @@ class Session {
       other.siteId == siteId &&
       other.role == role &&
       other.isAdmin == isAdmin &&
-      other.isSales == isSales;
+      other.isSales == isSales &&
+      other.isLinked == isLinked;
 
   @override
   int get hashCode => Object.hash(
@@ -47,5 +53,6 @@ class Session {
     role,
     isAdmin,
     isSales,
+    isLinked,
   );
 }

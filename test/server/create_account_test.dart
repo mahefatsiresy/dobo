@@ -68,7 +68,10 @@ void main() {
       '123456',
     );
     expect(await rakoto.from('ponds').select(), isEmpty);
-    final me = await rakoto.from('members').select().eq('id', body['memberId']!);
+    final me = await rakoto
+        .from('members')
+        .select()
+        .eq('id', body['memberId']!);
     expect(me.single['locale'], 'mg');
   });
 

@@ -1855,6 +1855,210 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ventes'**
   String get roleSales;
+
+  /// No description provided for @moreSync.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation'**
+  String get moreSync;
+
+  /// No description provided for @syncLast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernière synchronisation : {at}'**
+  String syncLast(String at);
+
+  /// No description provided for @syncNever.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jamais synchronisé'**
+  String get syncNever;
+
+  /// No description provided for @syncPending.
+  ///
+  /// In fr, this message translates to:
+  /// **'En attente d\'envoi : {count}'**
+  String syncPending(int count);
+
+  /// No description provided for @syncRejectedCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Refusés : {count}'**
+  String syncRejectedCount(int count);
+
+  /// No description provided for @syncNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchroniser'**
+  String get syncNow;
+
+  /// No description provided for @syncRetry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer les refusés'**
+  String get syncRetry;
+
+  /// No description provided for @syncRelogin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se reconnecter'**
+  String get syncRelogin;
+
+  /// No description provided for @syncLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer le compte de l\'association'**
+  String get syncLink;
+
+  /// No description provided for @syncStateRunning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation en cours…'**
+  String get syncStateRunning;
+
+  /// No description provided for @syncStateOffline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion : les données restent sur le téléphone.'**
+  String get syncStateOffline;
+
+  /// No description provided for @syncStateSignedOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Session terminée : reconnectez-vous pour envoyer les données.'**
+  String get syncStateSignedOut;
+
+  /// No description provided for @syncStateUnlinked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce téléphone n\'est relié à aucun compte.'**
+  String get syncStateUnlinked;
+
+  /// No description provided for @syncStateNotConfigured.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun serveur dans cette version : les données restent sur le téléphone.'**
+  String get syncStateNotConfigured;
+
+  /// No description provided for @syncStateFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'La synchronisation a échoué : {error}'**
+  String syncStateFailed(String error);
+
+  /// No description provided for @rejectRole.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre rôle ne permet pas cet enregistrement'**
+  String get rejectRole;
+
+  /// No description provided for @rejectLastAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il doit rester au moins un administrateur'**
+  String get rejectLastAdmin;
+
+  /// No description provided for @rejectOther.
+  ///
+  /// In fr, this message translates to:
+  /// **'Refusé : {reason}'**
+  String rejectOther(String reason);
+
+  /// No description provided for @tableDailyLogs.
+  ///
+  /// In fr, this message translates to:
+  /// **'Journal'**
+  String get tableDailyLogs;
+
+  /// No description provided for @tableWaterReadings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relevé d\'eau'**
+  String get tableWaterReadings;
+
+  /// No description provided for @tableSamples.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échantillonnage'**
+  String get tableSamples;
+
+  /// No description provided for @tableObservations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Observation'**
+  String get tableObservations;
+
+  /// No description provided for @tableHealthEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problème de santé'**
+  String get tableHealthEvents;
+
+  /// No description provided for @tableTreatments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traitement'**
+  String get tableTreatments;
+
+  /// No description provided for @tableStockings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonnement'**
+  String get tableStockings;
+
+  /// No description provided for @tableTransfers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transfert'**
+  String get tableTransfers;
+
+  /// No description provided for @tablePonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get tablePonds;
+
+  /// No description provided for @tableBatches.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot'**
+  String get tableBatches;
+
+  /// No description provided for @tablePeople.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personne'**
+  String get tablePeople;
+
+  /// No description provided for @tableSites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Site'**
+  String get tableSites;
+
+  /// No description provided for @tableVisits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visite'**
+  String get tableVisits;
+
+  /// No description provided for @tableGroups.
+  ///
+  /// In fr, this message translates to:
+  /// **'Branche'**
+  String get tableGroups;
+
+  /// No description provided for @tableMembers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Membre'**
+  String get tableMembers;
+
+  /// No description provided for @tableSettingOverrides.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglage'**
+  String get tableSettingOverrides;
 }
 
 class _AppLocalizationsDelegate

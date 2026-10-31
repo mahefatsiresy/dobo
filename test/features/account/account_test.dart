@@ -40,41 +40,36 @@ void main() {
     ],
   );
 
-  appTest(
-    'signing out names the unsent records and keeps them',
-    (tester, db) async {
-      final session = (await appContainer(
-        tester,
-      ).read(sessionProvider.future))!;
-      for (final id in ['l1', 'l2']) {
-        await db
-            .into(db.dailyLogs)
-            .insert(
-              DailyLogsCompanion.insert(
-                id: Value(id),
-                associationId: session.associationId,
-                enteredBy: session.userId,
-                deviceId: session.deviceId,
-                recordedAt: DateTime.utc(2026, 3, 1, 9),
-                pondId: 'p1',
-                feedGivenG: 600,
-              ),
-            );
-      }
-      await tapAndSettle(tester, find.text('Plus'));
-      await tapAndSettle(tester, find.text('Compte'));
-      await tapAndSettle(tester, find.byKey(const Key('signOut')));
-      expect(find.textContaining('3 enregistrements'), findsOneWidget);
-      await tapAndSettle(tester, find.byKey(const Key('confirmSignOut')));
+  appTest('signing out names the unsent records and keeps them', (
+    tester,
+    db,
+  ) async {
+    final session = (await appContainer(tester).read(sessionProvider.future))!;
+    for (final id in ['l1', 'l2']) {
+      await db
+          .into(db.dailyLogs)
+          .insert(
+            DailyLogsCompanion.insert(
+              id: Value(id),
+              associationId: session.associationId,
+              enteredBy: session.userId,
+              deviceId: session.deviceId,
+              recordedAt: DateTime.utc(2026, 3, 1, 9),
+              pondId: 'p1',
+              feedGivenG: 600,
+            ),
+          );
+    }
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Compte'));
+    await tapAndSettle(tester, find.byKey(const Key('signOut')));
+    expect(find.textContaining('3 enregistrements'), findsOneWidget);
+    await tapAndSettle(tester, find.byKey(const Key('confirmSignOut')));
 
-      expect(find.byKey(const Key('welcomeWorker')), findsOneWidget);
-      expect(await db.select(db.dailyLogs).get(), hasLength(2));
-      expect(await db.select(db.sites).get(), hasLength(1));
-    },
-    overrides: [
-      authGatewayProvider.overrideWithValue(FakeAuthGateway()),
-    ],
-  );
+    expect(find.byKey(const Key('welcomeWorker')), findsOneWidget);
+    expect(await db.select(db.dailyLogs).get(), hasLength(2));
+    expect(await db.select(db.sites).get(), hasLength(1));
+  }, overrides: [authGatewayProvider.overrideWithValue(FakeAuthGateway())]);
 
   appTest(
     'with no network, signing in says a connection is needed',
@@ -95,13 +90,9 @@ void main() {
     ],
   );
 
-  appTest(
-    'a build with no server opens the offline setup',
-    (tester, db) async {
-      expect(find.text('Nom du site'), findsOneWidget);
-    },
-    setUp: false,
-  );
+  appTest('a build with no server opens the offline setup', (tester, db) async {
+    expect(find.text('Nom du site'), findsOneWidget);
+  }, setUp: false);
 
   appTest(
     'the welcome screen switches to Malagasy',
@@ -110,8 +101,6 @@ void main() {
       expect(find.text('Mpiasa aho'), findsOneWidget);
     },
     setUp: false,
-    overrides: [
-      authGatewayProvider.overrideWithValue(FakeAuthGateway()),
-    ],
+    overrides: [authGatewayProvider.overrideWithValue(FakeAuthGateway())],
   );
 }

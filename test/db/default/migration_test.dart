@@ -148,11 +148,15 @@ void main() {
       },
       validateItems: (newDb) async {
         final pond = await newDb.select(newDb.ponds).getSingle();
-        expect((pond.id, pond.code, pond.lengthM, pond.status),
-            (pondId, 'E1', 25.0, 'stocked'));
+        expect(
+          (pond.id, pond.code, pond.lengthM, pond.status),
+          (pondId, 'E1', 25.0, 'stocked'),
+        );
         final stocking = await newDb.select(newDb.stockings).getSingle();
-        expect((stocking.id, stocking.count, stocking.avgWeightMg),
-            (stockingId, 1000, 12500));
+        expect(
+          (stocking.id, stocking.count, stocking.avgWeightMg),
+          (stockingId, 1000, 12500),
+        );
         expect(await newDb.select(newDb.dailyLogs).get(), isEmpty);
       },
     );
@@ -215,8 +219,10 @@ void main() {
         final pond = await newDb.select(newDb.ponds).getSingle();
         expect((pond.id, pond.code, pond.status), (pondId, 'E1', 'stocked'));
         final log = await newDb.select(newDb.dailyLogs).getSingle();
-        expect((log.id, log.feedGivenG, log.deaths, log.warningSigns),
-            (logId, 600, 3, 'rubbing'));
+        expect(
+          (log.id, log.feedGivenG, log.deaths, log.warningSigns),
+          (logId, 600, 3, 'rubbing'),
+        );
         expect(await newDb.select(newDb.members).get(), isEmpty);
       },
     );

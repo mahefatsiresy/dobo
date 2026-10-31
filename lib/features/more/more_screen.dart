@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../locale_controller.dart';
+import '../sync/sync_badge.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -21,6 +22,13 @@ class MoreScreen extends ConsumerWidget {
             title: Text(l10n.moreAccount),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.go('/more/account'),
+          ),
+          ListTile(
+            minTileHeight: 56,
+            leading: const SyncBadge(child: Icon(Icons.sync)),
+            title: Text(l10n.moreSync),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go('/more/sync'),
           ),
           ListTile(
             minTileHeight: 56,

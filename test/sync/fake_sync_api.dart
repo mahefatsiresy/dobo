@@ -25,6 +25,9 @@ class FakeSyncApi implements SyncApi {
   /// Every row pushed to [table] is refused with [code].
   void refuse(String table, String code) => _refused[table] = code;
 
+  /// [table] is accepted again.
+  void accept(String table) => _refused.remove(table);
+
   /// Calls after the first [n] fail as if the network dropped.
   void failAfterCalls(int n) => _failAfter = n;
 

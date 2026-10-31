@@ -7,6 +7,8 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../locale_controller.dart';
+import '../../sync/sync_controller.dart';
+import '../sync/sync_badge.dart';
 import '../common/farm_today.dart';
 import '../common/pond_colour.dart';
 import '../ponds/pond_overview.dart';
@@ -37,6 +39,14 @@ class WorkerHomeScreen extends ConsumerWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(
+            key: const Key('workerSync'),
+            tooltip: l10n.syncNow,
+            iconSize: 32,
+            icon: const SyncBadge(child: Icon(Icons.cloud_upload)),
+            onPressed: () =>
+                ref.read(syncControllerProvider.notifier).syncNow(),
+          ),
           if (!(ref.watch(sessionProvider).value?.isWorker ?? false))
             IconButton(
               tooltip: l10n.workerExit,

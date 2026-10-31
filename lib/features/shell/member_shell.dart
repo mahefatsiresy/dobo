@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../sync/sync_badge.dart';
 
 /// Member navigation (SPEC §6). Tabs are added with the milestones that
 /// build them.
@@ -30,7 +31,7 @@ class MemberShell extends StatelessWidget {
             label: l10n.tabVisit,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.menu),
+            icon: const SyncBadge(child: Icon(Icons.menu)),
             label: l10n.tabMore,
           ),
         ],
