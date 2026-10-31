@@ -112,4 +112,27 @@ void main() {
     expect((await currentPlacements(db)).single.avgWeightG, 40.0);
     expect(await readings.watchSamples(l1).first, hasLength(1));
   });
+
+  test(
+    'watchLatestWaterReadings keeps the newest current reading per pond',
+    () async {
+      final e2 = await PondRepository(db, session).create(pondInput('E2'));
+      WaterReadingInput at(String pond, int day, double t) => WaterReadingInput(
+        pondId: pond,
+        at: DateTime.utc(2026, 3, day, 6),
+        temperatureC: t,
+      );
+      await readings.addWaterReading(at(e1, 10, 27));
+      final newest = await readings.addWaterReading(at(e1, 12, 28));
+      await readings.addWaterReading(at(e2, 11, 29));
+      var latest = await readings.watchLatestWaterReadings().first;
+      expect(
+        {for (final e in latest.entries) e.key: e.value.temperatureC},
+        {e1: 28, e2: 29},
+      );
+      await readings.deleteWaterReading(newest);
+      latest = await readings.watchLatestWaterReadings().first;
+      expect(latest[e1]!.temperatureC, 27);
+    },
+  );
 }

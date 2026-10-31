@@ -101,6 +101,16 @@ class HealthRepository {
             ]))
           .watch();
 
+  /// Current health events recorded from the start of the farm day
+  /// [farmDay] on (future dates included).
+  Stream<List<HealthEvent>> watchSince(DateTime farmDay) =>
+      (db.select(db.healthEvents)..where(
+            (e) =>
+                isCurrentEvent(db.healthEvents) &
+                e.recordedAt.isBiggerOrEqualValue(farmTimeToUtc(farmDay, 0, 0)),
+          ))
+          .watch();
+
   /// Current treatments of [pondId], newest first.
   Stream<List<Treatment>> watchTreatments(String pondId) =>
       (db.select(db.treatments)

@@ -5,6 +5,7 @@ import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'repo_fixtures.dart';
@@ -105,5 +106,31 @@ void main() {
       throwsArgumentError,
     );
     expect(await db.select(db.treatments).get(), isEmpty);
+  });
+
+  test('watchSince excludes events before the farm day', () async {
+    final old = await health.report(
+      pondId: e1,
+      signs: {WarningSign.rubbing},
+      isolate: false,
+      technicianCalled: false,
+    );
+    await health.report(
+      pondId: e2,
+      signs: {WarningSign.whiteSpots},
+      isolate: false,
+      technicianCalled: false,
+    );
+    // 20:59 UTC on 16/03 is 23:59 on 16/03 in Madagascar; 21:00 is 17/03.
+    Future<void> setAt(String id, DateTime at) =>
+        (db.update(db.healthEvents)..where((e) => e.id.equals(id))).write(
+          HealthEventsCompanion(recordedAt: Value(at)),
+        );
+    await setAt(old, DateTime.utc(2026, 3, 16, 20, 59));
+    final events = await db.select(db.healthEvents).get();
+    final recent = events.singleWhere((e) => e.id != old).id;
+    await setAt(recent, DateTime.utc(2026, 3, 16, 21));
+    final since = await health.watchSince(DateTime(2026, 3, 17)).first;
+    expect(since.map((e) => e.id), [recent]);
   });
 }

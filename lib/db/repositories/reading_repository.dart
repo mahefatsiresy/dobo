@@ -87,6 +87,17 @@ class ReadingRepository {
             ..limit(1))
           .watchSingleOrNull();
 
+  /// Each pond's latest current water reading.
+  Stream<Map<String, WaterReading>> watchLatestWaterReadings() =>
+      (db.select(db.waterReadings)
+            ..where((_) => isCurrentEvent(db.waterReadings))
+            ..orderBy([
+              (r) => OrderingTerm.asc(r.recordedAt),
+              (r) => OrderingTerm.asc(r.createdAtDevice),
+            ]))
+          .watch()
+          .map((rows) => {for (final r in rows) r.pondId: r});
+
   Future<String> addSample(SampleInput input) async {
     _checkSample(input);
     final row = await db.into(db.samples).insertReturning(_sample(input));
