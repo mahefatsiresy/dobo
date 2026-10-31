@@ -4,6 +4,8 @@ import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:flutter/material.dart';
+import 'package:dobo/features/ponds/pond_detail_screen.dart';
+import 'package:dobo/features/batches/transfer_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
@@ -112,7 +114,9 @@ void main() {
     await farm(tester, db);
     await openTransfer(tester);
     await tapAndSettle(tester, find.byType(BackButton));
-    expect(find.text('Empoissonner'), findsOneWidget);
+    // The pond page: its stock button is now below the dashboard.
+    expect(find.byType(PondDetailScreen), findsOneWidget);
+    expect(find.byType(TransferScreen), findsNothing);
   });
 
   appTest('a double tap on Save records one move', (tester, db) async {

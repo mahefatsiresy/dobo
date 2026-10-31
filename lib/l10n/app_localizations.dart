@@ -2731,6 +2731,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ce journal a déjà été changé sur un autre téléphone'**
   String get staleRecord;
+
+  /// No description provided for @rationToday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration du jour'**
+  String get rationToday;
+
+  /// No description provided for @lastWeighed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernière pesée : il y a {days} j'**
+  String lastWeighed(String days);
+
+  /// No description provided for @notSampledYet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore échantillonné, empoissonné il y a {days} j'**
+  String notSampledYet(String days);
+
+  /// No description provided for @fcrValue.
+  ///
+  /// In fr, this message translates to:
+  /// **'IC : {value}'**
+  String fcrValue(String value);
+
+  /// No description provided for @survivalValue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Survie : {pct} %'**
+  String survivalValue(String pct);
+
+  /// No description provided for @chartWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen (g)'**
+  String get chartWeight;
+
+  /// No description provided for @chartDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'Morts par jour'**
+  String get chartDeaths;
+
+  /// No description provided for @chartFcr.
+  ///
+  /// In fr, this message translates to:
+  /// **'IC par période'**
+  String get chartFcr;
+
+  /// No description provided for @chartEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de données'**
+  String get chartEmpty;
+
+  /// No description provided for @fcrStalled.
+  ///
+  /// In fr, this message translates to:
+  /// **'pas de croissance'**
+  String get fcrStalled;
 }
 
 class _AppLocalizationsDelegate

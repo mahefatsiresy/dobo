@@ -940,5 +940,43 @@
     }
   },
   "duplicateOtherPhone": "un autre téléphone",
-  "staleRecord": "Ce journal a déjà été changé sur un autre téléphone"
+  "staleRecord": "Ce journal a déjà été changé sur un autre téléphone",
+  "rationToday": "Ration du jour",
+  "lastWeighed": "Dernière pesée : il y a {days} j",
+  "@lastWeighed": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "notSampledYet": "Pas encore échantillonné, empoissonné il y a {days} j",
+  "@notSampledYet": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "fcrValue": "IC : {value}",
+  "@fcrValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "survivalValue": "Survie : {pct} %",
+  "@survivalValue": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "chartWeight": "Poids moyen (g)",
+  "chartDeaths": "Morts par jour",
+  "chartFcr": "IC par période",
+  "chartEmpty": "Pas encore de données",
+  "fcrStalled": "pas de croissance"
 }

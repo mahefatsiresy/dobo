@@ -10,6 +10,10 @@ import 'pond_figures.dart';
 import 'pond_overview.dart';
 import '../../domain/types.dart';
 import '../common/notice.dart';
+import '../../domain/alerts/alert.dart';
+import '../../l10n/formatting.dart';
+import '../alerts/alert_providers.dart';
+import '../common/estimated.dart';
 
 class PondsScreen extends ConsumerWidget {
   const PondsScreen({super.key});
@@ -65,6 +69,24 @@ class PondsScreen extends ConsumerWidget {
                                     ),
                                   const SizedBox(height: 4),
                                   PondFigures(overview: o),
+                                  if (o.rationG > 0)
+                                    Wrap(
+                                      spacing: 8,
+                                      children: [
+                                        Text('${l10n.rationToday} :'),
+                                        EstimatedLabel(
+                                          value: formatKg(
+                                            o.rationG,
+                                            Localizations.localeOf(context),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  _AlertCounts(
+                                    alerts: ref.watch(
+                                      pondAlertsProvider(o.pond.id),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -75,6 +97,39 @@ class PondsScreen extends ConsumerWidget {
                   ),
               ],
             ),
+    );
+  }
+}
+
+/// Red and amber counts of a pond's alerts; nothing when it has none.
+class _AlertCounts extends StatelessWidget {
+  const _AlertCounts({required this.alerts});
+
+  final List<Alert> alerts;
+
+  @override
+  Widget build(BuildContext context) {
+    final danger = alerts.where((a) => a.severity == Severity.danger).length;
+    final warning = alerts.length - danger;
+    Widget chip(IconData icon, Color colour, int n) => Padding(
+      padding: const EdgeInsets.only(right: 12, top: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: colour),
+          const SizedBox(width: 4),
+          Text(
+            '$n',
+            style: TextStyle(color: colour, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+    return Row(
+      children: [
+        if (danger > 0) chip(Icons.error, Colors.red.shade800, danger),
+        if (warning > 0) chip(Icons.warning, Colors.amber.shade800, warning),
+      ],
     );
   }
 }

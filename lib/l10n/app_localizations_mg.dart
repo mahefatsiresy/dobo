@@ -1466,4 +1466,42 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String get staleRecord =>
       'Ce journal a déjà été changé sur un autre téléphone';
+
+  @override
+  String get rationToday => 'Ration du jour';
+
+  @override
+  String lastWeighed(String days) {
+    return 'Dernière pesée : il y a $days j';
+  }
+
+  @override
+  String notSampledYet(String days) {
+    return 'Pas encore échantillonné, empoissonné il y a $days j';
+  }
+
+  @override
+  String fcrValue(String value) {
+    return 'IC : $value';
+  }
+
+  @override
+  String survivalValue(String pct) {
+    return 'Survie : $pct %';
+  }
+
+  @override
+  String get chartWeight => 'Poids moyen (g)';
+
+  @override
+  String get chartDeaths => 'Morts par jour';
+
+  @override
+  String get chartFcr => 'IC par période';
+
+  @override
+  String get chartEmpty => 'Pas encore de données';
+
+  @override
+  String get fcrStalled => 'pas de croissance';
 }

@@ -18,6 +18,13 @@ import 'pond_overview.dart';
 import '../../domain/water.dart';
 import '../readings/reading_providers.dart';
 import '../health/health_providers.dart';
+import '../../domain/fcr.dart';
+import '../../domain/growth.dart';
+import '../alerts/alert_providers.dart';
+import '../alerts/alert_route.dart';
+import '../alerts/alert_tile.dart';
+import 'pond_charts.dart';
+import 'pond_growth.dart';
 
 class PondDetailScreen extends ConsumerWidget {
   const PondDetailScreen({super.key, required this.pondId});
@@ -97,6 +104,9 @@ class PondDetailScreen extends ConsumerWidget {
     }
     final pond = o.pond;
     final theme = Theme.of(context);
+    final alerts = ref.watch(pondAlertsProvider(pond.id));
+    final growth = ref.watch(pondGrowthProvider(pond.id));
+    final batchCodes = {for (final b in o.batches) b.batch.id: b.batch.code};
     final wide = FilledButton.styleFrom(minimumSize: const Size.fromHeight(56));
 
     return Scaffold(
@@ -138,8 +148,29 @@ class PondDetailScreen extends ConsumerWidget {
               ),
             ],
           ),
+          for (final a in alerts)
+            AlertTile(
+              alert: a,
+              pond: pond,
+              batchCode: batchCodes[a.batchId],
+              onTap: switch (alertRoute(a)) {
+                final route? when route != '/ponds/${pond.id}' =>
+                  () => context.push(route),
+                _ => null,
+              },
+            ),
           const SizedBox(height: 16),
           PondFigures(overview: o),
+          if (o.rationG > 0) ...[
+            const SizedBox(height: 8),
+            Text(l10n.rationToday, style: theme.textTheme.titleMedium),
+            EstimatedLabel(
+              value: formatKg(o.rationG, locale),
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
           _LatestReading(pondId: pond.id),
           for (final b in o.batches) ...[
             const SizedBox(height: 16),
@@ -173,6 +204,8 @@ class PondDetailScreen extends ConsumerWidget {
                           EstimatedLabel(value: formatKg(b.biomassG!, locale)),
                         ],
                       ),
+                    if (growth?.batches[b.batch.id] case final g?)
+                      ..._growthLines(l10n, g, locale),
                     if (b.phase != null)
                       Text(
                         _feedingGuide(
@@ -208,6 +241,10 @@ class PondDetailScreen extends ConsumerWidget {
                 ),
               ),
             ),
+          ],
+          if (growth != null && o.batches.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            PondCharts(growth: growth, batchCodes: batchCodes),
           ],
           const SizedBox(height: 24),
           OutlinedButton.icon(
@@ -283,6 +320,44 @@ class PondDetailScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// Last weighing, period FCR with its trend, survival (SPEC F6).
+  List<Widget> _growthLines(
+    AppLocalizations l10n,
+    BatchGrowth g,
+    Locale locale,
+  ) {
+    final latest = g.periods.isEmpty ? null : g.periods.last.fcr;
+    final (arrow, colour) = switch (g.trend) {
+      FcrTrend.worse => (' ↑', Colors.red.shade800),
+      FcrTrend.better => (' ↓', Colors.green.shade800),
+      FcrTrend.same => (' →', null),
+      null => ('', null),
+    };
+    return [
+      Text(
+        g.sampled
+            ? l10n.lastWeighed('${g.daysSinceWeighing}')
+            : l10n.notSampledYet('${g.daysSinceWeighing}'),
+      ),
+      if (g.periods.isNotEmpty)
+        Text(
+          l10n.fcrValue(switch (latest) {
+            FcrValue(:final value) =>
+              '${formatNumber((value * 100).round() / 100, locale)}$arrow',
+            FcrStalled() => l10n.fcrStalled,
+            null => '—',
+          }),
+          style: colour == null ? null : TextStyle(color: colour),
+        ),
+      if (g.survival != null)
+        Text(
+          l10n.survivalValue(
+            formatDecimal(g.survival! * 100, locale, decimals: 0),
+          ),
+        ),
+    ];
   }
 
   String _feedingGuide(
