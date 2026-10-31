@@ -788,5 +788,137 @@
       }
     }
   },
-  "errorNotAdmin": "Ce compte n'est pas administrateur."
+  "errorNotAdmin": "Ce compte n'est pas administrateur.",
+  "tabAlerts": "Alertes",
+  "alertsEmpty": "Aucune alerte, rien à faire",
+  "alertsAll": "Tous",
+  "alertWaterLow": "{param} trop bas : {value}",
+  "@alertWaterLow": {
+    "placeholders": {
+      "param": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "alertWaterHigh": "{param} trop haut : {value}",
+  "@alertWaterHigh": {
+    "placeholders": {
+      "param": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "alertWaterColour": "Eau trop verte ou trouble : renouveler l'eau",
+  "alertFcrWorsening": "Lot {batch} : IC en hausse deux fois de suite",
+  "@alertFcrWorsening": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "alertGrowthStalled": "Lot {batch} : pas de croissance depuis le dernier échantillonnage",
+  "@alertGrowthStalled": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "alertMortalitySpike": "{deaths} morts le {date}",
+  "@alertMortalitySpike": {
+    "placeholders": {
+      "deaths": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "alertWarningSignSeen": "Signes d'alerte : {signs}",
+  "@alertWarningSignSeen": {
+    "placeholders": {
+      "signs": {
+        "type": "String"
+      }
+    }
+  },
+  "alertPhaseChange": "Lot {batch} : passe en {phase}, changer d'aliment et de nombre de repas",
+  "@alertPhaseChange": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      },
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "alertSampleDue": "Lot {batch} : échantillonnage à faire ({days} jours)",
+  "@alertSampleDue": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "alertWaterCheckDue": "Relevé d'eau à faire",
+  "alertQuarantineEnding": "Lot {batch} : {days} jours de quarantaine, transfert conseillé avant le jour {recommended}",
+  "@alertQuarantineEnding": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      },
+      "recommended": {
+        "type": "String"
+      }
+    }
+  },
+  "alertPreHarvestFast": "Lot {batch} : jeûne avant la récolte, ne pas nourrir",
+  "@alertPreHarvestFast": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "alertPreHarvestFed": "Lot {batch} : jeûne avant la récolte, mais de l'aliment a été donné",
+  "@alertPreHarvestFed": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "alertFeedStockLow": "Stock d'aliment : {days} jours restants",
+  "@alertFeedStockLow": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "alertFeedTooOld": "Un lot d'aliment est trop vieux",
+  "alertPrepStepDue": "Préparation : l'étape suivante est possible",
+  "alertDuplicateLog": "Deux journaux pour le {date} : choisir lequel garder",
+  "@alertDuplicateLog": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

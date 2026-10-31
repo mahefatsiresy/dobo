@@ -1364,4 +1364,91 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorNotAdmin => 'Ce compte n\'est pas administrateur.';
+
+  @override
+  String get tabAlerts => 'Alertes';
+
+  @override
+  String get alertsEmpty => 'Aucune alerte, rien à faire';
+
+  @override
+  String get alertsAll => 'Tous';
+
+  @override
+  String alertWaterLow(String param, String value) {
+    return '$param trop bas : $value';
+  }
+
+  @override
+  String alertWaterHigh(String param, String value) {
+    return '$param trop haut : $value';
+  }
+
+  @override
+  String get alertWaterColour =>
+      'Eau trop verte ou trouble : renouveler l\'eau';
+
+  @override
+  String alertFcrWorsening(String batch) {
+    return 'Lot $batch : IC en hausse deux fois de suite';
+  }
+
+  @override
+  String alertGrowthStalled(String batch) {
+    return 'Lot $batch : pas de croissance depuis le dernier échantillonnage';
+  }
+
+  @override
+  String alertMortalitySpike(String deaths, String date) {
+    return '$deaths morts le $date';
+  }
+
+  @override
+  String alertWarningSignSeen(String signs) {
+    return 'Signes d\'alerte : $signs';
+  }
+
+  @override
+  String alertPhaseChange(String batch, String phase) {
+    return 'Lot $batch : passe en $phase, changer d\'aliment et de nombre de repas';
+  }
+
+  @override
+  String alertSampleDue(String batch, String days) {
+    return 'Lot $batch : échantillonnage à faire ($days jours)';
+  }
+
+  @override
+  String get alertWaterCheckDue => 'Relevé d\'eau à faire';
+
+  @override
+  String alertQuarantineEnding(String batch, String days, String recommended) {
+    return 'Lot $batch : $days jours de quarantaine, transfert conseillé avant le jour $recommended';
+  }
+
+  @override
+  String alertPreHarvestFast(String batch) {
+    return 'Lot $batch : jeûne avant la récolte, ne pas nourrir';
+  }
+
+  @override
+  String alertPreHarvestFed(String batch) {
+    return 'Lot $batch : jeûne avant la récolte, mais de l\'aliment a été donné';
+  }
+
+  @override
+  String alertFeedStockLow(String days) {
+    return 'Stock d\'aliment : $days jours restants';
+  }
+
+  @override
+  String get alertFeedTooOld => 'Un lot d\'aliment est trop vieux';
+
+  @override
+  String get alertPrepStepDue => 'Préparation : l\'étape suivante est possible';
+
+  @override
+  String alertDuplicateLog(String date) {
+    return 'Deux journaux pour le $date : choisir lequel garder';
+  }
 }

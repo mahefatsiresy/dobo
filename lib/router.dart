@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/alerts/alerts_screen.dart';
 import 'features/batches/batch_detail_screen.dart';
 import 'features/batches/batches_screen.dart';
 import 'features/batches/stock_screen.dart';
@@ -185,6 +186,14 @@ final routerProvider = Provider<GoRouter>((ref) {
                     ),
                   ),
                 ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/alerts',
+                builder: (context, state) => const AlertsScreen(),
               ),
             ],
           ),

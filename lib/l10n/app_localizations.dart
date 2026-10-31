@@ -2575,6 +2575,126 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ce compte n\'est pas administrateur.'**
   String get errorNotAdmin;
+
+  /// No description provided for @tabAlerts.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alertes'**
+  String get tabAlerts;
+
+  /// No description provided for @alertsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune alerte, rien à faire'**
+  String get alertsEmpty;
+
+  /// No description provided for @alertsAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous'**
+  String get alertsAll;
+
+  /// No description provided for @alertWaterLow.
+  ///
+  /// In fr, this message translates to:
+  /// **'{param} trop bas : {value}'**
+  String alertWaterLow(String param, String value);
+
+  /// No description provided for @alertWaterHigh.
+  ///
+  /// In fr, this message translates to:
+  /// **'{param} trop haut : {value}'**
+  String alertWaterHigh(String param, String value);
+
+  /// No description provided for @alertWaterColour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Eau trop verte ou trouble : renouveler l\'eau'**
+  String get alertWaterColour;
+
+  /// No description provided for @alertFcrWorsening.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : IC en hausse deux fois de suite'**
+  String alertFcrWorsening(String batch);
+
+  /// No description provided for @alertGrowthStalled.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : pas de croissance depuis le dernier échantillonnage'**
+  String alertGrowthStalled(String batch);
+
+  /// No description provided for @alertMortalitySpike.
+  ///
+  /// In fr, this message translates to:
+  /// **'{deaths} morts le {date}'**
+  String alertMortalitySpike(String deaths, String date);
+
+  /// No description provided for @alertWarningSignSeen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signes d\'alerte : {signs}'**
+  String alertWarningSignSeen(String signs);
+
+  /// No description provided for @alertPhaseChange.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : passe en {phase}, changer d\'aliment et de nombre de repas'**
+  String alertPhaseChange(String batch, String phase);
+
+  /// No description provided for @alertSampleDue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : échantillonnage à faire ({days} jours)'**
+  String alertSampleDue(String batch, String days);
+
+  /// No description provided for @alertWaterCheckDue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relevé d\'eau à faire'**
+  String get alertWaterCheckDue;
+
+  /// No description provided for @alertQuarantineEnding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : {days} jours de quarantaine, transfert conseillé avant le jour {recommended}'**
+  String alertQuarantineEnding(String batch, String days, String recommended);
+
+  /// No description provided for @alertPreHarvestFast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : jeûne avant la récolte, ne pas nourrir'**
+  String alertPreHarvestFast(String batch);
+
+  /// No description provided for @alertPreHarvestFed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {batch} : jeûne avant la récolte, mais de l\'aliment a été donné'**
+  String alertPreHarvestFed(String batch);
+
+  /// No description provided for @alertFeedStockLow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stock d\'aliment : {days} jours restants'**
+  String alertFeedStockLow(String days);
+
+  /// No description provided for @alertFeedTooOld.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un lot d\'aliment est trop vieux'**
+  String get alertFeedTooOld;
+
+  /// No description provided for @alertPrepStepDue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparation : l\'étape suivante est possible'**
+  String get alertPrepStepDue;
+
+  /// No description provided for @alertDuplicateLog.
+  ///
+  /// In fr, this message translates to:
+  /// **'Deux journaux pour le {date} : choisir lequel garder'**
+  String alertDuplicateLog(String date);
 }
 
 class _AppLocalizationsDelegate

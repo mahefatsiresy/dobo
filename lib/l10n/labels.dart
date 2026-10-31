@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 
+import '../domain/alerts/alert.dart';
 import '../domain/config.dart';
 import '../domain/pond.dart';
 import '../domain/stock.dart';
 import '../domain/types.dart';
+import '../domain/water.dart';
 import 'app_localizations.dart';
 import 'formatting.dart';
 
@@ -134,4 +136,64 @@ extension EnumLabels on AppLocalizations {
     ObservationCategory.theft => obsTheft,
     ObservationCategory.other => obsOther,
   };
+
+  /// One line saying what [a] is about. [batchCode] names its batch.
+  String alertText(Alert a, {String? batchCode}) {
+    final locale = Locale(localeName);
+    final batch = batchCode ?? '?';
+    final f = a.facts;
+    return switch (a.kind) {
+      AlertKind.waterOutOfRange => _water(f, locale),
+      AlertKind.fcrWorsening => alertFcrWorsening(batch),
+      AlertKind.growthStalled => alertGrowthStalled(batch),
+      AlertKind.mortalitySpike => alertMortalitySpike(
+        formatCount(f['deathsToday']! as int, locale),
+        formatDate(f['date']! as DateTime),
+      ),
+      AlertKind.warningSignSeen => alertWarningSignSeen(
+        (f['signs']! as Set<WarningSign>).map(warningSign).join(', '),
+      ),
+      AlertKind.densityOutOfRange => densityStatus(
+        f['status']! as DensityStatus,
+      ),
+      AlertKind.phaseChange => alertPhaseChange(
+        batch,
+        phase(f['to']! as Phase),
+      ),
+      AlertKind.sampleDue => alertSampleDue(batch, '${f['daysSince']}'),
+      AlertKind.waterCheckDue => alertWaterCheckDue,
+      AlertKind.quarantineEnding => alertQuarantineEnding(
+        batch,
+        '${f['days']}',
+        '${f['recommendedDays']}',
+      ),
+      AlertKind.preHarvestFast =>
+        f['fedDuringFast'] == true
+            ? alertPreHarvestFed(batch)
+            : alertPreHarvestFast(batch),
+      AlertKind.feedStockLow => alertFeedStockLow(
+        formatDecimal(f['daysLeft']! as double, locale, decimals: 0),
+      ),
+      AlertKind.feedTooOld => alertFeedTooOld,
+      AlertKind.prepStepDue => alertPrepStepDue,
+      AlertKind.duplicateDailyLog => alertDuplicateLog(
+        formatDate(f['date']! as DateTime),
+      ),
+    };
+  }
+
+  String _water(Map<String, Object?> f, Locale locale) {
+    final param = f['param']! as WaterParam;
+    if (param == WaterParam.colour) return alertWaterColour;
+    final v = f['value']! as double;
+    final (name, value) = switch (param) {
+      WaterParam.temperature => (temperature, '${formatNumber(v, locale)} °C'),
+      WaterParam.ph => (ph, formatNumber(v, locale)),
+      WaterParam.oxygen => (oxygen, '${formatNumber(v, locale)} mg/L'),
+      WaterParam.colour => throw StateError('handled above'),
+    };
+    return f['direction'] == Direction.high
+        ? alertWaterHigh(name, value)
+        : alertWaterLow(name, value);
+  }
 }
