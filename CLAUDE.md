@@ -31,6 +31,7 @@ Flutter, Drift, Supabase and a custom sync were chosen by the user; the packages
 - i18n: `flutter_localizations` + ARB files, locales `fr` and `mg`. Every user-facing string comes from the ARB files. Flutter's Material and Cupertino localizations don't include Malagasy, so `mg` needs fallback delegates that serve French for built-in widget strings.
 - IDs: `uuid` package (v7). Photos: `image_picker` + `flutter_image_compress`.
 - PDF and sharing: `pdf` + `printing`, `share_plus` for visit reports, traceability sheets and paper sheets.
+- Charts: `fl_chart`, animations off (`duration: Duration.zero`), behind `lib/features/common/mini_chart.dart`.
 - Tests: `test` for domain and sync, `flutter_test` for widgets, Drift's in-memory database for repository tests.
 
 ## Layout
