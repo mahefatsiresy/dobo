@@ -14,11 +14,11 @@ void main() {
     // DomainConfig minus its feeding guides: 3 phase bounds, 4 ration
     // rates, 3 ration adjustments, 6 density bounds, 4 temperature and pH
     // bounds, oxygen, 2 renewal bounds, 3 sampling, water check, 2 FCR
-    // bounds, 3 feed stock, 5 mortality and signs, 6 quarantine and prep
-    // bounds, fast, 4 dose bounds, 4 pond design bounds, depth, 4 stocking
-    // bounds.
-    expect(configKeys, hasLength(57));
-    expect(configKeys.map((k) => k.key).toSet(), hasLength(57));
+    // bounds, 3 feed stock, 6 mortality and signs, stop-feeding signs, 6
+    // quarantine and prep bounds, fast, harvest hour, 4 dose bounds, 4 pond
+    // design bounds, depth, 4 stocking bounds.
+    expect(configKeys, hasLength(60));
+    expect(configKeys.map((k) => k.key).toSet(), hasLength(60));
     expect(
       configKeys.map((k) => k.key),
       containsAll([
@@ -27,6 +27,9 @@ void main() {
         'densityPerM2.earth.max',
         'minOxygenMgL',
         'sampleIntervalDays',
+        'mortalityLookbackDays',
+        'stopFeedingSignDays',
+        'harvestHour',
       ]),
     );
   });

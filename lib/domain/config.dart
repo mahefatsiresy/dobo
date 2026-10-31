@@ -31,10 +31,13 @@ class DomainConfig {
     required this.mortalitySpikeMinDeaths,
     required this.mortalityTrailingDays,
     required this.warningSignLookbackDays,
+    required this.mortalityLookbackDays,
+    required this.stopFeedingSignDays,
     required this.quarantineDays,
     required this.dryingDays,
     required this.restDays,
     required this.preHarvestFastHours,
+    required this.harvestHour,
     required this.limeKgPerM2,
     required this.manureKgPerM2,
     required this.pondSurfaceM2,
@@ -103,10 +106,13 @@ class DomainConfig {
     mortalitySpikeMinDeaths: 5,
     mortalityTrailingDays: 7,
     warningSignLookbackDays: 3,
+    mortalityLookbackDays: 3,
+    stopFeedingSignDays: 2,
     quarantineDays: Range(7, 10),
     dryingDays: Range(5, 7),
     restDays: Range(2, 3),
     preHarvestFastHours: 48,
+    harvestHour: 6,
     limeKgPerM2: Range(0.1, 0.2),
     manureKgPerM2: Range(0.02, 0.03),
     pondSurfaceM2: Range(200, 1000),
@@ -169,6 +175,14 @@ class DomainConfig {
   final int mortalityTrailingDays;
   final int warningSignLookbackDays;
 
+  /// A mortality spike stays listed this many days. DOMAIN §Alert rules
+  /// [default].
+  final int mortalityLookbackDays;
+
+  /// Surface or erratic swimming logged this many days back (today
+  /// included) means "don't feed". DOMAIN §Feeding [default].
+  final int stopFeedingSignDays;
+
   /// DOMAIN §Species and fingerlings, §Pond preparation.
   final Range<int> quarantineDays;
   final Range<int> dryingDays;
@@ -176,6 +190,10 @@ class DomainConfig {
 
   /// DOMAIN §Harvest and delivery.
   final int preHarvestFastHours;
+
+  /// Farm-clock hour a planned harvest starts ("early morning" [8.2]).
+  /// DOMAIN §Harvest and delivery [default].
+  final int harvestHour;
 
   /// Doses per m². DOMAIN §Formulas.
   final Range<double> limeKgPerM2;
@@ -219,10 +237,13 @@ class DomainConfig {
     int? mortalitySpikeMinDeaths,
     int? mortalityTrailingDays,
     int? warningSignLookbackDays,
+    int? mortalityLookbackDays,
+    int? stopFeedingSignDays,
     Range<int>? quarantineDays,
     Range<int>? dryingDays,
     Range<int>? restDays,
     int? preHarvestFastHours,
+    int? harvestHour,
     Range<double>? limeKgPerM2,
     Range<double>? manureKgPerM2,
     Range<double>? pondSurfaceM2,
@@ -262,10 +283,13 @@ class DomainConfig {
     mortalityTrailingDays: mortalityTrailingDays ?? this.mortalityTrailingDays,
     warningSignLookbackDays:
         warningSignLookbackDays ?? this.warningSignLookbackDays,
+    mortalityLookbackDays: mortalityLookbackDays ?? this.mortalityLookbackDays,
+    stopFeedingSignDays: stopFeedingSignDays ?? this.stopFeedingSignDays,
     quarantineDays: quarantineDays ?? this.quarantineDays,
     dryingDays: dryingDays ?? this.dryingDays,
     restDays: restDays ?? this.restDays,
     preHarvestFastHours: preHarvestFastHours ?? this.preHarvestFastHours,
+    harvestHour: harvestHour ?? this.harvestHour,
     limeKgPerM2: limeKgPerM2 ?? this.limeKgPerM2,
     manureKgPerM2: manureKgPerM2 ?? this.manureKgPerM2,
     pondSurfaceM2: pondSurfaceM2 ?? this.pondSurfaceM2,

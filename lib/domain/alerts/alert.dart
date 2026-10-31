@@ -15,6 +15,9 @@ enum AlertKind {
   feedStockLow,
   feedTooOld,
   prepStepDue,
+
+  /// Two current daily logs for one pond-day, from two phones (SPEC §7).
+  duplicateDailyLog,
 }
 
 /// A computed alert. [facts] carry the values the UI needs to word it; the

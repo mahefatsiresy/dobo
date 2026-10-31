@@ -14,6 +14,12 @@ void main() {
     expect(cfg.feedingGuides[Phase.finishing]!.proteinPct, isNull);
   });
 
+  test('M5 defaults: mortality window, stop-feeding signs, harvest hour', () {
+    expect(cfg.mortalityLookbackDays, 3);
+    expect(cfg.stopFeedingSignDays, 2);
+    expect(cfg.harvestHour, 6);
+  });
+
   test('every phase and structure type has a value', () {
     expect(Phase.values.every(cfg.rationRate.containsKey), isTrue);
     expect(Phase.values.every(cfg.feedingGuides.containsKey), isTrue);

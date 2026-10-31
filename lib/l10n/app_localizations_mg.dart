@@ -1267,6 +1267,13 @@ class AppLocalizationsMg extends AppLocalizations {
   String get cfgWarningSignLookbackDays => 'Signes d\'alerte récents (jours)';
 
   @override
+  String get cfgMortalityLookbackDays => 'Pic de mortalité affiché (jours)';
+
+  @override
+  String get cfgStopFeedingSignDays =>
+      'Ne pas nourrir après des signes de stress (jours)';
+
+  @override
   String get cfgQuarantineDays => 'Quarantaine (jours)';
 
   @override
@@ -1277,6 +1284,9 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get cfgPreHarvestFastHours => 'Jeûne avant la récolte (heures)';
+
+  @override
+  String get cfgHarvestHour => 'Heure de début de la récolte';
 
   @override
   String get cfgLimeKgPerM2 => 'Chaux (kg/m²)';

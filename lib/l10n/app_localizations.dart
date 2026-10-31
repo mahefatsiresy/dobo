@@ -2402,6 +2402,18 @@ abstract class AppLocalizations {
   /// **'Signes d\'alerte récents (jours)'**
   String get cfgWarningSignLookbackDays;
 
+  /// No description provided for @cfgMortalityLookbackDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pic de mortalité affiché (jours)'**
+  String get cfgMortalityLookbackDays;
+
+  /// No description provided for @cfgStopFeedingSignDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne pas nourrir après des signes de stress (jours)'**
+  String get cfgStopFeedingSignDays;
+
   /// No description provided for @cfgQuarantineDays.
   ///
   /// In fr, this message translates to:
@@ -2425,6 +2437,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Jeûne avant la récolte (heures)'**
   String get cfgPreHarvestFastHours;
+
+  /// No description provided for @cfgHarvestHour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Heure de début de la récolte'**
+  String get cfgHarvestHour;
 
   /// No description provided for @cfgLimeKgPerM2.
   ///

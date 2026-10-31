@@ -50,6 +50,7 @@ Boundaries: a weight exactly on 5, 20 or 250 g belongs to the heavier phase.
 - Recalculate the ration after each sample (every 2 weeks). [5.3]
 - Leftover rule [5.3]: if feed is still floating 15–20 min after feeding, reduce the next ration by 10–20 % (**[default]** 15 %). If everything is eaten immediately, a slight increase is allowed (**[default]** +5 %). The suggested ration never exceeds 5 % of biomass.
 - Feed in the afternoon when oxygen is higher. Advise stopping feeding when fish swim at the surface or behave abnormally (stress or low oxygen). [5.3]
+  - **[default]** the advice holds while surface or erratic swimming was logged today or yesterday (2 days), or the latest reading has oxygen below the minimum.
 - Use floating pellets; spread feed over several points. [5.3]
 - Stop feeding 24–48 h before harvest. [8.1]
 
@@ -134,6 +135,7 @@ Shown as checklist items and info cards [7.1, 7.5, 7.8]: disinfect shared nets, 
 ## Harvest and delivery
 
 - Stop feeding 24–48 h before harvest; harvest early morning with a seine net. [8.1, 8.2]
+  - **[default]** a planned harvest starts at 06:00; the 48 h fast ends then.
 - Live transport: aerated tanks; clove powder 0.5 g per 10 L as a sedative; avoid overloading. [8.3]
 - Product forms [8.4]: `live`, `fresh`, `frozen`, `smoked`, `dried`. Fresh fish go on ice immediately; label with the batch number when possible.
 
@@ -146,7 +148,7 @@ Computed on the device from local records; never synced. Each has a severity (`d
 | Water out of range | latest reading outside the temperature, pH or oxygen target, or water colour `dark_green` or `brown_turbid` (renew water) | danger for oxygen, warning otherwise |
 | FCR worsening | period FCR increased at 2 consecutive samples [5.4] | danger |
 | Growth stalled | biomass gain ≤ 0 between samples | danger |
-| Mortality spike | **[default]** at least 5 deaths in the day, and either > 0.5 % of live count or ≥ 3× the trailing 7-day daily average | danger |
+| Mortality spike | **[default]** at least 5 deaths in the day, and either > 0.5 % of live count or ≥ 3× the trailing 7-day daily average; checked on each of the last 3 days **[default]** | danger |
 | Warning sign seen | any warning sign recorded in the last 3 days **[default]**, or dated in the future (wrong phone clock) | danger |
 | Sample due | ≥ 14 days since last sample of an active batch | warning |
 | Water check due | ≥ 7 days since last water reading of a stocked pond | warning |

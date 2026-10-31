@@ -224,6 +224,18 @@ final List<ConfigKey> configKeys = [
     (c) => c.warningSignLookbackDays,
     (c, v) => c.copyWith(warningSignLookbackDays: v),
   ),
+  _int(
+    'mortalityLookbackDays',
+    '§Alert rules',
+    (c) => c.mortalityLookbackDays,
+    (c, v) => c.copyWith(mortalityLookbackDays: v),
+  ),
+  _int(
+    'stopFeedingSignDays',
+    '§Feeding',
+    (c) => c.stopFeedingSignDays,
+    (c, v) => c.copyWith(stopFeedingSignDays: v),
+  ),
   ..._range<int>(
     'quarantineDays',
     '§Species and fingerlings',
@@ -250,6 +262,12 @@ final List<ConfigKey> configKeys = [
     '§Harvest and delivery',
     (c) => c.preHarvestFastHours,
     (c, v) => c.copyWith(preHarvestFastHours: v),
+  ),
+  _int(
+    'harvestHour',
+    '§Harvest and delivery',
+    (c) => c.harvestHour,
+    (c, v) => c.copyWith(harvestHour: v),
   ),
   ..._range<double>(
     'limeKgPerM2',
@@ -330,6 +348,7 @@ bool _sane(DomainConfig c) {
       c.pregrowMaxG < c.growoutMaxG &&
       c.sampleMinFish <= c.sampleMaxFish &&
       c.feedAgeWarnDays <= c.feedAgeDangerDays &&
+      c.harvestHour <= 23 &&
       [
         ...c.densityPerM2.values,
         c.temperatureC,
