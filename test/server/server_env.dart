@@ -8,11 +8,15 @@ class ServerEnv {
   ServerEnv.fromEnvironment()
     : url = _required('SUPABASE_URL'),
       anonKey = _required('SUPABASE_ANON_KEY'),
-      serviceRoleKey = _required('SUPABASE_SERVICE_ROLE_KEY');
+      serviceRoleKey = _required('SUPABASE_SERVICE_ROLE_KEY'),
+      dbUrl = _required('SUPABASE_DB_URL');
 
   final String url;
   final String anonKey;
   final String serviceRoleKey;
+
+  /// Postgres itself, for checks PostgREST can't make (psql).
+  final String dbUrl;
 
   static String _required(String name) {
     final value = Platform.environment[name];
