@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
@@ -12,8 +13,8 @@ import '../ponds/pond_overview.dart';
 import 'daily_log_providers.dart';
 
 /// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
-/// those already logged. Until accounts (M4) a member reaches it from More
-/// and leaves with the exit button.
+/// those already logged. A worker account lands here and stays; a member
+/// reaches it from More and leaves with the exit button.
 class WorkerHomeScreen extends ConsumerWidget {
   const WorkerHomeScreen({super.key});
 
@@ -36,17 +37,18 @@ class WorkerHomeScreen extends ConsumerWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            tooltip: l10n.workerExit,
-            iconSize: 32,
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              ref
-                  .read(localeControllerProvider.notifier)
-                  .set(const Locale('fr'));
-              context.go('/more');
-            },
-          ),
+          if (!(ref.watch(sessionProvider).value?.isWorker ?? false))
+            IconButton(
+              tooltip: l10n.workerExit,
+              iconSize: 32,
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                ref
+                    .read(localeControllerProvider.notifier)
+                    .set(const Locale('fr'));
+                context.go('/more');
+              },
+            ),
         ],
       ),
       body: overviews == null

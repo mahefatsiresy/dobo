@@ -17,6 +17,13 @@ class MoreScreen extends ConsumerWidget {
         children: [
           ListTile(
             minTileHeight: 56,
+            leading: const Icon(Icons.account_circle),
+            title: Text(l10n.moreAccount),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go('/more/account'),
+          ),
+          ListTile(
+            minTileHeight: 56,
             leading: const Icon(Icons.agriculture),
             title: Text(l10n.workerMode),
             trailing: const Icon(Icons.chevron_right),

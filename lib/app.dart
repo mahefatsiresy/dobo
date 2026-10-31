@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'features/account/account_locale.dart';
 import 'features/common/farm_today.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/mg_fallback.dart';
@@ -25,6 +26,14 @@ class _DoboAppState extends ConsumerState<DoboApp> {
     _lifecycle = AppLifecycleListener(
       onResume: () => ref.read(farmTodayProvider.notifier).refresh(),
     );
+    // Each account brings its language; a member's worker mode switches
+    // it by hand meanwhile.
+    ref.listenManual(accountLocaleProvider, (previous, next) {
+      final locale = next.value;
+      if (locale != null && locale != previous?.value) {
+        ref.read(localeControllerProvider.notifier).set(locale);
+      }
+    }, fireImmediately: true);
   }
 
   @override

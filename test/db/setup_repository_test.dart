@@ -89,7 +89,9 @@ void main() {
         isAdmin: true,
         isSales: false,
       );
-      final sessions = repo.watchSession().skip(1).first;
+      final seen = <Session?>[];
+      final sub = repo.watchSession().listen(seen.add);
+      await pumpEventQueue();
       await db
           .into(db.members)
           .insert(
@@ -104,8 +106,10 @@ void main() {
               locale: 'fr',
             ),
           );
-      final s = (await sessions)!;
-      expect((s.isAdmin, s.isSales), (false, true));
+      await pumpEventQueue();
+      await sub.cancel();
+      expect(seen, hasLength(2));
+      expect((seen.last!.isAdmin, seen.last!.isSales), (false, true));
     });
 
     test('clearUser ends the session and keeps everything else', () async {
@@ -140,6 +144,21 @@ void main() {
       expect(s.deviceId, await db.deviceId());
       final w = (await repo.watchSession().first)!;
       expect((w.role, w.isAdmin), (MemberRole.worker, false));
+    });
+
+    test('does not re-emit when an unrelated key changes', () async {
+      await repo.completeSetup(siteName: 'Ambohidratrimo');
+      final seen = <Session?>[];
+      final sub = repo.watchSession().listen(seen.add);
+      await pumpEventQueue();
+      await db
+          .into(db.localMeta)
+          .insert(
+            LocalMetaCompanion.insert(key: 'pull_cursor:ponds', value: '9'),
+          );
+      await pumpEventQueue();
+      await sub.cancel();
+      expect(seen, hasLength(1));
     });
   });
 }

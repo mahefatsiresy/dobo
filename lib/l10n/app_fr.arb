@@ -562,5 +562,52 @@
         "type": "String"
       }
     }
-  }
+  },
+  "welcomeTitle": "Bienvenue",
+  "welcomeMember": "Se connecter (membre)",
+  "welcomeWorker": "Je suis ouvrier",
+  "welcomeCreate": "Créer l'association",
+  "loginTitle": "Connexion",
+  "loginEmail": "Adresse e-mail",
+  "loginPassword": "Mot de passe",
+  "loginUsername": "Nom d'utilisateur",
+  "loginPin": "Code PIN (6 chiffres)",
+  "loginSubmit": "Se connecter",
+  "errorOffline": "Connexion nécessaire",
+  "errorBadLogin": "Identifiant ou mot de passe incorrect",
+  "errorOtherAssociation": "Ce téléphone contient les données d'une autre association. Exportez d'abord une sauvegarde.",
+  "errorNoMember": "Ce compte n'est pas actif",
+  "errorNoSite": "L'association n'a pas encore de site : synchronisez d'abord le téléphone du fondateur.",
+  "errorTaken": "Cet identifiant est déjà utilisé",
+  "errorFailed": "Échec : {code}",
+  "@errorFailed": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "passwordTooShort": "8 caractères au moins",
+  "pinSixDigits": "6 chiffres",
+  "createTitle": "Créer l'association",
+  "createAssociationName": "Nom de l'association",
+  "createGroupName": "Nom de votre branche",
+  "createYourName": "Votre nom",
+  "createSubmit": "Créer",
+  "moreAccount": "Compte",
+  "accountSignOut": "Se déconnecter",
+  "accountSignOutQuestion": "Se déconnecter de ce téléphone ?",
+  "accountSignOutPending": "{count} enregistrements ne sont pas encore envoyés. Ils restent sur ce téléphone et partiront à la prochaine synchronisation.",
+  "@accountSignOutPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountRole": "Rôle",
+  "roleMember": "Membre",
+  "roleWorker": "Ouvrier",
+  "roleAdmin": "Administrateur",
+  "roleSales": "Ventes"
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../database.dart';
 import '../database_provider.dart';
 import '../session.dart';
+import '../../sync/providers.dart';
+import 'account_repository.dart';
 import 'batch_repository.dart';
 import 'daily_log_repository.dart';
 import 'health_repository.dart';
@@ -15,6 +17,17 @@ import 'visit_repository.dart';
 final setupRepositoryProvider = Provider<SetupRepository>(
   (ref) => SetupRepository(ref.watch(databaseProvider)),
 );
+
+/// Accounts; null in a build with no server, which sets up offline.
+final accountRepositoryProvider = Provider<AccountRepository?>((ref) {
+  final auth = ref.watch(authGatewayProvider);
+  if (auth == null) return null;
+  return AccountRepository(
+    ref.watch(databaseProvider),
+    ref.watch(setupRepositoryProvider),
+    auth,
+  );
+});
 
 /// Null while nobody is signed in on this phone. Follows sign-in, sign-out
 /// and role changes arriving with the member row.

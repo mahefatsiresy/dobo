@@ -865,4 +865,109 @@ class AppLocalizationsFr extends AppLocalizations {
   String visitLine(String date, String state) {
     return '$date · $state';
   }
+
+  @override
+  String get welcomeTitle => 'Bienvenue';
+
+  @override
+  String get welcomeMember => 'Se connecter (membre)';
+
+  @override
+  String get welcomeWorker => 'Je suis ouvrier';
+
+  @override
+  String get welcomeCreate => 'Créer l\'association';
+
+  @override
+  String get loginTitle => 'Connexion';
+
+  @override
+  String get loginEmail => 'Adresse e-mail';
+
+  @override
+  String get loginPassword => 'Mot de passe';
+
+  @override
+  String get loginUsername => 'Nom d\'utilisateur';
+
+  @override
+  String get loginPin => 'Code PIN (6 chiffres)';
+
+  @override
+  String get loginSubmit => 'Se connecter';
+
+  @override
+  String get errorOffline => 'Connexion nécessaire';
+
+  @override
+  String get errorBadLogin => 'Identifiant ou mot de passe incorrect';
+
+  @override
+  String get errorOtherAssociation =>
+      'Ce téléphone contient les données d\'une autre association. Exportez d\'abord une sauvegarde.';
+
+  @override
+  String get errorNoMember => 'Ce compte n\'est pas actif';
+
+  @override
+  String get errorNoSite =>
+      'L\'association n\'a pas encore de site : synchronisez d\'abord le téléphone du fondateur.';
+
+  @override
+  String get errorTaken => 'Cet identifiant est déjà utilisé';
+
+  @override
+  String errorFailed(String code) {
+    return 'Échec : $code';
+  }
+
+  @override
+  String get passwordTooShort => '8 caractères au moins';
+
+  @override
+  String get pinSixDigits => '6 chiffres';
+
+  @override
+  String get createTitle => 'Créer l\'association';
+
+  @override
+  String get createAssociationName => 'Nom de l\'association';
+
+  @override
+  String get createGroupName => 'Nom de votre branche';
+
+  @override
+  String get createYourName => 'Votre nom';
+
+  @override
+  String get createSubmit => 'Créer';
+
+  @override
+  String get moreAccount => 'Compte';
+
+  @override
+  String get accountSignOut => 'Se déconnecter';
+
+  @override
+  String get accountSignOutQuestion => 'Se déconnecter de ce téléphone ?';
+
+  @override
+  String accountSignOutPending(int count) {
+    return '$count enregistrements ne sont pas encore envoyés. Ils restent sur ce téléphone et partiront à la prochaine synchronisation.';
+  }
+
+  @override
+  String get accountRole => 'Rôle';
+
+  @override
+  String get roleMember => 'Membre';
+
+  @override
+  String get roleWorker => 'Ouvrier';
+
+  @override
+  String get roleAdmin => 'Administrateur';
+
+  @override
+  String get roleSales => 'Ventes';
 }

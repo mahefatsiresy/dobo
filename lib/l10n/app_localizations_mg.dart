@@ -865,4 +865,108 @@ class AppLocalizationsMg extends AppLocalizations {
   String visitLine(String date, String state) {
     return '$date · $state';
   }
+
+  @override
+  String get welcomeTitle => 'Tongasoa';
+
+  @override
+  String get welcomeMember => 'Hiditra (mpikambana)';
+
+  @override
+  String get welcomeWorker => 'Mpiasa aho';
+
+  @override
+  String get welcomeCreate => 'Hamorona ny fikambanana';
+
+  @override
+  String get loginTitle => 'Fidirana';
+
+  @override
+  String get loginEmail => 'Adiresy mailaka';
+
+  @override
+  String get loginPassword => 'Teny miafina';
+
+  @override
+  String get loginUsername => 'Anarana fidirana';
+
+  @override
+  String get loginPin => 'Kaody PIN (isa 6)';
+
+  @override
+  String get loginSubmit => 'Hiditra';
+
+  @override
+  String get errorOffline => 'Mila tambajotra';
+
+  @override
+  String get errorBadLogin => 'Diso ny anarana na ny teny miafina';
+
+  @override
+  String get errorOtherAssociation =>
+      'Misy angon\'ny fikambanana hafa ato amin\'ity telefaonina ity. Ataovy aloha ny tahiry.';
+
+  @override
+  String get errorNoMember => 'Tsy mandeha io kaonty io';
+
+  @override
+  String get errorNoSite => 'Mbola tsy misy toerana ny fikambanana.';
+
+  @override
+  String get errorTaken => 'Efa misy mampiasa io anarana io';
+
+  @override
+  String errorFailed(String code) {
+    return 'Tsy nety : $code';
+  }
+
+  @override
+  String get passwordTooShort => 'Litera 8 farafahakeliny';
+
+  @override
+  String get pinSixDigits => 'Isa 6';
+
+  @override
+  String get createTitle => 'Hamorona ny fikambanana';
+
+  @override
+  String get createAssociationName => 'Anaran\'ny fikambanana';
+
+  @override
+  String get createGroupName => 'Anaran\'ny sampanao';
+
+  @override
+  String get createYourName => 'Ny anaranao';
+
+  @override
+  String get createSubmit => 'Mamorona';
+
+  @override
+  String get moreAccount => 'Compte';
+
+  @override
+  String get accountSignOut => 'Se déconnecter';
+
+  @override
+  String get accountSignOutQuestion => 'Se déconnecter de ce téléphone ?';
+
+  @override
+  String accountSignOutPending(int count) {
+    return '$count enregistrements ne sont pas encore envoyés. Ils restent sur ce téléphone et partiront à la prochaine synchronisation.';
+  }
+
+  @override
+  String get accountRole => 'Rôle';
+
+  @override
+  String get roleMember => 'Membre';
+
+  @override
+  String get roleWorker => 'Ouvrier';
+
+  @override
+  String get roleAdmin => 'Administrateur';
+
+  @override
+  String get roleSales => 'Ventes';
 }

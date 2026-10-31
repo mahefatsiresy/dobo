@@ -52,21 +52,7 @@ class SyncEngine {
   }
 
   /// Puts every refused row back in the queue; returns how many.
-  Future<int> retryRejected() => db.transaction(() async {
-    var n = 0;
-    for (final t in syncTables(db)) {
-      n += await db.customUpdate(
-        'UPDATE "${t.name}" SET sync_state = ?, sync_error = NULL '
-        'WHERE sync_state = ?',
-        variables: [
-          Variable(SyncState.pending.name),
-          Variable(SyncState.rejected.name),
-        ],
-        updates: {t.info},
-      );
-    }
-    return n;
-  });
+  Future<int> retryRejected() => retryRejectedRows(db);
 
   Future<(int, int)> _push(SyncTable t) async {
     var ok = 0, refused = 0;
@@ -187,3 +173,21 @@ class SyncEngine {
         mode: InsertMode.insertOrReplace,
       );
 }
+
+/// Puts every refused row of every synced table back in the queue (a
+/// different member signed in, or "Réessayer"); returns how many.
+Future<int> retryRejectedRows(AppDatabase db) => db.transaction(() async {
+  var n = 0;
+  for (final t in syncTables(db)) {
+    n += await db.customUpdate(
+      'UPDATE "${t.name}" SET sync_state = ?, sync_error = NULL '
+      'WHERE sync_state = ?',
+      variables: [
+        Variable(SyncState.pending.name),
+        Variable(SyncState.rejected.name),
+      ],
+      updates: {t.info},
+    );
+  }
+  return n;
+});

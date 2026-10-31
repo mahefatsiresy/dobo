@@ -1657,6 +1657,204 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{date} · {state}'**
   String visitLine(String date, String state);
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue'**
+  String get welcomeTitle;
+
+  /// No description provided for @welcomeMember.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter (membre)'**
+  String get welcomeMember;
+
+  /// No description provided for @welcomeWorker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Je suis ouvrier'**
+  String get welcomeWorker;
+
+  /// No description provided for @welcomeCreate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer l\'association'**
+  String get welcomeCreate;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion'**
+  String get loginTitle;
+
+  /// No description provided for @loginEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse e-mail'**
+  String get loginEmail;
+
+  /// No description provided for @loginPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe'**
+  String get loginPassword;
+
+  /// No description provided for @loginUsername.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom d\'utilisateur'**
+  String get loginUsername;
+
+  /// No description provided for @loginPin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code PIN (6 chiffres)'**
+  String get loginPin;
+
+  /// No description provided for @loginSubmit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter'**
+  String get loginSubmit;
+
+  /// No description provided for @errorOffline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion nécessaire'**
+  String get errorOffline;
+
+  /// No description provided for @errorBadLogin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiant ou mot de passe incorrect'**
+  String get errorBadLogin;
+
+  /// No description provided for @errorOtherAssociation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce téléphone contient les données d\'une autre association. Exportez d\'abord une sauvegarde.'**
+  String get errorOtherAssociation;
+
+  /// No description provided for @errorNoMember.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte n\'est pas actif'**
+  String get errorNoMember;
+
+  /// No description provided for @errorNoSite.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'association n\'a pas encore de site : synchronisez d\'abord le téléphone du fondateur.'**
+  String get errorNoSite;
+
+  /// No description provided for @errorTaken.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet identifiant est déjà utilisé'**
+  String get errorTaken;
+
+  /// No description provided for @errorFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échec : {code}'**
+  String errorFailed(String code);
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'8 caractères au moins'**
+  String get passwordTooShort;
+
+  /// No description provided for @pinSixDigits.
+  ///
+  /// In fr, this message translates to:
+  /// **'6 chiffres'**
+  String get pinSixDigits;
+
+  /// No description provided for @createTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer l\'association'**
+  String get createTitle;
+
+  /// No description provided for @createAssociationName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de l\'association'**
+  String get createAssociationName;
+
+  /// No description provided for @createGroupName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de votre branche'**
+  String get createGroupName;
+
+  /// No description provided for @createYourName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre nom'**
+  String get createYourName;
+
+  /// No description provided for @createSubmit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer'**
+  String get createSubmit;
+
+  /// No description provided for @moreAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte'**
+  String get moreAccount;
+
+  /// No description provided for @accountSignOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
+  String get accountSignOut;
+
+  /// No description provided for @accountSignOutQuestion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter de ce téléphone ?'**
+  String get accountSignOutQuestion;
+
+  /// No description provided for @accountSignOutPending.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} enregistrements ne sont pas encore envoyés. Ils restent sur ce téléphone et partiront à la prochaine synchronisation.'**
+  String accountSignOutPending(int count);
+
+  /// No description provided for @accountRole.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rôle'**
+  String get accountRole;
+
+  /// No description provided for @roleMember.
+  ///
+  /// In fr, this message translates to:
+  /// **'Membre'**
+  String get roleMember;
+
+  /// No description provided for @roleWorker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrier'**
+  String get roleWorker;
+
+  /// No description provided for @roleAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Administrateur'**
+  String get roleAdmin;
+
+  /// No description provided for @roleSales.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ventes'**
+  String get roleSales;
 }
 
 class _AppLocalizationsDelegate

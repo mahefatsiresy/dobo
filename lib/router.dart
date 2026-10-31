@@ -21,6 +21,11 @@ import 'features/ponds/ponds_screen.dart';
 import 'features/readings/sample_screen.dart';
 import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
+import 'features/account/account_screen.dart';
+import 'features/account/create_association_screen.dart';
+import 'features/account/login_screen.dart';
+import 'features/account/welcome_screen.dart';
+import 'sync/providers.dart';
 import 'features/transcription/transcription_screen.dart';
 import 'features/visit/condition_check.dart';
 import 'features/visit/visit_screen.dart';
@@ -33,8 +38,26 @@ final routerProvider = Provider<GoRouter>((ref) {
       final session = ref.read(sessionProvider);
       final at = state.matchedLocation;
       if (!session.hasValue) return at == '/' ? null : '/';
-      if (session.value == null) return at == '/setup' ? null : '/setup';
-      if (at == '/' || at == '/setup') return '/ponds';
+      final s = session.value;
+      final signingIn = at == '/welcome/login';
+      if (s == null) {
+        // A build with no server sets the phone up offline, as before M4.
+        if (ref.read(authGatewayProvider) == null) {
+          return at == '/welcome/local' ? null : '/welcome/local';
+        }
+        return at.startsWith('/welcome') && at != '/welcome/local'
+            ? null
+            : '/welcome';
+      }
+      // The worker's whole app is the worker home and the daily log.
+      if (s.isWorker) {
+        return at == '/worker' || at.startsWith('/log/') || signingIn
+            ? null
+            : '/worker';
+      }
+      if (at == '/' || at == '/welcome' || at == '/welcome/local') {
+        return '/ponds';
+      }
       return null;
     },
     routes: [
@@ -43,7 +66,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
-      GoRoute(path: '/setup', builder: (context, state) => const SetupScreen()),
+      GoRoute(
+        path: '/welcome',
+        builder: (context, state) => const WelcomeScreen(),
+        routes: [
+          GoRoute(
+            path: 'login',
+            builder: (context, state) =>
+                LoginScreen(worker: state.uri.queryParameters['worker'] == '1'),
+          ),
+          GoRoute(
+            path: 'create',
+            builder: (context, state) => const CreateAssociationScreen(),
+          ),
+          GoRoute(
+            path: 'local',
+            builder: (context, state) => const SetupScreen(),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/worker',
         builder: (context, state) => const WorkerHomeScreen(),
@@ -187,6 +228,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                         week: week == null ? null : DateTime.parse(week),
                       );
                     },
+                  ),
+                  GoRoute(
+                    path: 'account',
+                    builder: (context, state) => const AccountScreen(),
                   ),
                   GoRoute(
                     path: 'people',

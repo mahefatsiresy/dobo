@@ -26,4 +26,26 @@ class Session {
   final bool isSales;
 
   bool get isWorker => role == MemberRole.worker;
+
+  @override
+  bool operator ==(Object other) =>
+      other is Session &&
+      other.associationId == associationId &&
+      other.userId == userId &&
+      other.deviceId == deviceId &&
+      other.siteId == siteId &&
+      other.role == role &&
+      other.isAdmin == isAdmin &&
+      other.isSales == isSales;
+
+  @override
+  int get hashCode => Object.hash(
+    associationId,
+    userId,
+    deviceId,
+    siteId,
+    role,
+    isAdmin,
+    isSales,
+  );
 }

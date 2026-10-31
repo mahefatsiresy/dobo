@@ -48,11 +48,14 @@ class SetupRepository {
     );
   }
 
-  /// The session, again whenever `local_meta` or the members change.
+  /// The session, again whenever it changes. `local_meta` also holds sync
+  /// cursors: writing those must not rebuild everything that reads the
+  /// session.
   Stream<Session?> watchSession() => db
       .customSelect('SELECT 1', readsFrom: {db.localMeta, db.members})
       .watch()
-      .asyncMap((_) => currentSession());
+      .asyncMap((_) => currentSession())
+      .distinct();
 
   static MemberRole? _role(String? name) =>
       MemberRole.values.where((r) => r.name == name).firstOrNull;
@@ -117,10 +120,9 @@ class SetupRepository {
   });
 
   /// Signs the member out of this phone; everything else stays.
-  Future<void> clearUser() => (db.delete(db.localMeta)..where(
-        (m) => m.key.isIn([_userKey, _roleKey, _adminKey, _salesKey]),
-      ))
-      .go();
+  Future<void> clearUser() => (db.delete(
+    db.localMeta,
+  )..where((m) => m.key.isIn([_userKey, _roleKey, _adminKey, _salesKey]))).go();
 
   Future<void> _write(Map<String, String> values) => db.batch((b) {
     for (final e in values.entries) {
