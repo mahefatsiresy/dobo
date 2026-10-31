@@ -3,6 +3,10 @@ library;
 
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/ids.dart';
+import 'package:dobo/db/repositories/daily_log_repository.dart';
+import 'package:dobo/db/repositories/facts_repository.dart';
+import 'package:dobo/db/session.dart';
+import 'package:dobo/domain/alerts/farm_alerts.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/sync/auth_gateway.dart';
@@ -190,4 +194,55 @@ void main() {
       throwsA(isA<SyncSignedOut>()),
     );
   });
+
+  test(
+    'M5: a pond-day logged on both phones is flagged on both, and '
+    'keeping one on the founder\'s phone clears it on the worker\'s',
+    () async {
+      final day = DateTime(2026, 3, 5);
+      Session session(String user, String device, MemberRole role) => Session(
+        associationId: associationId,
+        userId: user,
+        deviceId: device,
+        siteId: siteId,
+        role: role,
+        isLinked: true,
+      );
+      final founderLogs = DailyLogRepository(
+        founderPhone,
+        session(founderId, founderDevice, MemberRole.member),
+      );
+      final workerLogs = DailyLogRepository(
+        workerPhone,
+        session(workerId, workerDevice, MemberRole.worker),
+      );
+      // Both offline: each phone logs E1 on 05/03.
+      final kept = await founderLogs.save(
+        DailyLogInput(pondId: pondId, date: day, feedGivenG: 4000),
+      );
+      await workerLogs.save(
+        DailyLogInput(pondId: pondId, date: day, feedGivenG: 4200),
+      );
+      await workerSync.run();
+      await founderSync.run();
+      await workerSync.run();
+
+      Future<List<String>> flagged(AppDatabase phone) async => [
+        for (final a in duplicateLogAlerts((await currentFacts(phone)).logs))
+          if (a.facts['date'] == day) ...(a.facts['logIds']! as List<String>),
+      ];
+      expect(await flagged(founderPhone), hasLength(2));
+      expect(await flagged(workerPhone), hasLength(2));
+
+      final theirs = (await flagged(founderPhone))
+          .singleWhere((id) => id != kept);
+      await founderLogs.keepOnly(kept, [theirs]);
+      final pushed = await founderSync.run();
+      expect(pushed.rejected, 0);
+      await workerSync.run();
+      expect(await flagged(founderPhone), isEmpty);
+      expect(await flagged(workerPhone), isEmpty);
+      expect((await workerLogs.forDay(pondId, day))!.id, kept);
+    },
+  );
 }
