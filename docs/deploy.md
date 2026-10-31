@@ -1,0 +1,86 @@
+# Server: local development and the hosted project
+
+The app syncs with a Supabase project (SPEC §7). The schema, row-level
+security and the `create-account` function live in `supabase/`. A build
+reads the server address from `--dart-define-from-file=env/<name>.json`.
+A build without one runs fully offline and sets the phone up locally, as
+before M4.
+
+## Local development (Fedora, podman)
+
+```bash
+systemctl --user start podman.socket
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+supabase start                     # first run downloads the images
+supabase functions serve &         # serves create-account
+supabase test db                   # pgTAP: tables, roles, sync_push
+tool/server_test.sh                # Dart tests tagged `server`
+```
+
+- SELinux blocks the edge runtime from reading the bind-mounted function
+  folder. Label it once with `chcon -Rt container_file_t supabase/functions`.
+  `restorecon -R supabase/functions` undoes it.
+- `env/local.json` points the Android emulator at the host
+  (`http://10.0.2.2:54321`). `env/host.json` is for tools on the host. Both
+  hold the local anon key from `supabase status` and are gitignored.
+  `env/example.json` shows the shape.
+- Run the app against it:
+  `flutter run --dart-define-from-file=env/local.json`.
+- The local server is plain HTTP. Android 8 (the API 26 test emulator)
+  allows that. Newer emulators refuse cleartext unless the debug manifest
+  allows it. The hosted project is HTTPS, so release builds never need it.
+- To cut and restore an emulator's network, run `adb root` once, then
+  `adb shell svc wifi disable|enable` and `adb shell svc data disable|enable`.
+- The M4 walk-through (`integration_test/m4_sync_test.dart`) explains its
+  three parts at the top of the file.
+
+## The hosted project (once)
+
+1. Create a project on supabase.com. Choose a region near Madagascar, for
+   example `eu-central` or `ap-south`.
+2. Under Authentication → Sign In / Providers → Email, turn **off**
+   "Confirm email": the founder signs up from the app, and admins create
+   every other account. Keep the minimum password length at **6**, because
+   worker PINs are 6 digits.
+3. From this folder:
+
+   ```bash
+   supabase login
+   supabase link --project-ref <project-ref>
+   supabase db push                         # the migrations in supabase/migrations
+   supabase functions deploy create-account
+   ```
+
+4. Create `env/prod.json` (gitignored):
+
+   ```json
+   {
+     "SUPABASE_URL": "https://<project-ref>.supabase.co",
+     "SUPABASE_ANON_KEY": "<publishable or anon key from Project Settings → API>"
+   }
+   ```
+
+5. Build the app for the phones:
+
+   ```bash
+   flutter build apk --release --split-per-abi --dart-define-from-file=env/prod.json
+   ```
+
+   Install `app-arm64-v8a-release.apk` (or `armeabi-v7a` on older phones).
+
+## First use
+
+On the founder's phone, choose "Créer l'association". A phone that already
+holds records keeps them: its association, site and records become the
+server's. The founder then creates everyone else's account under Plus →
+Administration → Membres: members get an email and password, workers a
+username and PIN. Each person signs in once with a network connection, and
+the phone works offline from then on.
+
+## Changing the schema later
+
+Add a new file in `supabase/migrations/`. Never edit a migration that has
+already been pushed. Run `supabase db reset` and `supabase test db` locally,
+then `supabase db push`. A column added to a synced table must be added to
+the Drift table too, with a schema bump (CLAUDE.md).
+`test/server/schema_parity_test.dart` fails until both sides match.
