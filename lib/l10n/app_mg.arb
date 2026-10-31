@@ -76,5 +76,9 @@
   "takeoverTitle": "Haverina ity telefaonina ity",
   "takeoverHint": "Ho an'ny mpitantana ihany. Hivoaka ny mpiasa; mijanona ato amin'ny telefaonina izay rehetra voasoratany.",
   "takeoverUnsent": "{count} mbola tsy lasa. Ampifandraiso amin'ny tambajotra ny telefaonina dia andramo indray.",
-  "errorNotAdmin": "Tsy mpitantana io kaonty io."
+  "errorNotAdmin": "Tsy mpitantana io kaonty io.",
+  "workerStopFeeding": "Aza omena sakafo",
+  "workerReasonFast": "Hojonoina tsy ho ela",
+  "workerReasonOxygen": "Tsy ampy rivotra ny rano",
+  "workerReasonDistress": "Tsy salama ny trondro"
 }

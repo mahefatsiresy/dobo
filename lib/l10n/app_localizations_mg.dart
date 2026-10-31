@@ -1504,4 +1504,16 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get fcrStalled => 'pas de croissance';
+
+  @override
+  String get workerStopFeeding => 'Aza omena sakafo';
+
+  @override
+  String get workerReasonFast => 'Hojonoina tsy ho ela';
+
+  @override
+  String get workerReasonOxygen => 'Tsy ampy rivotra ny rano';
+
+  @override
+  String get workerReasonDistress => 'Tsy salama ny trondro';
 }

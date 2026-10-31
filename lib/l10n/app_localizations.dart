@@ -2791,6 +2791,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'pas de croissance'**
   String get fcrStalled;
+
+  /// No description provided for @workerStopFeeding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne pas nourrir'**
+  String get workerStopFeeding;
+
+  /// No description provided for @workerReasonFast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte bientôt'**
+  String get workerReasonFast;
+
+  /// No description provided for @workerReasonOxygen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Manque d\'oxygène'**
+  String get workerReasonOxygen;
+
+  /// No description provided for @workerReasonDistress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons stressés'**
+  String get workerReasonDistress;
 }
 
 class _AppLocalizationsDelegate

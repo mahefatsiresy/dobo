@@ -12,7 +12,10 @@ import '../sync/sync_badge.dart';
 import '../common/farm_today.dart';
 import '../common/pond_colour.dart';
 import '../ponds/pond_overview.dart';
+import '../../domain/alerts/worker_advice.dart';
+import '../alerts/alert_providers.dart';
 import 'daily_log_providers.dart';
+import 'stop_feeding_sign.dart';
 
 /// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
 /// those already logged. A worker account lands here and stays (a long
@@ -99,6 +102,9 @@ class WorkerHomeScreen extends ConsumerWidget {
                       for (final o in overviews)
                         _PondTile(
                           overview: o,
+                          stopFeeding: ref.watch(
+                            stopFeedingProvider(o.pond.id),
+                          ),
                           logged: logged.contains(o.pond.id),
                           onTap: () => context.push('/log/${o.pond.id}'),
                         ),
@@ -114,11 +120,15 @@ class WorkerHomeScreen extends ConsumerWidget {
 class _PondTile extends StatelessWidget {
   const _PondTile({
     required this.overview,
+    required this.stopFeeding,
     required this.logged,
     required this.onTap,
   });
 
   final PondOverview overview;
+
+  /// Why not to feed today; the ration shows when empty.
+  final Set<StopFeedingReason> stopFeeding;
   final bool logged;
   final VoidCallback onTap;
 
@@ -152,6 +162,17 @@ class _PondTile extends StatelessWidget {
                     style: Theme.of(context).textTheme.displayMedium
                         ?.copyWith(color: ink, fontWeight: FontWeight.bold),
                   ),
+                  if (stopFeeding.isNotEmpty)
+                    StopFeedingSign(reasons: stopFeeding)
+                  else if (overview.rationG > 0)
+                    Text(
+                      formatKg(
+                        overview.rationG,
+                        Localizations.localeOf(context),
+                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(color: ink, fontWeight: FontWeight.bold),
+                    ),
                   if (isolated)
                     Container(
                       color: Colors.red.shade700,

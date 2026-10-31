@@ -1512,4 +1512,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fcrStalled => 'pas de croissance';
+
+  @override
+  String get workerStopFeeding => 'Ne pas nourrir';
+
+  @override
+  String get workerReasonFast => 'Récolte bientôt';
+
+  @override
+  String get workerReasonOxygen => 'Manque d\'oxygène';
+
+  @override
+  String get workerReasonDistress => 'Poissons stressés';
 }

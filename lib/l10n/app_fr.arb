@@ -978,5 +978,9 @@
   "chartDeaths": "Morts par jour",
   "chartFcr": "IC par période",
   "chartEmpty": "Pas encore de données",
-  "fcrStalled": "pas de croissance"
+  "fcrStalled": "pas de croissance",
+  "workerStopFeeding": "Ne pas nourrir",
+  "workerReasonFast": "Récolte bientôt",
+  "workerReasonOxygen": "Manque d'oxygène",
+  "workerReasonDistress": "Poissons stressés"
 }

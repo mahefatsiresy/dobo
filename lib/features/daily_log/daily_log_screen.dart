@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../alerts/alert_providers.dart';
+import 'stop_feeding_sign.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../../db/database.dart';
@@ -174,6 +178,12 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
           children: [
             if (overview.status == PondStatus.isolated)
               Notice(l10n.pondIsolatedBanner, danger: true),
+            if (ref.watch(stopFeedingProvider(widget.pondId)) case final reasons
+                when reasons.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: StopFeedingSign(reasons: reasons),
+              ),
             BigNumberField(
               label: l10n.feedGiven,
               controller: _feed,
