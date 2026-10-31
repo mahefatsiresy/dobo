@@ -21,7 +21,7 @@ class _StaleLogs extends DailyLogRepository {
   _StaleLogs(super.db, super.session);
 
   @override
-  Future<void> keepOnly(String keepId, List<String> discardIds) async =>
+  Future<String> keepOnly(String keepId, List<String> discardIds) async =>
       throw StaleEventException(keepId);
 }
 

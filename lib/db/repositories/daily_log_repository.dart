@@ -5,6 +5,7 @@ import '../../domain/types.dart';
 import '../database.dart';
 import '../events.dart';
 import '../session.dart';
+import '../sync_state.dart';
 import 'errors.dart';
 
 /// One pond-day as entered on the daily log screen or a paper sheet.
@@ -152,10 +153,13 @@ class DailyLogRepository {
             ]))
           .watch();
 
-  /// Resolves a duplicate pond-day: [discardIds] each get a tombstone, all
-  /// or none. Throws [StaleEventException] when [keepId] or one of them is
-  /// no longer current.
-  Future<void> keepOnly(String keepId, List<String> discardIds) =>
+  /// Resolves a duplicate pond-day: [discardIds] each get a tombstone and
+  /// the kept log is written again as its own correction, all or none. The
+  /// copy keeps who entered and observed it. Two phones keeping opposite
+  /// logs offline then leave both copies current (still flagged), never
+  /// none. Throws [StaleEventException] when [keepId] or one of
+  /// [discardIds] is no longer current. Returns the copy's id.
+  Future<String> keepOnly(String keepId, List<String> discardIds) =>
       db.transaction(() async {
         // Another phone may have discarded the one kept here.
         final kept = await (_current()..where((l) => l.id.equals(keepId)))
@@ -164,6 +168,18 @@ class DailyLogRepository {
         for (final id in discardIds) {
           if (id != keepId) await delete(id);
         }
+        return db.supersede(
+          db.dailyLogs,
+          keepId,
+          RawValuesInsertable<DailyLog>({
+            ...kept.toColumns(false),
+            'device_id': Variable<String>(session.deviceId),
+            'server_received_at': const Variable<DateTime>(null),
+            'server_seq': const Variable<int>(null),
+            'sync_state': Variable<String>(SyncState.pending.name),
+            'sync_error': const Variable<String>(null),
+          }),
+        );
       });
 
   SimpleSelectStatement<$DailyLogsTable, DailyLog> _current() =>

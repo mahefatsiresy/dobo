@@ -258,7 +258,10 @@ void main() {
           200,
           scrollable: find.byType(Scrollable).first,
         );
-        expect(find.bySemanticsLabel(RegExp(RegExp.escape(title))), findsWidgets);
+        expect(
+          find.bySemanticsLabel(RegExp(RegExp.escape(title))),
+          findsWidgets,
+        );
       }
       handle.dispose();
     }, overrides: [clock]);

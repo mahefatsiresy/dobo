@@ -236,13 +236,14 @@ void main() {
 
       final theirs = (await flagged(founderPhone))
           .singleWhere((id) => id != kept);
-      await founderLogs.keepOnly(kept, [theirs]);
+      final copy = await founderLogs.keepOnly(kept, [theirs]);
       final pushed = await founderSync.run();
       expect(pushed.rejected, 0);
       await workerSync.run();
       expect(await flagged(founderPhone), isEmpty);
       expect(await flagged(workerPhone), isEmpty);
-      expect((await workerLogs.forDay(pondId, day))!.id, kept);
+      final left = (await workerLogs.forDay(pondId, day))!;
+      expect((left.id, left.supersedesId, left.feedGivenG), (copy, kept, 4000));
     },
   );
 }

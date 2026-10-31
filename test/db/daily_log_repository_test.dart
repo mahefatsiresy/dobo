@@ -7,6 +7,7 @@ import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/domain/dates.dart';
 import 'package:drift/drift.dart' show Value;
+import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'repo_fixtures.dart';
@@ -185,16 +186,20 @@ void main() {
     });
 
     test(
-      'keepOnly tombstones the others and forDay returns the kept one',
+      'keepOnly tombstones the others and writes the kept one again',
       () async {
         final mine = await logs.save(day(DateTime(2026, 3, 1)));
         final theirs = await otherPhone(DateTime(2026, 3, 1));
-        await logs.keepOnly(mine, [theirs]);
+        final copy = await logs.keepOnly(mine, [theirs]);
         final left = await logs
             .watchCurrentForDay(e1, DateTime(2026, 3, 1))
             .first;
-        expect(left.map((l) => l.id), [mine]);
-        expect((await logs.forDay(e1, DateTime(2026, 3, 1)))!.id, mine);
+        expect(left.map((l) => (l.id, l.supersedesId)), [(copy, mine)]);
+        final kept = (await logs.forDay(e1, DateTime(2026, 3, 1)))!;
+        expect(
+          (kept.id, kept.feedGivenG, kept.enteredBy),
+          (copy, 4000, session.userId),
+        );
       },
     );
 
@@ -226,6 +231,47 @@ void main() {
           .watchCurrentForDay(e1, DateTime(2026, 3, 1))
           .first;
       expect(left.map((l) => l.id), [theirs]);
+    });
+
+    test('two phones keeping opposite logs offline leave both, still '
+        'flagged, never none', () async {
+      final x = await logs.save(day(DateTime(2026, 3, 1)));
+      final y = await otherPhone(DateTime(2026, 3, 1));
+      final phoneB = AppDatabase(NativeDatabase.memory());
+      addTearDown(phoneB.close);
+
+      /// Sync, as far as daily logs go: each phone gets the other's rows.
+      Future<void> exchange() async {
+        for (final (from, to) in [(db, phoneB), (phoneB, db)]) {
+          final have = {
+            for (final r in await to.select(to.dailyLogs).get()) r.id,
+          };
+          for (final r in await from.select(from.dailyLogs).get()) {
+            if (!have.contains(r.id)) await to.into(to.dailyLogs).insert(r);
+          }
+        }
+      }
+
+      await exchange();
+      final logsB = DailyLogRepository(
+        phoneB,
+        Session(
+          associationId: session.associationId,
+          userId: 'member-b',
+          deviceId: 'phone-b',
+          siteId: session.siteId,
+        ),
+      );
+      await logs.keepOnly(x, [y]);
+      await logsB.keepOnly(y, [x]);
+      await exchange();
+      for (final phone in [logs, logsB]) {
+        final left = await phone
+            .watchCurrentForDay(e1, DateTime(2026, 3, 1))
+            .first;
+        expect(left, hasLength(2));
+        expect({for (final l in left) l.feedGivenG}, {4000, 4500});
+      }
     });
   });
 }
