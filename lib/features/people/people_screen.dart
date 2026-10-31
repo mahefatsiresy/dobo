@@ -16,6 +16,7 @@ class PeopleScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.morePeople)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null, // Tabs keep each branch alive: shared tags clash.
         onPressed: () => context.go('/more/people/new'),
         icon: const Icon(Icons.person_add),
         label: Text(l10n.add),

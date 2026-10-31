@@ -60,6 +60,7 @@ class MembersScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.adminMembers)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null, // Tabs keep each branch alive: shared tags clash.
         onPressed: () => context.go('/more/admin/members/new'),
         icon: const Icon(Icons.person_add),
         label: Text(l10n.add),

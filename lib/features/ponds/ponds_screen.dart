@@ -23,6 +23,7 @@ class PondsScreen extends ConsumerWidget {
       // Ponds are set up by admins (SPEC §3).
       floatingActionButton: (ref.watch(sessionProvider).value?.isAdmin ?? false)
           ? FloatingActionButton.extended(
+              heroTag: null, // Tabs keep each branch alive: shared tags clash.
               onPressed: () => context.go('/ponds/new'),
               icon: const Icon(Icons.add),
               label: Text(l10n.pondAdd),

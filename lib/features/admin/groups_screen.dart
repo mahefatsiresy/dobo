@@ -27,6 +27,7 @@ class GroupsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.adminGroups)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null, // Tabs keep each branch alive: shared tags clash.
         onPressed: () => _edit(context, ref),
         icon: const Icon(Icons.add),
         label: Text(l10n.add),

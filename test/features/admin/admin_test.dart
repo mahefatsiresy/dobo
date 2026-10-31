@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/providers.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/router.dart';
 import 'package:dobo/sync/providers.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
@@ -55,6 +58,17 @@ void main() {
     expect(find.text('Branche Rabe'), findsOneWidget);
     expect(find.text('Rakoto'), findsOneWidget);
   }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
+
+  appTest('a page opens over the tabs after Members was visited', (
+    tester,
+    db,
+  ) async {
+    await openMembers(tester);
+    await tapAndSettle(tester, find.text('Étangs'));
+    unawaited(appContainer(tester).read(routerProvider).push('/stock'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
 
   appTest('a new branch saves while the keyboard closes', (tester, db) async {
     await tapAndSettle(tester, find.text('Plus'));
