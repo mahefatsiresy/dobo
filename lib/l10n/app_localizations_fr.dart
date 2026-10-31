@@ -1103,4 +1103,52 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get backupOtherAssociation =>
       'Cette sauvegarde appartient à une autre association';
+
+  @override
+  String get moreAdmin => 'Administration';
+
+  @override
+  String get moreLanguage => 'Langue';
+
+  @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languageMalagasy => 'Malagasy';
+
+  @override
+  String get adminMembers => 'Membres';
+
+  @override
+  String get adminGroups => 'Branches';
+
+  @override
+  String get memberNew => 'Nouveau compte';
+
+  @override
+  String get memberName => 'Nom';
+
+  @override
+  String get memberGroup => 'Branche';
+
+  @override
+  String get memberNoGroup => 'Sans branche';
+
+  @override
+  String get memberActive => 'Actif';
+
+  @override
+  String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';
+
+  @override
+  String get memberNone => 'Aucune';
+
+  @override
+  String get memberInactive => 'Inactif';
+
+  @override
+  String get groupName => 'Nom de la branche';
+
+  @override
+  String get groupsEmpty => 'Aucune branche';
 }

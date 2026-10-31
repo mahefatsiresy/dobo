@@ -254,15 +254,17 @@ class PondDetailScreen extends ConsumerWidget {
             icon: const Icon(Icons.add),
             label: Text(l10n.pondStock),
           ),
-          const SizedBox(height: 8),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
+          if (ref.watch(sessionProvider).value?.isAdmin ?? false) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              onPressed: () => context.go('/ponds/${pond.id}/edit'),
+              icon: const Icon(Icons.edit),
+              label: Text(l10n.edit),
             ),
-            onPressed: () => context.go('/ponds/${pond.id}/edit'),
-            icon: const Icon(Icons.edit),
-            label: Text(l10n.edit),
-          ),
+          ],
           const SizedBox(height: 8),
           TextButton.icon(
             style: TextButton.styleFrom(minimumSize: const Size.fromHeight(56)),

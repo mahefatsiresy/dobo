@@ -8,6 +8,7 @@ import 'account_repository.dart';
 import 'batch_repository.dart';
 import 'daily_log_repository.dart';
 import 'health_repository.dart';
+import 'member_repository.dart';
 import 'person_repository.dart';
 import 'pond_repository.dart';
 import 'reading_repository.dart';
@@ -108,5 +109,20 @@ final observationRepositoryProvider = Provider<ObservationRepository>(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
     visitId: ref.watch(_visitIdProvider),
+  ),
+);
+
+final memberRepositoryProvider = Provider<MemberRepository>(
+  (ref) => MemberRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+    ref.watch(authGatewayProvider),
+  ),
+);
+
+final groupRepositoryProvider = Provider<GroupRepository>(
+  (ref) => GroupRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
   ),
 );

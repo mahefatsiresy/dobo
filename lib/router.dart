@@ -26,6 +26,10 @@ import 'features/account/create_association_screen.dart';
 import 'features/account/login_screen.dart';
 import 'features/account/welcome_screen.dart';
 import 'features/sync/sync_screen.dart';
+import 'features/admin/admin_screen.dart';
+import 'features/admin/groups_screen.dart';
+import 'features/admin/member_form_screen.dart';
+import 'features/admin/members_screen.dart';
 import 'sync/providers.dart';
 import 'features/transcription/transcription_screen.dart';
 import 'features/visit/condition_check.dart';
@@ -237,6 +241,33 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'sync',
                     builder: (context, state) => const SyncScreen(),
+                  ),
+                  GoRoute(
+                    path: 'admin',
+                    builder: (context, state) => const AdminScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'members',
+                        builder: (context, state) => const MembersScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'new',
+                            builder: (context, state) =>
+                                const MemberFormScreen(),
+                          ),
+                          GoRoute(
+                            path: ':id',
+                            builder: (context, state) => MemberFormScreen(
+                              memberId: state.pathParameters['id'],
+                            ),
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: 'groups',
+                        builder: (context, state) => const GroupsScreen(),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'people',

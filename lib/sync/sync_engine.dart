@@ -137,30 +137,8 @@ class SyncEngine {
     }
   }
 
-  /// Events are inserted once. A reference row replaces the phone's copy
-  /// only when that copy is synced: a pending or rejected local edit stays.
-  Future<void> _apply(SyncTable t, Map<String, Object?> json) async {
-    if (t.kind == RowKind.reference) {
-      final local = await db
-          .customSelect(
-            'SELECT sync_state FROM "${t.name}" WHERE id = ?',
-            variables: [Variable(json['id']! as String)],
-          )
-          .getSingleOrNull();
-      if (local != null && local.data['sync_state'] != SyncState.synced.name) {
-        return;
-      }
-    }
-    final values = fromServer(t, json);
-    final conflict = t.kind == RowKind.event ? 'IGNORE' : 'REPLACE';
-    await db.customInsert(
-      'INSERT OR $conflict INTO "${t.name}" '
-      '(${values.keys.map((k) => '"$k"').join(', ')}) '
-      'VALUES (${List.filled(values.length, '?').join(', ')})',
-      variables: values.values.toList(),
-      updates: {t.info},
-    );
-  }
+  Future<void> _apply(SyncTable t, Map<String, Object?> json) =>
+      applyServerRow(db, t, json);
 
   Future<String?> _meta(String key) async => (await (db.select(
     db.localMeta,
@@ -191,3 +169,33 @@ Future<int> retryRejectedRows(AppDatabase db) => db.transaction(() async {
   }
   return n;
 });
+
+/// Stores a row the server sent, as synced. Events are inserted once. A
+/// reference row replaces the phone's copy only when that copy is synced: a
+/// pending or rejected local edit stays.
+Future<void> applyServerRow(
+  AppDatabase db,
+  SyncTable t,
+  Map<String, Object?> json,
+) async {
+  if (t.kind == RowKind.reference) {
+    final local = await db
+        .customSelect(
+          'SELECT sync_state FROM "${t.name}" WHERE id = ?',
+          variables: [Variable(json['id']! as String)],
+        )
+        .getSingleOrNull();
+    if (local != null && local.data['sync_state'] != SyncState.synced.name) {
+      return;
+    }
+  }
+  final values = fromServer(t, json);
+  final conflict = t.kind == RowKind.event ? 'IGNORE' : 'REPLACE';
+  await db.customInsert(
+    'INSERT OR $conflict INTO "${t.name}" '
+    '(${values.keys.map((k) => '"$k"').join(', ')}) '
+    'VALUES (${List.filled(values.length, '?').join(', ')})',
+    variables: values.values.toList(),
+    updates: {t.info},
+  );
+}

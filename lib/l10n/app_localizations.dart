@@ -2089,6 +2089,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cette sauvegarde appartient à une autre association'**
   String get backupOtherAssociation;
+
+  /// No description provided for @moreAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Administration'**
+  String get moreAdmin;
+
+  /// No description provided for @moreLanguage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get moreLanguage;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get languageFrench;
+
+  /// No description provided for @languageMalagasy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Malagasy'**
+  String get languageMalagasy;
+
+  /// No description provided for @adminMembers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Membres'**
+  String get adminMembers;
+
+  /// No description provided for @adminGroups.
+  ///
+  /// In fr, this message translates to:
+  /// **'Branches'**
+  String get adminGroups;
+
+  /// No description provided for @memberNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau compte'**
+  String get memberNew;
+
+  /// No description provided for @memberName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get memberName;
+
+  /// No description provided for @memberGroup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Branche'**
+  String get memberGroup;
+
+  /// No description provided for @memberNoGroup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans branche'**
+  String get memberNoGroup;
+
+  /// No description provided for @memberActive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Actif'**
+  String get memberActive;
+
+  /// No description provided for @memberPerson.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de l\'ouvrier (facultatif)'**
+  String get memberPerson;
+
+  /// No description provided for @memberNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune'**
+  String get memberNone;
+
+  /// No description provided for @memberInactive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inactif'**
+  String get memberInactive;
+
+  /// No description provided for @groupName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la branche'**
+  String get groupName;
+
+  /// No description provided for @groupsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune branche'**
+  String get groupsEmpty;
 }
 
 class _AppLocalizationsDelegate

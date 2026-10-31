@@ -1101,4 +1101,52 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get backupOtherAssociation => 'An\'ny fikambanana hafa io tahiry io';
+
+  @override
+  String get moreAdmin => 'Administration';
+
+  @override
+  String get moreLanguage => 'Fiteny';
+
+  @override
+  String get languageFrench => 'Frantsay';
+
+  @override
+  String get languageMalagasy => 'Malagasy';
+
+  @override
+  String get adminMembers => 'Membres';
+
+  @override
+  String get adminGroups => 'Branches';
+
+  @override
+  String get memberNew => 'Nouveau compte';
+
+  @override
+  String get memberName => 'Nom';
+
+  @override
+  String get memberGroup => 'Branche';
+
+  @override
+  String get memberNoGroup => 'Sans branche';
+
+  @override
+  String get memberActive => 'Actif';
+
+  @override
+  String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';
+
+  @override
+  String get memberNone => 'Aucune';
+
+  @override
+  String get memberInactive => 'Inactif';
+
+  @override
+  String get groupName => 'Nom de la branche';
+
+  @override
+  String get groupsEmpty => 'Aucune branche';
 }

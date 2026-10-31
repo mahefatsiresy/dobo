@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
@@ -19,11 +20,14 @@ class PondsScreen extends ConsumerWidget {
     final overviews = ref.watch(pondOverviewsProvider).value;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabPonds)),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/ponds/new'),
-        icon: const Icon(Icons.add),
-        label: Text(l10n.pondAdd),
-      ),
+      // Ponds are set up by admins (SPEC §3).
+      floatingActionButton: (ref.watch(sessionProvider).value?.isAdmin ?? false)
+          ? FloatingActionButton.extended(
+              onPressed: () => context.go('/ponds/new'),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.pondAdd),
+            )
+          : null,
       body: overviews == null
           ? const Center(child: CircularProgressIndicator())
           : overviews.isEmpty

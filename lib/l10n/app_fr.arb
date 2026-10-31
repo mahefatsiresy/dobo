@@ -693,5 +693,21 @@
     }
   },
   "backupNotABackup": "Ce fichier n'est pas une sauvegarde Dobo",
-  "backupOtherAssociation": "Cette sauvegarde appartient à une autre association"
+  "backupOtherAssociation": "Cette sauvegarde appartient à une autre association",
+  "moreAdmin": "Administration",
+  "moreLanguage": "Langue",
+  "languageFrench": "Français",
+  "languageMalagasy": "Malagasy",
+  "adminMembers": "Membres",
+  "adminGroups": "Branches",
+  "memberNew": "Nouveau compte",
+  "memberName": "Nom",
+  "memberGroup": "Branche",
+  "memberNoGroup": "Sans branche",
+  "memberActive": "Actif",
+  "memberPerson": "Fiche de l'ouvrier (facultatif)",
+  "memberNone": "Aucune",
+  "memberInactive": "Inactif",
+  "groupName": "Nom de la branche",
+  "groupsEmpty": "Aucune branche"
 }

@@ -68,5 +68,8 @@
   "backupImport": "Hampiditra tahiry",
   "backupImported": "Voaray {added}, novaina {updated}",
   "backupNotABackup": "Tsy tahiry Dobo io rakitra io",
-  "backupOtherAssociation": "An'ny fikambanana hafa io tahiry io"
+  "backupOtherAssociation": "An'ny fikambanana hafa io tahiry io",
+  "moreLanguage": "Fiteny",
+  "languageFrench": "Frantsay",
+  "languageMalagasy": "Malagasy"
 }
