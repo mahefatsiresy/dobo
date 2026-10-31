@@ -108,6 +108,11 @@ List<FcrPeriod> fcrPeriods(
   required String pondId,
 }) {
   final points = weighPoints(f, batchId: batchId, pondId: pondId);
+  if (points.length < 2) return const [];
+  final pondFeed = [
+    for (final l in f.logs)
+      if (l.pondId == pondId && l.feedG != 0) (farmDayNumber(l.date), l.feedG),
+  ];
   bool inPeriod(DateTime d, WeighPoint a, WeighPoint b) =>
       daysBetween(a.date, d) > 0 && daysBetween(d, b.date) >= 0;
 
@@ -115,9 +120,11 @@ List<FcrPeriod> fcrPeriods(
     for (var i = 1; i < points.length; i++)
       () {
         final a = points[i - 1], b = points[i];
-        final feedG = f.logs
-            .where((l) => l.pondId == pondId && inPeriod(l.date, a, b))
-            .fold(0, (n, l) => n + l.feedG);
+        final from = farmDayNumber(a.date), to = farmDayNumber(b.date);
+        var feedG = 0;
+        for (final (day, g) in pondFeed) {
+          if (day > from && day <= to) feedG += g;
+        }
         var outG = 0, inG = 0;
         for (final t in f.transfers) {
           if (t.batchId != batchId || !inPeriod(t.date, a, b)) continue;

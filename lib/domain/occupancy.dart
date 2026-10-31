@@ -1,3 +1,4 @@
+import 'dates.dart';
 import 'stock.dart';
 
 /// A batch put into a pond.
@@ -96,7 +97,28 @@ List<Placement> placements({
   required List<TransferFact> transfers,
   List<SampleFact> samples = const [],
   List<DeathFact> deaths = const [],
+}) => _walk(stockings, transfers, samples, deaths);
+
+/// [placements] at the end of each farm day that has a fact, oldest first,
+/// from a single walk: what "fish on day D" questions are answered from.
+List<(DateTime, List<Placement>)> placementSnapshots({
+  required List<StockingFact> stockings,
+  required List<TransferFact> transfers,
+  List<SampleFact> samples = const [],
+  List<DeathFact> deaths = const [],
 }) {
+  final out = <(DateTime, List<Placement>)>[];
+  _walk(stockings, transfers, samples, deaths, (day, p) => out.add((day, p)));
+  return out;
+}
+
+List<Placement> _walk(
+  List<StockingFact> stockings,
+  List<TransferFact> transfers,
+  List<SampleFact> samples,
+  List<DeathFact> deaths, [
+  void Function(DateTime day, List<Placement> placements)? onDayEnd,
+]) {
   final pairs = <(String, String), _Pair>{};
   var clock = 0;
   _Pair touch(String batchId, String pondId) =>
@@ -119,7 +141,28 @@ List<Placement> placements({
       return ka != kb ? ka.compareTo(kb) : a.compareTo(b);
     });
 
+  List<Placement> snapshot() => [
+    for (final p in pairs.values)
+      Placement(
+        batchId: p.batchId,
+        pondId: p.pondId,
+        live: liveCount(
+          stocked: p.stocked,
+          transferredIn: p.moved,
+          transferredOut: p.out,
+          deaths: p.deaths,
+        ),
+        avgWeightG: p.avgWeightG,
+      ),
+  ];
+
+  DateTime? today;
   for (final i in order) {
+    if (onDayEnd != null) {
+      final day = farmDate(facts[i].$1);
+      if (today != null && day != today) onDayEnd(today, snapshot());
+      today = day;
+    }
     switch (facts[i].$3) {
       case StockingFact s:
         touch(s.batchId, s.pondId)
@@ -140,20 +183,8 @@ List<Placement> placements({
     }
   }
 
-  return [
-    for (final p in pairs.values)
-      Placement(
-        batchId: p.batchId,
-        pondId: p.pondId,
-        live: liveCount(
-          stocked: p.stocked,
-          transferredIn: p.moved,
-          transferredOut: p.out,
-          deaths: p.deaths,
-        ),
-        avgWeightG: p.avgWeightG,
-      ),
-  ];
+  if (onDayEnd != null && today != null) onDayEnd(today, snapshot());
+  return snapshot();
 }
 
 void _shareDeaths(DeathFact d, List<_Pair> inPond) {

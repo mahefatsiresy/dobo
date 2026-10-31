@@ -18,6 +18,14 @@ int daysBetween(DateTime from, DateTime to) {
   return day(to).difference(day(from)).inDays;
 }
 
+/// The Madagascar calendar day of [t] as a day count: subtract two to get
+/// [daysBetween] without building dates, for loops over many records.
+int farmDayNumber(DateTime t) {
+  final farm = _farmClock(t);
+  return DateTime.utc(farm.year, farm.month, farm.day).millisecondsSinceEpoch ~/
+      Duration.millisecondsPerDay;
+}
+
 /// The Madagascar calendar day of [t], as a date-only local `DateTime`.
 DateTime farmDate(DateTime t) {
   final farm = _farmClock(t);

@@ -44,26 +44,34 @@ class FarmFacts {
 }
 
 /// [placements] from [f]. With [until], only facts dated on or before
-/// [until]'s farm day count.
+/// [until]'s farm day count. Answered from one walk per [FarmFacts], kept
+/// with it: growth and alerts ask this for many days.
 List<Placement> placementsOf(FarmFacts f, {DateTime? until}) {
-  bool keep(DateTime d) => until == null || daysBetween(d, until) >= 0;
-  return placements(
-    stockings: [
-      for (final s in f.stockings)
-        if (keep(s.date)) s,
-    ],
-    transfers: [
-      for (final t in f.transfers)
-        if (keep(t.date)) t,
-    ],
-    samples: [
-      for (final s in f.samples)
-        if (keep(s.date)) s,
-    ],
+  final days = _timelines[f] ??= placementSnapshots(
+    stockings: f.stockings,
+    transfers: f.transfers,
+    samples: f.samples,
     deaths: [
       for (final l in f.logs)
-        if (l.deaths > 0 && keep(l.date))
+        if (l.deaths > 0)
           DeathFact(pondId: l.pondId, count: l.deaths, date: l.date),
     ],
   );
+  if (days.isEmpty) return const [];
+  if (until == null) return days.last.$2;
+  // The last day on or before [until].
+  var lo = 0, hi = days.length - 1, found = -1;
+  while (lo <= hi) {
+    final mid = (lo + hi) ~/ 2;
+    if (daysBetween(days[mid].$1, until) >= 0) {
+      found = mid;
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  return found < 0 ? const [] : days[found].$2;
 }
+
+/// Each [FarmFacts]' placements at the end of each farm day with a fact.
+final _timelines = Expando<List<(DateTime, List<Placement>)>>();

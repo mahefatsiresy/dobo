@@ -57,4 +57,14 @@ void main() {
       DateTime.utc(2026, 3, 1, 22),
     );
   });
+
+  test('farmDayNumber counts farm days, so differences match daysBetween', () {
+    final a = DateTime.utc(2026, 3, 9, 20, 59); // 23:59 on 09/03 farm time
+    final b = DateTime.utc(2026, 3, 9, 21); // 00:00 on 10/03 farm time
+    expect(farmDayNumber(b) - farmDayNumber(a), 1);
+    expect(
+      farmDayNumber(DateTime(2026, 4, 2)) - farmDayNumber(DateTime(2026, 3, 1)),
+      daysBetween(DateTime(2026, 3, 1), DateTime(2026, 4, 2)),
+    );
+  });
 }
