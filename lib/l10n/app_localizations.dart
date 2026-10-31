@@ -2059,6 +2059,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Réglage'**
   String get tableSettingOverrides;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter une sauvegarde'**
+  String get backupExport;
+
+  /// No description provided for @backupImport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importer une sauvegarde'**
+  String get backupImport;
+
+  /// No description provided for @backupImported.
+  ///
+  /// In fr, this message translates to:
+  /// **'{added} enregistrements ajoutés, {updated} mis à jour'**
+  String backupImported(int added, int updated);
+
+  /// No description provided for @backupNotABackup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas une sauvegarde Dobo'**
+  String get backupNotABackup;
+
+  /// No description provided for @backupOtherAssociation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette sauvegarde appartient à une autre association'**
+  String get backupOtherAssociation;
 }
 
 class _AppLocalizationsDelegate

@@ -10,6 +10,7 @@ import '../../sync/providers.dart';
 import '../../sync/sync_controller.dart';
 import '../../sync/sync_status_repository.dart';
 import '../../l10n/formatting.dart';
+import 'backup_actions.dart';
 
 final _rejectedProvider = StreamProvider<List<RejectedRow>>(
   (ref) => ref.watch(syncStatusRepositoryProvider).watchRejected(),
@@ -95,6 +96,24 @@ class SyncScreen extends ConsumerWidget {
               Icons.add_home_work,
               () => context.push('/welcome/create'),
             ),
+          const Divider(height: 32),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            icon: const Icon(Icons.save_alt),
+            label: Text(l10n.backupExport),
+            onPressed: () => exportAndShare(ref),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            icon: const Icon(Icons.restore),
+            label: Text(l10n.backupImport),
+            onPressed: () => pickAndImport(context, ref),
+          ),
           for (final r in rejected)
             ListTile(
               leading: Icon(

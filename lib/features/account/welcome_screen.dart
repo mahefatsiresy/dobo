@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../locale_controller.dart';
+import '../sync/backup_actions.dart';
 
 /// First launch (plan Decision 4): sign in as a member or a worker, or
 /// create the association. Readable in French and Malagasy.
@@ -64,6 +65,16 @@ class WelcomeScreen extends ConsumerWidget {
             Icons.add_home_work,
             l10n.welcomeCreate,
             '/welcome/create',
+          ),
+          // A phone that broke: its backup works here with no network.
+          OutlinedButton.icon(
+            key: const Key('welcomeImport'),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            icon: const Icon(Icons.restore),
+            label: Text(l10n.backupImport),
+            onPressed: () => pickAndImport(context, ref),
           ),
         ],
       ),

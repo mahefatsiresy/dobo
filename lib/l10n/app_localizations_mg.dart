@@ -1084,4 +1084,21 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get tableSettingOverrides => 'Réglage';
+
+  @override
+  String get backupExport => 'Exporter une sauvegarde';
+
+  @override
+  String get backupImport => 'Hampiditra tahiry';
+
+  @override
+  String backupImported(int added, int updated) {
+    return 'Voaray $added, novaina $updated';
+  }
+
+  @override
+  String get backupNotABackup => 'Tsy tahiry Dobo io rakitra io';
+
+  @override
+  String get backupOtherAssociation => 'An\'ny fikambanana hafa io tahiry io';
 }

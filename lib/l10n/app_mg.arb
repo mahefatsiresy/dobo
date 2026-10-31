@@ -64,5 +64,9 @@
   "createGroupName": "Anaran'ny sampanao",
   "createYourName": "Ny anaranao",
   "createSubmit": "Mamorona",
-  "syncNow": "Alefaso"
+  "syncNow": "Alefaso",
+  "backupImport": "Hampiditra tahiry",
+  "backupImported": "Voaray {added}, novaina {updated}",
+  "backupNotABackup": "Tsy tahiry Dobo io rakitra io",
+  "backupOtherAssociation": "An'ny fikambanana hafa io tahiry io"
 }

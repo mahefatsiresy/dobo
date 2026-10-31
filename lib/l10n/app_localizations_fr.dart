@@ -1085,4 +1085,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tableSettingOverrides => 'Réglage';
+
+  @override
+  String get backupExport => 'Exporter une sauvegarde';
+
+  @override
+  String get backupImport => 'Importer une sauvegarde';
+
+  @override
+  String backupImported(int added, int updated) {
+    return '$added enregistrements ajoutés, $updated mis à jour';
+  }
+
+  @override
+  String get backupNotABackup => 'Ce fichier n\'est pas une sauvegarde Dobo';
+
+  @override
+  String get backupOtherAssociation =>
+      'Cette sauvegarde appartient à une autre association';
 }

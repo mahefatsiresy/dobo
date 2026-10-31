@@ -678,5 +678,20 @@
   "tableVisits": "Visite",
   "tableGroups": "Branche",
   "tableMembers": "Membre",
-  "tableSettingOverrides": "Réglage"
+  "tableSettingOverrides": "Réglage",
+  "backupExport": "Exporter une sauvegarde",
+  "backupImport": "Importer une sauvegarde",
+  "backupImported": "{added} enregistrements ajoutés, {updated} mis à jour",
+  "@backupImported": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "updated": {
+        "type": "int"
+      }
+    }
+  },
+  "backupNotABackup": "Ce fichier n'est pas une sauvegarde Dobo",
+  "backupOtherAssociation": "Cette sauvegarde appartient à une autre association"
 }
