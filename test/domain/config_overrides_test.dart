@@ -68,7 +68,10 @@ void main() {
   });
 
   test('a range moved as a whole is accepted in either order', () {
-    final c = applyOverrides(d, {'temperatureC.min': 33, 'temperatureC.max': 36});
+    final c = applyOverrides(d, {
+      'temperatureC.min': 33,
+      'temperatureC.max': 36,
+    });
     expect((c.temperatureC.min, c.temperatureC.max), (33, 36));
   });
 

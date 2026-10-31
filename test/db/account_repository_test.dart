@@ -25,6 +25,8 @@ void main() {
   });
   tearDown(() => db.close());
 
+  group('admin takeover', takeOverTests);
+
   Future<Map<String, String>> meta() async => {
     for (final r in await db.select(db.localMeta).get()) r.key: r.value,
   };
@@ -236,5 +238,71 @@ void main() {
     expect(s.associationId, first['associationId']);
     expect((await meta())['linked'], '1');
     expect((await meta()).keys.where((k) => k.startsWith('planned_')), isEmpty);
+  });
+}
+
+void takeOverTests() {
+  late AppDatabase db;
+  late SetupRepository setup;
+  late FakeAuthGateway auth;
+  late AccountRepository repo;
+
+  setUp(() async {
+    db = AppDatabase(NativeDatabase.memory());
+    setup = SetupRepository(db);
+    auth = FakeAuthGateway(
+      member: remoteMember(id: 'w1', role: MemberRole.worker, locale: 'mg'),
+    );
+    repo = AccountRepository(db, setup, auth);
+    await repo.signIn(login: 'rakoto', secret: '123456', worker: true);
+  });
+  tearDown(() => db.close());
+
+  Future<void> unsentLog() async {
+    final s = (await setup.currentSession())!;
+    await db
+        .into(db.dailyLogs)
+        .insert(
+          DailyLogsCompanion.insert(
+            associationId: s.associationId,
+            enteredBy: s.userId,
+            deviceId: s.deviceId,
+            recordedAt: DateTime.utc(2026, 3, 1, 9),
+            pondId: 'p1',
+            feedGivenG: 600,
+          ),
+        );
+  }
+
+  test('an admin takes a worker\'s phone back', () async {
+    auth.member = remoteMember(id: 'm1', isAdmin: true);
+    await repo.takeOver(email: 'soa@b.mg', password: 'motdepasse');
+    final s = (await setup.currentSession())!;
+    expect((s.userId, s.isWorker, s.isAdmin), ('m1', false, true));
+    expect(auth.lastEmail, 'soa@b.mg');
+  });
+
+  test('the worker\'s unsent records refuse the takeover before any '
+      'sign-in', () async {
+    await unsentLog();
+    auth.member = remoteMember(id: 'm1', isAdmin: true);
+    auth.lastEmail = null;
+    await expectLater(
+      repo.takeOver(email: 'soa@b.mg', password: 'motdepasse'),
+      throwsA(isA<UnsentRecords>().having((e) => e.count, 'count', 1)),
+    );
+    expect(auth.lastEmail, isNull);
+    expect((await setup.currentSession())!.userId, 'w1');
+    expect(await db.select(db.dailyLogs).get(), hasLength(1));
+  });
+
+  test('a member who is not an admin cannot take the phone', () async {
+    auth.member = remoteMember(id: 'm2');
+    await expectLater(
+      repo.takeOver(email: 'rabe@b.mg', password: 'motdepasse'),
+      throwsA(isA<AuthFailed>().having((e) => e.code, 'code', 'not_admin')),
+    );
+    final s = (await setup.currentSession())!;
+    expect((s.userId, s.isWorker), ('w1', true));
   });
 }

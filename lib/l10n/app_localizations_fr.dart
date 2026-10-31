@@ -1333,4 +1333,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cfgSectionHarvestAndDelivery => 'Récolte';
+
+  @override
+  String get takeoverTitle => 'Reprendre ce téléphone';
+
+  @override
+  String get takeoverHint =>
+      'Réservé à un administrateur. L\'ouvrier sera déconnecté ; tout ce qu\'il a enregistré reste sur le téléphone.';
+
+  @override
+  String takeoverUnsent(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count enregistrements de l\'ouvrier ne sont pas encore envoyés',
+      one: '1 enregistrement de l\'ouvrier n\'est pas encore envoyé',
+    );
+    return '$_temp0. Connectez le téléphone au réseau puis réessayez.';
+  }
+
+  @override
+  String get errorNotAdmin => 'Ce compte n\'est pas administrateur.';
 }

@@ -774,5 +774,16 @@
   "cfgSectionFeedStock": "Stock d'aliment",
   "cfgSectionSpeciesAndFingerlings": "Alevins",
   "cfgSectionPondPreparation": "Préparation des étangs",
-  "cfgSectionHarvestAndDelivery": "Récolte"
+  "cfgSectionHarvestAndDelivery": "Récolte",
+  "takeoverTitle": "Reprendre ce téléphone",
+  "takeoverHint": "Réservé à un administrateur. L'ouvrier sera déconnecté ; tout ce qu'il a enregistré reste sur le téléphone.",
+  "takeoverUnsent": "{count, plural, =1{1 enregistrement de l'ouvrier n'est pas encore envoyé} other{{count} enregistrements de l'ouvrier ne sont pas encore envoyés}}. Connectez le téléphone au réseau puis réessayez.",
+  "@takeoverUnsent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorNotAdmin": "Ce compte n'est pas administrateur."
 }

@@ -72,5 +72,9 @@
   "moreLanguage": "Fiteny",
   "languageFrench": "Frantsay",
   "languageMalagasy": "Malagasy",
-  "syncRelogin": "Hiditra indray"
+  "syncRelogin": "Hiditra indray",
+  "takeoverTitle": "Haverina ity telefaonina ity",
+  "takeoverHint": "Ho an'ny mpitantana ihany. Hivoaka ny mpiasa; mijanona ato amin'ny telefaonina izay rehetra voasoratany.",
+  "takeoverUnsent": "{count} mbola tsy lasa. Ampifandraiso amin'ny tambajotra ny telefaonina dia andramo indray.",
+  "errorNotAdmin": "Tsy mpitantana io kaonty io."
 }

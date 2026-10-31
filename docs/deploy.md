@@ -26,9 +26,13 @@ tool/server_test.sh                # Dart tests tagged `server`
   `env/example.json` shows the shape.
 - Run the app against it:
   `flutter run --dart-define-from-file=env/local.json`.
-- The local server is plain HTTP. Android 8 (the API 26 test emulator)
-  allows that. Newer emulators refuse cleartext unless the debug manifest
-  allows it. The hosted project is HTTPS, so release builds never need it.
+- The local server is plain HTTP. Android 9+ refuses that by default, so
+  the debug manifest (`android/app/src/debug/AndroidManifest.xml`) allows
+  it for debug builds only. The hosted project is HTTPS, so release builds
+  never need it.
+- On a real phone on the same Wi-Fi, use the laptop's address instead:
+  `env/device.json` with `"SUPABASE_URL": "http://<laptop LAN IP>:54321"`
+  (gitignored), then `flutter run -d <phone> --dart-define-from-file=env/device.json`.
 - To cut and restore an emulator's network, run `adb root` once, then
   `adb shell svc wifi disable|enable` and `adb shell svc data disable|enable`.
 - The M4 walk-through (`integration_test/m4_sync_test.dart`) explains its
@@ -76,6 +80,11 @@ server's. The founder then creates everyone else's account under Plus →
 Administration → Membres: members get an email and password, workers a
 username and PIN. Each person signs in once with a network connection, and
 the phone works offline from then on.
+
+A worker's phone has no way out of the worker home. To take it back, an
+admin long-presses the title on the worker home and signs in with their
+email and password. The worker's records must all be sent first, so this
+needs the network.
 
 ## Changing the schema later
 

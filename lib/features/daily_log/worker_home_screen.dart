@@ -15,8 +15,9 @@ import '../ponds/pond_overview.dart';
 import 'daily_log_providers.dart';
 
 /// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
-/// those already logged. A worker account lands here and stays; a member
-/// reaches it from More and leaves with the exit button.
+/// those already logged. A worker account lands here and stays (a long
+/// press on the title lets an admin take the phone back); a member reaches
+/// it from More and leaves with the exit button.
 class WorkerHomeScreen extends ConsumerWidget {
   const WorkerHomeScreen({super.key});
 
@@ -25,17 +26,24 @@ class WorkerHomeScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final overviews = ref.watch(pondOverviewsProvider).value;
     final logged = ref.watch(loggedTodayProvider).value ?? const {};
+    final workerAccount = ref.watch(sessionProvider).value?.isWorker ?? false;
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.workerToday),
-            Text(
-              formatDate(ref.watch(farmTodayProvider)),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+        title: GestureDetector(
+          key: const Key('workerTakeover'),
+          onLongPress: workerAccount
+              ? () => context.push('/welcome/login?takeover=1')
+              : null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.workerToday),
+              Text(
+                formatDate(ref.watch(farmTodayProvider)),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
         ),
         automaticallyImplyLeading: false,
         actions: [
@@ -47,7 +55,7 @@ class WorkerHomeScreen extends ConsumerWidget {
             onPressed: () =>
                 ref.read(syncControllerProvider.notifier).syncNow(),
           ),
-          if (!(ref.watch(sessionProvider).value?.isWorker ?? false))
+          if (!workerAccount)
             IconButton(
               tooltip: l10n.workerExit,
               iconSize: 32,

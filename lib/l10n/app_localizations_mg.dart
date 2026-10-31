@@ -1331,4 +1331,19 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get cfgSectionHarvestAndDelivery => 'Récolte';
+
+  @override
+  String get takeoverTitle => 'Haverina ity telefaonina ity';
+
+  @override
+  String get takeoverHint =>
+      'Ho an\'ny mpitantana ihany. Hivoaka ny mpiasa; mijanona ato amin\'ny telefaonina izay rehetra voasoratany.';
+
+  @override
+  String takeoverUnsent(int count) {
+    return '$count mbola tsy lasa. Ampifandraiso amin\'ny tambajotra ny telefaonina dia andramo indray.';
+  }
+
+  @override
+  String get errorNotAdmin => 'Tsy mpitantana io kaonty io.';
 }

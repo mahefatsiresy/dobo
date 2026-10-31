@@ -46,6 +46,28 @@ class AccountRepository {
     final email = worker
         ? workerEmail(login.trim().toLowerCase())
         : login.trim().toLowerCase();
+    await _signIn(email, secret);
+  }
+
+  /// An admin takes a worker's phone back (the worker has no way out).
+  /// The worker's records must all be sent first: refused with
+  /// [UnsentRecords] before anything is asked of the server, so none ends
+  /// up sent under the admin's account. Any other account is refused
+  /// (`not_admin`); the worker then signs in again with the PIN.
+  Future<void> takeOver({
+    required String email,
+    required String password,
+  }) async {
+    final unsent = await pendingCount();
+    if (unsent > 0) throw UnsentRecords(unsent);
+    await _signIn(email.trim().toLowerCase(), password, adminOnly: true);
+  }
+
+  Future<void> _signIn(
+    String email,
+    String secret, {
+    bool adminOnly = false,
+  }) async {
     await auth.signIn(email: email, password: secret);
     final RemoteMember me;
     try {
@@ -54,6 +76,7 @@ class AccountRepository {
       if (bound != null && bound != me.associationId) {
         throw const AuthFailed('other_association');
       }
+      if (adminOnly && !me.isAdmin) throw const AuthFailed('not_admin');
     } catch (_) {
       await auth.signOut();
       rethrow;
@@ -190,4 +213,14 @@ class AccountRepository {
     await auth.signOut();
     await setup.clearUser();
   }
+}
+
+/// An admin takeover waits until the worker's [count] records are sent.
+class UnsentRecords implements Exception {
+  const UnsentRecords(this.count);
+
+  final int count;
+
+  @override
+  String toString() => 'UnsentRecords($count)';
 }

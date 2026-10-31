@@ -2533,6 +2533,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Récolte'**
   String get cfgSectionHarvestAndDelivery;
+
+  /// No description provided for @takeoverTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre ce téléphone'**
+  String get takeoverTitle;
+
+  /// No description provided for @takeoverHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservé à un administrateur. L\'ouvrier sera déconnecté ; tout ce qu\'il a enregistré reste sur le téléphone.'**
+  String get takeoverHint;
+
+  /// No description provided for @takeoverUnsent.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 enregistrement de l\'ouvrier n\'est pas encore envoyé} other{{count} enregistrements de l\'ouvrier ne sont pas encore envoyés}}. Connectez le téléphone au réseau puis réessayez.'**
+  String takeoverUnsent(int count);
+
+  /// No description provided for @errorNotAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte n\'est pas administrateur.'**
+  String get errorNotAdmin;
 }
 
 class _AppLocalizationsDelegate

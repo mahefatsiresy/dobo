@@ -124,4 +124,82 @@ void main() {
       syncApiProvider.overrideWithValue(FakeSyncApi()),
     ],
   );
+
+  group('admin takeover', () {
+    late FakeAuthGateway auth;
+    setUp(() => auth = FakeAuthGateway());
+
+    Future<void> linkedWorker(WidgetTester tester, AppDatabase db) async {
+      final s = (await appContainer(tester).read(sessionProvider.future))!;
+      auth.member = remoteMember(
+        id: 'm1',
+        associationId: s.associationId,
+        siteId: s.siteId,
+        isAdmin: true,
+      );
+      auth.signedIn = true;
+      await db
+          .into(db.localMeta)
+          .insert(LocalMetaCompanion.insert(key: 'linked', value: '1'));
+      await tester.pumpAndSettle();
+      await tester.longPress(find.byKey(const Key('workerTakeover')));
+      await tester.pumpAndSettle();
+      expect(find.text('Haverina ity telefaonina ity'), findsOneWidget);
+      await enterAndSettle(tester, find.byKey(const Key('login')), 'soa@b.mg');
+      await enterAndSettle(
+        tester,
+        find.byKey(const Key('secret')),
+        'motdepasse',
+      );
+    }
+
+    appTest(
+      'an admin takes a worker\'s phone back from the worker home',
+      (tester, db) async {
+        await linkedWorker(tester, db);
+        await tapAndSettle(tester, find.byKey(const Key('signIn')));
+        expect(find.byType(WorkerHomeScreen), findsNothing);
+        final s = (await appContainer(tester).read(sessionProvider.future))!;
+        expect((s.userId, s.isAdmin), ('m1', true));
+      },
+      role: MemberRole.worker,
+      isAdmin: false,
+      overrides: [
+        authGatewayProvider.overrideWith((ref) => auth),
+        syncApiProvider.overrideWithValue(FakeSyncApi()),
+      ],
+    );
+
+    appTest(
+      'unsent worker records keep the phone with the worker',
+      (tester, db) async {
+        final s = (await appContainer(tester).read(sessionProvider.future))!;
+        await db
+            .into(db.dailyLogs)
+            .insert(
+              DailyLogsCompanion.insert(
+                associationId: s.associationId,
+                enteredBy: s.userId,
+                deviceId: s.deviceId,
+                recordedAt: DateTime.utc(2026, 3, 1, 9),
+                pondId: 'p1',
+                feedGivenG: 600,
+              ),
+            );
+        await linkedWorker(tester, db);
+        await tapAndSettle(tester, find.byKey(const Key('signIn')));
+        expect(find.textContaining('mbola tsy lasa'), findsOneWidget);
+        final after = (await appContainer(tester)
+            .read(sessionProvider.future))!;
+        expect(after.isWorker, true);
+        expect(auth.lastEmail, isNull);
+      },
+      role: MemberRole.worker,
+      isAdmin: false,
+      overrides: [
+        authGatewayProvider.overrideWith((ref) => auth),
+        syncApiProvider.overrideWithValue(FakeSyncApi()..failAfterCalls(0)),
+      ],
+    );
+  });
 }

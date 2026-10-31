@@ -13,11 +13,13 @@ import '../common/save_once.dart';
 import 'account_errors.dart';
 
 /// Sign in (needs the network once): a member with email and password, a
-/// worker with username and a 6-digit PIN on the number pad.
+/// worker with username and a 6-digit PIN on the number pad. With
+/// [takeover], an admin takes a worker's phone back.
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key, required this.worker});
+  const LoginScreen({super.key, required this.worker, this.takeover = false});
 
   final bool worker;
+  final bool takeover;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -40,20 +42,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SaveOnce {
     if (!_form.currentState!.validate()) return;
     final l10n = AppLocalizations.of(context);
     setState(() => _error = null);
+    final account = ref.read(accountRepositoryProvider)!;
     try {
-      await ref
-          .read(accountRepositoryProvider)!
-          .signIn(
-            login: _login.text,
-            secret: _secret.text,
-            worker: widget.worker,
-          );
+      if (widget.takeover) {
+        // The worker's records go out under the worker's account first.
+        await ref.read(syncControllerProvider.notifier).syncNow();
+        await account.takeOver(email: _login.text, password: _secret.text);
+      } else {
+        await account.signIn(
+          login: _login.text,
+          secret: _secret.text,
+          worker: widget.worker,
+        );
+      }
       // Signing in again on the same account leaves the session as it
       // was, so nothing else would start the sync it was waiting for.
       unawaited(ref.read(syncControllerProvider.notifier).syncNow());
       if (mounted) context.go(widget.worker ? '/worker' : '/ponds');
     } catch (e) {
-      setState(() => _error = accountErrorText(l10n, e));
+      if (mounted) setState(() => _error = accountErrorText(l10n, e));
     }
   }
 
@@ -63,12 +70,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SaveOnce {
     final worker = widget.worker;
     return Scaffold(
       appBar: AppBar(
-        title: Text(worker ? l10n.welcomeWorker : l10n.loginTitle),
+        title: Text(
+          widget.takeover
+              ? l10n.takeoverTitle
+              : worker
+              ? l10n.welcomeWorker
+              : l10n.loginTitle,
+        ),
       ),
       body: Form(
         key: _form,
         child: FormBody(
           children: [
+            if (widget.takeover) ...[
+              Text(l10n.takeoverHint),
+              const SizedBox(height: 16),
+            ],
             TextFormField(
               key: const Key('login'),
               controller: _login,

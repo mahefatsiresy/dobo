@@ -27,7 +27,10 @@ void main() {
     expect(await repo.watch().first, isEmpty);
     final rows = await db.select(db.settingOverrides).get();
     expect(rows, hasLength(1));
-    expect((rows.single.value, rows.single.syncState), (null, SyncState.pending));
+    expect(
+      (rows.single.value, rows.single.syncState),
+      (null, SyncState.pending),
+    );
   });
 
   test('two phones overriding a key write the same row', () async {

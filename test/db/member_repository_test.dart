@@ -73,7 +73,10 @@ void main() {
       locale: 'fr',
     );
     final m = await db.select(db.members).getSingle();
-    expect((m.name, m.isSales, m.syncState), ('Soa R.', true, SyncState.pending));
+    expect(
+      (m.name, m.isSales, m.syncState),
+      ('Soa R.', true, SyncState.pending),
+    );
   });
 
   test('a member changes their own language', () async {
@@ -97,11 +100,10 @@ void main() {
     );
     expect(id, 'w1');
     final m = await db.select(db.members).getSingle();
-    expect((m.name, m.role, m.syncState), (
-      'Rakoto',
-      MemberRole.worker,
-      SyncState.synced,
-    ));
+    expect(
+      (m.name, m.role, m.syncState),
+      ('Rakoto', MemberRole.worker, SyncState.synced),
+    );
   });
 
   test('groups are created and renamed offline', () async {

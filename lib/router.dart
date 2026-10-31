@@ -78,8 +78,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: 'login',
-            builder: (context, state) =>
-                LoginScreen(worker: state.uri.queryParameters['worker'] == '1'),
+            builder: (context, state) => LoginScreen(
+              worker: state.uri.queryParameters['worker'] == '1',
+              takeover: state.uri.queryParameters['takeover'] == '1',
+            ),
           ),
           GoRoute(
             path: 'create',
