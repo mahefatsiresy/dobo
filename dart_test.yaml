@@ -1,0 +1,5 @@
+# Tests tagged `server` need the local Supabase stack. Plain `flutter test`
+# skips them; tool/server_test.sh runs them (`--tags server --run-skipped`).
+tags:
+  server:
+    skip: "needs the local Supabase stack: run tool/server_test.sh"
