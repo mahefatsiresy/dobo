@@ -6,17 +6,17 @@
 
 **Architecture:** The server mirrors every synced Drift table in Postgres. A trigger stamps each write with a global `server_seq`, under an advisory lock per association, so seq order is commit order. Clients push through one RPC, `sync_push`, which upserts row by row: events are insert-or-ignore, reference rows are last-write-wins with the old version kept in `reference_history`, and each row is accepted or refused on its own. Clients pull each table with a `server_seq` cursor through PostgREST, under RLS. On the phone, `lib/sync/` holds a table registry, a row codec (SQLite ⇄ JSON), a `SyncApi` interface (Supabase implementation plus an in-memory fake for tests), the `SyncEngine` and a `SyncController` that decides when to sync. Accounts go through an `AuthGateway`, so widget tests run without a server.
 
-**Tech Stack:** Flutter 3.47.8, Drift 2.35, flutter_riverpod 3, go_router 18. New: `supabase_flutter`, `share_plus`, `file_picker`, `path_provider` (direct). Server: Supabase CLI (`npx supabase`) on podman, Postgres with RLS, pgTAP (`supabase test db`), one Deno edge function.
+**Tech Stack:** Flutter 3.47.8, Drift 2.35, flutter_riverpod 3, go_router 18. New: `supabase_flutter`, `share_plus`, `file_picker`, `path_provider` (direct). Server: Supabase CLI 2.122 (installed) on rootless podman, Postgres with RLS, pgTAP (`supabase test db`), one Deno edge function.
 
 **Spec:** `CLAUDE.md`, `docs/SPEC.md` (§3 roles, §4 data model, §6 navigation, §7 sync, §9 language, F14, §11 M4). The decisions below are Claude's calls, made without the user, and can be revisited.
 
 ## Decisions (Claude's calls)
 
-1. **Server for development: a local Supabase stack.** It runs via `npx supabase start` on podman (`DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock`, with `-x vector,logflare` if those containers fail). The app reads `SUPABASE_URL` and `SUPABASE_ANON_KEY` from `--dart-define-from-file=env/<name>.json`. `env/*.json` is gitignored and `env/example.json` is committed. The emulator reaches the host at `http://10.0.2.2:54321`. Moving to the hosted project is a final step the user runs (Task 14).
+1. **Server for development: a local Supabase stack.** It runs with the installed Supabase CLI (`supabase start`) on rootless podman (the user's choice) (`DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock`, with `-x vector,logflare` if those containers fail). The app reads `SUPABASE_URL` and `SUPABASE_ANON_KEY` from `--dart-define-from-file=env/<name>.json`. `env/*.json` is gitignored and `env/example.json` is committed. The emulator reaches the host at `http://10.0.2.2:54321`. Moving to the hosted project is a final step the user runs (Task 14).
 2. **Members and auth users are separate rows.** `members.id` is what `entered_by` stores, and the server-only column `members.user_id` links a member to `auth.users`. This is how a phone that already holds M2/M3 data gets claimed without rewriting anything: the association is created with the phone's existing association, site and placeholder user ids, and the placeholder user id becomes the founder's `members.id`.
 3. **Sign-in.**
    - Members use email and password (8 characters or more).
-   - Workers use a username and a 6-digit PIN typed on the number pad, stored as the auth user `<username>@ouvriers.dobo.invalid`.
+   - Workers use a username and a 6-digit PIN typed on the number pad, confirmed by the user, stored as the auth user `<username>@ouvriers.dobo.invalid`.
    - Every account except the founder's is created by an admin through the `create-account` edge function, using the admin API with `email_confirm: true`, so no email is ever sent.
    - The founder signs up from the app. Email confirmation is off.
 4. **First launch** shows a Welcome screen with four choices: sign in (member), sign in (worker), create the association, import a backup. Signing in or creating the association needs the network; importing a backup doesn't.
@@ -66,7 +66,7 @@
 - Schema change: `schemaVersion` 3 → 4. Write `from3To4` with `stepByStep`, run `make-migrations`, fill the generated v3→v4 data-integrity test (a v3 pond and daily log survive), and commit the snapshot and the generated files.
 - `lib/domain/` stays pure Dart. Every string comes from the ARB files. Member screens are in French; Welcome, sign-in and anything a worker sees also need `app_mg.arb` entries.
 - Touch targets ≥ 56 dp. Every save goes through `SaveOnce`, and every pushed screen has a working Back.
-- `flutter analyze` is clean, and `flutter test` passes under the machine zone and under `TZ=UTC`. Server tests are tagged `server`, excluded by default in `dart_test.yaml`, and run with `flutter test --tags server` while the local stack is up. SQL tests run with `npx supabase test db`.
+- `flutter analyze` is clean, and `flutter test` passes under the machine zone and under `TZ=UTC`. Server tests are tagged `server`, excluded by default in `dart_test.yaml`, and run with `flutter test --tags server` while the local stack is up. SQL tests run with `supabase test db`.
 - Commits use a conventional prefix and end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Branch: `feat/m4-accounts-sync`.
 - The arm64 release APK stays under 25 MB.
 
@@ -83,7 +83,7 @@
 ### Task 1: Local Supabase and the synced tables
 
 **Files:**
-- Create: `supabase/config.toml` (via `npx supabase init`), `supabase/migrations/20261031000001_sync_tables.sql`, `supabase/tests/sync_tables_test.sql`, `env/example.json`
+- Create: `supabase/config.toml` (via `supabase init`), `supabase/migrations/20261031000001_sync_tables.sql`, `supabase/tests/sync_tables_test.sql`, `env/example.json`
 - Modify: `.gitignore` (`env/*.json`, `!env/example.json`, `supabase/.temp/`)
 
 **Interfaces:**
@@ -96,16 +96,16 @@
   - Trigger `refuse_event_update()` raising `event rows are immutable` on event tables.
   - `config.toml`: `[auth.email] enable_confirmations = false`.
 
-- [ ] **Step 1: Start the stack.** `systemctl --user start podman.socket`, export `DOCKER_HOST`, `npx supabase init`, `npx supabase start`. Expected: it prints the API URL, anon key and service role key; put them in `env/local.json` (emulator URL `http://10.0.2.2:54321`) and `env/host.json` (`http://127.0.0.1:54321`). **If the stack can't start on podman, stop and ask the user. Don't swap in another backend.**
+- [ ] **Step 1: Start the stack.** `systemctl --user start podman.socket`, export `DOCKER_HOST`, `supabase init`, `supabase start`. Expected: it prints the API URL, anon key and service role key; put them in `env/local.json` (emulator URL `http://10.0.2.2:54321`) and `env/host.json` (`http://127.0.0.1:54321`). **If the stack can't start on podman, stop and ask the user. Don't swap in another backend.**
 - [ ] **Step 2: Write the failing pgTAP tests.** In `sync_tables_test.sql`, as the postgres role:
   - Inserting two ponds gives increasing `server_seq` and a set `server_received_at`.
   - Updating a pond raises its `server_seq` and adds a `reference_history` row holding the old `code`.
   - After an insert in the same transaction, `exists(select 1 from pg_locks where locktype = 'advisory' and pid = pg_backend_pid())`.
   - `update daily_logs set deaths = 9` throws `event rows are immutable`.
   - `has_column` checks for every synced table's columns.
-- [ ] **Step 3: Run to verify it fails.** `npx supabase test db` → FAIL (no tables).
-- [ ] **Step 4: Implement** the migration, then `npx supabase db reset`.
-- [ ] **Step 5: Run to verify it passes.** `npx supabase test db` → PASS.
+- [ ] **Step 3: Run to verify it fails.** `supabase test db` → FAIL (no tables).
+- [ ] **Step 4: Implement** the migration, then `supabase db reset`.
+- [ ] **Step 5: Run to verify it passes.** `supabase test db` → PASS.
 - [ ] **Step 6: Commit** `feat(server): synced tables with server sequence, history and immutable events`
 
 ### Task 2: Roles, RLS and creating the association
@@ -132,9 +132,9 @@
   - The member can change their own `locale`, but changing their own `is_admin` raises.
   - Removing the only admin's `is_admin` raises `last_admin`.
   - `create_association` makes the caller an admin, and a second call raises `already_member`.
-- [ ] **Step 2: Run to verify it fails.** `npx supabase test db` → FAIL.
-- [ ] **Step 3: Implement** the migration, then `npx supabase db reset`.
-- [ ] **Step 4: Run to verify it passes.** `npx supabase test db` → PASS.
+- [ ] **Step 2: Run to verify it fails.** `supabase test db` → FAIL.
+- [ ] **Step 3: Implement** the migration, then `supabase db reset`.
+- [ ] **Step 4: Run to verify it passes.** `supabase test db` → PASS.
 - [ ] **Step 5: Commit** `feat(server): roles, row-level security and association creation`
 
 ### Task 3: The push RPC
@@ -156,7 +156,7 @@
   - A batch of [a daily log, a water reading] pushed as the worker returns the log accepted and the reading with `error_code = '42501'`; the log is stored.
   - Pond P is pushed by device A (`updated_at_device` t1), then by device B (t2), then A's t1 version is retried: P keeps B's `code`, and the retry returns P's current seq.
   - `sync_push('auth.users', '[]')` raises `unknown_table`.
-- [ ] **Step 2: Run to verify it fails.** `npx supabase test db` → FAIL.
+- [ ] **Step 2: Run to verify it fails.** `supabase test db` → FAIL.
 - [ ] **Step 3: Implement.**
 - [ ] **Step 4: Run to verify it passes.** → PASS.
 - [ ] **Step 5: Commit** `feat(server): sync_push with per-row results, idempotent retries and last-write-wins`
@@ -178,7 +178,7 @@
 - `dart_test.yaml`: `tags: {server: {}}` and `exclude_tags: server`.
 
 - [ ] **Step 1: Write the failing server test** (`@Tags(['server'])`). The founder signs up and calls `create_association`. Then the founder creates worker `rakoto` with PIN `123456`, and a client can sign in as `rakoto@ouvriers.dobo.invalid` / `123456` and read the ponds. Creating `rakoto` again gives `login_taken`, a PIN `12ab56` gives `bad_secret`, and the worker calling the function gives `not_admin`.
-- [ ] **Step 2: Run to verify it fails.** `npx supabase functions serve` in the background, then `flutter test --tags server test/server/create_account_test.dart` → FAIL (404).
+- [ ] **Step 2: Run to verify it fails.** `supabase functions serve` in the background, then `flutter test --tags server test/server/create_account_test.dart` → FAIL (404).
 - [ ] **Step 3: Implement.**
 - [ ] **Step 4: Run to verify it passes.** → PASS.
 - [ ] **Step 5: Commit** `feat(server): create-account edge function for members and workers`
@@ -456,7 +456,7 @@
 - [ ] **Step 3: Persistence.** Force-stop, `adb install -r` the debug APK, launch offline: the records and the session are still there, and the badge shows anything pending.
 - [ ] **Step 4: Backup.** Export from phone 1, import on a wiped phone 2 offline; the ponds and logs appear.
 - [ ] **Step 5: Size.** `flutter build apk --release --split-per-abi`: arm64 is under 25 MB.
-- [ ] **Step 6: Write `docs/deploy.md`** for the user: create the hosted project; `npx supabase link`, `db push`, `functions deploy create-account`; turn off email confirmation; fill `env/prod.json`; `flutter build apk --dart-define-from-file=env/prod.json`.
+- [ ] **Step 6: Write `docs/deploy.md`** for the user: create the hosted project; `supabase link`, `db push`, `functions deploy create-account`; turn off email confirmation; fill `env/prod.json`; `flutter build apk --dart-define-from-file=env/prod.json`.
 - [ ] **Step 7: Commit** `test: M4 walk-through with two phones, airplane mode and backup`
 
 ---
