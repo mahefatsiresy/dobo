@@ -2,15 +2,16 @@
 import 'package:drift/drift.dart' hide Batch;
 
 import '../../domain/dates.dart';
+import '../../domain/farm_facts.dart';
 import '../../domain/occupancy.dart';
 import '../../domain/types.dart';
 import '../database.dart';
 import '../events.dart';
 import '../ids.dart';
 import '../session.dart';
-import '../sync_columns.dart';
 import '../sync_state.dart';
 import 'errors.dart';
+import 'facts_repository.dart';
 import 'watch_tables.dart';
 
 /// A new batch and its first stocking (SPEC F2).
@@ -437,45 +438,8 @@ class BatchRepository {
 
 /// Fish per (batch, pond) from the current stockings, moves, samples and
 /// daily-log deaths.
-Future<List<Placement>> currentPlacements(AppDatabase db) async => placements(
-  stockings: [
-    for (final s in await _currentStockingsIn(db))
-      StockingFact(
-        batchId: s.batchId,
-        pondId: s.pondId,
-        count: s.count,
-        avgWeightG: s.avgWeightMg / 1000,
-        date: s.recordedAt,
-      ),
-  ],
-  transfers: [
-    for (final t in await _currentTransfersIn(db))
-      TransferFact(
-        batchId: t.batchId,
-        fromPondId: t.fromPondId,
-        toPondId: t.toPondId,
-        count: t.count,
-        avgWeightG: t.avgWeightMg == null ? null : t.avgWeightMg! / 1000,
-        date: t.recordedAt,
-      ),
-  ],
-  samples: [
-    for (final s in await _current(db, db.samples).get())
-      SampleFact(
-        batchId: s.batchId,
-        pondId: s.pondId,
-        avgWeightG: s.totalWeightG / s.fishCount,
-        date: s.recordedAt,
-      ),
-  ],
-  deaths: [
-    for (final l in await (_current(
-      db,
-      db.dailyLogs,
-    )..where((l) => l.deaths.isBiggerThanValue(0))).get())
-      DeathFact(pondId: l.pondId, count: l.deaths, date: l.recordedAt),
-  ],
-);
+Future<List<Placement>> currentPlacements(AppDatabase db) async =>
+    placementsOf(await currentFacts(db));
 
 /// Tables whose changes move fish or their weight.
 Set<TableInfo<Table, Object?>> placementTables(AppDatabase db) => {
@@ -486,26 +450,7 @@ Set<TableInfo<Table, Object?>> placementTables(AppDatabase db) => {
 };
 
 Future<List<Stocking>> _currentStockingsIn(AppDatabase db) =>
-    _current(db, db.stockings).get();
+    currentEvents(db, db.stockings).get();
 
 Future<List<Transfer>> _currentTransfersIn(AppDatabase db) =>
-    _current(db, db.transfers).get();
-
-/// Current rows of an event table in a fixed order: recorded date, then
-/// device creation time, then id, so same-day facts don't depend on
-/// SQLite's row order.
-SimpleSelectStatement<T, D> _current<T extends HasResultSet, D>(
-  AppDatabase db,
-  ResultSetImplementation<T, D> table,
-) {
-  final info = table as TableInfo<Table, D>;
-  final cols = info as SyncedRow;
-  final event = info as EventRow;
-  return db.select(table)
-    ..where((_) => isCurrentEvent(info))
-    ..orderBy([
-      (_) => OrderingTerm.asc(event.recordedAt),
-      (_) => OrderingTerm.asc(cols.createdAtDevice),
-      (_) => OrderingTerm.asc(cols.id),
-    ]);
-}
+    currentEvents(db, db.transfers).get();

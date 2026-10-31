@@ -5,6 +5,7 @@ import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/config.dart';
 import '../../domain/dates.dart';
+import '../../domain/farm_facts.dart';
 import '../../domain/occupancy.dart';
 import '../../domain/phase.dart';
 import '../../domain/pond.dart';
@@ -138,8 +139,9 @@ final pondsProvider = StreamProvider<List<Pond>>(
   (ref) => ref.watch(pondRepositoryProvider).watchActive(),
 );
 
-final placementsProvider = StreamProvider<List<Placement>>(
-  (ref) => ref.watch(batchRepositoryProvider).watchPlacements(),
+/// Fish per (batch, pond), from [farmFactsProvider].
+final placementsProvider = Provider<AsyncValue<List<Placement>>>(
+  (ref) => ref.watch(farmFactsProvider).whenData(placementsOf),
 );
 
 final batchSummariesProvider = StreamProvider<List<BatchSummary>>(

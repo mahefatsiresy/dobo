@@ -5,10 +5,12 @@ import '../database_provider.dart';
 import '../session.dart';
 import '../../domain/config.dart';
 import '../../domain/config_overrides.dart';
+import '../../domain/farm_facts.dart';
 import '../../sync/providers.dart';
 import 'account_repository.dart';
 import 'batch_repository.dart';
 import 'daily_log_repository.dart';
+import 'facts_repository.dart';
 import 'health_repository.dart';
 import 'member_repository.dart';
 import 'person_repository.dart';
@@ -148,4 +150,10 @@ final domainConfigProvider = Provider<DomainConfig>(
     DomainConfig.defaults,
     ref.watch(settingOverridesProvider).value ?? const {},
   ),
+);
+
+/// Every current stocking, move, sample and daily log; placements, growth
+/// and alerts are all computed from it.
+final farmFactsProvider = StreamProvider<FarmFacts>(
+  (ref) => watchFarmFacts(ref.watch(databaseProvider)),
 );
