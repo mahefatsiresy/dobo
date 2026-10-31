@@ -5,6 +5,7 @@ import '../../domain/types.dart';
 import '../database.dart';
 import '../events.dart';
 import '../session.dart';
+import 'errors.dart';
 
 /// One pond-day as entered on the daily log screen or a paper sheet.
 class DailyLogInput {
@@ -135,6 +136,35 @@ class DailyLogRepository {
           .map((logs) => {for (final l in logs) l.pondId: l});
 
   Future<void> delete(String id) => db.tombstone(db.dailyLogs, id, session);
+
+  /// Every current log of [pondId] on [date], newest first: more than one
+  /// means two phones logged the day (SPEC §7).
+  Stream<List<DailyLog>> watchCurrentForDay(String pondId, DateTime date) =>
+      (_current()
+            ..where(
+              (l) =>
+                  l.pondId.equals(pondId) &
+                  l.recordedAt.equals(farmDateToUtc(date)),
+            )
+            ..orderBy([
+              (l) => OrderingTerm.desc(l.createdAtDevice),
+              (l) => OrderingTerm.desc(l.id),
+            ]))
+          .watch();
+
+  /// Resolves a duplicate pond-day: [discardIds] each get a tombstone, all
+  /// or none. Throws [StaleEventException] when [keepId] or one of them is
+  /// no longer current.
+  Future<void> keepOnly(String keepId, List<String> discardIds) =>
+      db.transaction(() async {
+        // Another phone may have discarded the one kept here.
+        final kept = await (_current()..where((l) => l.id.equals(keepId)))
+            .getSingleOrNull();
+        if (kept == null) throw StaleEventException(keepId);
+        for (final id in discardIds) {
+          if (id != keepId) await delete(id);
+        }
+      });
 
   SimpleSelectStatement<$DailyLogsTable, DailyLog> _current() =>
       db.select(db.dailyLogs)..where((_) => isCurrentEvent(db.dailyLogs));

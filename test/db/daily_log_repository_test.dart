@@ -1,6 +1,7 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
+import 'package:dobo/db/repositories/errors.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
@@ -151,4 +152,80 @@ void main() {
       expect(mine, isNot(fixed));
     },
   );
+
+  group('duplicate pond-days', () {
+    /// Another phone's log of [date], arriving by sync.
+    Future<String> otherPhone(DateTime date, {int feedG = 4500}) async {
+      final row = await db
+          .into(db.dailyLogs)
+          .insertReturning(
+            DailyLogsCompanion.insert(
+              associationId: session.associationId,
+              enteredBy: 'other-user',
+              deviceId: 'other-phone',
+              createdAtDevice: Value(
+                DateTime.now().toUtc().add(const Duration(minutes: 1)),
+              ),
+              recordedAt: farmDateToUtc(date),
+              pondId: e1,
+              feedGivenG: feedG,
+            ),
+          );
+      return row.id;
+    }
+
+    test('watchCurrentForDay lists both, newest first', () async {
+      final mine = await logs.save(day(DateTime(2026, 3, 1)));
+      final theirs = await otherPhone(DateTime(2026, 3, 1));
+      await logs.save(day(DateTime(2026, 3, 2)));
+      final both = await logs
+          .watchCurrentForDay(e1, DateTime(2026, 3, 1))
+          .first;
+      expect(both.map((l) => l.id), [theirs, mine]);
+    });
+
+    test(
+      'keepOnly tombstones the others and forDay returns the kept one',
+      () async {
+        final mine = await logs.save(day(DateTime(2026, 3, 1)));
+        final theirs = await otherPhone(DateTime(2026, 3, 1));
+        await logs.keepOnly(mine, [theirs]);
+        final left = await logs
+            .watchCurrentForDay(e1, DateTime(2026, 3, 1))
+            .first;
+        expect(left.map((l) => l.id), [mine]);
+        expect((await logs.forDay(e1, DateTime(2026, 3, 1)))!.id, mine);
+      },
+    );
+
+    test(
+      'keepOnly on an already-discarded log throws and writes nothing',
+      () async {
+        final mine = await logs.save(day(DateTime(2026, 3, 1)));
+        final theirs = await otherPhone(DateTime(2026, 3, 1));
+        final third = await otherPhone(DateTime(2026, 3, 1), feedG: 4700);
+        await logs.delete(theirs);
+        final rows = (await db.select(db.dailyLogs).get()).length;
+        await expectLater(
+          logs.keepOnly(mine, [third, theirs]),
+          throwsA(isA<StaleEventException>()),
+        );
+        expect(await db.select(db.dailyLogs).get(), hasLength(rows));
+      },
+    );
+
+    test('keeping a log another phone already discarded throws', () async {
+      final mine = await logs.save(day(DateTime(2026, 3, 1)));
+      final theirs = await otherPhone(DateTime(2026, 3, 1));
+      await logs.delete(mine); // the other phone kept theirs, synced here
+      await expectLater(
+        logs.keepOnly(mine, [theirs]),
+        throwsA(isA<StaleEventException>()),
+      );
+      final left = await logs
+          .watchCurrentForDay(e1, DateTime(2026, 3, 1))
+          .first;
+      expect(left.map((l) => l.id), [theirs]);
+    });
+  });
 }

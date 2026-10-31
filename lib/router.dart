@@ -9,6 +9,7 @@ import 'features/batches/batches_screen.dart';
 import 'features/batches/stock_screen.dart';
 import 'features/batches/transfer_screen.dart';
 import 'features/daily_log/daily_log_screen.dart';
+import 'features/daily_log/duplicate_logs_screen.dart';
 import 'features/daily_log/worker_home_screen.dart';
 import 'features/health/report_problem_screen.dart';
 import 'features/health/treatment_screen.dart';
@@ -159,6 +160,15 @@ final routerProvider = Provider<GoRouter>((ref) {
                         path: 'problem',
                         builder: (context, state) => ReportProblemScreen(
                           pondId: state.pathParameters['id']!,
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'duplicates',
+                        builder: (context, state) => DuplicateLogsScreen(
+                          pondId: state.pathParameters['id']!,
+                          date: DateTime.parse(
+                            state.uri.queryParameters['date']!,
+                          ),
                         ),
                       ),
                       GoRoute(

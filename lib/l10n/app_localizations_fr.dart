@@ -1451,4 +1451,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String alertDuplicateLog(String date) {
     return 'Deux journaux pour le $date : choisir lequel garder';
   }
+
+  @override
+  String get duplicateKeep => 'Garder celui-ci';
+
+  @override
+  String get duplicateResolved => 'Résolu : un seul journal pour ce jour';
+
+  @override
+  String duplicateEnteredBy(String name) {
+    return 'Saisi par $name';
+  }
+
+  @override
+  String duplicateObservedBy(String name) {
+    return 'Vu par $name';
+  }
+
+  @override
+  String get duplicateOtherPhone => 'un autre téléphone';
+
+  @override
+  String get staleRecord =>
+      'Ce journal a déjà été changé sur un autre téléphone';
 }

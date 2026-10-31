@@ -2695,6 +2695,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Deux journaux pour le {date} : choisir lequel garder'**
   String alertDuplicateLog(String date);
+
+  /// No description provided for @duplicateKeep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garder celui-ci'**
+  String get duplicateKeep;
+
+  /// No description provided for @duplicateResolved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résolu : un seul journal pour ce jour'**
+  String get duplicateResolved;
+
+  /// No description provided for @duplicateEnteredBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisi par {name}'**
+  String duplicateEnteredBy(String name);
+
+  /// No description provided for @duplicateObservedBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vu par {name}'**
+  String duplicateObservedBy(String name);
+
+  /// No description provided for @duplicateOtherPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'un autre téléphone'**
+  String get duplicateOtherPhone;
+
+  /// No description provided for @staleRecord.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce journal a déjà été changé sur un autre téléphone'**
+  String get staleRecord;
 }
 
 class _AppLocalizationsDelegate

@@ -920,5 +920,25 @@
         "type": "String"
       }
     }
-  }
+  },
+  "duplicateKeep": "Garder celui-ci",
+  "duplicateResolved": "Résolu : un seul journal pour ce jour",
+  "duplicateEnteredBy": "Saisi par {name}",
+  "@duplicateEnteredBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "duplicateObservedBy": "Vu par {name}",
+  "@duplicateObservedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "duplicateOtherPhone": "un autre téléphone",
+  "staleRecord": "Ce journal a déjà été changé sur un autre téléphone"
 }
