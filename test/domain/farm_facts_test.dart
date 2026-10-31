@@ -41,14 +41,8 @@ void main() {
         ),
       ],
     );
-    expect(
-      placementsOf(f, until: DateTime(2026, 3, 9)).single.avgWeightG,
-      10,
-    );
-    expect(
-      placementsOf(f, until: DateTime(2026, 3, 10)).single.avgWeightG,
-      30,
-    );
+    expect(placementsOf(f, until: DateTime(2026, 3, 9)).single.avgWeightG, 10);
+    expect(placementsOf(f, until: DateTime(2026, 3, 10)).single.avgWeightG, 30);
   });
 
   test('until is a farm day', () {
@@ -57,14 +51,8 @@ void main() {
       stockings: [stock(100, 10)],
       logs: [log(DateTime.utc(2026, 3, 9, 20, 30), deaths: 5)],
     );
-    expect(
-      placementsOf(f, until: DateTime(2026, 3, 9)).single.live.count,
-      95,
-    );
-    expect(
-      placementsOf(f, until: DateTime(2026, 3, 8)).single.live.count,
-      100,
-    );
+    expect(placementsOf(f, until: DateTime(2026, 3, 9)).single.live.count, 95);
+    expect(placementsOf(f, until: DateTime(2026, 3, 8)).single.live.count, 100);
   });
 
   test('empty facts give no placements', () {
