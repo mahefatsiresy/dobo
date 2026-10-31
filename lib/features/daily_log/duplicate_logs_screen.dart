@@ -18,8 +18,8 @@ final _logsForDayProvider = StreamProvider.autoDispose
           .watchCurrentForDay(key.$1, key.$2),
     );
 
-/// Two phones logged the same pond-day: the member keeps one, the others
-/// get a tombstone (SPEC §7).
+/// Two phones logged the same pond-day: the member sees every field of each
+/// and keeps one; the others get a tombstone (SPEC §7).
 class DuplicateLogsScreen extends ConsumerStatefulWidget {
   const DuplicateLogsScreen({
     super.key,
@@ -93,6 +93,21 @@ class _DuplicateLogsScreenState extends ConsumerState<DuplicateLogsScreen>
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Text('${l10n.deaths} : ${log.deaths}'),
+                          if (log.feedings != null)
+                            Text('${l10n.feedings} : ${log.feedings}'),
+                          if (log.leftover != null)
+                            Text(
+                              '${l10n.leftovers} : '
+                              '${l10n.leftover(log.leftover!)}'
+                              '${log.ateFast ? ' · ${l10n.ateFast}' : ''}',
+                            ),
+                          if (log.waterColour != null)
+                            Text(
+                              '${l10n.waterColourLabel} : '
+                              '${l10n.waterColour(log.waterColour!)}',
+                            ),
+                          if (log.note != null && log.note!.isNotEmpty)
+                            Text('${l10n.noteLabel} : ${log.note}'),
                           if (log.warningSigns.isNotEmpty ||
                               log.deathSigns.isNotEmpty)
                             Text(

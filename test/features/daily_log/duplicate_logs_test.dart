@@ -7,6 +7,7 @@ import 'package:dobo/db/repositories/providers.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/alerts/alert.dart';
 import 'package:dobo/domain/dates.dart';
+import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/alerts/alert_providers.dart';
 import 'package:dobo/features/common/farm_today.dart';
 import 'package:dobo/features/daily_log/duplicate_logs_screen.dart';
@@ -35,10 +36,16 @@ void main() {
   Future<void> twoLogs(AppDatabase db) async {
     final session = (await SetupRepository(db).currentSession())!;
     final e1 = await PondRepository(db, session).create(pondInput('E1'));
-    await DailyLogRepository(
-      db,
-      session,
-    ).save(DailyLogInput(pondId: e1, date: day, feedGivenG: 4000));
+    await DailyLogRepository(db, session).save(
+      DailyLogInput(
+        pondId: e1,
+        date: day,
+        feedGivenG: 4000,
+        leftover: Leftover.some,
+        waterColour: WaterColour.darkGreen,
+        note: 'Filet troué',
+      ),
+    );
     await db
         .into(db.dailyLogs)
         .insert(
@@ -51,6 +58,7 @@ void main() {
             pondId: e1,
             feedGivenG: 5000,
             deaths: const Value(3),
+            feedings: const Value(3),
           ),
         );
   }
@@ -109,4 +117,16 @@ void main() {
       ),
     ],
   );
+
+  appTest('every field of each log is shown before keeping one', (
+    tester,
+    db,
+  ) async {
+    await twoLogs(db);
+    await openFromAlerts(tester);
+    expect(find.textContaining('Un peu de reste'), findsOneWidget);
+    expect(find.textContaining('Vert foncé'), findsOneWidget);
+    expect(find.textContaining('Filet troué'), findsOneWidget);
+    expect(find.textContaining('Repas donnés : 3'), findsOneWidget);
+  }, overrides: [clock]);
 }
