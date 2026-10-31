@@ -80,55 +80,14 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
   }
 
   Future<void> _addObservation() async {
-    final l10n = AppLocalizations.of(context);
-    var category = ObservationCategory.other;
-    final text = TextEditingController();
-    final ok = await showDialog<bool>(
+    final result = await showDialog<(ObservationCategory, String)>(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialog) => AlertDialog(
-          title: Text(l10n.addObservation),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButtonFormField<ObservationCategory>(
-                initialValue: category,
-                decoration: InputDecoration(labelText: l10n.category),
-                items: [
-                  for (final c in ObservationCategory.values)
-                    DropdownMenuItem(
-                      value: c,
-                      child: Text(l10n.observationCategory(c)),
-                    ),
-                ],
-                onChanged: (c) => setDialog(() => category = c!),
-              ),
-              TextField(
-                controller: text,
-                decoration: InputDecoration(labelText: l10n.observationText),
-                maxLines: 3,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(l10n.cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(l10n.save),
-            ),
-          ],
-        ),
-      ),
+      builder: (context) => const _ObservationDialog(),
     );
-    final note = text.text.trim();
-    text.dispose();
-    if (ok != true || note.isEmpty) return;
+    if (result == null || result.$2.isEmpty) return;
     await ref
         .read(observationRepositoryProvider)
-        .addObservation(category: category, note: note);
+        .addObservation(category: result.$1, note: result.$2);
   }
 
   @override
@@ -322,6 +281,67 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
           onPressed: () => _end(visit),
           icon: const Icon(Icons.flag),
           label: Text(l10n.endVisit),
+        ),
+      ],
+    );
+  }
+}
+
+/// A free observation. The dialog owns its controller: the closing dialog
+/// is still rebuilt (the keyboard going away) after showDialog has returned.
+class _ObservationDialog extends StatefulWidget {
+  const _ObservationDialog();
+
+  @override
+  State<_ObservationDialog> createState() => _ObservationDialogState();
+}
+
+class _ObservationDialogState extends State<_ObservationDialog> {
+  final _text = TextEditingController();
+  var _category = ObservationCategory.other;
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l10n.addObservation),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButtonFormField<ObservationCategory>(
+            initialValue: _category,
+            decoration: InputDecoration(labelText: l10n.category),
+            items: [
+              for (final c in ObservationCategory.values)
+                DropdownMenuItem(
+                  value: c,
+                  child: Text(l10n.observationCategory(c)),
+                ),
+            ],
+            onChanged: (c) => setState(() => _category = c!),
+          ),
+          TextField(
+            controller: _text,
+            decoration: InputDecoration(labelText: l10n.observationText),
+            maxLines: 3,
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          onPressed: () =>
+              Navigator.pop(context, (_category, _text.text.trim())),
+          child: Text(l10n.save),
         ),
       ],
     );

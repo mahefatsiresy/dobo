@@ -11,30 +11,10 @@ class GroupsScreen extends ConsumerWidget {
   const GroupsScreen({super.key});
 
   Future<void> _edit(BuildContext context, WidgetRef ref, [Group? g]) async {
-    final l10n = AppLocalizations.of(context);
-    final controller = TextEditingController(text: g?.name);
     final name = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.groupName),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          textCapitalization: TextCapitalization.words,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: Text(l10n.save),
-          ),
-        ],
-      ),
+      builder: (context) => _NameDialog(initial: g?.name),
     );
-    controller.dispose();
     if (name == null || name.isEmpty) return;
     final repo = ref.read(groupRepositoryProvider);
     g == null ? await repo.create(name) : await repo.rename(g.id, name);
@@ -64,6 +44,50 @@ class GroupsScreen extends ConsumerWidget {
                   ),
               ],
             ),
+    );
+  }
+}
+
+/// The branch name. The dialog owns its controller: the closing dialog is
+/// still rebuilt (the keyboard going away) after showDialog has returned.
+class _NameDialog extends StatefulWidget {
+  const _NameDialog({this.initial});
+
+  final String? initial;
+
+  @override
+  State<_NameDialog> createState() => _NameDialogState();
+}
+
+class _NameDialogState extends State<_NameDialog> {
+  late final _controller = TextEditingController(text: widget.initial);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l10n.groupName),
+      content: TextField(
+        controller: _controller,
+        autofocus: true,
+        textCapitalization: TextCapitalization.words,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, _controller.text.trim()),
+          child: Text(l10n.save),
+        ),
+      ],
     );
   }
 }

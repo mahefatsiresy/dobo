@@ -91,6 +91,25 @@ void main() {
     );
   });
 
+  appTest('an observation saves while the keyboard closes', (tester, db) async {
+    await farm(tester, db);
+    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Ajouter une observation'));
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.byType(TextField),
+      ),
+      'Digue fissurée',
+    );
+    await tapAsKeyboardCloses(tester, find.text('Enregistrer'));
+    expect(tester.takeException(), isNull);
+    expect(
+      (await db.select(db.observations).getSingle()).note,
+      'Digue fissurée',
+    );
+  });
+
   appTest('re-answering a condition corrects it', (tester, db) async {
     await farm(tester, db);
     await tapAndSettle(tester, find.text('Démarrer une visite'));

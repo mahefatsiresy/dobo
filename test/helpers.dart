@@ -100,3 +100,17 @@ final _verticalScrollable = find
           axisDirectionToAxis(w.axisDirection) == Axis.vertical,
     )
     .last;
+
+/// Taps [button] in a dialog while the keyboard is up, then lets the
+/// keyboard close during the dialog's exit animation, as on a phone: the
+/// closing dialog is rebuilt with the new insets.
+Future<void> tapAsKeyboardCloses(WidgetTester tester, Finder button) async {
+  tester.view.viewInsets = const FakeViewPadding(bottom: 250);
+  addTearDown(tester.view.resetViewInsets);
+  await tester.pump();
+  await tester.tap(button);
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 50));
+  tester.view.resetViewInsets();
+  await tester.pumpAndSettle();
+}
