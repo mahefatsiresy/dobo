@@ -268,4 +268,27 @@ void main() {
       30000 - (30000 - 13 * (30000 ~/ 14)) + 3000,
     );
   });
+
+  test('a batch passing through the pond within a day still shares it', () {
+    // L2 stocked into p1 and moved on to p2 the same day: no end-of-day
+    // state shows it, but it ate p1's feed that day.
+    final f = FarmFacts(
+      stockings: [
+        stock(1000, 10),
+        stock(500, 12, batch: 'b2', on: 8),
+      ],
+      transfers: [
+        TransferFact(
+          batchId: 'b2',
+          fromPondId: 'p1',
+          toPondId: 'p2',
+          count: 500,
+          date: day(8),
+        ),
+      ],
+      samples: [sample(30)],
+      logs: feed(30000),
+    );
+    expect(periods(f).single.fcr, isNull);
+  });
 }

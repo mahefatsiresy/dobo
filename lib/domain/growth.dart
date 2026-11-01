@@ -132,16 +132,33 @@ List<FcrPeriod> fcrPeriods(
           if (t.fromPondId == pondId) outG += g;
           if (t.toPondId == pondId) inG += g;
         }
-        final shared = _shared(f, batchId, pondId, [
-          a.date,
-          b.date,
-          for (final s in f.stockings)
-            if (s.pondId == pondId && inPeriod(s.date, a, b)) s.date,
-          for (final t in f.transfers)
-            if ((t.toPondId == pondId || t.fromPondId == pondId) &&
-                inPeriod(t.date, a, b))
-              t.date,
-        ]);
+        // Another batch arriving in the period shared the feed, even if it
+        // left the same day and no end-of-day state shows it.
+        final visited =
+            f.stockings.any(
+              (s) =>
+                  s.pondId == pondId &&
+                  s.batchId != batchId &&
+                  inPeriod(s.date, a, b),
+            ) ||
+            f.transfers.any(
+              (t) =>
+                  t.toPondId == pondId &&
+                  t.batchId != batchId &&
+                  inPeriod(t.date, a, b),
+            );
+        final shared =
+            visited ||
+            _shared(f, batchId, pondId, [
+              a.date,
+              b.date,
+              for (final s in f.stockings)
+                if (s.pondId == pondId && inPeriod(s.date, a, b)) s.date,
+              for (final t in f.transfers)
+                if ((t.toPondId == pondId || t.fromPondId == pondId) &&
+                    inPeriod(t.date, a, b))
+                  t.date,
+            ]);
         return FcrPeriod(
           from: a.date,
           to: b.date,
