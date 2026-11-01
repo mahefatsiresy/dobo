@@ -51,35 +51,46 @@ void main() {
               ),
         ],
       );
-      final sw = Stopwatch()..start();
-      final alerts = farmAlerts(
-        facts: facts,
-        ponds: [
-          for (final p in ponds)
-            PondInfo(
-              id: p,
-              code: p,
-              structure: StructureType.earth,
-              surfaceM2: 500,
-            ),
-        ],
-        batches: {
-          for (final p in ponds)
-            'b$p': BatchInfo(id: 'b$p', status: BatchStatus.active),
-        },
-        latestReadings: const {},
-        now: day(365),
-        config: DomainConfig.defaults,
-      );
-      for (final p in ponds) {
-        weighPoints(facts, batchId: 'b$p', pondId: p);
-        fcrPeriods(facts, batchId: 'b$p', pondId: p);
-        batchSurvival(facts, 'b$p');
-        dailyDeaths(facts, p, from: day(335), to: day(365));
+      // Best of three, each on a fresh copy so nothing is cached: one run
+      // can be slowed by the rest of the suite running alongside.
+      var best = 1 << 30;
+      for (var run = 0; run < 3; run++) {
+        final fresh = FarmFacts(
+          stockings: facts.stockings,
+          samples: facts.samples,
+          logs: facts.logs,
+        );
+        final sw = Stopwatch()..start();
+        final alerts = farmAlerts(
+          facts: fresh,
+          ponds: [
+            for (final p in ponds)
+              PondInfo(
+                id: p,
+                code: p,
+                structure: StructureType.earth,
+                surfaceM2: 500,
+              ),
+          ],
+          batches: {
+            for (final p in ponds)
+              'b$p': BatchInfo(id: 'b$p', status: BatchStatus.active),
+          },
+          latestReadings: const {},
+          now: day(365),
+          config: DomainConfig.defaults,
+        );
+        for (final p in ponds) {
+          weighPoints(fresh, batchId: 'b$p', pondId: p);
+          fcrPeriods(fresh, batchId: 'b$p', pondId: p);
+          batchSurvival(fresh, 'b$p');
+          dailyDeaths(fresh, p, from: day(335), to: day(365));
+        }
+        sw.stop();
+        expect(alerts, isNotEmpty);
+        if (sw.elapsedMilliseconds < best) best = sw.elapsedMilliseconds;
       }
-      sw.stop();
-      expect(alerts, isNotEmpty);
-      expect(sw.elapsedMilliseconds, lessThan(200));
+      expect(best, lessThan(150));
     },
   );
 }

@@ -303,7 +303,9 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
                 onChanged: (v) => setState(() => _status = v!),
               )
             else
-              Text('${l10n.pondStatusLabel} : ${l10n.pondStatus(_status)}'),
+              Text(
+                l10n.labelValue(l10n.pondStatusLabel, l10n.pondStatus(_status)),
+              ),
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(

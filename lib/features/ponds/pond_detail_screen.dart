@@ -185,7 +185,7 @@ class PondDetailScreen extends ConsumerWidget {
                     Wrap(
                       spacing: 8,
                       children: [
-                        Text('${l10n.pondFish} :'),
+                        Text(l10n.labelColon(l10n.pondFish)),
                         EstimatedLabel(
                           value: formatCount(b.placement.live.count, locale),
                         ),
@@ -193,14 +193,16 @@ class PondDetailScreen extends ConsumerWidget {
                     ),
                     if (b.placement.avgWeightG != null)
                       Text(
-                        '${l10n.avgWeight} : '
-                        '${formatGrams(b.placement.avgWeightG!, locale)}',
+                        l10n.labelValue(
+                          l10n.avgWeight,
+                          formatGrams(b.placement.avgWeightG!, locale),
+                        ),
                       ),
                     if (b.biomassG != null)
                       Wrap(
                         spacing: 8,
                         children: [
-                          Text('${l10n.pondBiomass} :'),
+                          Text(l10n.labelColon(l10n.pondBiomass)),
                           EstimatedLabel(value: formatKg(b.biomassG!, locale)),
                         ],
                       ),
@@ -457,8 +459,8 @@ class _HealthHistory extends ConsumerWidget {
       for (final t in treatments)
         (
           t.recordedAt,
-          '${formatDate(t.recordedAt)} · ${l10n.treatment} : '
-              '${t.product}, ${t.dose}'
+          '${formatDate(t.recordedAt)} · '
+              '${l10n.labelValue(l10n.treatment, '${t.product}, ${t.dose}')}'
               '${t.advisedBy == null ? '' : ' (${t.advisedBy})'}',
         ),
     ]..sort((a, b) => b.$1.compareTo(a.$1));

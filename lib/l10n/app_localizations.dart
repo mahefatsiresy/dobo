@@ -2815,6 +2815,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Poissons stressés'**
   String get workerReasonDistress;
+
+  /// A label and its value on one line; French puts a space before the colon.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label} : {value}'**
+  String labelValue(String label, String value);
+
+  /// A label followed by a value shown in its own widget.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label} :'**
+  String labelColon(String label);
 }
 
 class _AppLocalizationsDelegate

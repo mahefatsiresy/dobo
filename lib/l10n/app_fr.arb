@@ -982,5 +982,26 @@
   "workerStopFeeding": "Ne pas nourrir",
   "workerReasonFast": "Récolte bientôt",
   "workerReasonOxygen": "Manque d'oxygène",
-  "workerReasonDistress": "Poissons stressés"
+  "workerReasonDistress": "Poissons stressés",
+  "labelValue": "{label} : {value}",
+  "@labelValue": {
+    "description": "A label and its value on one line; French puts a space before the colon.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "labelColon": "{label} :",
+  "@labelColon": {
+    "description": "A label followed by a value shown in its own widget.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  }
 }

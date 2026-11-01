@@ -1524,4 +1524,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get workerReasonDistress => 'Poissons stressés';
+
+  @override
+  String labelValue(String label, String value) {
+    return '$label : $value';
+  }
+
+  @override
+  String labelColon(String label) {
+    return '$label :';
+  }
 }

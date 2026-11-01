@@ -25,6 +25,7 @@ class PondFigures extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _row(
+          l10n,
           l10n.pondFish,
           EstimatedLabel(value: formatCount(o.liveCount, locale)),
         ),
@@ -38,11 +39,13 @@ class PondFigures extends StatelessWidget {
           ),
         if (o.biomassG != null)
           _row(
+            l10n,
             l10n.pondBiomass,
             EstimatedLabel(value: formatKg(o.biomassG!, locale)),
           ),
         if (o.density != null)
           _row(
+            l10n,
             l10n.pondDensity,
             Text(
               '${l10n.densityValue(formatDecimal(o.density!, locale))}'
@@ -54,9 +57,9 @@ class PondFigures extends StatelessWidget {
     );
   }
 
-  Widget _row(String label, Widget value) => Wrap(
+  Widget _row(AppLocalizations l10n, String label, Widget value) => Wrap(
     spacing: 8,
     crossAxisAlignment: WrapCrossAlignment.center,
-    children: [Text('$label :'), value],
+    children: [Text(l10n.labelColon(label)), value],
   );
 }

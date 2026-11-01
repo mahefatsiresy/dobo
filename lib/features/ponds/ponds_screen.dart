@@ -73,7 +73,7 @@ class PondsScreen extends ConsumerWidget {
                                     Wrap(
                                       spacing: 8,
                                       children: [
-                                        Text('${l10n.rationToday} :'),
+                                        Text(l10n.labelColon(l10n.rationToday)),
                                         EstimatedLabel(
                                           value: formatKg(
                                             o.rationG,

@@ -88,26 +88,34 @@ class _DuplicateLogsScreenState extends ConsumerState<DuplicateLogsScreen>
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            '${l10n.feedGiven} : '
-                            '${formatKg(log.feedGivenG, locale)}',
+                            l10n.labelValue(
+                              l10n.feedGiven,
+                              formatKg(log.feedGivenG, locale),
+                            ),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          Text('${l10n.deaths} : ${log.deaths}'),
+                          Text(l10n.labelValue(l10n.deaths, '${log.deaths}')),
                           if (log.feedings != null)
-                            Text('${l10n.feedings} : ${log.feedings}'),
+                            Text(
+                              l10n.labelValue(l10n.feedings, '${log.feedings}'),
+                            ),
                           if (log.leftover != null)
                             Text(
-                              '${l10n.leftovers} : '
-                              '${l10n.leftover(log.leftover!)}'
-                              '${log.ateFast ? ' · ${l10n.ateFast}' : ''}',
+                              l10n.labelValue(
+                                l10n.leftovers,
+                                '${l10n.leftover(log.leftover!)}'
+                                '${log.ateFast ? ' · ${l10n.ateFast}' : ''}',
+                              ),
                             ),
                           if (log.waterColour != null)
                             Text(
-                              '${l10n.waterColourLabel} : '
-                              '${l10n.waterColour(log.waterColour!)}',
+                              l10n.labelValue(
+                                l10n.waterColourLabel,
+                                l10n.waterColour(log.waterColour!),
+                              ),
                             ),
                           if (log.note != null && log.note!.isNotEmpty)
-                            Text('${l10n.noteLabel} : ${log.note}'),
+                            Text(l10n.labelValue(l10n.noteLabel, log.note!)),
                           if (log.warningSigns.isNotEmpty ||
                               log.deathSigns.isNotEmpty)
                             Text(
