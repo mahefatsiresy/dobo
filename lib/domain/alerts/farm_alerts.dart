@@ -234,10 +234,11 @@ List<Alert> _batchAlerts(
 ) {
   final points = weighPoints(facts, batchId: batch.id, pondId: pond.id);
   final periods = fcrPeriods(facts, batchId: batch.id, pondId: pond.id);
+  // Rises must be consecutive: only the periods since the last one that
+  // couldn't be computed (a shared pond) count.
   final values = [
-    for (final p in periods)
-      if (p.fcr != null) p.fcr!,
-  ];
+    for (final p in periods.reversed.takeWhile((p) => p.fcr != null)) p.fcr!,
+  ].reversed.toList();
   final latestFcr = periods.isEmpty ? null : periods.last.fcr;
 
   DateTime? quarantineStart;

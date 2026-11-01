@@ -63,6 +63,7 @@ void main() {
 
   List<Alert> alerts({
     List<StockingFact>? stockings,
+    List<TransferFact> transfers = const [],
     List<SampleFact> samples = const [],
     List<LogFact> logs = const [],
     List<PondInfo> ponds = const [e1, e2],
@@ -74,6 +75,7 @@ void main() {
   }) => farmAlerts(
     facts: FarmFacts(
       stockings: stockings ?? [stock()],
+      transfers: transfers,
       samples: samples,
       logs: logs,
     ),
@@ -349,4 +351,41 @@ void main() {
       isNull,
     );
   });
+
+  test('FCR worsening does not reach across a shared period', () {
+    // 1.0, 1.5, then L2 shares E1 from 12/03 to 14/03 (no FCR), then 2.0:
+    // the rises are not consecutive.
+    final all = alerts(
+      stockings: [
+        stock(),
+        StockingFact(
+          batchId: 'l2',
+          pondId: 'e1',
+          count: 100,
+          avgWeightG: 10,
+          date: _d12,
+        ),
+      ],
+      transfers: [
+        TransferFact(
+          batchId: 'l2',
+          fromPondId: 'e1',
+          toPondId: 'e2',
+          count: 100,
+          date: _d14,
+        ),
+      ],
+      samples: [sample(12, 5), sample(14, 10), sample(16, 15), sample(18, 18)],
+      logs: [
+        log(3, feedG: 2000),
+        log(7, feedG: 3000),
+        log(12, feedG: 9000),
+        log(17, feedG: 4000),
+      ],
+    );
+    expect(ofKind(all, AlertKind.fcrWorsening), isEmpty);
+  });
 }
+
+final _d12 = DateTime.utc(2026, 3, 12, 9);
+final _d14 = DateTime.utc(2026, 3, 14, 9);
