@@ -165,7 +165,7 @@ void main() {
     final f = FarmFacts(
       stockings: [stock(300, 10)],
       samples: [sample(30)],
-      logs: [deaths(500), ...feed(3000)],
+      logs: [deaths(500), ...feed(3000, from: 6)],
     );
     expect(weighPoints(f, batchId: 'b1', pondId: 'p1').last.liveCount, 0);
     expect(periods(f).single.fcr, isA<FcrStalled>());
@@ -230,16 +230,19 @@ void main() {
     expect(batchSurvival(f, 'nothing'), isNull);
   });
 
-  test('dailyDeaths fills empty days with 0 and sums two logs on one day', () {
-    final f = FarmFacts(
-      logs: [
-        deaths(5, on: 2),
-        LogFact(id: 'x', pondId: 'p1', date: day(2), deaths: 1),
-        deaths(7, on: 9),
-      ],
-    );
-    expect(dailyDeaths(f, 'p1', from: day(1), to: day(3)), [0, 6, 0]);
-  });
+  test(
+    'dailyDeaths fills empty days with 0, a day logged twice counts once',
+    () {
+      final f = FarmFacts(
+        logs: [
+          deaths(5, on: 2),
+          LogFact(id: 'x', pondId: 'p1', date: day(2), deaths: 1),
+          deaths(7, on: 9),
+        ],
+      );
+      expect(dailyDeaths(f, 'p1', from: day(1), to: day(3)), [0, 1, 0]);
+    },
+  );
 
   test("liveInPondAtDayStart excludes that day's deaths", () {
     final f = FarmFacts(
@@ -248,5 +251,21 @@ void main() {
     );
     expect(liveInPondAtDayStart(f, 'p1', day(5)), 990);
     expect(liveInPondAtDayStart(f, 'p1', day(1)), 0);
+  });
+
+  test('feed of a pond-day logged twice counts once in the period FCR', () {
+    final f = FarmFacts(
+      stockings: [stock(1000, 10)],
+      samples: [sample(30)],
+      logs: [
+        ...feed(30000),
+        LogFact(id: 'dup', pondId: 'p1', date: day(15), feedG: 3000),
+      ],
+    );
+    // feed() puts 2 142 g on day 15; the duplicate (newest) replaces it.
+    expect(
+      periods(f).single.feedG,
+      30000 - (30000 - 13 * (30000 ~/ 14)) + 3000,
+    );
   });
 }

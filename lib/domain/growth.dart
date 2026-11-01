@@ -110,7 +110,7 @@ List<FcrPeriod> fcrPeriods(
   final points = weighPoints(f, batchId: batchId, pondId: pondId);
   if (points.length < 2) return const [];
   final pondFeed = [
-    for (final l in f.logs)
+    for (final l in countedLogs(f))
       if (l.pondId == pondId && l.feedG != 0) (farmDayNumber(l.date), l.feedG),
   ];
   bool inPeriod(DateTime d, WeighPoint a, WeighPoint b) =>
@@ -223,7 +223,7 @@ List<int> dailyDeaths(
   final n = daysBetween(from, to) + 1;
   if (n <= 0) return const [];
   final out = List.filled(n, 0);
-  for (final l in f.logs) {
+  for (final l in countedLogs(f)) {
     if (l.pondId != pondId || l.deaths == 0) continue;
     final i = daysBetween(from, l.date);
     if (i >= 0 && i < n) out[i] += l.deaths;

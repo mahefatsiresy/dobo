@@ -58,4 +58,19 @@ void main() {
   test('empty facts give no placements', () {
     expect(placementsOf(const FarmFacts.empty()), isEmpty);
   });
+
+  test('a pond-day logged twice counts once: the newest log', () {
+    // Logs come oldest first (recorded date, then device time): the
+    // second log of 02/03 is the newest.
+    final f = FarmFacts(
+      stockings: [stock(100, 10)],
+      logs: [
+        LogFact(id: 'a', pondId: 'p1', date: DateTime(2026, 3, 2), deaths: 6),
+        LogFact(id: 'b', pondId: 'p1', date: DateTime(2026, 3, 2), deaths: 4),
+        LogFact(id: 'c', pondId: 'p1', date: DateTime(2026, 3, 3), deaths: 1),
+      ],
+    );
+    expect(placementsOf(f).single.live.count, 95);
+    expect(countedLogs(f).map((l) => l.id), ['b', 'c']);
+  });
 }

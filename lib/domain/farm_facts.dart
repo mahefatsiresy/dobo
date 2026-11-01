@@ -52,7 +52,7 @@ List<Placement> placementsOf(FarmFacts f, {DateTime? until}) {
     transfers: f.transfers,
     samples: f.samples,
     deaths: [
-      for (final l in f.logs)
+      for (final l in countedLogs(f))
         if (l.deaths > 0)
           DeathFact(pondId: l.pondId, count: l.deaths, date: l.date),
     ],
@@ -75,3 +75,21 @@ List<Placement> placementsOf(FarmFacts f, {DateTime? until}) {
 
 /// Each [FarmFacts]' placements at the end of each farm day with a fact.
 final _timelines = Expando<List<(DateTime, List<Placement>)>>();
+
+/// The logs that count in numbers (deaths, feed): one per pond-day, the
+/// newest, as the daily log screen shows it. Two phones logging the same
+/// day must not double it before a member resolves the duplicate (SPEC
+/// §7); signs and duplicate checks still read every log in [FarmFacts.logs].
+List<LogFact> countedLogs(FarmFacts f) => _counted[f] ??= () {
+  // Logs come oldest first, so the last one of a pond-day is the newest.
+  final byDay = <(String, int), LogFact>{};
+  for (final l in f.logs) {
+    byDay[(l.pondId, farmDayNumber(l.date))] = l;
+  }
+  return [
+    for (final l in f.logs)
+      if (identical(byDay[(l.pondId, farmDayNumber(l.date))], l)) l,
+  ];
+}();
+
+final _counted = Expando<List<LogFact>>();
