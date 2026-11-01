@@ -128,8 +128,8 @@ class DailyLogRepository {
       (_current()
             ..where(
               (l) => l.recordedAt.isBetweenValues(
-                farmDateToUtc(date.subtract(Duration(days: days))),
-                farmDateToUtc(date.subtract(const Duration(days: 1))),
+                farmDateToUtc(DateTime(date.year, date.month, date.day - days)),
+                farmDateToUtc(DateTime(date.year, date.month, date.day - 1)),
               ),
             )
             ..orderBy([(l) => OrderingTerm.asc(l.recordedAt)]))

@@ -226,7 +226,7 @@ double? batchSurvival(FarmFacts f, String batchId) {
 int liveInPondAtDayStart(FarmFacts f, String pondId, DateTime day) =>
     placementsOf(
       f,
-      until: day.subtract(const Duration(days: 1)),
+      until: _dayBefore(day),
     ).where((p) => p.pondId == pondId).fold(0, (n, p) => n + p.live.count);
 
 /// Deaths logged in [pondId] per farm day from [from] to [to], both
@@ -246,4 +246,11 @@ List<int> dailyDeaths(
     if (i >= 0 && i < n) out[i] += l.deaths;
   }
   return out;
+}
+
+/// The farm day before [t]'s, by the calendar: subtracting 24 h would land
+/// two days back on a phone zone's daylight-saving change.
+DateTime _dayBefore(DateTime t) {
+  final d = farmDate(t);
+  return DateTime(d.year, d.month, d.day - 1);
 }

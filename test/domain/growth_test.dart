@@ -291,4 +291,15 @@ void main() {
     );
     expect(periods(f).single.fcr, isNull);
   });
+
+  test('liveInPondAtDayStart steps back one calendar day, whatever the '
+      'phone zone', () {
+    // Under a zone with daylight saving starting 08/03 (America/New_York),
+    // 09/03 minus 24 h lands on 07/03.
+    final f = FarmFacts(
+      stockings: [stock(1000, 10)],
+      logs: [deaths(10, on: 8)],
+    );
+    expect(liveInPondAtDayStart(f, 'p1', day(9)), 990);
+  });
 }

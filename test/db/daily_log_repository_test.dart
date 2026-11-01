@@ -274,4 +274,11 @@ void main() {
       }
     });
   });
+
+  test("the day before's log is found whatever the phone zone", () async {
+    // Under America/New_York, 09/03 minus 24 h lands on 07/03.
+    await logs.save(day(DateTime(2026, 3, 8), feedG: 3000));
+    final latest = await logs.watchLatestBefore(DateTime(2026, 3, 9)).first;
+    expect(latest[e1]?.feedGivenG, 3000);
+  });
 }
