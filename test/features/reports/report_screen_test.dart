@@ -8,8 +8,13 @@ import 'package:dobo/domain/report/report_content.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/domain/water.dart';
 import 'package:dobo/features/reports/report_screen.dart';
+import 'package:dobo/features/reports/share_report.dart';
+import 'package:dobo/features/sync/backup_actions.dart';
 import 'package:dobo/router.dart';
 import 'package:drift/drift.dart' show Value;
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -299,4 +304,32 @@ void main() {
     await tapAndSettle(tester, find.text('Brouillon — à publier'));
     expect(find.text('Publier'), findsOneWidget);
   });
+
+  final shared = <File>[];
+  appTest(
+    'Partager writes the PDF and opens the share sheet',
+    (tester, db) async {
+      shared.clear();
+      final id = await pulled(tester, db, full());
+      go(tester, '/reports/$id');
+      await tester.pumpAndSettle();
+      await tester.runAsync(() async {
+        await tester.tap(find.byTooltip('Partager'));
+        // Fonts and the PDF are built off the test clock.
+        for (var i = 0; i < 50 && shared.isEmpty; i++) {
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        }
+      });
+      await tester.pumpAndSettle();
+      final file = shared.single;
+      expect(file.path, endsWith('rapport-Ambohidratrimo-2026-03-20.pdf'));
+      expect(String.fromCharCodes(file.readAsBytesSync().take(4)), '%PDF');
+    },
+    overrides: [
+      reportSharerProvider.overrideWithValue((file) async => shared.add(file)),
+      backupDirProvider.overrideWithValue(
+        () async => Directory.systemTemp.createTemp('dobo-share'),
+      ),
+    ],
+  );
 }

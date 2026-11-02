@@ -12,6 +12,7 @@ import '../common/farm_today.dart';
 import '../common/save_once.dart';
 import 'report_providers.dart';
 import 'report_sections.dart';
+import 'share_report.dart';
 
 /// A visit report: a draft to review and publish, or a published one to
 /// read and share (SPEC F8).
@@ -102,7 +103,22 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
         ? ref.watch(draftReportProvider(visitId))
         : ref.watch(reportContentProvider(widget.reportId!));
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.reportTitle)),
+      appBar: AppBar(
+        title: Text(l10n.reportTitle),
+        actions: [
+          if (widget.reportId != null)
+            if (content case AsyncData(value: final c?))
+              IconButton(
+                tooltip: l10n.reportShare,
+                iconSize: 28,
+                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
+                onPressed: saving
+                    ? null
+                    : () => saveOnce(() => shareReport(context, ref, c)),
+                icon: const Icon(Icons.share),
+              ),
+        ],
+      ),
       body: switch (content) {
         AsyncData(value: null) => Center(
           child: Padding(
