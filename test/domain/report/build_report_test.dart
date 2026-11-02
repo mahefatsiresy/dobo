@@ -100,16 +100,16 @@ void main() {
       expect(reportPeriod(visitDay: d(20)), (d(13), d(20)));
     });
     test('starts on the previous report\'s last day', () {
-      expect(
-        reportPeriod(visitDay: d(20), previousPeriodTo: d(15)),
-        (d(15), d(20)),
-      );
+      expect(reportPeriod(visitDay: d(20), previousPeriodTo: d(15)), (
+        d(15),
+        d(20),
+      ));
     });
     test('a previous report on the same day gives one day', () {
-      expect(
-        reportPeriod(visitDay: d(20), previousPeriodTo: d(20)),
-        (d(20), d(20)),
-      );
+      expect(reportPeriod(visitDay: d(20), previousPeriodTo: d(20)), (
+        d(20),
+        d(20),
+      ));
     });
   });
 
@@ -236,7 +236,10 @@ void main() {
 
   test('a shared pond gives FcrNote.shared', () {
     final c = build(
-      stockings: [stock(), stock(batch: 'l2', on: 5)],
+      stockings: [
+        stock(),
+        stock(batch: 'l2', on: 5),
+      ],
       samples: [
         SampleFact(batchId: 'l1', pondId: 'e1', avgWeightG: 30, date: d(15)),
       ],
@@ -258,7 +261,10 @@ void main() {
 
   test('water lists ponds holding fish with their latest reading', () {
     final c = build(
-      stockings: [stock(), stock(batch: 'l2', pond: 'e2')],
+      stockings: [
+        stock(),
+        stock(batch: 'l2', pond: 'e2'),
+      ],
       batches: const {
         'l1': BatchInfo(id: 'l1', status: BatchStatus.active),
         'l2': BatchInfo(id: 'l2', status: BatchStatus.active),
@@ -274,7 +280,10 @@ void main() {
 
   test('next: weighing, quarantine release and planned harvest by date', () {
     final c = build(
-      stockings: [stock(), stock(batch: 'l2', pond: 'e2', on: 10)],
+      stockings: [
+        stock(),
+        stock(batch: 'l2', pond: 'e2', on: 10),
+      ],
       batches: {
         'l1': BatchInfo(
           id: 'l1',
@@ -285,12 +294,15 @@ void main() {
       },
     );
     final items = [for (final n in c.next) (n.kind, n.date, n.batchId)];
-    expect(items, [
-      (NextKind.sample, d(1 + cfg.sampleIntervalDays), 'l1'),
-      (NextKind.sample, d(10 + cfg.sampleIntervalDays), 'l2'),
-      (NextKind.quarantineRelease, d(10 + cfg.quarantineDays.min), 'l2'),
-      (NextKind.harvest, d(30), 'l1'),
-    ]..sort((a, b) => a.$2.compareTo(b.$2)));
+    expect(
+      items,
+      [
+        (NextKind.sample, d(1 + cfg.sampleIntervalDays), 'l1'),
+        (NextKind.sample, d(10 + cfg.sampleIntervalDays), 'l2'),
+        (NextKind.quarantineRelease, d(10 + cfg.quarantineDays.min), 'l2'),
+        (NextKind.harvest, d(30), 'l1'),
+      ]..sort((a, b) => a.$2.compareTo(b.$2)),
+    );
   });
 
   test('a planned harvest before the visit day is left out', () {

@@ -43,6 +43,22 @@ class VisitRepository {
   Future<void> end(String id) =>
       _write(id, VisitsCompanion(endedAt: Value(utcNow())));
 
+  /// This member's most recently ended visit on the site, if any.
+  Stream<Visit?> watchLatestEndedByMe() =>
+      (db.select(db.visits)
+            ..where(
+              (v) =>
+                  v.siteId.equals(session.siteId) &
+                  v.enteredBy.equals(session.userId) &
+                  v.endedAt.isNotNull(),
+            )
+            ..orderBy([
+              (v) => OrderingTerm.desc(v.endedAt),
+              (v) => OrderingTerm.desc(v.id),
+            ])
+            ..limit(1))
+          .watchSingleOrNull();
+
   /// The site's visits, newest first.
   Stream<List<Visit>> watchAll() =>
       (db.select(db.visits)

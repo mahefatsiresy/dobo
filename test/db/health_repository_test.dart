@@ -4,6 +4,7 @@ import 'package:dobo/db/repositories/errors.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
+import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
@@ -132,5 +133,50 @@ void main() {
     await setAt(recent, DateTime.utc(2026, 3, 16, 21));
     final since = await health.watchSince(DateTime(2026, 3, 17)).first;
     expect(since.map((e) => e.id), [recent]);
+  });
+
+  group('between two farm days', () {
+    DateTime d(int day) => farmDateToUtc(DateTime(2026, 3, day));
+
+    Future<void> event(DateTime at) => db
+        .into(db.healthEvents)
+        .insert(
+          HealthEventsCompanion.insert(
+            associationId: session.associationId,
+            enteredBy: session.userId,
+            deviceId: session.deviceId,
+            recordedAt: at,
+            pondId: e1,
+            actions: const {},
+          ),
+        );
+
+    test('health events on both boundary days count, others do not', () async {
+      await event(DateTime.utc(2026, 3, 12, 20, 59)); // 12/03 23:59 farm
+      await event(DateTime.utc(2026, 3, 12, 21)); // 13/03 00:00 farm
+      await event(DateTime.utc(2026, 3, 20, 20, 30)); // 20/03 23:30 farm
+      await event(DateTime.utc(2026, 3, 20, 21)); // 21/03 00:00 farm
+      final got = await health.watchEventsBetween(d(13), d(20)).first;
+      expect(
+        [for (final e in got) e.recordedAt],
+        [DateTime.utc(2026, 3, 12, 21), DateTime.utc(2026, 3, 20, 20, 30)],
+      );
+    });
+
+    test('treatments dated in the period count', () async {
+      for (final day in [12, 13, 20, 21]) {
+        await health.addTreatment(
+          TreatmentInput(
+            pondId: e1,
+            batchId: l1,
+            date: DateTime(2026, 3, day),
+            product: 'Sel',
+            dose: '3 g/L',
+          ),
+        );
+      }
+      final got = await health.watchTreatmentsBetween(d(13), d(20)).first;
+      expect([for (final t in got) farmDate(t.recordedAt).day], [13, 20]);
+    });
   });
 }

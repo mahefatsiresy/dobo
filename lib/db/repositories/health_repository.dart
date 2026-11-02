@@ -111,6 +111,42 @@ class HealthRepository {
           ))
           .watch();
 
+  /// Current health events from the start of farm day [from] to the end of
+  /// farm day [to], oldest first.
+  Stream<List<HealthEvent>> watchEventsBetween(DateTime from, DateTime to) =>
+      (db.select(db.healthEvents)
+            ..where(
+              (e) =>
+                  isCurrentEvent(db.healthEvents) &
+                  _within(e.recordedAt, from, to),
+            )
+            ..orderBy([(e) => OrderingTerm.asc(e.recordedAt)]))
+          .watch();
+
+  /// Current treatments dated from farm day [from] to [to], oldest first.
+  Stream<List<Treatment>> watchTreatmentsBetween(DateTime from, DateTime to) =>
+      (db.select(db.treatments)
+            ..where(
+              (t) =>
+                  isCurrentEvent(db.treatments) &
+                  _within(t.recordedAt, from, to),
+            )
+            ..orderBy([(t) => OrderingTerm.asc(t.recordedAt)]))
+          .watch();
+
+  /// [at] falls on a farm day from [from] to [to], both included.
+  Expression<bool> _within(
+    GeneratedColumn<DateTime> at,
+    DateTime from,
+    DateTime to,
+  ) {
+    final last = farmDate(to);
+    return at.isBiggerOrEqualValue(farmTimeToUtc(farmDate(from), 0, 0)) &
+        at.isSmallerThanValue(
+          farmTimeToUtc(DateTime(last.year, last.month, last.day + 1), 0, 0),
+        );
+  }
+
   /// Current treatments of [pondId], newest first.
   Stream<List<Treatment>> watchTreatments(String pondId) =>
       (db.select(db.treatments)

@@ -16,6 +16,7 @@ import 'member_repository.dart';
 import 'person_repository.dart';
 import 'pond_repository.dart';
 import 'reading_repository.dart';
+import 'report_repository.dart';
 import 'settings_repository.dart';
 import 'setup_repository.dart';
 import 'visit_repository.dart';
@@ -114,6 +115,13 @@ final observationRepositoryProvider = Provider<ObservationRepository>(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
     visitId: ref.watch(_visitIdProvider),
+  ),
+);
+
+final reportRepositoryProvider = Provider<ReportRepository>(
+  (ref) => ReportRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
   ),
 );
 

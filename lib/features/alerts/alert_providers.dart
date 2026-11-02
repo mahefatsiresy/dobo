@@ -12,7 +12,8 @@ import '../../domain/types.dart';
 import '../common/farm_today.dart';
 import '../ponds/pond_overview.dart';
 
-final _latestReadingsProvider = StreamProvider<Map<String, WaterReading>>(
+/// Each pond's latest water reading.
+final latestReadingsProvider = StreamProvider<Map<String, WaterReading>>(
   (ref) => ref.watch(readingRepositoryProvider).watchLatestWaterReadings(),
 );
 
@@ -30,7 +31,7 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
   final facts = ref.watch(farmFactsProvider);
   final ponds = ref.watch(pondsProvider);
   final summaries = ref.watch(batchSummariesProvider);
-  final readings = ref.watch(_latestReadingsProvider);
+  final readings = ref.watch(latestReadingsProvider);
   final health = ref.watch(_recentHealthProvider);
   if (!facts.hasValue ||
       !ponds.hasValue ||
