@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../alerts/alert_providers.dart';
+import '../photos/photo_strip.dart';
 import '../reports/report_providers.dart';
 import '../sync/sync_badge.dart';
 
@@ -19,6 +20,7 @@ class MemberShell extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final danger = ref.watch(dangerCountProvider);
     final unread = ref.watch(unreadCountProvider);
+    ref.watch(lostPhotoRecoveryProvider);
     return Scaffold(
       body: shell,
       bottomNavigationBar: NavigationBar(

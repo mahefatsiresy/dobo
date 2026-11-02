@@ -98,6 +98,9 @@ final _shot = Uint8List.fromList([
 class _Camera implements PhotoCapture {
   @override
   Future<Uint8List?> takeCompressed() async => _shot;
+
+  @override
+  Future<Uint8List?> recoverLost() async => null;
 }
 
 /// M6 milestone walk-through on a device, against the real database. Run it

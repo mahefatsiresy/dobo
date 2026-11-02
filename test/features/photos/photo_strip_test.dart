@@ -13,6 +13,10 @@ import 'package:dobo/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:dobo/app.dart';
+import 'package:dobo/db/database.dart';
+import 'package:dobo/db/database_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dobo/sync/providers.dart';
 import 'package:dobo/sync/photo_store.dart';
 
@@ -100,8 +104,14 @@ class FakeCapture implements PhotoCapture {
 
   Future<Uint8List?> Function() next;
 
+  /// What the camera kept when Android stopped the app mid-shot.
+  Uint8List? lost;
+
   @override
   Future<Uint8List?> takeCompressed() => next();
+
+  @override
+  Future<Uint8List?> recoverLost() async => lost;
 }
 
 /// Photo files in fresh temporary folders.
@@ -253,5 +263,62 @@ void main() {
       expect(await look(), isNotNull);
     },
     overrides: [photoStoreProvider.overrideWithValue(store), tempPhotoFiles()],
+  );
+
+  appTest(
+    'the camera\'s record is noted while it is open',
+    (tester, db) async {
+      Object? noted;
+      capture.next = () async {
+        noted = await (db.select(
+          db.localMeta,
+        )..where((m) => m.key.equals('photo_pending_owner'))).getSingleOrNull();
+        return tinyImage;
+      };
+      await openDraft(tester);
+      await tapAndSettle(tester, find.text('Ajouter une photo'));
+      expect(noted, isNotNull);
+      final after = await (db.select(
+        db.localMeta,
+      )..where((m) => m.key.equals('photo_pending_owner'))).get();
+      expect(after, isEmpty);
+    },
+    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+  );
+
+  final lostCapture = FakeCapture(() async => null)..lost = tinyImage;
+  appTest(
+    'a photo the camera kept when Android stopped the app is saved on restart',
+    (tester, db) async {
+      // The app was stopped with the camera open for visit v1, then
+      // started again: the setUp ran, now start the app over.
+      await db
+          .into(db.localMeta)
+          .insert(
+            LocalMetaCompanion.insert(
+              key: 'photo_pending_owner',
+              value: 'visit|v1',
+            ),
+          );
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            photoCaptureProvider.overrideWithValue(lostCapture),
+            tempPhotoFiles(),
+          ],
+          child: const DoboApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final photo = await db.select(db.photos).getSingle();
+      expect((photo.ownerKind, photo.ownerId), (PhotoOwner.visit, 'v1'));
+      final left = await (db.select(
+        db.localMeta,
+      )..where((m) => m.key.equals('photo_pending_owner'))).get();
+      expect(left, isEmpty);
+    },
+    overrides: [photoCaptureProvider.overrideWithValue(lostCapture), tempPhotoFiles()],
   );
 }

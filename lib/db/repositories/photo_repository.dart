@@ -124,6 +124,34 @@ class PhotoRepository {
     );
   }
 
+  static const _pendingKey = 'photo_pending_owner';
+
+  /// Notes the record a photo is being taken for, while the camera is open:
+  /// if Android stops the app meanwhile, the shot is saved for it on the
+  /// next start ([pendingCapture]).
+  Future<void> notePendingCapture(PhotoOwner owner, String ownerId) => db
+      .into(db.localMeta)
+      .insertOnConflictUpdate(
+        LocalMetaCompanion.insert(
+          key: _pendingKey,
+          value: '${owner.name}|$ownerId',
+        ),
+      );
+
+  Future<void> clearPendingCapture() =>
+      (db.delete(db.localMeta)..where((m) => m.key.equals(_pendingKey))).go();
+
+  /// The record a camera was open for when the app was stopped, if any.
+  Future<(PhotoOwner, String)?> pendingCapture() async {
+    final row = await (db.select(
+      db.localMeta,
+    )..where((m) => m.key.equals(_pendingKey))).getSingleOrNull();
+    if (row == null) return null;
+    final [kind, id] = row.value.split('|');
+    final owner = PhotoOwner.values.where((o) => o.name == kind).firstOrNull;
+    return owner == null ? null : (owner, id);
+  }
+
   Future<Photo> _current(String photoKey) =>
       (db.select(db.photos)
             ..where(

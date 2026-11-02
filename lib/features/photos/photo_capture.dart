@@ -8,6 +8,10 @@ import 'package:image_picker/image_picker.dart';
 /// person cancels.
 abstract interface class PhotoCapture {
   Future<Uint8List?> takeCompressed();
+
+  /// The shot the camera kept when Android stopped the app while it was
+  /// open (common on 2 GB phones), compressed; null when there is none.
+  Future<Uint8List?> recoverLost();
 }
 
 /// The camera, then JPEG at quality 70 with the long edge at 1280 px, and
@@ -26,7 +30,18 @@ class CameraPhotoCapture implements PhotoCapture {
       maxHeight: longEdgePx.toDouble(),
     );
     if (shot == null) return null;
-    final raw = await shot.readAsBytes();
+    return _compress(await shot.readAsBytes());
+  }
+
+  @override
+  Future<Uint8List?> recoverLost() async {
+    final lost = await ImagePicker().retrieveLostData();
+    final file = lost.file;
+    if (lost.isEmpty || file == null) return null;
+    return _compress(await file.readAsBytes());
+  }
+
+  Future<Uint8List> _compress(Uint8List raw) async {
     Future<Uint8List> compress(int q) => FlutterImageCompress.compressWithList(
       raw,
       minWidth: longEdgePx,

@@ -11,6 +11,22 @@ import '../../l10n/app_localizations.dart';
 import '../../sync/providers.dart';
 import 'photo_capture.dart';
 
+/// Saves, once at start, a shot the camera kept when Android stopped the
+/// app while it was open, for the record it was taken for.
+final lostPhotoRecoveryProvider = FutureProvider<void>((ref) async {
+  final repo = ref.watch(photoRepositoryProvider);
+  final pending = await repo.pendingCapture();
+  if (pending == null) return;
+  try {
+    final jpeg = await ref.read(photoCaptureProvider).recoverLost();
+    if (jpeg != null) {
+      await repo.add(owner: pending.$1, ownerId: pending.$2, jpeg: jpeg);
+    }
+  } finally {
+    await repo.clearPendingCapture();
+  }
+});
+
 final photosForProvider =
     StreamProvider.family<List<Photo>, (PhotoOwner, String)>(
       (ref, owner) =>
@@ -33,14 +49,26 @@ final photoFileProvider = FutureProvider.autoDispose.family<File?, String>(
 
 /// Takes a photo; null when cancelled or when it failed, after telling the
 /// person the record saves without it (plan Decision 10).
-Future<Uint8List?> capturePhoto(BuildContext context, WidgetRef ref) async {
+/// The camera is open for [owner] [ownerId] meanwhile, noted so a shot
+/// kept after Android stops the app is saved for it on restart.
+Future<Uint8List?> capturePhoto(
+  BuildContext context,
+  WidgetRef ref,
+  PhotoOwner owner,
+  String ownerId,
+) async {
   final messenger = ScaffoldMessenger.of(context);
   final failed = AppLocalizations.of(context).photoFailed;
+  final repo = ref.read(photoRepositoryProvider);
+  final camera = ref.read(photoCaptureProvider);
+  await repo.notePendingCapture(owner, ownerId);
   try {
-    return await ref.read(photoCaptureProvider).takeCompressed();
+    return await camera.takeCompressed();
   } catch (_) {
     messenger.showSnackBar(SnackBar(content: Text(failed)));
     return null;
+  } finally {
+    await repo.clearPendingCapture();
   }
 }
 
@@ -53,12 +81,13 @@ class PhotoStrip extends ConsumerWidget {
   final String ownerId;
 
   Future<void> _add(BuildContext context, WidgetRef ref) async {
-    final jpeg = await capturePhoto(context, ref);
+    // Taken before the camera opens: the screen may be gone when it closes.
+    final repo = ref.read(photoRepositoryProvider);
+    final jpeg = await capturePhoto(context, ref, owner, ownerId);
+    // Saved even if the screen closed meanwhile: the shot is the person's.
     if (jpeg == null) return;
     try {
-      await ref
-          .read(photoRepositoryProvider)
-          .add(owner: owner, ownerId: ownerId, jpeg: jpeg);
+      await repo.add(owner: owner, ownerId: ownerId, jpeg: jpeg);
     } on FileSystemException {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
