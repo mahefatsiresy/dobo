@@ -3127,6 +3127,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'En ordre : {items}'**
   String reportAllOk(String items);
+
+  /// No description provided for @photoAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une photo'**
+  String get photoAdd;
+
+  /// No description provided for @photoUpload.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer au serveur'**
+  String get photoUpload;
+
+  /// No description provided for @photoDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la photo'**
+  String get photoDelete;
+
+  /// No description provided for @photoFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'La photo n\'a pas pu être prise. L\'enregistrement se fait sans elle.'**
+  String get photoFailed;
+
+  /// No description provided for @photoUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photo pas encore disponible'**
+  String get photoUnavailable;
 }
 
 class _AppLocalizationsDelegate

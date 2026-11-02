@@ -7,14 +7,23 @@ import '../../domain/water.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
+import '../photos/photo_strip.dart';
 
 /// The nine sections of a visit report (SPEC F8), drawn from its frozen
 /// content. [summary] replaces the summary section (the draft's text field).
 class ReportSections extends StatelessWidget {
-  const ReportSections({super.key, required this.content, this.summary});
+  const ReportSections({
+    super.key,
+    required this.content,
+    this.summary,
+    this.visitPhotos,
+  });
 
   final ReportContent content;
   final Widget? summary;
+
+  /// Replaces the visit's photos (the draft's editable strip).
+  final Widget? visitPhotos;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +84,7 @@ class ReportSections extends StatelessWidget {
           ),
         _Heading(l10n.reportObservations),
         ..._observations(context, c),
+        visitPhotos ?? ReportPhotos(keys: c.visitPhotoKeys),
         const SizedBox(height: 24),
       ],
     );
@@ -98,8 +108,9 @@ class ReportSections extends StatelessWidget {
         if (o.ok == true) o,
     ];
     return [
-      if (problems.isEmpty && ok.isEmpty) _Empty(l10n.reportNothing),
-      for (final o in problems)
+      if (problems.isEmpty && ok.isEmpty && c.visitPhotoKeys.isEmpty)
+        _Empty(l10n.reportNothing),
+      for (final o in problems) ...[
         _Line(
           icon: o.ok == false ? Icons.report_problem : Icons.visibility,
           iconColor: o.ok == false ? Colors.amber.shade800 : null,
@@ -108,6 +119,8 @@ class ReportSections extends StatelessWidget {
               ? l10n.observationCategory(o.category)
               : l10n.labelValue(l10n.observationCategory(o.category), o.note!),
         ),
+        ReportPhotos(keys: o.photoKeys),
+      ],
       if (ok.isNotEmpty)
         _Line(
           icon: Icons.check_circle,
@@ -176,6 +189,7 @@ class _PondHealthBlock extends StatelessWidget {
               ].join(' — '),
             ),
           ),
+        for (final e in h.events) ReportPhotos(keys: e.photoKeys),
         for (final t in h.treatments)
           _Indented(
             l10n.reportTreatmentLine(formatDate(t.at), t.product, t.dose),
@@ -399,4 +413,38 @@ class _Indented extends StatelessWidget {
     padding: const EdgeInsets.only(left: 48, bottom: 2),
     child: Text(text),
   );
+}
+
+/// A report's photos, those on this phone shown, the others as
+/// placeholders; a tap shows one full screen.
+class ReportPhotos extends StatelessWidget {
+  const ReportPhotos({super.key, required this.keys});
+
+  final List<String> keys;
+
+  @override
+  Widget build(BuildContext context) {
+    if (keys.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(left: 48, top: 4, bottom: 4),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final k in keys)
+            InkWell(
+              onTap: () => showDialog<void>(
+                context: context,
+                builder: (context) => Dialog(
+                  child: InteractiveViewer(
+                    child: PhotoThumb(photoKey: k, size: 320),
+                  ),
+                ),
+              ),
+              child: PhotoThumb(photoKey: k, size: 96),
+            ),
+        ],
+      ),
+    );
+  }
 }

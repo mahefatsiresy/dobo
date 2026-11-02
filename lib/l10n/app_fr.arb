@@ -1071,5 +1071,10 @@
   "reportNextQuarantine": "Fin de quarantaine de {batch}",
   "@reportNextQuarantine": {"placeholders": {"batch": {"type": "String"}}},
   "reportAllOk": "En ordre : {items}",
-  "@reportAllOk": {"placeholders": {"items": {"type": "String"}}}
+  "@reportAllOk": {"placeholders": {"items": {"type": "String"}}},
+  "photoAdd": "Ajouter une photo",
+  "photoUpload": "Envoyer au serveur",
+  "photoDelete": "Supprimer la photo",
+  "photoFailed": "La photo n'a pas pu être prise. L'enregistrement se fait sans elle.",
+  "photoUnavailable": "Photo pas encore disponible"
 }

@@ -1714,4 +1714,20 @@ class AppLocalizationsMg extends AppLocalizations {
   String reportAllOk(String items) {
     return 'En ordre : $items';
   }
+
+  @override
+  String get photoAdd => 'Ajouter une photo';
+
+  @override
+  String get photoUpload => 'Envoyer au serveur';
+
+  @override
+  String get photoDelete => 'Supprimer la photo';
+
+  @override
+  String get photoFailed =>
+      'La photo n\'a pas pu être prise. L\'enregistrement se fait sans elle.';
+
+  @override
+  String get photoUnavailable => 'Photo pas encore disponible';
 }

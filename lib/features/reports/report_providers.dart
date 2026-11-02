@@ -7,6 +7,7 @@ import '../../domain/alerts/farm_alerts.dart';
 import '../../domain/dates.dart';
 import '../../domain/report/build_report.dart';
 import '../../domain/report/report_content.dart';
+import '../../domain/types.dart';
 import '../admin/members_screen.dart' show groupsProvider, membersProvider;
 import '../alerts/alert_providers.dart';
 import '../common/farm_today.dart';
@@ -81,6 +82,10 @@ final _treatmentsBetweenProvider =
           .watchTreatmentsBetween(p.$1, p.$2),
     );
 
+final _photosProvider = StreamProvider<List<Photo>>(
+  (ref) => ref.watch(photoRepositoryProvider).watchAll(),
+);
+
 final _siteNameProvider = StreamProvider<String>((ref) {
   final db = ref.watch(databaseProvider);
   final siteId = ref.watch(sessionProvider).requireValue!.siteId;
@@ -120,7 +125,9 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
   final members = ref.watch(membersProvider);
   final groups = ref.watch(groupsProvider);
   final site = ref.watch(_siteNameProvider);
-  if (!facts.hasValue ||
+  final photos = ref.watch(_photosProvider);
+  if (!photos.hasValue ||
+      !facts.hasValue ||
       !ponds.hasValue ||
       !summaries.hasValue ||
       !alerts.hasValue ||
@@ -135,6 +142,12 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
     return const AsyncLoading();
   }
 
+  // Owners with photos are never corrected in v1 (free observations,
+  // health events, visits), so their current id is the one photos carry.
+  List<String> keysOf(PhotoOwner kind, String id) => [
+    for (final p in photos.requireValue)
+      if (p.ownerKind == kind && p.ownerId == id) p.photoKey,
+  ];
   final author = members.requireValue
       .where((m) => m.id == visit.enteredBy)
       .firstOrNull;
@@ -188,6 +201,7 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
                 signs: e.signs,
                 suspectedIssue: e.suspectedIssue,
                 actions: e.actions,
+                photoKeys: keysOf(PhotoOwner.healthEvent, e.id),
               ),
             ),
         ],
@@ -211,8 +225,10 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
               category: o.category,
               ok: o.ok,
               note: o.note,
+              photoKeys: keysOf(PhotoOwner.observation, o.id),
             ),
         ],
+        visitPhotoKeys: keysOf(PhotoOwner.visit, visitId),
         people: people.requireValue,
         config: ref.watch(domainConfigProvider),
       ),

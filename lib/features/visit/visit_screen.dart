@@ -10,6 +10,7 @@ import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
 import '../common/save_once.dart';
+import '../photos/photo_strip.dart';
 import 'visit_providers.dart';
 
 /// The Visit tab (SPEC F5): start a visit, then walk its checklist; past
@@ -257,13 +258,18 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
           ),
         ),
         for (final o in observations)
-          if (o.ok == null)
+          if (o.ok == null) ...[
             ListTile(
               minTileHeight: 56,
               leading: const Icon(Icons.notes),
               title: Text(l10n.observationCategory(o.category)),
               subtitle: o.note == null ? null : Text(o.note!),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 56),
+              child: PhotoStrip(owner: PhotoOwner.observation, ownerId: o.id),
+            ),
+          ],
         TextButton.icon(
           style: TextButton.styleFrom(minimumSize: const Size(56, 56)),
           onPressed: _addObservation,

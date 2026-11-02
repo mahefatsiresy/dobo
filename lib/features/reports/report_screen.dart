@@ -10,6 +10,8 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../common/farm_today.dart';
 import '../common/save_once.dart';
+import '../../domain/types.dart';
+import '../photos/photo_strip.dart';
 import 'report_providers.dart';
 import 'report_sections.dart';
 import 'share_report.dart';
@@ -132,6 +134,9 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
             _Header(content: c, draft: visitId != null),
             ReportSections(
               content: c,
+              visitPhotos: visitId == null
+                  ? null
+                  : PhotoStrip(owner: PhotoOwner.visit, ownerId: visitId),
               summary: visitId == null
                   ? null
                   : TextField(

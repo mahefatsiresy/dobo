@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../database.dart';
 import '../database_provider.dart';
+import '../photo_files.dart';
 import '../session.dart';
 import '../../domain/config.dart';
 import '../../domain/config_overrides.dart';
@@ -14,6 +16,7 @@ import 'facts_repository.dart';
 import 'health_repository.dart';
 import 'member_repository.dart';
 import 'person_repository.dart';
+import 'photo_repository.dart';
 import 'pond_repository.dart';
 import 'reading_repository.dart';
 import 'report_repository.dart';
@@ -115,6 +118,22 @@ final observationRepositoryProvider = Provider<ObservationRepository>(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
     visitId: ref.watch(_visitIdProvider),
+  ),
+);
+
+/// Photo files: the phone's own in documents, downloaded ones in the cache.
+final photoFilesProvider = Provider<PhotoFiles>(
+  (ref) => PhotoFiles(
+    docs: getApplicationDocumentsDirectory,
+    cache: getApplicationCacheDirectory,
+  ),
+);
+
+final photoRepositoryProvider = Provider<PhotoRepository>(
+  (ref) => PhotoRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+    ref.watch(photoFilesProvider),
   ),
 );
 

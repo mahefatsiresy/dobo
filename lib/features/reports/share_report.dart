@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
+import '../../db/repositories/providers.dart';
 import '../../domain/dates.dart';
 import '../../domain/report/report_content.dart';
 import '../../l10n/app_localizations.dart';
@@ -24,10 +25,10 @@ final reportSharerProvider = Provider<ReportSharer>(
 /// Where a report's photo files are, by key; null when not on this phone.
 typedef PhotoBytes = Future<Uint8List?> Function(String photoKey);
 
-final reportPhotoBytesProvider = Provider<PhotoBytes>(
-  (ref) =>
-      (_) async => null,
-);
+final reportPhotoBytesProvider = Provider<PhotoBytes>((ref) {
+  final files = ref.watch(photoFilesProvider);
+  return (key) async => (await files.existingFile(key))?.readAsBytes();
+});
 
 /// Builds [content]'s PDF in the phone's language and shares it through any
 /// app, with no server (SPEC F8).
