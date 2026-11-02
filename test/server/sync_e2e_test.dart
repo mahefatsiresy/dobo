@@ -2,6 +2,13 @@
 library;
 
 import 'package:dobo/db/database.dart';
+import 'package:dobo/sync/photo_uploader.dart';
+import 'package:dobo/domain/report/report_content.dart';
+import 'package:dobo/domain/dates.dart';
+import 'package:dobo/db/repositories/report_repository.dart';
+import 'package:dobo/db/repositories/photo_repository.dart';
+import 'package:dobo/db/repositories/person_repository.dart';
+import 'package:dobo/db/photo_files.dart';
 import 'package:dobo/db/ids.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/facts_repository.dart';
@@ -286,5 +293,133 @@ void main() {
       founderStore.upload(photoPath(associationId, newId()), bytes),
       throwsA(isA<PhotoCapReached>()),
     );
+  });
+
+  test('M6: a report published offline on the founder\'s phone reaches a '
+      'member\'s phone unread, with its numbers and its photo; an admin '
+      'sync gives every account one person', () async {
+    // The test before capped this association at one photo: lift it.
+    final lift = await Process.run('psql', [
+      env.dbUrl,
+      '-c',
+      "delete from setting_overrides where association_id = '$associationId' "
+          "and key = 'photoUploadCap'",
+    ]);
+    expect(lift.exitCode, 0, reason: '${lift.stderr}');
+
+    // A second member, with a phone of their own.
+    final heryId = newId();
+    final heryDevice = newId();
+    await SupabaseAuthGateway(founderClient).createAccount(
+      NewAccount(
+        memberId: heryId,
+        name: 'Hery',
+        role: MemberRole.member,
+        login: 'h$stamp@test.mg',
+        secret: 'motdepasse2',
+        locale: 'fr',
+        deviceId: founderDevice,
+      ),
+    );
+    final heryClient = await env.signedInClient(
+      'h$stamp@test.mg',
+      'motdepasse2',
+    );
+    final heryPhone = AppDatabase(NativeDatabase.memory());
+    addTearDown(heryPhone.close);
+    final herySync = SyncEngine(heryPhone, SupabaseSyncApi(heryClient));
+    final founder = Session(
+      associationId: associationId,
+      userId: founderId,
+      deviceId: founderDevice,
+      siteId: siteId,
+      isAdmin: true,
+      isLinked: true,
+    );
+    final hery = Session(
+      associationId: associationId,
+      userId: heryId,
+      deviceId: heryDevice,
+      siteId: siteId,
+      isLinked: true,
+    );
+    PhotoFiles tempFiles() {
+      final docs = Directory.systemTemp.createTempSync('dobo-docs');
+      final cache = Directory.systemTemp.createTempSync('dobo-cache');
+      return PhotoFiles(docs: () async => docs, cache: () async => cache);
+    }
+
+    // Offline on the founder's phone: a photo marked to send, a report.
+    final founderFiles = tempFiles();
+    final photos = PhotoRepository(founderPhone, founder, founderFiles);
+    final jpeg = Uint8List.fromList([0xFF, 0xD8, 0xFF, 9, 9, 9]);
+    final visitId = newId();
+    final key = await photos.add(
+      owner: PhotoOwner.visit,
+      ownerId: visitId,
+      jpeg: jpeg,
+    );
+    await photos.setUpload(key, true);
+    final day = farmDateToUtc(DateTime(2026, 3, 20));
+    final reportId = await ReportRepository(founderPhone, founder).publish(
+      visitId: visitId,
+      content: ReportContent(
+        header: ReportHeader(
+          siteName: 'Ambohidratrimo',
+          visitDay: day,
+          memberName: 'Founder',
+          periodFrom: farmDateToUtc(DateTime(2026, 3, 13)),
+          periodTo: day,
+          builtAt: day,
+        ),
+        health: const [PondHealth(pondId: 'e1', deaths: 6)],
+        visitPhotoKeys: [key],
+      ),
+    );
+
+    // Back online: rows, then the photo; the admin phone links accounts.
+    await founderSync.run();
+    final founderStore = SupabasePhotoStore(founderClient);
+    expect(
+      await PhotoUploader(
+        founderPhone,
+        founderStore,
+        founderFiles,
+        founder,
+      ).run(),
+      1,
+    );
+    expect(
+      await PersonRepository(founderPhone, founder).ensureAccountPeople(),
+      greaterThanOrEqualTo(3),
+    );
+    await founderSync.run();
+
+    // The member's phone.
+    await herySync.run();
+    final unread = await ReportRepository(
+      heryPhone,
+      hery,
+    ).watchUnreadIds().first;
+    expect(unread, {reportId});
+    final row = await (heryPhone.select(
+      heryPhone.visitReports,
+    )..where((r) => r.id.equals(reportId))).getSingle();
+    final content = ReportContent.decode(row.content);
+    expect(content.health.single.deaths, 6);
+    final file = await tempFiles().fetch(
+      content.visitPhotoKeys.single,
+      associationId: associationId,
+      store: SupabasePhotoStore(heryClient),
+    );
+    expect(file!.readAsBytesSync(), jpeg);
+
+    // One person per account, the same on both phones.
+    final members = await heryPhone.select(heryPhone.members).get();
+    final people = await heryPhone.select(heryPhone.people).get();
+    for (final m in members) {
+      expect(m.personId, isNotNull, reason: m.name);
+      expect(people.where((p) => p.id == m.personId), hasLength(1));
+    }
   });
 }
