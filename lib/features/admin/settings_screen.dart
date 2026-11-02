@@ -6,6 +6,7 @@ import '../../db/repositories/providers.dart';
 import '../../domain/config.dart';
 import '../../domain/config_overrides.dart';
 import '../../l10n/app_localizations.dart';
+import '../../sync/photo_store.dart';
 import '../../l10n/formatting.dart';
 import '../common/form_body.dart';
 import '../common/save_once.dart';
@@ -21,6 +22,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
   final _fields = {for (final k in configKeys) k.key: TextEditingController()};
+  final _photoCap = TextEditingController();
   Map<String, num>? _loaded;
 
   @override
@@ -28,6 +30,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
     for (final c in _fields.values) {
       c.dispose();
     }
+    _photoCap.dispose();
     super.dispose();
   }
 
@@ -36,6 +39,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
     for (final MapEntry(:key, :value) in overrides.entries) {
       _fields[key]?.text = formatForInput(value.toDouble());
     }
+    final cap = overrides[photoUploadCapKey];
+    if (cap != null) _photoCap.text = formatForInput(cap.toDouble());
   }
 
   Future<void> _save() async {
@@ -47,6 +52,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
       final before = _loaded![k.key];
       if (value == before) continue;
       value == null ? await repo.clear(k.key) : await repo.set(k.key, value);
+    }
+    // Not a farming number: kept out of DomainConfig (plan Decision 11).
+    final capText = _photoCap.text.trim();
+    final cap = capText.isEmpty ? null : parseDecimal(capText)?.round();
+    if (cap != _loaded![photoUploadCapKey]) {
+      cap == null || cap < 0
+          ? await repo.clear(photoUploadCapKey)
+          : await repo.set(photoUploadCapKey, cap);
     }
     if (!mounted) return;
     ScaffoldMessenger.of(context)
@@ -127,6 +140,44 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
         ),
       );
     }
+    rows.addAll([
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+        child: Text(
+          l10n.settingsPhotos,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+      ),
+      Padding(
+        key: const Key('setting-$photoUploadCapKey'),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.settingPhotoUploadCap),
+                  Text(
+                    l10n.settingDefault('$defaultPhotoUploadCap'),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            SizedBox(
+              width: 96,
+              child: TextField(
+                controller: _photoCap,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
     rows.add(
       Padding(
         padding: const EdgeInsets.all(16),

@@ -7,6 +7,7 @@ import '../db/repositories/person_repository.dart';
 import '../db/repositories/providers.dart';
 import 'providers.dart';
 import 'sync_api.dart';
+import 'photo_uploader.dart';
 import 'sync_engine.dart';
 
 enum SyncRunState {
@@ -83,6 +84,16 @@ class SyncController extends Notifier<SyncView> {
       final session = ref.read(sessionProvider).value;
       if (session != null && session.isAdmin) {
         await PersonRepository(db, session).ensureAccountPeople();
+      }
+      // Photos go up after the rows, marked ones only (SPEC §8).
+      final store = ref.read(photoStoreProvider);
+      if (session != null && store != null) {
+        await PhotoUploader(
+          db,
+          store,
+          ref.read(photoFilesProvider),
+          session,
+        ).run();
       }
       state = const SyncView(SyncRunState.idle);
     } on SyncOffline {

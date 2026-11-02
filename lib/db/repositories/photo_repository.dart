@@ -101,6 +101,29 @@ class PhotoRepository {
             ..orderBy([(p) => OrderingTerm.asc(p.recordedAt)]))
           .watch();
 
+  /// This phone's photos marked to send and not sent yet, with the reason
+  /// the last try failed (`cap`), if any.
+  Stream<List<(String, String?)>> watchPendingUploads() {
+    final u = db.photoUploads;
+    final q =
+        db.select(db.photos).join([
+            leftOuterJoin(u, u.photoKey.equalsExp(db.photos.photoKey)),
+          ])
+          ..where(
+            isCurrentEvent(db.photos) &
+                db.photos.upload.equals(true) &
+                db.photos.deviceId.equals(session.deviceId) &
+                u.uploadedAt.isNull(),
+          )
+          ..orderBy([OrderingTerm.asc(db.photos.recordedAt)]);
+    return q.watch().map(
+      (rows) => [
+        for (final r in rows)
+          (r.readTable(db.photos).photoKey, r.readTableOrNull(u)?.error),
+      ],
+    );
+  }
+
   Future<Photo> _current(String photoKey) =>
       (db.select(db.photos)
             ..where(

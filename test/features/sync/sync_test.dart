@@ -6,6 +6,11 @@ import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/sync/providers.dart';
+import 'package:dobo/db/repositories/photo_repository.dart';
+import 'package:dobo/db/photo_files.dart';
+
+import 'dart:io';
+
 import 'package:dobo/sync/sync_controller.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
@@ -17,6 +22,8 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers.dart';
 import '../../sync/fake_auth_gateway.dart';
 import '../../sync/fake_sync_api.dart';
+import '../../sync/fake_photo_store.dart';
+import '../photos/photo_strip_test.dart' show tinyImage;
 
 /// A phone linked to an account, with a server that answers.
 Future<void> link(AppDatabase db) => db
@@ -176,4 +183,83 @@ void main() {
       expect(m.personId, admin ? accountPersonId('m2') : isNull);
     });
   }
+
+  /// A photo row of this phone, marked to send.
+  Future<void> markedPhoto(AppDatabase db, String key) async {
+    final s = (await SetupRepository(db).currentSession())!;
+    await db
+        .into(db.photos)
+        .insert(
+          PhotosCompanion.insert(
+            id: Value(key),
+            associationId: s.associationId,
+            enteredBy: s.userId,
+            deviceId: s.deviceId,
+            recordedAt: DateTime.utc(2026, 3, 20),
+            ownerKind: PhotoOwner.visit,
+            ownerId: 'v1',
+            photoKey: key,
+            upload: const Value(true),
+            bytes: 100,
+          ),
+        );
+  }
+
+  appTest('the sync screen lists photos waiting, and the cap', (
+    tester,
+    db,
+  ) async {
+    await markedPhoto(db, 'k1');
+    await markedPhoto(db, 'k2');
+    await db
+        .into(db.photoUploads)
+        .insert(
+          PhotoUploadsCompanion.insert(
+            photoKey: 'k2',
+            error: const Value('cap'),
+          ),
+        );
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Synchronisation'));
+    expect(find.text("Photos en attente d'envoi : 2"), findsOneWidget);
+    expect(
+      find.text(
+        'Limite de photos atteinte : un administrateur peut la relever '
+        'dans Réglages.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  test('a sync sends the photos marked to send', () async {
+    final db = AppDatabase(NativeDatabase.memory());
+    addTearDown(db.close);
+    final s = await SetupRepository(db).completeSetup(siteName: 'A');
+    await link(db);
+    final docs = Directory.systemTemp.createTempSync('dobo-docs');
+    final files = PhotoFiles(
+      docs: () async => docs,
+      cache: () async => Directory.systemTemp.createTempSync('dobo-cache'),
+    );
+    final key = await PhotoRepository(
+      db,
+      s,
+      files,
+    ).add(owner: PhotoOwner.visit, ownerId: 'v1', jpeg: tinyImage);
+    await PhotoRepository(db, s, files).setUpload(key, true);
+    final store = FakePhotoStore();
+    final c = ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        ...online(),
+        photoStoreProvider.overrideWithValue(store),
+        photoFilesProvider.overrideWithValue(files),
+      ],
+    );
+    addTearDown(c.dispose);
+    c.listen(sessionProvider, (_, _) {});
+    await c.read(sessionProvider.future);
+    await c.read(syncControllerProvider.notifier).syncNow();
+    expect(store.objects.keys, ['${s.associationId}/$key.jpg']);
+  });
 }

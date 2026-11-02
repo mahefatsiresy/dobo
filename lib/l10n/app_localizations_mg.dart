@@ -1730,4 +1730,19 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get photoUnavailable => 'Photo pas encore disponible';
+
+  @override
+  String syncPhotosWaiting(int count) {
+    return 'Photos en attente d\'envoi : $count';
+  }
+
+  @override
+  String get syncPhotoCap =>
+      'Limite de photos atteinte : un administrateur peut la relever dans Réglages.';
+
+  @override
+  String get settingsPhotos => 'Photos';
+
+  @override
+  String get settingPhotoUploadCap => 'Photos envoyées au serveur, au plus';
 }

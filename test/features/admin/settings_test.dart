@@ -63,4 +63,19 @@ void main() {
     final oxygen = tester.widget<Text>(find.textContaining('3,5'));
     expect(oxygen.style?.color, Colors.red.shade800);
   });
+
+  appTest('an admin sets the photo cap to 500', (tester, db) async {
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Administration'));
+    await tapAndSettle(tester, find.text('Réglages'));
+    final row = find.byKey(const Key('setting-photoUploadCap'));
+    await enterAndSettle(
+      tester,
+      find.descendant(of: row, matching: find.byType(TextField)),
+      '500',
+    );
+    await tapAndSettle(tester, find.byKey(const Key('saveSettings')));
+    final override = await db.select(db.settingOverrides).getSingle();
+    expect((override.key, override.value), ('photoUploadCap', 500.0));
+  });
 }

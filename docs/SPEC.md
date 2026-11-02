@@ -174,7 +174,7 @@ Design goal: a phone can be offline for weeks, several phones record the same po
 
 - Optional on observations, health events and visit reports.
 - Compressed on capture **[Claude's call]**: long edge 1280 px, JPEG quality ~70, target ≤ 250 KB.
-- Stored in the app's files on the device. Only photos marked "upload" go to Supabase Storage, subject to a per-association cap set by an admin.
+- Stored in the app's files on the device. Only photos marked "upload" go to Supabase Storage, subject to a per-association cap set by an admin: a number of photos (default 300), so the server can enforce it.
 - Reports include uploaded photos; local-only photos appear only on the phone that took them.
 
 ## 9. Language and accessibility

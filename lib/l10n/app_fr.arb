@@ -1076,5 +1076,10 @@
   "photoUpload": "Envoyer au serveur",
   "photoDelete": "Supprimer la photo",
   "photoFailed": "La photo n'a pas pu être prise. L'enregistrement se fait sans elle.",
-  "photoUnavailable": "Photo pas encore disponible"
+  "photoUnavailable": "Photo pas encore disponible",
+  "syncPhotosWaiting": "Photos en attente d'envoi : {count}",
+  "@syncPhotosWaiting": {"placeholders": {"count": {"type": "int"}}},
+  "syncPhotoCap": "Limite de photos atteinte : un administrateur peut la relever dans Réglages.",
+  "settingsPhotos": "Photos",
+  "settingPhotoUploadCap": "Photos envoyées au serveur, au plus"
 }

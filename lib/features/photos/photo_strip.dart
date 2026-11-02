@@ -8,6 +8,7 @@ import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
+import '../../sync/providers.dart';
 import 'photo_capture.dart';
 
 final photosForProvider =
@@ -17,8 +18,15 @@ final photosForProvider =
     );
 
 /// This phone's file for a photo, or null.
+/// Downloaded from Storage the first time, when online (plan Decision 11).
 final photoFileProvider = FutureProvider.family<File?, String>(
-  (ref, key) => ref.watch(photoFilesProvider).existingFile(key),
+  (ref, key) => ref
+      .watch(photoFilesProvider)
+      .fetch(
+        key,
+        associationId: ref.watch(sessionProvider).requireValue!.associationId,
+        store: ref.watch(photoStoreProvider),
+      ),
 );
 
 /// Takes a photo; null when cancelled or when it failed, after telling the

@@ -10,13 +10,18 @@ import 'package:dobo/domain/alerts/farm_alerts.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/sync/auth_gateway.dart';
+import 'package:dobo/sync/photo_store.dart';
 import 'package:dobo/sync/supabase_auth_gateway.dart';
+import 'package:dobo/sync/supabase_photo_store.dart';
 import 'package:dobo/sync/supabase_sync_api.dart';
 import 'package:dobo/sync/sync_api.dart';
 import 'package:dobo/sync/sync_engine.dart';
 import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show SupabaseClient;
+
+import 'dart:io';
 
 import 'server_env.dart';
 
@@ -30,6 +35,8 @@ void main() {
   late String associationId;
   late String founderId;
   late String workerId;
+  late SupabaseClient founderClient;
+  late SupabaseClient workerClient;
   final stamp = DateTime.now().microsecondsSinceEpoch;
   final founderDevice = newId();
   final workerDevice = newId();
@@ -43,7 +50,7 @@ void main() {
     founderId = newId();
     workerId = newId();
 
-    final founderClient = env.anonClient();
+    founderClient = env.anonClient();
     final founder = SupabaseAuthGateway(founderClient);
     await founder.signUp(email: 'f$stamp@test.mg', password: 'motdepasse1');
     await founder.createAssociation(
@@ -73,7 +80,7 @@ void main() {
       (founderId, true, 'Famille $stamp'),
     );
 
-    final workerClient = env.anonClient();
+    workerClient = env.anonClient();
     final worker = SupabaseAuthGateway(workerClient);
     await worker.signIn(email: workerEmail('r$stamp'), password: '123456');
     final w = await worker.myMember();
@@ -246,4 +253,38 @@ void main() {
       expect((left.id, left.supersedesId, left.feedGivenG), (copy, kept, 4000));
     },
   );
+
+  test('M6: a photo the founder sends downloads on the worker\'s phone; '
+      'sending it again counts as done; past the cap it waits', () async {
+    final founderStore = SupabasePhotoStore(founderClient);
+    final workerStore = SupabasePhotoStore(workerClient);
+    final bytes = Uint8List.fromList([0xFF, 0xD8, 0xFF, 7, 7, 7]);
+    final path = photoPath(associationId, newId());
+
+    await founderStore.upload(path, bytes);
+    expect(await workerStore.download(path), bytes);
+    await expectLater(
+      founderStore.upload(path, bytes),
+      throwsA(isA<PhotoAlreadyStored>()),
+    );
+    expect(
+      await workerStore.download(photoPath(associationId, newId())),
+      isNull,
+    );
+
+    // The admin caps the association at the one photo it has.
+    final out = await Process.run('psql', [
+      env.dbUrl,
+      '-c',
+      "insert into setting_overrides (id, association_id, entered_by, "
+          "created_at_device, device_id, updated_at_device, site_id, key, "
+          "value) values ('${newId()}', '$associationId', '$founderId', "
+          "now(), '$founderDevice', now(), '$siteId', 'photoUploadCap', 1)",
+    ]);
+    expect(out.exitCode, 0, reason: '${out.stderr}');
+    await expectLater(
+      founderStore.upload(photoPath(associationId, newId()), bytes),
+      throwsA(isA<PhotoCapReached>()),
+    );
+  });
 }

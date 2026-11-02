@@ -3157,6 +3157,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Photo pas encore disponible'**
   String get photoUnavailable;
+
+  /// No description provided for @syncPhotosWaiting.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photos en attente d\'envoi : {count}'**
+  String syncPhotosWaiting(int count);
+
+  /// No description provided for @syncPhotoCap.
+  ///
+  /// In fr, this message translates to:
+  /// **'Limite de photos atteinte : un administrateur peut la relever dans Réglages.'**
+  String get syncPhotoCap;
+
+  /// No description provided for @settingsPhotos.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photos'**
+  String get settingsPhotos;
+
+  /// No description provided for @settingPhotoUploadCap.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photos envoyées au serveur, au plus'**
+  String get settingPhotoUploadCap;
 }
 
 class _AppLocalizationsDelegate

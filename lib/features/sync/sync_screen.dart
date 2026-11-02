@@ -12,6 +12,10 @@ import '../../sync/sync_status_repository.dart';
 import '../../l10n/formatting.dart';
 import 'backup_actions.dart';
 
+/// This phone's photos marked to send and not sent yet.
+final _pendingPhotosProvider = StreamProvider<List<(String, String?)>>(
+  (ref) => ref.watch(photoRepositoryProvider).watchPendingUploads(),
+);
 final _rejectedProvider = StreamProvider<List<RejectedRow>>(
   (ref) => ref.watch(syncStatusRepositoryProvider).watchRejected(),
 );
@@ -31,6 +35,7 @@ class SyncScreen extends ConsumerWidget {
     final sync = ref.read(syncControllerProvider.notifier);
     final counts =
         ref.watch(syncCountsProvider).value ?? (pending: 0, rejected: 0);
+    final photos = ref.watch(_pendingPhotosProvider).value ?? const [];
     final rejected = ref.watch(_rejectedProvider).value ?? const [];
     final last = ref.watch(_lastSyncProvider).value;
     final worker = ref.watch(sessionProvider).value?.isWorker ?? false;
@@ -71,6 +76,14 @@ class SyncScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(l10n.syncPending(counts.pending)),
           Text(l10n.syncRejectedCount(counts.rejected)),
+          if (photos.isNotEmpty) ...[
+            Text(l10n.syncPhotosWaiting(photos.length)),
+            if (photos.any((p) => p.$2 == 'cap'))
+              Text(
+                l10n.syncPhotoCap,
+                style: TextStyle(color: Colors.red.shade800),
+              ),
+          ],
           if (status != null) ...[
             const SizedBox(height: 8),
             Text(status, style: Theme.of(context).textTheme.titleSmall),
