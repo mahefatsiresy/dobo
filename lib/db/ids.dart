@@ -14,3 +14,8 @@ DateTime utcNow() => DateTime.now().toUtc();
 /// two admins editing it offline edit one row (last write wins).
 String settingOverrideId(String siteId, String key) =>
     _uuid.v5(Namespace.url.value, 'dobo:setting/$siteId/$key');
+
+/// The `Person` of the account [memberId], the same on every phone, so two
+/// admin phones creating it offline create one row (last write wins).
+String accountPersonId(String memberId) =>
+    _uuid.v5(Namespace.url.value, 'dobo:account-person/$memberId');

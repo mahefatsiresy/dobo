@@ -51,6 +51,8 @@ Future<FarmFacts> currentFacts(AppDatabase db) async => FarmFacts(
         deaths: l.deaths,
         signs: {...l.warningSigns, ...l.deathSigns},
         waterColour: l.waterColour,
+        enteredBy: l.enteredBy,
+        observedBy: l.observedBy,
       ),
   ],
 );

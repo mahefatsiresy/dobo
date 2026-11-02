@@ -12,6 +12,8 @@ class LogFact {
     this.deaths = 0,
     this.signs = const {},
     this.waterColour,
+    this.enteredBy = '',
+    this.observedBy,
   });
 
   final String id;
@@ -23,6 +25,12 @@ class LogFact {
   /// Warning signs and signs seen on dead fish.
   final Set<WarningSign> signs;
   final WaterColour? waterColour;
+
+  /// The account that entered it.
+  final String enteredBy;
+
+  /// The person who saw it, when not the one entering (CLAUDE.md "Who").
+  final String? observedBy;
 }
 
 /// Every current record that moves fish, sets their weight or feeds them:

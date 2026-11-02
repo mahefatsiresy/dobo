@@ -48,6 +48,20 @@ void main() {
     expect(l.waterColour, WaterColour.darkGreen);
   });
 
+  test('currentFacts carries enteredBy and observedBy', () async {
+    await logs.save(
+      DailyLogInput(
+        pondId: e1,
+        date: DateTime(2026, 3, 2),
+        feedGivenG: 1000,
+        observedBy: 'p1',
+      ),
+    );
+    final l = (await currentFacts(db)).logs.single;
+    expect(l.enteredBy, session.userId);
+    expect(l.observedBy, 'p1');
+  });
+
   test('watchFarmFacts emits again after a daily log is saved', () async {
     final stream = watchFarmFacts(db);
     final seen = <int>[];
