@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +6,6 @@ import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/form_body.dart';
-import '../photos/photo_strip.dart';
 import '../common/notice.dart';
 import '../common/save_once.dart';
 import '../common/sign_grid.dart';
@@ -30,7 +26,6 @@ class ReportProblemScreen extends ConsumerStatefulWidget {
 class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
     with SaveOnce {
   final _suspected = TextEditingController();
-  final _photos = ValueNotifier<List<Uint8List>>(const []);
   var _signs = <WarningSign>{};
   var _isolate = false;
   var _technician = false;
@@ -38,13 +33,12 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
   @override
   void dispose() {
     _suspected.dispose();
-    _photos.dispose();
     super.dispose();
   }
 
   Future<void> _save() async {
     final suspected = _suspected.text.trim();
-    final id = await ref
+    await ref
         .read(healthRepositoryProvider)
         .report(
           pondId: widget.pondId,
@@ -53,23 +47,6 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
           isolate: _isolate,
           technicianCalled: _technician,
         );
-    // The event is saved; a photo that fails to save never undoes it.
-    final photos = ref.read(photoRepositoryProvider);
-    for (final jpeg in _photos.value) {
-      try {
-        await photos.add(
-          owner: PhotoOwner.healthEvent,
-          ownerId: id,
-          jpeg: jpeg,
-        );
-      } on FileSystemException {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context).photoFailed)),
-          );
-        }
-      }
-    }
     if (mounted) context.pop();
   }
 
@@ -108,7 +85,6 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
             value: _technician,
             onChanged: (v) => setState(() => _technician = v!),
           ),
-          PendingPhotoStrip(photos: _photos),
           gap,
           const HealthInfoCard(),
           const SizedBox(height: 24),

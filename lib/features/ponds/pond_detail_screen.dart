@@ -10,6 +10,7 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
+import '../photos/photo_strip.dart';
 import '../common/estimated.dart';
 import '../common/notice.dart';
 import '../common/pond_colour.dart';
@@ -445,7 +446,7 @@ class _HealthHistory extends ConsumerWidget {
       HealthAction.technicianCalled => l10n.actionTechnician,
       HealthAction.released => l10n.actionReleased,
     };
-    final lines = <(DateTime, String)>[
+    final lines = <(DateTime, String, String?)>[
       for (final e in events)
         (
           e.recordedAt,
@@ -455,6 +456,7 @@ class _HealthHistory extends ConsumerWidget {
             ?e.suspectedIssue,
             ...e.actions.map(action),
           ].join(' · '),
+          e.id,
         ),
       for (final t in treatments)
         (
@@ -462,6 +464,7 @@ class _HealthHistory extends ConsumerWidget {
           '${formatDate(t.recordedAt)} · '
               '${l10n.labelValue(l10n.treatment, '${t.product}, ${t.dose}')}'
               '${t.advisedBy == null ? '' : ' (${t.advisedBy})'}',
+          null,
         ),
     ]..sort((a, b) => b.$1.compareTo(a.$1));
     return Padding(
@@ -473,11 +476,16 @@ class _HealthHistory extends ConsumerWidget {
             l10n.healthHistory,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          for (final (_, text) in lines)
+          for (final (_, text, eventId) in lines) ...[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(text),
             ),
+            // Photos join a saved event, so the form is never lost to the
+            // camera on a low-memory phone (SPEC §8).
+            if (eventId != null)
+              PhotoStrip(owner: PhotoOwner.healthEvent, ownerId: eventId),
+          ],
         ],
       ),
     );

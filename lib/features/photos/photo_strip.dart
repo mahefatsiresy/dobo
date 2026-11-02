@@ -136,46 +136,6 @@ class PhotoStrip extends ConsumerWidget {
   }
 }
 
-/// Photos taken for a record not saved yet; the form saves them with it.
-class PendingPhotoStrip extends ConsumerWidget {
-  const PendingPhotoStrip({super.key, required this.photos});
-
-  final ValueNotifier<List<Uint8List>> photos;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ValueListenableBuilder<List<Uint8List>>(
-        valueListenable: photos,
-        builder: (context, list, _) => Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            for (final (i, bytes) in list.indexed)
-              InkWell(
-                onTap: () => photos.value = [...list]..removeAt(i),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: Image.memory(
-                    bytes,
-                    width: 72,
-                    height: 72,
-                    fit: BoxFit.cover,
-                    cacheWidth: 144,
-                  ),
-                ),
-              ),
-            AddPhotoButton(
-              onPressed: () async {
-                final jpeg = await capturePhoto(context, ref);
-                if (jpeg != null) photos.value = [...photos.value, jpeg];
-              },
-            ),
-          ],
-        ),
-      );
-}
-
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({super.key, required this.onPressed});
 

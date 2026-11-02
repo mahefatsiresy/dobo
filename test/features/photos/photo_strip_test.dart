@@ -188,14 +188,10 @@ void main() {
   );
 
   appTest(
-    'a failed capture shows a message and the problem still saves',
+    'a failed capture shows a message and saves nothing',
     (tester, db) async {
       capture.next = () async => throw Exception('camera busy');
-      final s = (await SetupRepository(db).currentSession())!;
-      final e1 = await PondRepository(db, s).create(pondInput('E1'));
-      await tester.pumpAndSettle();
-      appContainer(tester).read(routerProvider).go('/ponds/$e1/problem');
-      await tester.pumpAndSettle();
+      await openDraft(tester);
       await tapAndSettle(tester, find.text('Ajouter une photo'));
       expect(
         find.text(
@@ -203,21 +199,13 @@ void main() {
         ),
         findsOneWidget,
       );
-      // Let the message go before reaching for Save under it.
-      await tester.pump(const Duration(seconds: 5));
-      await tester.pumpAndSettle();
-      await tapAndSettle(tester, find.text('Enregistrer'));
-      expect(await db.select(db.healthEvents).get(), hasLength(1));
       expect(await db.select(db.photos).get(), isEmpty);
     },
-    overrides: [
-      photoCaptureProvider.overrideWithValue(capture),
-      tempPhotoFiles(),
-    ],
+    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
   );
 
   appTest(
-    'a photo taken on a problem report is kept with its health event',
+    'a health event gets its photo from the pond page, after it is saved',
     (tester, db) async {
       capture.next = () async => tinyImage;
       final s = (await SetupRepository(db).currentSession())!;
@@ -225,19 +213,24 @@ void main() {
       await tester.pumpAndSettle();
       appContainer(tester).read(routerProvider).go('/ponds/$e1/problem');
       await tester.pumpAndSettle();
-      await tapAndSettle(tester, find.text('Ajouter une photo'));
+      // The form never opens the camera: nothing unsaved can be lost.
+      expect(find.text('Ajouter une photo'), findsNothing);
+      await tapAndSettle(tester, find.text('Se frotte'));
       await tapAndSettle(tester, find.text('Enregistrer'));
       final event = await db.select(db.healthEvents).getSingle();
+
+      appContainer(tester).read(routerProvider).go('/ponds/$e1');
+      await tester.pumpAndSettle();
+      await tapAndSettle(tester, find.text('Ajouter une photo'));
       final photo = await db.select(db.photos).getSingle();
       expect(
         (photo.ownerKind, photo.ownerId),
         (PhotoOwner.healthEvent, event.id),
       );
+      await tapAndSettle(tester, find.byKey(ValueKey('photo-${photo.photoKey}')));
+      expect(find.text('Envoyer au serveur'), findsOneWidget);
     },
-    overrides: [
-      photoCaptureProvider.overrideWithValue(capture),
-      tempPhotoFiles(),
-    ],
+    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
   );
 
   final store = FakePhotoStore();
