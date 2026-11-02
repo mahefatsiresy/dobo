@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
+import '../../db/repositories/visit_repository.dart';
 import '../../domain/report/report_content.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
@@ -36,15 +37,17 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
   final _summary = TextEditingController();
   var _summaryLoaded = false;
   Timer? _debounce;
+  late final VisitRepository _visits;
 
   @override
   void initState() {
     super.initState();
+    _visits = ref.read(visitRepositoryProvider);
     final visitId = widget.visitId;
     if (visitId != null) {
       // Read once from the database: a cached list may predate the summary
       // saved as the visit ended.
-      ref.read(visitRepositoryProvider).get(visitId).then((v) {
+      _visits.get(visitId).then((v) {
         if (mounted && !_summaryLoaded) {
           setState(() {
             _summary.text = v.summary ?? '';
@@ -64,7 +67,13 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
 
   @override
   void dispose() {
-    _debounce?.cancel();
+    // Leaving before the pause: save what was typed, never drop it.
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+      if (_summaryLoaded) {
+        unawaited(_visits.setSummary(widget.visitId!, _summaryText));
+      }
+    }
     _summary.dispose();
     super.dispose();
   }
@@ -78,9 +87,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
     _debounce?.cancel();
     // Never write over the saved summary before it has been read.
     if (!_summaryLoaded) return;
-    await ref
-        .read(visitRepositoryProvider)
-        .setSummary(widget.visitId!, _summaryText);
+    await _visits.setSummary(widget.visitId!, _summaryText);
   }
 
   Future<void> _publish(ReportContent draft) async {

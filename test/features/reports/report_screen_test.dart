@@ -295,6 +295,26 @@ void main() {
     isAdmin: false,
   );
 
+  appTest('summary typed just before leaving the draft is kept', (
+    tester,
+    db,
+  ) async {
+    final s = (await SetupRepository(db).currentSession())!;
+    final visits = VisitRepository(db, s);
+    final v = await visits.start();
+    await visits.end(v);
+    go(tester, '/reports/draft/$v');
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Résumé'),
+      'Digue sud à reprendre',
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+    go(tester, '/reports');
+    await tester.pumpAndSettle();
+    expect((await visits.get(v)).summary, 'Digue sud à reprendre');
+  });
+
   appTest('the draft card leads to the draft', (tester, db) async {
     final s = (await SetupRepository(db).currentSession())!;
     final visits = VisitRepository(db, s);
