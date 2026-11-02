@@ -12,10 +12,14 @@ class FakePhotoStore implements PhotoStore {
   bool offline = false;
   int uploads = 0;
 
+  /// Paths whose upload fails with an unexpected server error.
+  final Set<String> broken = {};
+
   @override
   Future<void> upload(String path, Uint8List bytes) async {
     if (offline) throw SyncOffline();
     uploads++;
+    if (broken.contains(path)) throw StateError('server error');
     if (objects.containsKey(path)) throw PhotoAlreadyStored();
     if (objects.length >= cap) throw PhotoCapReached();
     objects[path] = bytes;

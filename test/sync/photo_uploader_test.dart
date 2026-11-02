@@ -70,16 +70,46 @@ void main() {
     expect(await photos.watchPendingUploads().first, isEmpty);
   });
 
+  test('cap reached leaves it pending with reason cap', () async {
+    store.cap = 0;
+    final key = await photo();
+    expect(await uploader.run(), 0);
+    expect(await photos.watchPendingUploads().first, [(key, 'cap')]);
+  });
+
+  test('past the cap the run stops at the first refusal', () async {
+    store.cap = 0;
+    for (var i = 0; i < 3; i++) {
+      await photo();
+    }
+    expect(await uploader.run(), 0);
+    expect(store.uploads, 1);
+    expect(await photos.watchPendingUploads().first, hasLength(3));
+  });
+
+  test('after a cap refusal, runs wait 6 hours before trying again', () async {
+    var now = DateTime.utc(2026, 3, 20, 8);
+    uploader = PhotoUploader(db, store, files, session, now: () => now);
+    store.cap = 0;
+    await photo();
+    await uploader.run();
+    store.cap = 300;
+    now = now.add(const Duration(hours: 5));
+    expect(await uploader.run(), 0);
+    expect(store.uploads, 1);
+    now = now.add(const Duration(hours: 2));
+    expect(await uploader.run(), 1);
+  });
+
   test(
-    'cap reached leaves it pending with reason cap, retried next run',
+    'an unexpected error on one photo is recorded, the others still go',
     () async {
-      store.cap = 0;
-      final key = await photo();
-      expect(await uploader.run(), 0);
-      expect(await photos.watchPendingUploads().first, [(key, 'cap')]);
-      store.cap = 300;
+      final bad = await photo();
+      final good = await photo();
+      store.broken.add(path(bad));
       expect(await uploader.run(), 1);
-      expect(await photos.watchPendingUploads().first, isEmpty);
+      expect(store.objects.keys, [path(good)]);
+      expect(await photos.watchPendingUploads().first, [(bad, 'failed')]);
     },
   );
 

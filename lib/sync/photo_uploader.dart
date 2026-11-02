@@ -12,15 +12,36 @@ import 'sync_api.dart';
 /// Decision 11). Runs after each sync; a photo it can't send stays on the
 /// phone, waiting, with the reason.
 class PhotoUploader {
-  PhotoUploader(this.db, this.store, this.files, this.session);
+  PhotoUploader(
+    this.db,
+    this.store,
+    this.files,
+    this.session, {
+    this.now = utcNow,
+  });
 
   final AppDatabase db;
   final PhotoStore store;
   final PhotoFiles files;
   final Session session;
+  final DateTime Function() now;
+
+  /// After the server refuses a photo for the cap, runs wait this long:
+  /// every sync would otherwise send a full photo for nothing, on paid
+  /// mobile data. The cap counts the whole association, so one refusal
+  /// stands for all.
+  static const capRetry = Duration(hours: 6);
+  static const _capAtKey = 'photo_cap_at';
 
   /// Returns how many photos it sent.
   Future<int> run() async {
+    final capAt = await (db.select(
+      db.localMeta,
+    )..where((m) => m.key.equals(_capAtKey))).getSingleOrNull();
+    if (capAt != null &&
+        now().difference(DateTime.parse(capAt.value)) < capRetry) {
+      return 0;
+    }
     final done = {
       for (final u in await (db.select(
         db.photoUploads,
@@ -51,9 +72,29 @@ class PhotoUploader {
         await _record(p.photoKey, uploaded: true);
       } on PhotoCapReached {
         await _record(p.photoKey, error: 'cap');
+        await db
+            .into(db.localMeta)
+            .insertOnConflictUpdate(
+              LocalMetaCompanion.insert(
+                key: _capAtKey,
+                value: now().toIso8601String(),
+              ),
+            );
+        break;
       } on SyncOffline {
         break;
+      } on SyncSignedOut {
+        break;
+      } catch (_) {
+        // One photo the server or the phone can't handle must not hold up
+        // the others; it is tried again next sync.
+        await _record(p.photoKey, error: 'failed');
       }
+    }
+    if (sent > 0) {
+      await (db.delete(
+        db.localMeta,
+      )..where((m) => m.key.equals(_capAtKey))).go();
     }
     return sent;
   }
