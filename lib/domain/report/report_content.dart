@@ -93,9 +93,23 @@ class ReportContent {
   };
 
   /// Throws [UnsupportedReportFormat] for content from a newer app.
+  /// Any value this app can't read (a newer enum value, a wrong type) also
+  /// throws it: a report is permanent synced data and must never break the
+  /// screens that list it.
   factory ReportContent.fromJson(Map<String, Object?> j) {
-    final format = j['format'] as int;
-    if (format > currentFormat) throw UnsupportedReportFormat(format);
+    final format = j['format'];
+    if (format is! int || format > currentFormat) {
+      throw UnsupportedReportFormat(format is int ? format : -1);
+    }
+    try {
+      return ReportContent._fromJson(format, j);
+    } on Object catch (e) {
+      if (e is UnsupportedReportFormat) rethrow;
+      throw UnsupportedReportFormat(format);
+    }
+  }
+
+  factory ReportContent._fromJson(int format, Map<String, Object?> j) {
     return ReportContent(
       format: format,
       header: ReportHeader.fromJson(_map(j['header'])),
@@ -155,8 +169,16 @@ class ReportContent {
 
   String encode() => jsonEncode(toJson());
 
-  static ReportContent decode(String json) =>
-      ReportContent.fromJson(_map(jsonDecode(json)));
+  static ReportContent decode(String json) {
+    final Object? parsed;
+    try {
+      parsed = jsonDecode(json);
+    } on FormatException {
+      throw const UnsupportedReportFormat(-1);
+    }
+    if (parsed is! Map) throw const UnsupportedReportFormat(-1);
+    return ReportContent.fromJson(_map(parsed));
+  }
 }
 
 class ReportHeader {

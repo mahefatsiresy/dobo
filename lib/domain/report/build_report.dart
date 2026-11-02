@@ -107,7 +107,7 @@ ReportContent buildReportContent(ReportInputs inputs) {
     health: _health(inputs, counted, inPeriod, known, code),
     water: _water(inputs, live),
     growth: [
-      for (final p in live) _growth(f, p.batchId, p.pondId, p.live.count),
+      for (final p in live) ?_growth(f, p.batchId, p.pondId, p.live.count),
     ],
     feed: _feed(counted, code),
     feedTotalG: counted.fold(0, (sum, l) => sum + l.feedG),
@@ -210,8 +210,11 @@ List<PondWater> _water(ReportInputs inputs, List<Placement> live) {
   ];
 }
 
-BatchGrowth _growth(FarmFacts f, String batchId, String pondId, int live) {
+/// Null when the batch has no known weight in the pond (no weighed arrival
+/// or sample), as alerts and the pond page skip it.
+BatchGrowth? _growth(FarmFacts f, String batchId, String pondId, int live) {
   final points = weighPoints(f, batchId: batchId, pondId: pondId);
+  if (points.isEmpty) return null;
   final periods = fcrPeriods(f, batchId: batchId, pondId: pondId);
   final last = points.last;
   final latest = periods.lastOrNull;
@@ -263,14 +266,16 @@ List<NextItem> _next(
     final batchId = p.batchId;
     final pondId = p.pondId;
     final points = weighPoints(f, batchId: batchId, pondId: pondId);
-    items.add(
-      NextItem(
-        kind: NextKind.sample,
-        date: plus(points.last.date, cfg.sampleIntervalDays),
-        pondId: pondId,
-        batchId: batchId,
-      ),
-    );
+    if (points.isNotEmpty) {
+      items.add(
+        NextItem(
+          kind: NextKind.sample,
+          date: plus(points.last.date, cfg.sampleIntervalDays),
+          pondId: pondId,
+          batchId: batchId,
+        ),
+      );
+    }
     final batch = inputs.batches[batchId];
     if (batch == null) continue;
     if (batch.status == BatchStatus.quarantine) {

@@ -259,6 +259,26 @@ void main() {
     expect(c.health.single.deaths, 1000);
   });
 
+  test('a batch in a pond with no weighing point gets no growth line', () {
+    // An unweighed move out of a pond the batch was never stocked in (a
+    // stocking corrected to another pond, or a pull cut between tables).
+    final c = build(
+      stockings: const [],
+      transfers: [
+        TransferFact(
+          batchId: 'l1',
+          fromPondId: 'e1',
+          toPondId: 'e2',
+          count: 300,
+          avgWeightG: null,
+          date: d(10),
+        ),
+      ],
+    );
+    expect(c.growth.where((g) => g.pondId == 'e2'), isEmpty);
+    expect(c.next.where((n) => n.kind == NextKind.sample), isEmpty);
+  });
+
   test('water lists ponds holding fish with their latest reading', () {
     final c = build(
       stockings: [

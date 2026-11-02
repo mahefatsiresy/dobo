@@ -225,6 +225,23 @@ void main() {
     expect(p.health.single.deaths, 12);
   });
 
+  test('an unknown enum value in a format-1 report reads as unsupported', () {
+    final json = full().toJson();
+    (json['alerts']! as List).add({
+      'kind': 'someFutureKind',
+      'severity': 'warning',
+      'facts': <String, Object?>{},
+    });
+    expect(
+      () => ReportContent.fromJson(json),
+      throwsA(isA<UnsupportedReportFormat>()),
+    );
+    expect(
+      () => ReportContent.decode('not json'),
+      throwsA(isA<UnsupportedReportFormat>()),
+    );
+  });
+
   test('rejects format 2', () {
     final json = full().toJson()..['format'] = 2;
     expect(
