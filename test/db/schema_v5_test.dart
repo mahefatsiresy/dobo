@@ -1,7 +1,6 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/types.dart';
-import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
