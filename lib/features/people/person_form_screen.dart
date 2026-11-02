@@ -84,6 +84,8 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
       }
       _load(person);
     }
+    // An account's person is renamed with the account (Admin › Membres).
+    final linked = id != null && ref.watch(personRolesProvider)[id] != null;
     return Scaffold(
       appBar: AppBar(title: Text(id == null ? l10n.add : _name.text)),
       body: Form(
@@ -92,7 +94,11 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
           children: [
             TextFormField(
               controller: _name,
-              decoration: InputDecoration(labelText: l10n.personName),
+              readOnly: linked,
+              decoration: InputDecoration(
+                labelText: l10n.personName,
+                helperText: linked ? l10n.personRenameFromAdmin : null,
+              ),
               textCapitalization: TextCapitalization.words,
               validator: (v) =>
                   (v ?? '').trim().isEmpty ? l10n.fieldRequired : null,

@@ -1,4 +1,5 @@
 import 'package:dobo/db/database.dart';
+import 'package:dobo/db/ids.dart';
 import 'package:dobo/db/repositories/member_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/db/sync_state.dart';
@@ -79,6 +80,38 @@ void main() {
     );
   });
 
+  test('renaming a member renames the linked person', () async {
+    await member('m2', 'Hery');
+    await db
+        .into(db.people)
+        .insert(
+          PeopleCompanion.insert(
+            id: const Value('p2'),
+            associationId: 'a1',
+            enteredBy: 'm1',
+            deviceId: 'd1',
+            name: 'Hery',
+            syncState: const Value(SyncState.synced),
+          ),
+        );
+    await (db.update(db.members)..where((m) => m.id.equals('m2'))).write(
+      const MembersCompanion(personId: Value('p2')),
+    );
+    await members.update(
+      'm2',
+      name: 'Hery Rabe',
+      role: MemberRole.member,
+      isAdmin: false,
+      isSales: false,
+      active: true,
+      locale: 'fr',
+    );
+    final p = await (db.select(
+      db.people,
+    )..where((p) => p.id.equals('p2'))).getSingle();
+    expect((p.name, p.syncState), ('Hery Rabe', SyncState.pending));
+  });
+
   test('a member changes their own language', () async {
     await member('m1', 'Admin');
     await members.setOwnLocale('mg');
@@ -100,10 +133,11 @@ void main() {
     );
     expect(id, 'w1');
     final m = await db.select(db.members).getSingle();
-    expect(
-      (m.name, m.role, m.syncState),
-      ('Rakoto', MemberRole.worker, SyncState.synced),
-    );
+    expect((m.name, m.role), ('Rakoto', MemberRole.worker));
+    // The admin's phone gives the new account its person straight away.
+    expect(m.personId, accountPersonId('w1'));
+    final p = await db.select(db.people).getSingle();
+    expect((p.id, p.name), (accountPersonId('w1'), 'Rakoto'));
   });
 
   test('groups are created and renamed offline', () async {

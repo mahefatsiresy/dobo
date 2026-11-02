@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../db/database_provider.dart';
+import '../db/repositories/person_repository.dart';
 import '../db/repositories/providers.dart';
 import 'providers.dart';
 import 'sync_api.dart';
@@ -75,10 +76,14 @@ class SyncController extends Notifier<SyncView> {
     }
     state = const SyncView(SyncRunState.running);
     try {
-      await SyncEngine(
-        ref.read(databaseProvider),
-        ref.read(syncApiProvider)!,
-      ).run();
+      final db = ref.read(databaseProvider);
+      await SyncEngine(db, ref.read(syncApiProvider)!).run();
+      // Only admins may write people: their phones give each account its
+      // person. It goes up with the next sync.
+      final session = ref.read(sessionProvider).value;
+      if (session != null && session.isAdmin) {
+        await PersonRepository(db, session).ensureAccountPeople();
+      }
       state = const SyncView(SyncRunState.idle);
     } on SyncOffline {
       state = const SyncView(SyncRunState.offline);

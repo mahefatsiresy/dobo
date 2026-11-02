@@ -188,6 +188,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get personActive => 'Actif';
 
   @override
+  String personOfMember(String name) {
+    return '$name (membre)';
+  }
+
+  @override
+  String personOfWorker(String name) {
+    return '$name (ouvrier)';
+  }
+
+  @override
+  String get personRenameFromAdmin => 'Renommer depuis Admin › Membres';
+
+  @override
   String get personInactive => 'Inactif';
 
   @override

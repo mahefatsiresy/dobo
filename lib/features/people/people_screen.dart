@@ -12,6 +12,7 @@ class PeopleScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final people = ref.watch(peopleProvider).value ?? const [];
+    final roles = ref.watch(personRolesProvider);
     final grey = Theme.of(context).disabledColor;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.morePeople)),
@@ -29,7 +30,7 @@ class PeopleScreen extends ConsumerWidget {
                   ListTile(
                     minTileHeight: 56,
                     leading: const Icon(Icons.person),
-                    title: Text(p.name),
+                    title: Text(personLabel(l10n, p, roles[p.id])),
                     subtitle: p.active
                         ? (p.phone == null ? null : Text(p.phone!))
                         : Text(l10n.personInactive),

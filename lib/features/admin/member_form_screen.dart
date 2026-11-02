@@ -141,6 +141,7 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
     }
     final groups = ref.watch(groupsProvider).value ?? const <Group>[];
     final people = ref.watch(peopleProvider).value ?? const <Person>[];
+    final roles = ref.watch(personRolesProvider);
     final worker = _role == MemberRole.worker;
     // Nobody removes their own rights: one wrong tap could leave the
     // association without an admin.
@@ -256,7 +257,10 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
                 items: [
                   DropdownMenuItem(value: null, child: Text(l10n.memberNone)),
                   for (final p in people.where((p) => p.active))
-                    DropdownMenuItem(value: p.id, child: Text(p.name)),
+                    DropdownMenuItem(
+                      value: p.id,
+                      child: Text(personLabel(l10n, p, roles[p.id])),
+                    ),
                 ],
                 onChanged: (v) => setState(() => _personId = v),
               ),

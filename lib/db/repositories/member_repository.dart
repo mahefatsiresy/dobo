@@ -8,6 +8,7 @@ import '../database.dart';
 import '../ids.dart';
 import '../session.dart';
 import '../sync_state.dart';
+import 'person_repository.dart';
 
 /// Members and their accounts (SPEC F14). Editing works offline and syncs
 /// like any reference row; only creating an account needs the network.
@@ -44,20 +45,36 @@ class MemberRepository {
     required bool isSales,
     required bool active,
     required String locale,
-  }) => (db.update(db.members)..where((m) => m.id.equals(id))).write(
-    MembersCompanion(
-      name: Value(name),
-      groupId: Value(groupId),
-      role: Value(role),
-      isAdmin: Value(isAdmin),
-      isSales: Value(isSales),
-      active: Value(active),
-      locale: Value(locale),
-      deviceId: Value(session.deviceId),
-      updatedAtDevice: Value(utcNow()),
-      syncState: const Value(SyncState.pending),
-    ),
-  );
+  }) => db.transaction(() async {
+    final row = await (db.update(db.members)..where((m) => m.id.equals(id)))
+        .writeReturning(
+          MembersCompanion(
+            name: Value(name),
+            groupId: Value(groupId),
+            role: Value(role),
+            isAdmin: Value(isAdmin),
+            isSales: Value(isSales),
+            active: Value(active),
+            locale: Value(locale),
+            deviceId: Value(session.deviceId),
+            updatedAtDevice: Value(utcNow()),
+            syncState: const Value(SyncState.pending),
+          ),
+        );
+    // The account's name is the person's name: renamed here only.
+    final personId = row.singleOrNull?.personId;
+    if (personId == null) return;
+    await (db.update(
+      db.people,
+    )..where((p) => p.id.equals(personId) & p.name.equals(name).not())).write(
+      PeopleCompanion(
+        name: Value(name),
+        deviceId: Value(session.deviceId),
+        updatedAtDevice: Value(utcNow()),
+        syncState: const Value(SyncState.pending),
+      ),
+    );
+  });
 
   /// The signed-in member's language (SPEC §9), kept on their account.
   Future<void> setOwnLocale(String locale) =>
@@ -79,6 +96,10 @@ class MemberRepository {
       syncTables(db).singleWhere((t) => t.name == 'members'),
       row,
     );
+    // The new account gets its person now rather than at the next sync.
+    if (session.isAdmin) {
+      await PersonRepository(db, session).ensureAccountPeople();
+    }
     return account.memberId;
   }
 }

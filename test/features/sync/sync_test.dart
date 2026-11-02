@@ -1,8 +1,10 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/database_provider.dart';
+import 'package:dobo/db/ids.dart';
 import 'package:dobo/db/repositories/providers.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/sync_state.dart';
+import 'package:dobo/domain/types.dart';
 import 'package:dobo/sync/providers.dart';
 import 'package:dobo/sync/sync_controller.dart';
 import 'package:drift/drift.dart' show Value;
@@ -138,4 +140,40 @@ void main() {
     expect(server.calls, 1 + 16);
     expect(c.read(syncControllerProvider).state, SyncRunState.idle);
   });
+
+  for (final admin in [true, false]) {
+    test('sync on ${admin ? 'an admin' : 'a member'} session '
+        '${admin ? 'links' : "doesn't link"} accounts to people', () async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+      final s = await SetupRepository(db)
+          .completeSetup(siteName: 'Ambohidratrimo', isAdmin: admin);
+      await link(db);
+      await db
+          .into(db.members)
+          .insert(
+            MembersCompanion.insert(
+              id: const Value('m2'),
+              associationId: s.associationId,
+              enteredBy: s.userId,
+              deviceId: 'other',
+              name: 'Hery',
+              role: MemberRole.member,
+              locale: 'fr',
+              syncState: const Value(SyncState.synced),
+            ),
+          );
+      final c = ProviderContainer(
+        overrides: [databaseProvider.overrideWithValue(db), ...online()],
+      );
+      addTearDown(c.dispose);
+      c.listen(sessionProvider, (_, _) {});
+      await c.read(sessionProvider.future);
+      await c.read(syncControllerProvider.notifier).syncNow();
+      final m = await (db.select(
+        db.members,
+      )..where((m) => m.id.equals('m2'))).getSingle();
+      expect(m.personId, admin ? accountPersonId('m2') : isNull);
+    });
+  }
 }

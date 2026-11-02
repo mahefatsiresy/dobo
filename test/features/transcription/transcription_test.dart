@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
+import '../people_test.dart' show addLinkedAccount;
 
 void main() {
   late String e1, rakoto;
@@ -100,5 +101,19 @@ void main() {
     };
     expect(days[DateTime(2026, 3, 31)], 3000);
     expect(days[DateTime(2026, 4, 7)], 4000);
+  });
+
+  appTest('the sheet picker names accounts by role', (tester, db) async {
+    await openWeek(tester, db);
+    await addLinkedAccount(
+      tester,
+      db,
+      memberId: 'm2',
+      personId: 'p2',
+      name: 'Hery',
+    );
+    await tapAndSettle(tester, find.byKey(const ValueKey('sheetOf')));
+    expect(find.text('Hery (membre)'), findsWidgets);
+    expect(find.text('Rakoto'), findsWidgets);
   });
 }

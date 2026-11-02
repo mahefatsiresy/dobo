@@ -162,6 +162,7 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
     final locale = Localizations.localeOf(context);
     final ponds = ref.watch(pondsProvider).value;
     final people = ref.watch(peopleProvider).value;
+    final roles = ref.watch(personRolesProvider);
     final logs = ref.watch(_weekLogsProvider(_days.first)).value;
     if (ponds == null || people == null || logs == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -277,7 +278,10 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
             items: [
               for (final p in people)
                 if (p.active)
-                  DropdownMenuItem(value: p.id, child: Text(p.name)),
+                  DropdownMenuItem(
+                    value: p.id,
+                    child: Text(personLabel(l10n, p, roles[p.id])),
+                  ),
             ],
             onChanged: (v) => setState(() {
               _personId = v;

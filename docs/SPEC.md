@@ -51,7 +51,7 @@ Structure: **Association → Group (family branch) → Member.** Each member bel
 Every synced table carries: `id` (UUIDv7), `association_id`, `entered_by`, `observed_by` (nullable `Person`), `recorded_at` (the date/time the user says it happened), `created_at_device`, `device_id`, `server_received_at`, `server_seq`. Event tables add `supersedes_id` and `is_tombstone`.
 
 **Reference entities (editable, last-write-wins):**
-- `Association`, `Group`, `Member` (account, group, flags), `Person` (workers and others; optional link to a Member).
+- `Association`, `Group`, `Member` (account, group, flags), `Person` (every human: workers, members and others; each account links to one, created by an admin's phone. A record's observer is `observed_by`, else the person of the account in `entered_by`).
 - `Site`: name, location note. v1 runs one site: the app creates it at setup and hides site pickers; the schema keeps `site_id` everywhere so more sites can be added later.
 - `Pond`: site, code (short, painted on a stake: "E1"), colour tag for worker screens, structure type (defaults to `earth`, editable to `tank` or `cage`), role, water supply type, length, width, surface (computed, overridable), depth inlet/outlet, status (`empty`, `preparing`, `ready`, `stocked`, `isolated`): a pond holding fish shows `stocked` and one without shows `empty`, derived from its records; `preparing` and `ready` are set by hand on a pond without fish; `isolated` is set and lifted only by health events (F9).
 - `Batch`: code, species/strain, hatchery, certificate number, monosex flag, stocked date, initial count, initial average weight, planned harvest date, status (`quarantine`, `active`, `harvesting`, `closed`).

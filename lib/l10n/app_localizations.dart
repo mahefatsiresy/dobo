@@ -434,6 +434,24 @@ abstract class AppLocalizations {
   /// **'Actif'**
   String get personActive;
 
+  /// No description provided for @personOfMember.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} (membre)'**
+  String personOfMember(String name);
+
+  /// No description provided for @personOfWorker.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} (ouvrier)'**
+  String personOfWorker(String name);
+
+  /// No description provided for @personRenameFromAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renommer depuis Admin › Membres'**
+  String get personRenameFromAdmin;
+
   /// No description provided for @personInactive.
   ///
   /// In fr, this message translates to:
