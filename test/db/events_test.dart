@@ -61,6 +61,14 @@ void main() {
     expect(await currentCounts(), {950});
   });
 
+  test('chainIds follows two corrections back to the first id', () async {
+    final a = await insert(1000);
+    final b = await db.supersede(db.stockings, a, stocking(900));
+    final c = await db.supersede(db.stockings, b, stocking(950));
+    expect(await db.chainIds(db.stockings, c), {a, b, c});
+    expect(await db.chainIds(db.stockings, a), {a});
+  });
+
   test('a tombstone hides the record and itself', () async {
     final a = await insert(1000);
     final t = await db.tombstone(db.stockings, a, session);

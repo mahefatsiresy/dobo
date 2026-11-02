@@ -16754,6 +16754,2561 @@ class SettingOverridesCompanion extends UpdateCompanion<SettingOverride> {
   }
 }
 
+class $VisitReportsTable extends VisitReports
+    with TableInfo<$VisitReportsTable, VisitReport> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VisitReportsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($VisitReportsTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _visitIdMeta = const VerificationMeta(
+    'visitId',
+  );
+  @override
+  late final GeneratedColumn<String> visitId = GeneratedColumn<String>(
+    'visit_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _siteIdMeta = const VerificationMeta('siteId');
+  @override
+  late final GeneratedColumn<String> siteId = GeneratedColumn<String>(
+    'site_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _periodFromMeta = const VerificationMeta(
+    'periodFrom',
+  );
+  @override
+  late final GeneratedColumn<DateTime> periodFrom = GeneratedColumn<DateTime>(
+    'period_from',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _periodToMeta = const VerificationMeta(
+    'periodTo',
+  );
+  @override
+  late final GeneratedColumn<DateTime> periodTo = GeneratedColumn<DateTime>(
+    'period_to',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    siteId,
+    periodFrom,
+    periodTo,
+    content,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'visit_reports';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VisitReport> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visit_id')) {
+      context.handle(
+        _visitIdMeta,
+        visitId.isAcceptableOrUnknown(data['visit_id']!, _visitIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_visitIdMeta);
+    }
+    if (data.containsKey('site_id')) {
+      context.handle(
+        _siteIdMeta,
+        siteId.isAcceptableOrUnknown(data['site_id']!, _siteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_siteIdMeta);
+    }
+    if (data.containsKey('period_from')) {
+      context.handle(
+        _periodFromMeta,
+        periodFrom.isAcceptableOrUnknown(data['period_from']!, _periodFromMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_periodFromMeta);
+    }
+    if (data.containsKey('period_to')) {
+      context.handle(
+        _periodToMeta,
+        periodTo.isAcceptableOrUnknown(data['period_to']!, _periodToMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_periodToMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  VisitReport map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VisitReport(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $VisitReportsTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      visitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}visit_id'],
+      )!,
+      siteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_id'],
+      )!,
+      periodFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}period_from'],
+      )!,
+      periodTo: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}period_to'],
+      )!,
+      content: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content'],
+      )!,
+    );
+  }
+
+  @override
+  $VisitReportsTable createAlias(String alias) {
+    return $VisitReportsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+}
+
+class VisitReport extends DataClass implements Insertable<VisitReport> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+  final String visitId;
+  final String siteId;
+
+  /// Farm days covered, both included (`farmDateToUtc`).
+  final DateTime periodFrom;
+  final DateTime periodTo;
+  final String content;
+  const VisitReport({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    required this.visitId,
+    required this.siteId,
+    required this.periodFrom,
+    required this.periodTo,
+    required this.content,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $VisitReportsTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    map['visit_id'] = Variable<String>(visitId);
+    map['site_id'] = Variable<String>(siteId);
+    map['period_from'] = Variable<DateTime>(periodFrom);
+    map['period_to'] = Variable<DateTime>(periodTo);
+    map['content'] = Variable<String>(content);
+    return map;
+  }
+
+  VisitReportsCompanion toCompanion(bool nullToAbsent) {
+    return VisitReportsCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      visitId: Value(visitId),
+      siteId: Value(siteId),
+      periodFrom: Value(periodFrom),
+      periodTo: Value(periodTo),
+      content: Value(content),
+    );
+  }
+
+  factory VisitReport.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VisitReport(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $VisitReportsTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      visitId: serializer.fromJson<String>(json['visitId']),
+      siteId: serializer.fromJson<String>(json['siteId']),
+      periodFrom: serializer.fromJson<DateTime>(json['periodFrom']),
+      periodTo: serializer.fromJson<DateTime>(json['periodTo']),
+      content: serializer.fromJson<String>(json['content']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $VisitReportsTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'visitId': serializer.toJson<String>(visitId),
+      'siteId': serializer.toJson<String>(siteId),
+      'periodFrom': serializer.toJson<DateTime>(periodFrom),
+      'periodTo': serializer.toJson<DateTime>(periodTo),
+      'content': serializer.toJson<String>(content),
+    };
+  }
+
+  VisitReport copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    String? visitId,
+    String? siteId,
+    DateTime? periodFrom,
+    DateTime? periodTo,
+    String? content,
+  }) => VisitReport(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    visitId: visitId ?? this.visitId,
+    siteId: siteId ?? this.siteId,
+    periodFrom: periodFrom ?? this.periodFrom,
+    periodTo: periodTo ?? this.periodTo,
+    content: content ?? this.content,
+  );
+  VisitReport copyWithCompanion(VisitReportsCompanion data) {
+    return VisitReport(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      visitId: data.visitId.present ? data.visitId.value : this.visitId,
+      siteId: data.siteId.present ? data.siteId.value : this.siteId,
+      periodFrom: data.periodFrom.present
+          ? data.periodFrom.value
+          : this.periodFrom,
+      periodTo: data.periodTo.present ? data.periodTo.value : this.periodTo,
+      content: data.content.present ? data.content.value : this.content,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VisitReport(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('siteId: $siteId, ')
+          ..write('periodFrom: $periodFrom, ')
+          ..write('periodTo: $periodTo, ')
+          ..write('content: $content')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    visitId,
+    siteId,
+    periodFrom,
+    periodTo,
+    content,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VisitReport &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.visitId == this.visitId &&
+          other.siteId == this.siteId &&
+          other.periodFrom == this.periodFrom &&
+          other.periodTo == this.periodTo &&
+          other.content == this.content);
+}
+
+class VisitReportsCompanion extends UpdateCompanion<VisitReport> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<String> visitId;
+  final Value<String> siteId;
+  final Value<DateTime> periodFrom;
+  final Value<DateTime> periodTo;
+  final Value<String> content;
+  final Value<int> rowid;
+  const VisitReportsCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.visitId = const Value.absent(),
+    this.siteId = const Value.absent(),
+    this.periodFrom = const Value.absent(),
+    this.periodTo = const Value.absent(),
+    this.content = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  VisitReportsCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    required String visitId,
+    required String siteId,
+    required DateTime periodFrom,
+    required DateTime periodTo,
+    required String content,
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       visitId = Value(visitId),
+       siteId = Value(siteId),
+       periodFrom = Value(periodFrom),
+       periodTo = Value(periodTo),
+       content = Value(content);
+  static Insertable<VisitReport> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? visitId,
+    Expression<String>? siteId,
+    Expression<DateTime>? periodFrom,
+    Expression<DateTime>? periodTo,
+    Expression<String>? content,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (visitId != null) 'visit_id': visitId,
+      if (siteId != null) 'site_id': siteId,
+      if (periodFrom != null) 'period_from': periodFrom,
+      if (periodTo != null) 'period_to': periodTo,
+      if (content != null) 'content': content,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  VisitReportsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<String>? visitId,
+    Value<String>? siteId,
+    Value<DateTime>? periodFrom,
+    Value<DateTime>? periodTo,
+    Value<String>? content,
+    Value<int>? rowid,
+  }) {
+    return VisitReportsCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      visitId: visitId ?? this.visitId,
+      siteId: siteId ?? this.siteId,
+      periodFrom: periodFrom ?? this.periodFrom,
+      periodTo: periodTo ?? this.periodTo,
+      content: content ?? this.content,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $VisitReportsTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (visitId.present) {
+      map['visit_id'] = Variable<String>(visitId.value);
+    }
+    if (siteId.present) {
+      map['site_id'] = Variable<String>(siteId.value);
+    }
+    if (periodFrom.present) {
+      map['period_from'] = Variable<DateTime>(periodFrom.value);
+    }
+    if (periodTo.present) {
+      map['period_to'] = Variable<DateTime>(periodTo.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VisitReportsCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('visitId: $visitId, ')
+          ..write('siteId: $siteId, ')
+          ..write('periodFrom: $periodFrom, ')
+          ..write('periodTo: $periodTo, ')
+          ..write('content: $content, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PhotosTable extends Photos with TableInfo<$PhotosTable, Photo> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PhotosTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newId,
+  );
+  static const VerificationMeta _associationIdMeta = const VerificationMeta(
+    'associationId',
+  );
+  @override
+  late final GeneratedColumn<String> associationId = GeneratedColumn<String>(
+    'association_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enteredByMeta = const VerificationMeta(
+    'enteredBy',
+  );
+  @override
+  late final GeneratedColumn<String> enteredBy = GeneratedColumn<String>(
+    'entered_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observedByMeta = const VerificationMeta(
+    'observedBy',
+  );
+  @override
+  late final GeneratedColumn<String> observedBy = GeneratedColumn<String>(
+    'observed_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtDeviceMeta = const VerificationMeta(
+    'createdAtDevice',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAtDevice =
+      GeneratedColumn<DateTime>(
+        'created_at_device',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+        clientDefault: utcNow,
+      );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverReceivedAtMeta = const VerificationMeta(
+    'serverReceivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> serverReceivedAt =
+      GeneratedColumn<DateTime>(
+        'server_received_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverSeqMeta = const VerificationMeta(
+    'serverSeq',
+  );
+  @override
+  late final GeneratedColumn<int> serverSeq = GeneratedColumn<int>(
+    'server_seq',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncState, String> syncState =
+      GeneratedColumn<String>(
+        'sync_state',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SyncState.pending.name),
+      ).withConverter<SyncState>($PhotosTable.$convertersyncState);
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _supersedesIdMeta = const VerificationMeta(
+    'supersedesId',
+  );
+  @override
+  late final GeneratedColumn<String> supersedesId = GeneratedColumn<String>(
+    'supersedes_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isTombstoneMeta = const VerificationMeta(
+    'isTombstone',
+  );
+  @override
+  late final GeneratedColumn<bool> isTombstone = GeneratedColumn<bool>(
+    'is_tombstone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_tombstone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<PhotoOwner, String> ownerKind =
+      GeneratedColumn<String>(
+        'owner_kind',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<PhotoOwner>($PhotosTable.$converterownerKind);
+  static const VerificationMeta _ownerIdMeta = const VerificationMeta(
+    'ownerId',
+  );
+  @override
+  late final GeneratedColumn<String> ownerId = GeneratedColumn<String>(
+    'owner_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _photoKeyMeta = const VerificationMeta(
+    'photoKey',
+  );
+  @override
+  late final GeneratedColumn<String> photoKey = GeneratedColumn<String>(
+    'photo_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _uploadMeta = const VerificationMeta('upload');
+  @override
+  late final GeneratedColumn<bool> upload = GeneratedColumn<bool>(
+    'upload',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("upload" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _bytesMeta = const VerificationMeta('bytes');
+  @override
+  late final GeneratedColumn<int> bytes = GeneratedColumn<int>(
+    'bytes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    ownerKind,
+    ownerId,
+    photoKey,
+    upload,
+    bytes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'photos';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Photo> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('association_id')) {
+      context.handle(
+        _associationIdMeta,
+        associationId.isAcceptableOrUnknown(
+          data['association_id']!,
+          _associationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_associationIdMeta);
+    }
+    if (data.containsKey('entered_by')) {
+      context.handle(
+        _enteredByMeta,
+        enteredBy.isAcceptableOrUnknown(data['entered_by']!, _enteredByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enteredByMeta);
+    }
+    if (data.containsKey('observed_by')) {
+      context.handle(
+        _observedByMeta,
+        observedBy.isAcceptableOrUnknown(data['observed_by']!, _observedByMeta),
+      );
+    }
+    if (data.containsKey('created_at_device')) {
+      context.handle(
+        _createdAtDeviceMeta,
+        createdAtDevice.isAcceptableOrUnknown(
+          data['created_at_device']!,
+          _createdAtDeviceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('server_received_at')) {
+      context.handle(
+        _serverReceivedAtMeta,
+        serverReceivedAt.isAcceptableOrUnknown(
+          data['server_received_at']!,
+          _serverReceivedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_seq')) {
+      context.handle(
+        _serverSeqMeta,
+        serverSeq.isAcceptableOrUnknown(data['server_seq']!, _serverSeqMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('supersedes_id')) {
+      context.handle(
+        _supersedesIdMeta,
+        supersedesId.isAcceptableOrUnknown(
+          data['supersedes_id']!,
+          _supersedesIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_tombstone')) {
+      context.handle(
+        _isTombstoneMeta,
+        isTombstone.isAcceptableOrUnknown(
+          data['is_tombstone']!,
+          _isTombstoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('owner_id')) {
+      context.handle(
+        _ownerIdMeta,
+        ownerId.isAcceptableOrUnknown(data['owner_id']!, _ownerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerIdMeta);
+    }
+    if (data.containsKey('photo_key')) {
+      context.handle(
+        _photoKeyMeta,
+        photoKey.isAcceptableOrUnknown(data['photo_key']!, _photoKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_photoKeyMeta);
+    }
+    if (data.containsKey('upload')) {
+      context.handle(
+        _uploadMeta,
+        upload.isAcceptableOrUnknown(data['upload']!, _uploadMeta),
+      );
+    }
+    if (data.containsKey('bytes')) {
+      context.handle(
+        _bytesMeta,
+        bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bytesMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Photo map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Photo(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      associationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}association_id'],
+      )!,
+      enteredBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entered_by'],
+      )!,
+      observedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observed_by'],
+      ),
+      createdAtDevice: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at_device'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      serverReceivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}server_received_at'],
+      ),
+      serverSeq: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_seq'],
+      ),
+      syncState: $PhotosTable.$convertersyncState.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_state'],
+        )!,
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      supersedesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supersedes_id'],
+      ),
+      isTombstone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_tombstone'],
+      )!,
+      ownerKind: $PhotosTable.$converterownerKind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}owner_kind'],
+        )!,
+      ),
+      ownerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner_id'],
+      )!,
+      photoKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_key'],
+      )!,
+      upload: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}upload'],
+      )!,
+      bytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}bytes'],
+      )!,
+    );
+  }
+
+  @override
+  $PhotosTable createAlias(String alias) {
+    return $PhotosTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SyncState, String, String> $convertersyncState =
+      const EnumNameConverter<SyncState>(SyncState.values);
+  static JsonTypeConverter2<PhotoOwner, String, String> $converterownerKind =
+      const EnumNameConverter<PhotoOwner>(PhotoOwner.values);
+}
+
+class Photo extends DataClass implements Insertable<Photo> {
+  final String id;
+  final String associationId;
+  final String enteredBy;
+  final String? observedBy;
+  final DateTime createdAtDevice;
+  final String deviceId;
+  final DateTime? serverReceivedAt;
+  final int? serverSeq;
+  final SyncState syncState;
+  final String? syncError;
+  final DateTime recordedAt;
+  final String? supersedesId;
+  final bool isTombstone;
+  final PhotoOwner ownerKind;
+  final String ownerId;
+
+  /// The first row's id; stays the same across corrections. The file is
+  /// `<photoKey>.jpg`.
+  final String photoKey;
+  final bool upload;
+  final int bytes;
+  const Photo({
+    required this.id,
+    required this.associationId,
+    required this.enteredBy,
+    this.observedBy,
+    required this.createdAtDevice,
+    required this.deviceId,
+    this.serverReceivedAt,
+    this.serverSeq,
+    required this.syncState,
+    this.syncError,
+    required this.recordedAt,
+    this.supersedesId,
+    required this.isTombstone,
+    required this.ownerKind,
+    required this.ownerId,
+    required this.photoKey,
+    required this.upload,
+    required this.bytes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['association_id'] = Variable<String>(associationId);
+    map['entered_by'] = Variable<String>(enteredBy);
+    if (!nullToAbsent || observedBy != null) {
+      map['observed_by'] = Variable<String>(observedBy);
+    }
+    map['created_at_device'] = Variable<DateTime>(createdAtDevice);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || serverReceivedAt != null) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt);
+    }
+    if (!nullToAbsent || serverSeq != null) {
+      map['server_seq'] = Variable<int>(serverSeq);
+    }
+    {
+      map['sync_state'] = Variable<String>(
+        $PhotosTable.$convertersyncState.toSql(syncState),
+      );
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || supersedesId != null) {
+      map['supersedes_id'] = Variable<String>(supersedesId);
+    }
+    map['is_tombstone'] = Variable<bool>(isTombstone);
+    {
+      map['owner_kind'] = Variable<String>(
+        $PhotosTable.$converterownerKind.toSql(ownerKind),
+      );
+    }
+    map['owner_id'] = Variable<String>(ownerId);
+    map['photo_key'] = Variable<String>(photoKey);
+    map['upload'] = Variable<bool>(upload);
+    map['bytes'] = Variable<int>(bytes);
+    return map;
+  }
+
+  PhotosCompanion toCompanion(bool nullToAbsent) {
+    return PhotosCompanion(
+      id: Value(id),
+      associationId: Value(associationId),
+      enteredBy: Value(enteredBy),
+      observedBy: observedBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observedBy),
+      createdAtDevice: Value(createdAtDevice),
+      deviceId: Value(deviceId),
+      serverReceivedAt: serverReceivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverReceivedAt),
+      serverSeq: serverSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverSeq),
+      syncState: Value(syncState),
+      syncError: syncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncError),
+      recordedAt: Value(recordedAt),
+      supersedesId: supersedesId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supersedesId),
+      isTombstone: Value(isTombstone),
+      ownerKind: Value(ownerKind),
+      ownerId: Value(ownerId),
+      photoKey: Value(photoKey),
+      upload: Value(upload),
+      bytes: Value(bytes),
+    );
+  }
+
+  factory Photo.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Photo(
+      id: serializer.fromJson<String>(json['id']),
+      associationId: serializer.fromJson<String>(json['associationId']),
+      enteredBy: serializer.fromJson<String>(json['enteredBy']),
+      observedBy: serializer.fromJson<String?>(json['observedBy']),
+      createdAtDevice: serializer.fromJson<DateTime>(json['createdAtDevice']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      serverReceivedAt: serializer.fromJson<DateTime?>(
+        json['serverReceivedAt'],
+      ),
+      serverSeq: serializer.fromJson<int?>(json['serverSeq']),
+      syncState: $PhotosTable.$convertersyncState.fromJson(
+        serializer.fromJson<String>(json['syncState']),
+      ),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      supersedesId: serializer.fromJson<String?>(json['supersedesId']),
+      isTombstone: serializer.fromJson<bool>(json['isTombstone']),
+      ownerKind: $PhotosTable.$converterownerKind.fromJson(
+        serializer.fromJson<String>(json['ownerKind']),
+      ),
+      ownerId: serializer.fromJson<String>(json['ownerId']),
+      photoKey: serializer.fromJson<String>(json['photoKey']),
+      upload: serializer.fromJson<bool>(json['upload']),
+      bytes: serializer.fromJson<int>(json['bytes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'associationId': serializer.toJson<String>(associationId),
+      'enteredBy': serializer.toJson<String>(enteredBy),
+      'observedBy': serializer.toJson<String?>(observedBy),
+      'createdAtDevice': serializer.toJson<DateTime>(createdAtDevice),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'serverReceivedAt': serializer.toJson<DateTime?>(serverReceivedAt),
+      'serverSeq': serializer.toJson<int?>(serverSeq),
+      'syncState': serializer.toJson<String>(
+        $PhotosTable.$convertersyncState.toJson(syncState),
+      ),
+      'syncError': serializer.toJson<String?>(syncError),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'supersedesId': serializer.toJson<String?>(supersedesId),
+      'isTombstone': serializer.toJson<bool>(isTombstone),
+      'ownerKind': serializer.toJson<String>(
+        $PhotosTable.$converterownerKind.toJson(ownerKind),
+      ),
+      'ownerId': serializer.toJson<String>(ownerId),
+      'photoKey': serializer.toJson<String>(photoKey),
+      'upload': serializer.toJson<bool>(upload),
+      'bytes': serializer.toJson<int>(bytes),
+    };
+  }
+
+  Photo copyWith({
+    String? id,
+    String? associationId,
+    String? enteredBy,
+    Value<String?> observedBy = const Value.absent(),
+    DateTime? createdAtDevice,
+    String? deviceId,
+    Value<DateTime?> serverReceivedAt = const Value.absent(),
+    Value<int?> serverSeq = const Value.absent(),
+    SyncState? syncState,
+    Value<String?> syncError = const Value.absent(),
+    DateTime? recordedAt,
+    Value<String?> supersedesId = const Value.absent(),
+    bool? isTombstone,
+    PhotoOwner? ownerKind,
+    String? ownerId,
+    String? photoKey,
+    bool? upload,
+    int? bytes,
+  }) => Photo(
+    id: id ?? this.id,
+    associationId: associationId ?? this.associationId,
+    enteredBy: enteredBy ?? this.enteredBy,
+    observedBy: observedBy.present ? observedBy.value : this.observedBy,
+    createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+    deviceId: deviceId ?? this.deviceId,
+    serverReceivedAt: serverReceivedAt.present
+        ? serverReceivedAt.value
+        : this.serverReceivedAt,
+    serverSeq: serverSeq.present ? serverSeq.value : this.serverSeq,
+    syncState: syncState ?? this.syncState,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    recordedAt: recordedAt ?? this.recordedAt,
+    supersedesId: supersedesId.present ? supersedesId.value : this.supersedesId,
+    isTombstone: isTombstone ?? this.isTombstone,
+    ownerKind: ownerKind ?? this.ownerKind,
+    ownerId: ownerId ?? this.ownerId,
+    photoKey: photoKey ?? this.photoKey,
+    upload: upload ?? this.upload,
+    bytes: bytes ?? this.bytes,
+  );
+  Photo copyWithCompanion(PhotosCompanion data) {
+    return Photo(
+      id: data.id.present ? data.id.value : this.id,
+      associationId: data.associationId.present
+          ? data.associationId.value
+          : this.associationId,
+      enteredBy: data.enteredBy.present ? data.enteredBy.value : this.enteredBy,
+      observedBy: data.observedBy.present
+          ? data.observedBy.value
+          : this.observedBy,
+      createdAtDevice: data.createdAtDevice.present
+          ? data.createdAtDevice.value
+          : this.createdAtDevice,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      serverReceivedAt: data.serverReceivedAt.present
+          ? data.serverReceivedAt.value
+          : this.serverReceivedAt,
+      serverSeq: data.serverSeq.present ? data.serverSeq.value : this.serverSeq,
+      syncState: data.syncState.present ? data.syncState.value : this.syncState,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      supersedesId: data.supersedesId.present
+          ? data.supersedesId.value
+          : this.supersedesId,
+      isTombstone: data.isTombstone.present
+          ? data.isTombstone.value
+          : this.isTombstone,
+      ownerKind: data.ownerKind.present ? data.ownerKind.value : this.ownerKind,
+      ownerId: data.ownerId.present ? data.ownerId.value : this.ownerId,
+      photoKey: data.photoKey.present ? data.photoKey.value : this.photoKey,
+      upload: data.upload.present ? data.upload.value : this.upload,
+      bytes: data.bytes.present ? data.bytes.value : this.bytes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Photo(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('ownerKind: $ownerKind, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('photoKey: $photoKey, ')
+          ..write('upload: $upload, ')
+          ..write('bytes: $bytes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    associationId,
+    enteredBy,
+    observedBy,
+    createdAtDevice,
+    deviceId,
+    serverReceivedAt,
+    serverSeq,
+    syncState,
+    syncError,
+    recordedAt,
+    supersedesId,
+    isTombstone,
+    ownerKind,
+    ownerId,
+    photoKey,
+    upload,
+    bytes,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Photo &&
+          other.id == this.id &&
+          other.associationId == this.associationId &&
+          other.enteredBy == this.enteredBy &&
+          other.observedBy == this.observedBy &&
+          other.createdAtDevice == this.createdAtDevice &&
+          other.deviceId == this.deviceId &&
+          other.serverReceivedAt == this.serverReceivedAt &&
+          other.serverSeq == this.serverSeq &&
+          other.syncState == this.syncState &&
+          other.syncError == this.syncError &&
+          other.recordedAt == this.recordedAt &&
+          other.supersedesId == this.supersedesId &&
+          other.isTombstone == this.isTombstone &&
+          other.ownerKind == this.ownerKind &&
+          other.ownerId == this.ownerId &&
+          other.photoKey == this.photoKey &&
+          other.upload == this.upload &&
+          other.bytes == this.bytes);
+}
+
+class PhotosCompanion extends UpdateCompanion<Photo> {
+  final Value<String> id;
+  final Value<String> associationId;
+  final Value<String> enteredBy;
+  final Value<String?> observedBy;
+  final Value<DateTime> createdAtDevice;
+  final Value<String> deviceId;
+  final Value<DateTime?> serverReceivedAt;
+  final Value<int?> serverSeq;
+  final Value<SyncState> syncState;
+  final Value<String?> syncError;
+  final Value<DateTime> recordedAt;
+  final Value<String?> supersedesId;
+  final Value<bool> isTombstone;
+  final Value<PhotoOwner> ownerKind;
+  final Value<String> ownerId;
+  final Value<String> photoKey;
+  final Value<bool> upload;
+  final Value<int> bytes;
+  final Value<int> rowid;
+  const PhotosCompanion({
+    this.id = const Value.absent(),
+    this.associationId = const Value.absent(),
+    this.enteredBy = const Value.absent(),
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    this.ownerKind = const Value.absent(),
+    this.ownerId = const Value.absent(),
+    this.photoKey = const Value.absent(),
+    this.upload = const Value.absent(),
+    this.bytes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PhotosCompanion.insert({
+    this.id = const Value.absent(),
+    required String associationId,
+    required String enteredBy,
+    this.observedBy = const Value.absent(),
+    this.createdAtDevice = const Value.absent(),
+    required String deviceId,
+    this.serverReceivedAt = const Value.absent(),
+    this.serverSeq = const Value.absent(),
+    this.syncState = const Value.absent(),
+    this.syncError = const Value.absent(),
+    required DateTime recordedAt,
+    this.supersedesId = const Value.absent(),
+    this.isTombstone = const Value.absent(),
+    required PhotoOwner ownerKind,
+    required String ownerId,
+    required String photoKey,
+    this.upload = const Value.absent(),
+    required int bytes,
+    this.rowid = const Value.absent(),
+  }) : associationId = Value(associationId),
+       enteredBy = Value(enteredBy),
+       deviceId = Value(deviceId),
+       recordedAt = Value(recordedAt),
+       ownerKind = Value(ownerKind),
+       ownerId = Value(ownerId),
+       photoKey = Value(photoKey),
+       bytes = Value(bytes);
+  static Insertable<Photo> custom({
+    Expression<String>? id,
+    Expression<String>? associationId,
+    Expression<String>? enteredBy,
+    Expression<String>? observedBy,
+    Expression<DateTime>? createdAtDevice,
+    Expression<String>? deviceId,
+    Expression<DateTime>? serverReceivedAt,
+    Expression<int>? serverSeq,
+    Expression<String>? syncState,
+    Expression<String>? syncError,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? supersedesId,
+    Expression<bool>? isTombstone,
+    Expression<String>? ownerKind,
+    Expression<String>? ownerId,
+    Expression<String>? photoKey,
+    Expression<bool>? upload,
+    Expression<int>? bytes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (associationId != null) 'association_id': associationId,
+      if (enteredBy != null) 'entered_by': enteredBy,
+      if (observedBy != null) 'observed_by': observedBy,
+      if (createdAtDevice != null) 'created_at_device': createdAtDevice,
+      if (deviceId != null) 'device_id': deviceId,
+      if (serverReceivedAt != null) 'server_received_at': serverReceivedAt,
+      if (serverSeq != null) 'server_seq': serverSeq,
+      if (syncState != null) 'sync_state': syncState,
+      if (syncError != null) 'sync_error': syncError,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (supersedesId != null) 'supersedes_id': supersedesId,
+      if (isTombstone != null) 'is_tombstone': isTombstone,
+      if (ownerKind != null) 'owner_kind': ownerKind,
+      if (ownerId != null) 'owner_id': ownerId,
+      if (photoKey != null) 'photo_key': photoKey,
+      if (upload != null) 'upload': upload,
+      if (bytes != null) 'bytes': bytes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PhotosCompanion copyWith({
+    Value<String>? id,
+    Value<String>? associationId,
+    Value<String>? enteredBy,
+    Value<String?>? observedBy,
+    Value<DateTime>? createdAtDevice,
+    Value<String>? deviceId,
+    Value<DateTime?>? serverReceivedAt,
+    Value<int?>? serverSeq,
+    Value<SyncState>? syncState,
+    Value<String?>? syncError,
+    Value<DateTime>? recordedAt,
+    Value<String?>? supersedesId,
+    Value<bool>? isTombstone,
+    Value<PhotoOwner>? ownerKind,
+    Value<String>? ownerId,
+    Value<String>? photoKey,
+    Value<bool>? upload,
+    Value<int>? bytes,
+    Value<int>? rowid,
+  }) {
+    return PhotosCompanion(
+      id: id ?? this.id,
+      associationId: associationId ?? this.associationId,
+      enteredBy: enteredBy ?? this.enteredBy,
+      observedBy: observedBy ?? this.observedBy,
+      createdAtDevice: createdAtDevice ?? this.createdAtDevice,
+      deviceId: deviceId ?? this.deviceId,
+      serverReceivedAt: serverReceivedAt ?? this.serverReceivedAt,
+      serverSeq: serverSeq ?? this.serverSeq,
+      syncState: syncState ?? this.syncState,
+      syncError: syncError ?? this.syncError,
+      recordedAt: recordedAt ?? this.recordedAt,
+      supersedesId: supersedesId ?? this.supersedesId,
+      isTombstone: isTombstone ?? this.isTombstone,
+      ownerKind: ownerKind ?? this.ownerKind,
+      ownerId: ownerId ?? this.ownerId,
+      photoKey: photoKey ?? this.photoKey,
+      upload: upload ?? this.upload,
+      bytes: bytes ?? this.bytes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (associationId.present) {
+      map['association_id'] = Variable<String>(associationId.value);
+    }
+    if (enteredBy.present) {
+      map['entered_by'] = Variable<String>(enteredBy.value);
+    }
+    if (observedBy.present) {
+      map['observed_by'] = Variable<String>(observedBy.value);
+    }
+    if (createdAtDevice.present) {
+      map['created_at_device'] = Variable<DateTime>(createdAtDevice.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (serverReceivedAt.present) {
+      map['server_received_at'] = Variable<DateTime>(serverReceivedAt.value);
+    }
+    if (serverSeq.present) {
+      map['server_seq'] = Variable<int>(serverSeq.value);
+    }
+    if (syncState.present) {
+      map['sync_state'] = Variable<String>(
+        $PhotosTable.$convertersyncState.toSql(syncState.value),
+      );
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (supersedesId.present) {
+      map['supersedes_id'] = Variable<String>(supersedesId.value);
+    }
+    if (isTombstone.present) {
+      map['is_tombstone'] = Variable<bool>(isTombstone.value);
+    }
+    if (ownerKind.present) {
+      map['owner_kind'] = Variable<String>(
+        $PhotosTable.$converterownerKind.toSql(ownerKind.value),
+      );
+    }
+    if (ownerId.present) {
+      map['owner_id'] = Variable<String>(ownerId.value);
+    }
+    if (photoKey.present) {
+      map['photo_key'] = Variable<String>(photoKey.value);
+    }
+    if (upload.present) {
+      map['upload'] = Variable<bool>(upload.value);
+    }
+    if (bytes.present) {
+      map['bytes'] = Variable<int>(bytes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhotosCompanion(')
+          ..write('id: $id, ')
+          ..write('associationId: $associationId, ')
+          ..write('enteredBy: $enteredBy, ')
+          ..write('observedBy: $observedBy, ')
+          ..write('createdAtDevice: $createdAtDevice, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('serverReceivedAt: $serverReceivedAt, ')
+          ..write('serverSeq: $serverSeq, ')
+          ..write('syncState: $syncState, ')
+          ..write('syncError: $syncError, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('supersedesId: $supersedesId, ')
+          ..write('isTombstone: $isTombstone, ')
+          ..write('ownerKind: $ownerKind, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('photoKey: $photoKey, ')
+          ..write('upload: $upload, ')
+          ..write('bytes: $bytes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ReportReadsTable extends ReportReads
+    with TableInfo<$ReportReadsTable, ReportRead> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ReportReadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _reportIdMeta = const VerificationMeta(
+    'reportId',
+  );
+  @override
+  late final GeneratedColumn<String> reportId = GeneratedColumn<String>(
+    'report_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _readAtMeta = const VerificationMeta('readAt');
+  @override
+  late final GeneratedColumn<DateTime> readAt = GeneratedColumn<DateTime>(
+    'read_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [reportId, readAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'report_reads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ReportRead> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('report_id')) {
+      context.handle(
+        _reportIdMeta,
+        reportId.isAcceptableOrUnknown(data['report_id']!, _reportIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reportIdMeta);
+    }
+    if (data.containsKey('read_at')) {
+      context.handle(
+        _readAtMeta,
+        readAt.isAcceptableOrUnknown(data['read_at']!, _readAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_readAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {reportId};
+  @override
+  ReportRead map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ReportRead(
+      reportId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}report_id'],
+      )!,
+      readAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}read_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ReportReadsTable createAlias(String alias) {
+    return $ReportReadsTable(attachedDatabase, alias);
+  }
+}
+
+class ReportRead extends DataClass implements Insertable<ReportRead> {
+  final String reportId;
+  final DateTime readAt;
+  const ReportRead({required this.reportId, required this.readAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['report_id'] = Variable<String>(reportId);
+    map['read_at'] = Variable<DateTime>(readAt);
+    return map;
+  }
+
+  ReportReadsCompanion toCompanion(bool nullToAbsent) {
+    return ReportReadsCompanion(
+      reportId: Value(reportId),
+      readAt: Value(readAt),
+    );
+  }
+
+  factory ReportRead.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ReportRead(
+      reportId: serializer.fromJson<String>(json['reportId']),
+      readAt: serializer.fromJson<DateTime>(json['readAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'reportId': serializer.toJson<String>(reportId),
+      'readAt': serializer.toJson<DateTime>(readAt),
+    };
+  }
+
+  ReportRead copyWith({String? reportId, DateTime? readAt}) => ReportRead(
+    reportId: reportId ?? this.reportId,
+    readAt: readAt ?? this.readAt,
+  );
+  ReportRead copyWithCompanion(ReportReadsCompanion data) {
+    return ReportRead(
+      reportId: data.reportId.present ? data.reportId.value : this.reportId,
+      readAt: data.readAt.present ? data.readAt.value : this.readAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReportRead(')
+          ..write('reportId: $reportId, ')
+          ..write('readAt: $readAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(reportId, readAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ReportRead &&
+          other.reportId == this.reportId &&
+          other.readAt == this.readAt);
+}
+
+class ReportReadsCompanion extends UpdateCompanion<ReportRead> {
+  final Value<String> reportId;
+  final Value<DateTime> readAt;
+  final Value<int> rowid;
+  const ReportReadsCompanion({
+    this.reportId = const Value.absent(),
+    this.readAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ReportReadsCompanion.insert({
+    required String reportId,
+    required DateTime readAt,
+    this.rowid = const Value.absent(),
+  }) : reportId = Value(reportId),
+       readAt = Value(readAt);
+  static Insertable<ReportRead> custom({
+    Expression<String>? reportId,
+    Expression<DateTime>? readAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (reportId != null) 'report_id': reportId,
+      if (readAt != null) 'read_at': readAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ReportReadsCompanion copyWith({
+    Value<String>? reportId,
+    Value<DateTime>? readAt,
+    Value<int>? rowid,
+  }) {
+    return ReportReadsCompanion(
+      reportId: reportId ?? this.reportId,
+      readAt: readAt ?? this.readAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (reportId.present) {
+      map['report_id'] = Variable<String>(reportId.value);
+    }
+    if (readAt.present) {
+      map['read_at'] = Variable<DateTime>(readAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReportReadsCompanion(')
+          ..write('reportId: $reportId, ')
+          ..write('readAt: $readAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PhotoUploadsTable extends PhotoUploads
+    with TableInfo<$PhotoUploadsTable, PhotoUpload> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PhotoUploadsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _photoKeyMeta = const VerificationMeta(
+    'photoKey',
+  );
+  @override
+  late final GeneratedColumn<String> photoKey = GeneratedColumn<String>(
+    'photo_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _uploadedAtMeta = const VerificationMeta(
+    'uploadedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> uploadedAt = GeneratedColumn<DateTime>(
+    'uploaded_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _errorMeta = const VerificationMeta('error');
+  @override
+  late final GeneratedColumn<String> error = GeneratedColumn<String>(
+    'error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [photoKey, uploadedAt, error];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'photo_uploads';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PhotoUpload> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('photo_key')) {
+      context.handle(
+        _photoKeyMeta,
+        photoKey.isAcceptableOrUnknown(data['photo_key']!, _photoKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_photoKeyMeta);
+    }
+    if (data.containsKey('uploaded_at')) {
+      context.handle(
+        _uploadedAtMeta,
+        uploadedAt.isAcceptableOrUnknown(data['uploaded_at']!, _uploadedAtMeta),
+      );
+    }
+    if (data.containsKey('error')) {
+      context.handle(
+        _errorMeta,
+        error.isAcceptableOrUnknown(data['error']!, _errorMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {photoKey};
+  @override
+  PhotoUpload map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PhotoUpload(
+      photoKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_key'],
+      )!,
+      uploadedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}uploaded_at'],
+      ),
+      error: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}error'],
+      ),
+    );
+  }
+
+  @override
+  $PhotoUploadsTable createAlias(String alias) {
+    return $PhotoUploadsTable(attachedDatabase, alias);
+  }
+}
+
+class PhotoUpload extends DataClass implements Insertable<PhotoUpload> {
+  final String photoKey;
+  final DateTime? uploadedAt;
+  final String? error;
+  const PhotoUpload({required this.photoKey, this.uploadedAt, this.error});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['photo_key'] = Variable<String>(photoKey);
+    if (!nullToAbsent || uploadedAt != null) {
+      map['uploaded_at'] = Variable<DateTime>(uploadedAt);
+    }
+    if (!nullToAbsent || error != null) {
+      map['error'] = Variable<String>(error);
+    }
+    return map;
+  }
+
+  PhotoUploadsCompanion toCompanion(bool nullToAbsent) {
+    return PhotoUploadsCompanion(
+      photoKey: Value(photoKey),
+      uploadedAt: uploadedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uploadedAt),
+      error: error == null && nullToAbsent
+          ? const Value.absent()
+          : Value(error),
+    );
+  }
+
+  factory PhotoUpload.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PhotoUpload(
+      photoKey: serializer.fromJson<String>(json['photoKey']),
+      uploadedAt: serializer.fromJson<DateTime?>(json['uploadedAt']),
+      error: serializer.fromJson<String?>(json['error']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'photoKey': serializer.toJson<String>(photoKey),
+      'uploadedAt': serializer.toJson<DateTime?>(uploadedAt),
+      'error': serializer.toJson<String?>(error),
+    };
+  }
+
+  PhotoUpload copyWith({
+    String? photoKey,
+    Value<DateTime?> uploadedAt = const Value.absent(),
+    Value<String?> error = const Value.absent(),
+  }) => PhotoUpload(
+    photoKey: photoKey ?? this.photoKey,
+    uploadedAt: uploadedAt.present ? uploadedAt.value : this.uploadedAt,
+    error: error.present ? error.value : this.error,
+  );
+  PhotoUpload copyWithCompanion(PhotoUploadsCompanion data) {
+    return PhotoUpload(
+      photoKey: data.photoKey.present ? data.photoKey.value : this.photoKey,
+      uploadedAt: data.uploadedAt.present
+          ? data.uploadedAt.value
+          : this.uploadedAt,
+      error: data.error.present ? data.error.value : this.error,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhotoUpload(')
+          ..write('photoKey: $photoKey, ')
+          ..write('uploadedAt: $uploadedAt, ')
+          ..write('error: $error')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(photoKey, uploadedAt, error);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PhotoUpload &&
+          other.photoKey == this.photoKey &&
+          other.uploadedAt == this.uploadedAt &&
+          other.error == this.error);
+}
+
+class PhotoUploadsCompanion extends UpdateCompanion<PhotoUpload> {
+  final Value<String> photoKey;
+  final Value<DateTime?> uploadedAt;
+  final Value<String?> error;
+  final Value<int> rowid;
+  const PhotoUploadsCompanion({
+    this.photoKey = const Value.absent(),
+    this.uploadedAt = const Value.absent(),
+    this.error = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PhotoUploadsCompanion.insert({
+    required String photoKey,
+    this.uploadedAt = const Value.absent(),
+    this.error = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : photoKey = Value(photoKey);
+  static Insertable<PhotoUpload> custom({
+    Expression<String>? photoKey,
+    Expression<DateTime>? uploadedAt,
+    Expression<String>? error,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (photoKey != null) 'photo_key': photoKey,
+      if (uploadedAt != null) 'uploaded_at': uploadedAt,
+      if (error != null) 'error': error,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PhotoUploadsCompanion copyWith({
+    Value<String>? photoKey,
+    Value<DateTime?>? uploadedAt,
+    Value<String?>? error,
+    Value<int>? rowid,
+  }) {
+    return PhotoUploadsCompanion(
+      photoKey: photoKey ?? this.photoKey,
+      uploadedAt: uploadedAt ?? this.uploadedAt,
+      error: error ?? this.error,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (photoKey.present) {
+      map['photo_key'] = Variable<String>(photoKey.value);
+    }
+    if (uploadedAt.present) {
+      map['uploaded_at'] = Variable<DateTime>(uploadedAt.value);
+    }
+    if (error.present) {
+      map['error'] = Variable<String>(error.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhotoUploadsCompanion(')
+          ..write('photoKey: $photoKey, ')
+          ..write('uploadedAt: $uploadedAt, ')
+          ..write('error: $error, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -16776,6 +19331,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SettingOverridesTable settingOverrides = $SettingOverridesTable(
     this,
   );
+  late final $VisitReportsTable visitReports = $VisitReportsTable(this);
+  late final $PhotosTable photos = $PhotosTable(this);
+  late final $ReportReadsTable reportReads = $ReportReadsTable(this);
+  late final $PhotoUploadsTable photoUploads = $PhotoUploadsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -16798,6 +19357,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     groups,
     members,
     settingOverrides,
+    visitReports,
+    photos,
+    reportReads,
+    photoUploads,
   ];
   @override
   DriftDatabaseOptions get options =>
@@ -24401,6 +26964,1268 @@ typedef $$SettingOverridesTableProcessedTableManager =
       SettingOverride,
       PrefetchHooks Function()
     >;
+typedef $$VisitReportsTableCreateCompanionBuilder =
+    VisitReportsCompanion Function({
+      Value<String> id,
+      required String associationId,
+      required String enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      required String deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      required DateTime recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      required String visitId,
+      required String siteId,
+      required DateTime periodFrom,
+      required DateTime periodTo,
+      required String content,
+      Value<int> rowid,
+    });
+typedef $$VisitReportsTableUpdateCompanionBuilder =
+    VisitReportsCompanion Function({
+      Value<String> id,
+      Value<String> associationId,
+      Value<String> enteredBy,
+      Value<String?> observedBy,
+      Value<DateTime> createdAtDevice,
+      Value<String> deviceId,
+      Value<DateTime?> serverReceivedAt,
+      Value<int?> serverSeq,
+      Value<SyncState> syncState,
+      Value<String?> syncError,
+      Value<DateTime> recordedAt,
+      Value<String?> supersedesId,
+      Value<bool> isTombstone,
+      Value<String> visitId,
+      Value<String> siteId,
+      Value<DateTime> periodFrom,
+      Value<DateTime> periodTo,
+      Value<String> content,
+      Value<int> rowid,
+    });
+
+class $$VisitReportsTableFilterComposer
+    extends Composer<_$AppDatabase, $VisitReportsTable> {
+  $$VisitReportsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get periodFrom => $composableBuilder(
+    column: $table.periodFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get periodTo => $composableBuilder(
+    column: $table.periodTo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$VisitReportsTableOrderingComposer
+    extends Composer<_$AppDatabase, $VisitReportsTable> {
+  $$VisitReportsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get visitId => $composableBuilder(
+    column: $table.visitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteId => $composableBuilder(
+    column: $table.siteId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get periodFrom => $composableBuilder(
+    column: $table.periodFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get periodTo => $composableBuilder(
+    column: $table.periodTo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$VisitReportsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $VisitReportsTable> {
+  $$VisitReportsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get visitId =>
+      $composableBuilder(column: $table.visitId, builder: (column) => column);
+
+  GeneratedColumn<String> get siteId =>
+      $composableBuilder(column: $table.siteId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get periodFrom => $composableBuilder(
+    column: $table.periodFrom,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get periodTo =>
+      $composableBuilder(column: $table.periodTo, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
+}
+
+class $$VisitReportsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VisitReportsTable,
+          VisitReport,
+          $$VisitReportsTableFilterComposer,
+          $$VisitReportsTableOrderingComposer,
+          $$VisitReportsTableAnnotationComposer,
+          $$VisitReportsTableCreateCompanionBuilder,
+          $$VisitReportsTableUpdateCompanionBuilder,
+          (
+            VisitReport,
+            BaseReferences<_$AppDatabase, $VisitReportsTable, VisitReport>,
+          ),
+          VisitReport,
+          PrefetchHooks Function()
+        > {
+  $$VisitReportsTableTableManager(_$AppDatabase db, $VisitReportsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VisitReportsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VisitReportsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VisitReportsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<String> visitId = const Value.absent(),
+                Value<String> siteId = const Value.absent(),
+                Value<DateTime> periodFrom = const Value.absent(),
+                Value<DateTime> periodTo = const Value.absent(),
+                Value<String> content = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VisitReportsCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                siteId: siteId,
+                periodFrom: periodFrom,
+                periodTo: periodTo,
+                content: content,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                required String visitId,
+                required String siteId,
+                required DateTime periodFrom,
+                required DateTime periodTo,
+                required String content,
+                Value<int> rowid = const Value.absent(),
+              }) => VisitReportsCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                visitId: visitId,
+                siteId: siteId,
+                periodFrom: periodFrom,
+                periodTo: periodTo,
+                content: content,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$VisitReportsTable, VisitReport>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $VisitReportsTable,
+                    VisitReport
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$VisitReportsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VisitReportsTable,
+      VisitReport,
+      $$VisitReportsTableFilterComposer,
+      $$VisitReportsTableOrderingComposer,
+      $$VisitReportsTableAnnotationComposer,
+      $$VisitReportsTableCreateCompanionBuilder,
+      $$VisitReportsTableUpdateCompanionBuilder,
+      (
+        VisitReport,
+        BaseReferences<_$AppDatabase, $VisitReportsTable, VisitReport>,
+      ),
+      VisitReport,
+      PrefetchHooks Function()
+    >;
+typedef $$PhotosTableCreateCompanionBuilder = PhotosCompanion Function({
+  Value<String> id,
+  required String associationId,
+  required String enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  required String deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  required DateTime recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  required PhotoOwner ownerKind,
+  required String ownerId,
+  required String photoKey,
+  Value<bool> upload,
+  required int bytes,
+  Value<int> rowid,
+});
+typedef $$PhotosTableUpdateCompanionBuilder = PhotosCompanion Function({
+  Value<String> id,
+  Value<String> associationId,
+  Value<String> enteredBy,
+  Value<String?> observedBy,
+  Value<DateTime> createdAtDevice,
+  Value<String> deviceId,
+  Value<DateTime?> serverReceivedAt,
+  Value<int?> serverSeq,
+  Value<SyncState> syncState,
+  Value<String?> syncError,
+  Value<DateTime> recordedAt,
+  Value<String?> supersedesId,
+  Value<bool> isTombstone,
+  Value<PhotoOwner> ownerKind,
+  Value<String> ownerId,
+  Value<String> photoKey,
+  Value<bool> upload,
+  Value<int> bytes,
+  Value<int> rowid,
+});
+
+class $$PhotosTableFilterComposer
+    extends Composer<_$AppDatabase, $PhotosTable> {
+  $$PhotosTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SyncState, SyncState, String> get syncState =>
+      $composableBuilder(
+        column: $table.syncState,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<PhotoOwner, PhotoOwner, String>
+  get ownerKind => $composableBuilder(
+    column: $table.ownerKind,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get ownerId => $composableBuilder(
+    column: $table.ownerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get photoKey => $composableBuilder(
+    column: $table.photoKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get upload => $composableBuilder(
+    column: $table.upload,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PhotosTableOrderingComposer
+    extends Composer<_$AppDatabase, $PhotosTable> {
+  $$PhotosTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get enteredBy => $composableBuilder(
+    column: $table.enteredBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverSeq => $composableBuilder(
+    column: $table.serverSeq,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncState => $composableBuilder(
+    column: $table.syncState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ownerKind => $composableBuilder(
+    column: $table.ownerKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ownerId => $composableBuilder(
+    column: $table.ownerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get photoKey => $composableBuilder(
+    column: $table.photoKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get upload => $composableBuilder(
+    column: $table.upload,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PhotosTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PhotosTable> {
+  $$PhotosTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get associationId => $composableBuilder(
+    column: $table.associationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get enteredBy =>
+      $composableBuilder(column: $table.enteredBy, builder: (column) => column);
+
+  GeneratedColumn<String> get observedBy => $composableBuilder(
+    column: $table.observedBy,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAtDevice => $composableBuilder(
+    column: $table.createdAtDevice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get serverReceivedAt => $composableBuilder(
+    column: $table.serverReceivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverSeq =>
+      $composableBuilder(column: $table.serverSeq, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SyncState, String> get syncState =>
+      $composableBuilder(column: $table.syncState, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supersedesId => $composableBuilder(
+    column: $table.supersedesId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isTombstone => $composableBuilder(
+    column: $table.isTombstone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<PhotoOwner, String> get ownerKind =>
+      $composableBuilder(column: $table.ownerKind, builder: (column) => column);
+
+  GeneratedColumn<String> get ownerId =>
+      $composableBuilder(column: $table.ownerId, builder: (column) => column);
+
+  GeneratedColumn<String> get photoKey =>
+      $composableBuilder(column: $table.photoKey, builder: (column) => column);
+
+  GeneratedColumn<bool> get upload =>
+      $composableBuilder(column: $table.upload, builder: (column) => column);
+
+  GeneratedColumn<int> get bytes =>
+      $composableBuilder(column: $table.bytes, builder: (column) => column);
+}
+
+class $$PhotosTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PhotosTable,
+          Photo,
+          $$PhotosTableFilterComposer,
+          $$PhotosTableOrderingComposer,
+          $$PhotosTableAnnotationComposer,
+          $$PhotosTableCreateCompanionBuilder,
+          $$PhotosTableUpdateCompanionBuilder,
+          (Photo, BaseReferences<_$AppDatabase, $PhotosTable, Photo>),
+          Photo,
+          PrefetchHooks Function()
+        > {
+  $$PhotosTableTableManager(_$AppDatabase db, $PhotosTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PhotosTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PhotosTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PhotosTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> associationId = const Value.absent(),
+                Value<String> enteredBy = const Value.absent(),
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                Value<PhotoOwner> ownerKind = const Value.absent(),
+                Value<String> ownerId = const Value.absent(),
+                Value<String> photoKey = const Value.absent(),
+                Value<bool> upload = const Value.absent(),
+                Value<int> bytes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PhotosCompanion(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                ownerKind: ownerKind,
+                ownerId: ownerId,
+                photoKey: photoKey,
+                upload: upload,
+                bytes: bytes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String associationId,
+                required String enteredBy,
+                Value<String?> observedBy = const Value.absent(),
+                Value<DateTime> createdAtDevice = const Value.absent(),
+                required String deviceId,
+                Value<DateTime?> serverReceivedAt = const Value.absent(),
+                Value<int?> serverSeq = const Value.absent(),
+                Value<SyncState> syncState = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                required DateTime recordedAt,
+                Value<String?> supersedesId = const Value.absent(),
+                Value<bool> isTombstone = const Value.absent(),
+                required PhotoOwner ownerKind,
+                required String ownerId,
+                required String photoKey,
+                Value<bool> upload = const Value.absent(),
+                required int bytes,
+                Value<int> rowid = const Value.absent(),
+              }) => PhotosCompanion.insert(
+                id: id,
+                associationId: associationId,
+                enteredBy: enteredBy,
+                observedBy: observedBy,
+                createdAtDevice: createdAtDevice,
+                deviceId: deviceId,
+                serverReceivedAt: serverReceivedAt,
+                serverSeq: serverSeq,
+                syncState: syncState,
+                syncError: syncError,
+                recordedAt: recordedAt,
+                supersedesId: supersedesId,
+                isTombstone: isTombstone,
+                ownerKind: ownerKind,
+                ownerId: ownerId,
+                photoKey: photoKey,
+                upload: upload,
+                bytes: bytes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PhotosTable, Photo>(table),
+                  BaseReferences<_$AppDatabase, $PhotosTable, Photo>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PhotosTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PhotosTable,
+      Photo,
+      $$PhotosTableFilterComposer,
+      $$PhotosTableOrderingComposer,
+      $$PhotosTableAnnotationComposer,
+      $$PhotosTableCreateCompanionBuilder,
+      $$PhotosTableUpdateCompanionBuilder,
+      (Photo, BaseReferences<_$AppDatabase, $PhotosTable, Photo>),
+      Photo,
+      PrefetchHooks Function()
+    >;
+typedef $$ReportReadsTableCreateCompanionBuilder =
+    ReportReadsCompanion Function({
+      required String reportId,
+      required DateTime readAt,
+      Value<int> rowid,
+    });
+typedef $$ReportReadsTableUpdateCompanionBuilder =
+    ReportReadsCompanion Function({
+      Value<String> reportId,
+      Value<DateTime> readAt,
+      Value<int> rowid,
+    });
+
+class $$ReportReadsTableFilterComposer
+    extends Composer<_$AppDatabase, $ReportReadsTable> {
+  $$ReportReadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get reportId => $composableBuilder(
+    column: $table.reportId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get readAt => $composableBuilder(
+    column: $table.readAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ReportReadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ReportReadsTable> {
+  $$ReportReadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get reportId => $composableBuilder(
+    column: $table.reportId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get readAt => $composableBuilder(
+    column: $table.readAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ReportReadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ReportReadsTable> {
+  $$ReportReadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get reportId =>
+      $composableBuilder(column: $table.reportId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get readAt =>
+      $composableBuilder(column: $table.readAt, builder: (column) => column);
+}
+
+class $$ReportReadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ReportReadsTable,
+          ReportRead,
+          $$ReportReadsTableFilterComposer,
+          $$ReportReadsTableOrderingComposer,
+          $$ReportReadsTableAnnotationComposer,
+          $$ReportReadsTableCreateCompanionBuilder,
+          $$ReportReadsTableUpdateCompanionBuilder,
+          (
+            ReportRead,
+            BaseReferences<_$AppDatabase, $ReportReadsTable, ReportRead>,
+          ),
+          ReportRead,
+          PrefetchHooks Function()
+        > {
+  $$ReportReadsTableTableManager(_$AppDatabase db, $ReportReadsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ReportReadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ReportReadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ReportReadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> reportId = const Value.absent(),
+                Value<DateTime> readAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ReportReadsCompanion(
+                reportId: reportId,
+                readAt: readAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String reportId,
+                required DateTime readAt,
+                Value<int> rowid = const Value.absent(),
+              }) => ReportReadsCompanion.insert(
+                reportId: reportId,
+                readAt: readAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ReportReadsTable, ReportRead>(table),
+                  BaseReferences<_$AppDatabase, $ReportReadsTable, ReportRead>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ReportReadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ReportReadsTable,
+      ReportRead,
+      $$ReportReadsTableFilterComposer,
+      $$ReportReadsTableOrderingComposer,
+      $$ReportReadsTableAnnotationComposer,
+      $$ReportReadsTableCreateCompanionBuilder,
+      $$ReportReadsTableUpdateCompanionBuilder,
+      (
+        ReportRead,
+        BaseReferences<_$AppDatabase, $ReportReadsTable, ReportRead>,
+      ),
+      ReportRead,
+      PrefetchHooks Function()
+    >;
+typedef $$PhotoUploadsTableCreateCompanionBuilder =
+    PhotoUploadsCompanion Function({
+      required String photoKey,
+      Value<DateTime?> uploadedAt,
+      Value<String?> error,
+      Value<int> rowid,
+    });
+typedef $$PhotoUploadsTableUpdateCompanionBuilder =
+    PhotoUploadsCompanion Function({
+      Value<String> photoKey,
+      Value<DateTime?> uploadedAt,
+      Value<String?> error,
+      Value<int> rowid,
+    });
+
+class $$PhotoUploadsTableFilterComposer
+    extends Composer<_$AppDatabase, $PhotoUploadsTable> {
+  $$PhotoUploadsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get photoKey => $composableBuilder(
+    column: $table.photoKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get uploadedAt => $composableBuilder(
+    column: $table.uploadedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get error => $composableBuilder(
+    column: $table.error,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PhotoUploadsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PhotoUploadsTable> {
+  $$PhotoUploadsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get photoKey => $composableBuilder(
+    column: $table.photoKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get uploadedAt => $composableBuilder(
+    column: $table.uploadedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get error => $composableBuilder(
+    column: $table.error,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PhotoUploadsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PhotoUploadsTable> {
+  $$PhotoUploadsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get photoKey =>
+      $composableBuilder(column: $table.photoKey, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get uploadedAt => $composableBuilder(
+    column: $table.uploadedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get error =>
+      $composableBuilder(column: $table.error, builder: (column) => column);
+}
+
+class $$PhotoUploadsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PhotoUploadsTable,
+          PhotoUpload,
+          $$PhotoUploadsTableFilterComposer,
+          $$PhotoUploadsTableOrderingComposer,
+          $$PhotoUploadsTableAnnotationComposer,
+          $$PhotoUploadsTableCreateCompanionBuilder,
+          $$PhotoUploadsTableUpdateCompanionBuilder,
+          (
+            PhotoUpload,
+            BaseReferences<_$AppDatabase, $PhotoUploadsTable, PhotoUpload>,
+          ),
+          PhotoUpload,
+          PrefetchHooks Function()
+        > {
+  $$PhotoUploadsTableTableManager(_$AppDatabase db, $PhotoUploadsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PhotoUploadsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PhotoUploadsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PhotoUploadsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> photoKey = const Value.absent(),
+                Value<DateTime?> uploadedAt = const Value.absent(),
+                Value<String?> error = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PhotoUploadsCompanion(
+                photoKey: photoKey,
+                uploadedAt: uploadedAt,
+                error: error,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String photoKey,
+                Value<DateTime?> uploadedAt = const Value.absent(),
+                Value<String?> error = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PhotoUploadsCompanion.insert(
+                photoKey: photoKey,
+                uploadedAt: uploadedAt,
+                error: error,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PhotoUploadsTable, PhotoUpload>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $PhotoUploadsTable,
+                    PhotoUpload
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PhotoUploadsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PhotoUploadsTable,
+      PhotoUpload,
+      $$PhotoUploadsTableFilterComposer,
+      $$PhotoUploadsTableOrderingComposer,
+      $$PhotoUploadsTableAnnotationComposer,
+      $$PhotoUploadsTableCreateCompanionBuilder,
+      $$PhotoUploadsTableUpdateCompanionBuilder,
+      (
+        PhotoUpload,
+        BaseReferences<_$AppDatabase, $PhotoUploadsTable, PhotoUpload>,
+      ),
+      PhotoUpload,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -24439,4 +28264,12 @@ class $AppDatabaseManager {
       $$MembersTableTableManager(_db, _db.members);
   $$SettingOverridesTableTableManager get settingOverrides =>
       $$SettingOverridesTableTableManager(_db, _db.settingOverrides);
+  $$VisitReportsTableTableManager get visitReports =>
+      $$VisitReportsTableTableManager(_db, _db.visitReports);
+  $$PhotosTableTableManager get photos =>
+      $$PhotosTableTableManager(_db, _db.photos);
+  $$ReportReadsTableTableManager get reportReads =>
+      $$ReportReadsTableTableManager(_db, _db.reportReads);
+  $$PhotoUploadsTableTableManager get photoUploads =>
+      $$PhotoUploadsTableTableManager(_db, _db.photoUploads);
 }

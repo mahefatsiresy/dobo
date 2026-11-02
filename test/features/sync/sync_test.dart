@@ -137,7 +137,7 @@ void main() {
     expect(identical(first, second), true);
     await Future.wait([first, second]);
     // One run: the site pushed, then one pull per synced table.
-    expect(server.calls, 1 + 16);
+    expect(server.calls, 1 + 18);
     expect(c.read(syncControllerProvider).state, SyncRunState.idle);
   });
 

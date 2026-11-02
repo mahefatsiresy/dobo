@@ -36,4 +36,6 @@ List<SyncTable> syncTables(AppDatabase db) => [
   SyncTable(db.observations, RowKind.event),
   SyncTable(db.healthEvents, RowKind.event),
   SyncTable(db.treatments, RowKind.event),
+  SyncTable(db.visitReports, RowKind.event),
+  SyncTable(db.photos, RowKind.event),
 ];

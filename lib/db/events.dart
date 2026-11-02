@@ -62,6 +62,23 @@ extension EventWrites on AppDatabase {
     });
   });
 
+  /// [id] and every id it supersedes, back to the first version.
+  Future<Set<String>> chainIds<T extends Table, D>(
+    TableInfo<T, D> table,
+    String id,
+  ) async {
+    final source = table.actualTableName;
+    final rows = await customSelect(
+      'WITH RECURSIVE chain(id, sup) AS ('
+      'SELECT id, supersedes_id FROM "$source" WHERE id = ? '
+      'UNION SELECT t.id, t.supersedes_id FROM "$source" t '
+      'JOIN chain c ON t.id = c.sup) SELECT id FROM chain',
+      variables: [Variable<String>(id)],
+      readsFrom: {table},
+    ).get();
+    return {for (final r in rows) r.read<String>('id')};
+  }
+
   Future<D> _currentOrThrow<T extends Table, D>(
     TableInfo<T, D> table,
     String id,

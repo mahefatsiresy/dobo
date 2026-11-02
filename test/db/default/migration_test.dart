@@ -11,6 +11,7 @@ import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
+import 'generated/schema_v5.dart' as v5;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -224,6 +225,45 @@ void main() {
           (logId, 600, 3, 'rubbing'),
         );
         expect(await newDb.select(newDb.members).get(), isEmpty);
+      },
+    );
+  });
+
+  // v5 only adds visit reports, photos, read marks and the upload queue;
+  // an ended visit with its summary survives unchanged.
+  test('migration from v4 to v5 keeps visits', () async {
+    const at = '2026-03-20T09:00:00.000Z';
+    const visitId = '0190d5a0-0000-7000-8000-000000000006';
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 4,
+      newVersion: 5,
+      createOld: v4.DatabaseAtV4.new,
+      createNew: v5.DatabaseAtV5.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insert(
+          oldDb.visits,
+          const v4.VisitsData(
+            id: visitId,
+            associationId: 'a1',
+            enteredBy: 'u1',
+            createdAtDevice: at,
+            deviceId: 'd1',
+            syncState: 'synced',
+            updatedAtDevice: at,
+            siteId: 's1',
+            startedAt: at,
+            endedAt: at,
+            summary: 'Tout va bien',
+          ),
+        );
+      },
+      validateItems: (newDb) async {
+        final v = await newDb.select(newDb.visits).getSingle();
+        expect((v.id, v.summary), (visitId, 'Tout va bien'));
+        expect(await newDb.select(newDb.visitReports).get(), isEmpty);
+        expect(await newDb.select(newDb.photos).get(), isEmpty);
       },
     );
   });

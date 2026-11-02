@@ -22,7 +22,7 @@ void main() {
   Future<Map<String, Object?>> rawRow(String name) async =>
       (await db.customSelect('SELECT * FROM "$name"').getSingle()).data;
 
-  test('every table but local_meta is synced, in push order', () {
+  test('every table but the device-only ones is synced, in push order', () {
     expect(syncTables(db).map((t) => t.name), [
       'groups',
       'members',
@@ -40,10 +40,13 @@ void main() {
       'observations',
       'health_events',
       'treatments',
+      'visit_reports',
+      'photos',
     ]);
     expect(
       syncTables(db).map((t) => t.name).toSet(),
-      db.allTables.map((t) => t.actualTableName).toSet()..remove('local_meta'),
+      db.allTables.map((t) => t.actualTableName).toSet()
+        ..removeAll(['local_meta', 'report_reads', 'photo_uploads']),
     );
     expect(table('ponds').kind, RowKind.reference);
     expect(table('daily_logs').kind, RowKind.event);

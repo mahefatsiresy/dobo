@@ -93,3 +93,6 @@ const deathSigns = {
   WarningSign.finBleeding,
   WarningSign.abnormalColour,
 };
+
+/// What a photo is attached to (SPEC §8).
+enum PhotoOwner { observation, healthEvent, visit }
