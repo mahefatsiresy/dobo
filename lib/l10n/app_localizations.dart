@@ -3181,6 +3181,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Photos envoyées au serveur, au plus'**
   String get settingPhotoUploadCap;
+
+  /// No description provided for @photoDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer cette photo ? Elle sera effacée de ce téléphone.'**
+  String get photoDeleteConfirm;
 }
 
 class _AppLocalizationsDelegate

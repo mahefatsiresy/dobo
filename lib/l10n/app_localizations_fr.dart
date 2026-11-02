@@ -1753,4 +1753,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingPhotoUploadCap => 'Photos envoyées au serveur, au plus';
+
+  @override
+  String get photoDeleteConfirm =>
+      'Supprimer cette photo ? Elle sera effacée de ce téléphone.';
 }

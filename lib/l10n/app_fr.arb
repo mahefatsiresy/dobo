@@ -1081,5 +1081,6 @@
   "@syncPhotosWaiting": {"placeholders": {"count": {"type": "int"}}},
   "syncPhotoCap": "Limite de photos atteinte : un administrateur peut la relever dans Réglages.",
   "settingsPhotos": "Photos",
-  "settingPhotoUploadCap": "Photos envoyées au serveur, au plus"
+  "settingPhotoUploadCap": "Photos envoyées au serveur, au plus",
+  "photoDeleteConfirm": "Supprimer cette photo ? Elle sera effacée de ce téléphone."
 }

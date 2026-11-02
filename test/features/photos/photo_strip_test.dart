@@ -321,4 +321,36 @@ void main() {
     },
     overrides: [photoCaptureProvider.overrideWithValue(lostCapture), tempPhotoFiles()],
   );
+
+  appTest(
+    'deleting a photo asks first',
+    (tester, db) async {
+      capture.next = () async => tinyImage;
+      await openDraft(tester);
+      await tapAndSettle(tester, find.text('Ajouter une photo'));
+      final key = (await db.select(db.photos).getSingle()).photoKey;
+
+      await tapAndSettle(tester, find.byKey(ValueKey('photo-$key')));
+      await tapAndSettle(tester, find.text('Supprimer la photo'));
+      expect(
+        find.text('Supprimer cette photo ? Elle sera effacée de ce téléphone.'),
+        findsOneWidget,
+      );
+      await tapAndSettle(tester, find.text('Annuler'));
+      expect(await db.select(db.photos).get(), hasLength(1));
+
+      await tapAndSettle(tester, find.byKey(ValueKey('photo-$key')));
+      await tapAndSettle(tester, find.text('Supprimer la photo'));
+      await tapAndSettle(
+        tester,
+        find.descendant(
+          of: find.byType(AlertDialog),
+          matching: find.text('Supprimer'),
+        ),
+      );
+      expect(await db.select(db.photos).get(), hasLength(2));
+      expect(find.byKey(ValueKey('photo-$key')), findsNothing);
+    },
+    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+  );
 }

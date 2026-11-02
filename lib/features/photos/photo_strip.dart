@@ -130,6 +130,25 @@ class PhotoStrip extends ConsumerWidget {
       case 'upload':
         await repo.setUpload(p.photoKey, !p.upload);
       case 'delete':
+        // It may be the only copy: ask first.
+        if (!context.mounted) return;
+        final sure = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Text(l10n.photoDeleteConfirm),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(l10n.delete),
+              ),
+            ],
+          ),
+        );
+        if (sure != true) return;
         await repo.delete(p.photoKey);
         ref.invalidate(photoFileProvider(p.photoKey));
     }
