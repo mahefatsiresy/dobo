@@ -19,7 +19,9 @@ final photosForProvider =
 
 /// This phone's file for a photo, or null.
 /// Downloaded from Storage the first time, when online (plan Decision 11).
-final photoFileProvider = FutureProvider.family<File?, String>(
+/// Dropped when no longer shown, so a photo missing now (offline, not sent
+/// yet) is asked for again the next time it is shown.
+final photoFileProvider = FutureProvider.autoDispose.family<File?, String>(
   (ref, key) => ref
       .watch(photoFilesProvider)
       .fetch(

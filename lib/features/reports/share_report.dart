@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../domain/dates.dart';
+import '../../sync/providers.dart';
 import '../../domain/report/report_content.dart';
 import '../../l10n/app_localizations.dart';
 import '../sync/backup_actions.dart' show backupDirProvider;
@@ -27,7 +28,14 @@ typedef PhotoBytes = Future<Uint8List?> Function(String photoKey);
 
 final reportPhotoBytesProvider = Provider<PhotoBytes>((ref) {
   final files = ref.watch(photoFilesProvider);
-  return (key) async => (await files.existingFile(key))?.readAsBytes();
+  final store = ref.watch(photoStoreProvider);
+  final associationId = ref.watch(sessionProvider).requireValue!.associationId;
+  // Downloads a sent photo not yet on this phone, when online.
+  return (key) async => (await files.fetch(
+    key,
+    associationId: associationId,
+    store: store,
+  ))?.readAsBytes();
 });
 
 /// Builds [content]'s PDF in the phone's language and shares it through any

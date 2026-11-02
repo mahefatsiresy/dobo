@@ -13,6 +13,10 @@ import 'package:dobo/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:dobo/sync/providers.dart';
+import 'package:dobo/sync/photo_store.dart';
+
+import '../../sync/fake_photo_store.dart';
 
 import '../../db/repo_fixtures.dart';
 import '../../helpers.dart';
@@ -234,5 +238,27 @@ void main() {
       photoCaptureProvider.overrideWithValue(capture),
       tempPhotoFiles(),
     ],
+  );
+
+  final store = FakePhotoStore();
+  appTest(
+    'a photo not on the server yet is fetched again once it is',
+    (tester, db) async {
+      final s = (await SetupRepository(db).currentSession())!;
+      final c = appContainer(tester);
+      Future<File?> look() async {
+        final sub = c.listen(photoFileProvider('k1'), (_, _) {});
+        await tester.runAsync(() => c.read(photoFileProvider('k1').future));
+        final f = sub.read().value;
+        sub.close();
+        await tester.pumpAndSettle();
+        return f;
+      }
+
+      expect(await look(), isNull);
+      store.objects[photoPath(s.associationId, 'k1')] = tinyImage;
+      expect(await look(), isNotNull);
+    },
+    overrides: [photoStoreProvider.overrideWithValue(store), tempPhotoFiles()],
   );
 }
