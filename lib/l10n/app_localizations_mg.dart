@@ -1539,4 +1539,179 @@ class AppLocalizationsMg extends AppLocalizations {
   String labelColon(String label) {
     return '$label :';
   }
+
+  @override
+  String get tabReports => 'Rapports';
+
+  @override
+  String get reportTitle => 'Rapport de visite';
+
+  @override
+  String get reportsEmpty => 'Aucun rapport pour l\'instant';
+
+  @override
+  String get reportDraft => 'Brouillon — à publier';
+
+  @override
+  String get reportPublish => 'Publier';
+
+  @override
+  String get reportShare => 'Partager';
+
+  @override
+  String reportCardTitle(String date, String member) {
+    return '$date · $member';
+  }
+
+  @override
+  String reportPeriod(String from, String to) {
+    return 'Du $from au $to';
+  }
+
+  @override
+  String reportAuthor(String member) {
+    return 'Par $member';
+  }
+
+  @override
+  String reportAuthorGroup(String member, String group) {
+    return 'Par $member ($group)';
+  }
+
+  @override
+  String reportPublishedOn(String date) {
+    return 'Publié le $date';
+  }
+
+  @override
+  String get reportUpdateApp =>
+      'Mettez l\'application à jour pour lire ce rapport.';
+
+  @override
+  String get reportSummary => 'Résumé';
+
+  @override
+  String get reportAlerts => 'Alertes';
+
+  @override
+  String get reportHealth => 'Santé';
+
+  @override
+  String get reportWater => 'Eau';
+
+  @override
+  String get reportGrowth => 'Croissance';
+
+  @override
+  String get reportFeed => 'Aliment';
+
+  @override
+  String get reportNext => 'À venir';
+
+  @override
+  String get reportObservations => 'Observations et photos';
+
+  @override
+  String get reportNothing => 'Rien à signaler';
+
+  @override
+  String get reportNoSummary => 'Pas de résumé';
+
+  @override
+  String get reportNoReading => 'Aucun relevé';
+
+  @override
+  String get reportNoFish => 'Aucun poisson en étang';
+
+  @override
+  String get reportNoFeed => 'Aucun aliment noté sur la période';
+
+  @override
+  String get reportFeedStockLater =>
+      'Stock d\'aliment : à partir de la gestion des stocks';
+
+  @override
+  String reportDeaths(String count) {
+    return '$count morts';
+  }
+
+  @override
+  String reportObserverDeaths(String name, String count) {
+    return '$name $count';
+  }
+
+  @override
+  String get reportListSeparator => ' · ';
+
+  @override
+  String get reportUnknownPerson => 'inconnu';
+
+  @override
+  String reportSigns(String date, String signs) {
+    return '$date : $signs';
+  }
+
+  @override
+  String reportTreatmentLine(String date, String product, String dose) {
+    return '$date : $product, $dose';
+  }
+
+  @override
+  String reportHealthEventLine(String date, String details) {
+    return '$date : $details';
+  }
+
+  @override
+  String reportReadingOn(String date) {
+    return 'Relevé du $date';
+  }
+
+  @override
+  String reportGrowthLine(String batch, String weight, String date) {
+    return '$batch · $weight (pesé le $date)';
+  }
+
+  @override
+  String get reportBiomass => 'Biomasse';
+
+  @override
+  String get reportFish => 'Poissons';
+
+  @override
+  String get reportFcrShared => 'bassin partagé';
+
+  @override
+  String get reportFcrNoSample => 'pas encore pesé';
+
+  @override
+  String get reportTrendWorse => 'en hausse';
+
+  @override
+  String get reportTrendBetter => 'en baisse';
+
+  @override
+  String get reportTrendSame => 'stable';
+
+  @override
+  String get reportFeedTotal => 'Total';
+
+  @override
+  String reportNextSample(String batch) {
+    return 'Pesée de $batch';
+  }
+
+  @override
+  String reportNextHarvest(String batch) {
+    return 'Récolte de $batch';
+  }
+
+  @override
+  String reportNextQuarantine(String batch) {
+    return 'Fin de quarantaine de $batch';
+  }
+
+  @override
+  String reportAllOk(String items) {
+    return 'En ordre : $items';
+  }
 }

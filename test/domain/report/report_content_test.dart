@@ -216,6 +216,15 @@ void main() {
     expect(ReportContent.decode(c.encode()).toJson(), c.toJson());
   });
 
+  test('publishedAs replaces the summary and the time, keeps the rest', () {
+    final c = full();
+    final at = DateTime.utc(2026, 3, 21, 8);
+    final p = c.publishedAs(summary: null, builtAt: at);
+    expect((p.summary, p.header.builtAt), (null, at));
+    expect(p.header.periodFrom, c.header.periodFrom);
+    expect(p.health.single.deaths, 12);
+  });
+
   test('rejects format 2', () {
     final json = full().toJson()..['format'] = 2;
     expect(

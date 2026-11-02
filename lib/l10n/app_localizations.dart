@@ -2845,6 +2845,288 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{label} :'**
   String labelColon(String label);
+
+  /// No description provided for @tabReports.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapports'**
+  String get tabReports;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport de visite'**
+  String get reportTitle;
+
+  /// No description provided for @reportsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun rapport pour l\'instant'**
+  String get reportsEmpty;
+
+  /// No description provided for @reportDraft.
+  ///
+  /// In fr, this message translates to:
+  /// **'Brouillon — à publier'**
+  String get reportDraft;
+
+  /// No description provided for @reportPublish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Publier'**
+  String get reportPublish;
+
+  /// No description provided for @reportShare.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partager'**
+  String get reportShare;
+
+  /// No description provided for @reportCardTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} · {member}'**
+  String reportCardTitle(String date, String member);
+
+  /// No description provided for @reportPeriod.
+  ///
+  /// In fr, this message translates to:
+  /// **'Du {from} au {to}'**
+  String reportPeriod(String from, String to);
+
+  /// No description provided for @reportAuthor.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par {member}'**
+  String reportAuthor(String member);
+
+  /// No description provided for @reportAuthorGroup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par {member} ({group})'**
+  String reportAuthorGroup(String member, String group);
+
+  /// No description provided for @reportPublishedOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Publié le {date}'**
+  String reportPublishedOn(String date);
+
+  /// No description provided for @reportUpdateApp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mettez l\'application à jour pour lire ce rapport.'**
+  String get reportUpdateApp;
+
+  /// No description provided for @reportSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résumé'**
+  String get reportSummary;
+
+  /// No description provided for @reportAlerts.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alertes'**
+  String get reportAlerts;
+
+  /// No description provided for @reportHealth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Santé'**
+  String get reportHealth;
+
+  /// No description provided for @reportWater.
+  ///
+  /// In fr, this message translates to:
+  /// **'Eau'**
+  String get reportWater;
+
+  /// No description provided for @reportGrowth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Croissance'**
+  String get reportGrowth;
+
+  /// No description provided for @reportFeed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment'**
+  String get reportFeed;
+
+  /// No description provided for @reportNext.
+  ///
+  /// In fr, this message translates to:
+  /// **'À venir'**
+  String get reportNext;
+
+  /// No description provided for @reportObservations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Observations et photos'**
+  String get reportObservations;
+
+  /// No description provided for @reportNothing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien à signaler'**
+  String get reportNothing;
+
+  /// No description provided for @reportNoSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de résumé'**
+  String get reportNoSummary;
+
+  /// No description provided for @reportNoReading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun relevé'**
+  String get reportNoReading;
+
+  /// No description provided for @reportNoFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun poisson en étang'**
+  String get reportNoFish;
+
+  /// No description provided for @reportNoFeed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun aliment noté sur la période'**
+  String get reportNoFeed;
+
+  /// No description provided for @reportFeedStockLater.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stock d\'aliment : à partir de la gestion des stocks'**
+  String get reportFeedStockLater;
+
+  /// No description provided for @reportDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} morts'**
+  String reportDeaths(String count);
+
+  /// No description provided for @reportObserverDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} {count}'**
+  String reportObserverDeaths(String name, String count);
+
+  /// No description provided for @reportListSeparator.
+  ///
+  /// In fr, this message translates to:
+  /// **' · '**
+  String get reportListSeparator;
+
+  /// No description provided for @reportUnknownPerson.
+  ///
+  /// In fr, this message translates to:
+  /// **'inconnu'**
+  String get reportUnknownPerson;
+
+  /// No description provided for @reportSigns.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} : {signs}'**
+  String reportSigns(String date, String signs);
+
+  /// No description provided for @reportTreatmentLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} : {product}, {dose}'**
+  String reportTreatmentLine(String date, String product, String dose);
+
+  /// No description provided for @reportHealthEventLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} : {details}'**
+  String reportHealthEventLine(String date, String details);
+
+  /// No description provided for @reportReadingOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relevé du {date}'**
+  String reportReadingOn(String date);
+
+  /// No description provided for @reportGrowthLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{batch} · {weight} (pesé le {date})'**
+  String reportGrowthLine(String batch, String weight, String date);
+
+  /// No description provided for @reportBiomass.
+  ///
+  /// In fr, this message translates to:
+  /// **'Biomasse'**
+  String get reportBiomass;
+
+  /// No description provided for @reportFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons'**
+  String get reportFish;
+
+  /// No description provided for @reportFcrShared.
+  ///
+  /// In fr, this message translates to:
+  /// **'bassin partagé'**
+  String get reportFcrShared;
+
+  /// No description provided for @reportFcrNoSample.
+  ///
+  /// In fr, this message translates to:
+  /// **'pas encore pesé'**
+  String get reportFcrNoSample;
+
+  /// No description provided for @reportTrendWorse.
+  ///
+  /// In fr, this message translates to:
+  /// **'en hausse'**
+  String get reportTrendWorse;
+
+  /// No description provided for @reportTrendBetter.
+  ///
+  /// In fr, this message translates to:
+  /// **'en baisse'**
+  String get reportTrendBetter;
+
+  /// No description provided for @reportTrendSame.
+  ///
+  /// In fr, this message translates to:
+  /// **'stable'**
+  String get reportTrendSame;
+
+  /// No description provided for @reportFeedTotal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Total'**
+  String get reportFeedTotal;
+
+  /// No description provided for @reportNextSample.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pesée de {batch}'**
+  String reportNextSample(String batch);
+
+  /// No description provided for @reportNextHarvest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte de {batch}'**
+  String reportNextHarvest(String batch);
+
+  /// No description provided for @reportNextQuarantine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fin de quarantaine de {batch}'**
+  String reportNextQuarantine(String batch);
+
+  /// No description provided for @reportAllOk.
+  ///
+  /// In fr, this message translates to:
+  /// **'En ordre : {items}'**
+  String reportAllOk(String items);
 }
 
 class _AppLocalizationsDelegate

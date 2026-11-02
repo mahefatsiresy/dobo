@@ -34,6 +34,9 @@ class VisitRepository {
     return row.id;
   });
 
+  Future<Visit> get(String id) =>
+      (db.select(db.visits)..where((v) => v.id.equals(id))).getSingle();
+
   /// This phone's open visit, if any.
   Stream<Visit?> watchOpen() => _open().watchSingleOrNull();
 

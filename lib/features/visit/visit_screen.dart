@@ -77,6 +77,8 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
       _summary.clear();
       _biosecurity.clear();
     });
+    // The report is reviewed and published straight away (SPEC F8).
+    if (mounted) context.go('/reports/draft/${visit.id}');
   }
 
   Future<void> _addObservation() async {

@@ -21,6 +21,8 @@ import 'features/ponds/pond_form_screen.dart';
 import 'features/ponds/pond_overview.dart';
 import 'features/ponds/ponds_screen.dart';
 import 'features/readings/sample_screen.dart';
+import 'features/reports/report_screen.dart';
+import 'features/reports/reports_screen.dart';
 import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/account/account_screen.dart';
@@ -204,6 +206,28 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/alerts',
                 builder: (context, state) => const AlertsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/reports',
+                builder: (context, state) => const ReportsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'draft/:visitId',
+                    builder: (context, state) => ReportScreen.draft(
+                      visitId: state.pathParameters['visitId']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: ':reportId',
+                    builder: (context, state) => ReportScreen.published(
+                      reportId: state.pathParameters['reportId']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

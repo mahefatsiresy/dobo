@@ -78,6 +78,9 @@ void main() {
       ),
     );
 
+    // Ending opens the draft report; the Visit tab is ready for the next.
+    expect(find.text('Rapport de visite'), findsOneWidget);
+    await tapAndSettle(tester, find.text('Visite'));
     expect(find.text('Démarrer une visite'), findsOneWidget);
     final ended = await db.select(db.visits).getSingle();
     expect(

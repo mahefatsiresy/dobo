@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../alerts/alert_providers.dart';
+import '../reports/report_providers.dart';
 import '../sync/sync_badge.dart';
 
 /// Member navigation (SPEC §6). Tabs are added with the milestones that
@@ -17,6 +18,7 @@ class MemberShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final danger = ref.watch(dangerCountProvider);
+    final unread = ref.watch(unreadCountProvider);
     return Scaffold(
       body: shell,
       bottomNavigationBar: NavigationBar(
@@ -39,6 +41,15 @@ class MemberShell extends ConsumerWidget {
               child: const Icon(Icons.notifications),
             ),
             label: l10n.tabAlerts,
+          ),
+          NavigationDestination(
+            icon: Badge(
+              key: const ValueKey('unreadBadge'),
+              isLabelVisible: unread > 0,
+              label: Text('$unread'),
+              child: const Icon(Icons.description),
+            ),
+            label: l10n.tabReports,
           ),
           NavigationDestination(
             icon: const SyncBadge(child: Icon(Icons.menu)),

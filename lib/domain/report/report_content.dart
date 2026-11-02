@@ -122,6 +122,37 @@ class ReportContent {
     );
   }
 
+  /// This content as published: with the member's final [summary], at
+  /// [builtAt].
+  ReportContent publishedAs({
+    required String? summary,
+    required DateTime builtAt,
+  }) => ReportContent(
+    format: format,
+    header: ReportHeader(
+      siteName: header.siteName,
+      visitDay: header.visitDay,
+      memberName: header.memberName,
+      groupName: header.groupName,
+      periodFrom: header.periodFrom,
+      periodTo: header.periodTo,
+      builtAt: builtAt,
+    ),
+    summary: summary,
+    pondCodes: pondCodes,
+    batchCodes: batchCodes,
+    alerts: alerts,
+    health: health,
+    water: water,
+    growth: growth,
+    feed: feed,
+    feedTotalG: feedTotalG,
+    feedStock: feedStock,
+    next: next,
+    observations: observations,
+    visitPhotoKeys: visitPhotoKeys,
+  );
+
   String encode() => jsonEncode(toJson());
 
   static ReportContent decode(String json) =>
