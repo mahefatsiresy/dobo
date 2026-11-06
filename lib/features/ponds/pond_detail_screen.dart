@@ -287,6 +287,17 @@ class PondDetailScreen extends ConsumerWidget {
               label: Text(l10n.releaseIsolation),
             ),
           ],
+          if (o.liveCount == 0 && !o.inconsistent) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              onPressed: () => context.push('/ponds/${pond.id}/prep'),
+              icon: const Icon(Icons.checklist),
+              label: Text(l10n.prepButton),
+            ),
+          ],
           const SizedBox(height: 8),
           FilledButton.icon(
             style: wide,

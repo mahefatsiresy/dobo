@@ -17,8 +17,8 @@ String? alertRoute(Alert a) {
     AlertKind.growthStalled ||
     AlertKind.densityOutOfRange ||
     AlertKind.phaseChange ||
-    AlertKind.preHarvestFast ||
-    AlertKind.prepStepDue => '/ponds/$pond',
+    AlertKind.preHarvestFast => '/ponds/$pond',
+    AlertKind.prepStepDue => '/ponds/$pond/prep',
     AlertKind.feedStockLow || AlertKind.feedTooOld => null,
   };
 }

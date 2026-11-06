@@ -2708,11 +2708,161 @@ abstract class AppLocalizations {
   /// **'Un lot d\'aliment est trop vieux'**
   String get alertFeedTooOld;
 
-  /// No description provided for @alertPrepStepDue.
+  /// No description provided for @alertPrepDry.
   ///
   /// In fr, this message translates to:
-  /// **'Préparation : l\'étape suivante est possible'**
-  String get alertPrepStepDue;
+  /// **'Séchage fini ? Vérifier les fissures, puis noter l\'assèchement'**
+  String get alertPrepDry;
+
+  /// No description provided for @alertPrepRest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repos fini : l\'étang peut être déclaré prêt'**
+  String get alertPrepRest;
+
+  /// No description provided for @prepButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparation'**
+  String get prepButton;
+
+  /// No description provided for @prepTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparation {pond}'**
+  String prepTitle(String pond);
+
+  /// No description provided for @prepStepDrain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vidange et curage'**
+  String get prepStepDrain;
+
+  /// No description provided for @prepStepDry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Assèchement au soleil'**
+  String get prepStepDry;
+
+  /// No description provided for @prepStepTreat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traitement (chaux vive ou chlore)'**
+  String get prepStepTreat;
+
+  /// No description provided for @prepStepFertilise.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fertilisation (fumier)'**
+  String get prepStepFertilise;
+
+  /// No description provided for @prepStepFill.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplissage par l\'entrée grillagée'**
+  String get prepStepFill;
+
+  /// No description provided for @prepStepRest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repos'**
+  String get prepStepRest;
+
+  /// No description provided for @prepDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait'**
+  String get prepDone;
+
+  /// No description provided for @prepDoneOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait le {date}'**
+  String prepDoneOn(String date);
+
+  /// No description provided for @prepDryUntil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séchage : du {from} au {to}'**
+  String prepDryUntil(String from, String to);
+
+  /// No description provided for @prepRestUntil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repos jusqu\'au {date}'**
+  String prepRestUntil(String date);
+
+  /// No description provided for @prepLimeDose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaux vive : {range} pour {surface}'**
+  String prepLimeDose(String range, String surface);
+
+  /// No description provided for @prepManureDose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fumier : {range} pour {surface}'**
+  String prepManureDose(String range, String surface);
+
+  /// No description provided for @prepNoSurface.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sans la surface de l\'étang, pas de dose : renseignez sa longueur et sa largeur'**
+  String get prepNoSurface;
+
+  /// No description provided for @prepMarkReady.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prêt à empoissonner'**
+  String get prepMarkReady;
+
+  /// No description provided for @prepSkipped.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étapes non faites : {steps}'**
+  String prepSkipped(String steps);
+
+  /// No description provided for @prepRestShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le repos n\'est pas fini (jusqu\'au {date})'**
+  String prepRestShort(String date);
+
+  /// No description provided for @prepReadyConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Déclarer l\'étang prêt à empoissonner ?'**
+  String get prepReadyConfirm;
+
+  /// No description provided for @prepProductQuicklime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaux vive'**
+  String get prepProductQuicklime;
+
+  /// No description provided for @prepProductChlorine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chlore'**
+  String get prepProductChlorine;
+
+  /// No description provided for @prepProductManure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fumier'**
+  String get prepProductManure;
+
+  /// No description provided for @prepDoseUsed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dose utilisée'**
+  String get prepDoseUsed;
+
+  /// No description provided for @doneDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date'**
+  String get doneDate;
 
   /// No description provided for @alertDuplicateLog.
   ///

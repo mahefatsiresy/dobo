@@ -28,10 +28,10 @@ void main() {
       AlertKind.densityOutOfRange,
       AlertKind.phaseChange,
       AlertKind.preHarvestFast,
-      AlertKind.prepStepDue,
     ]) {
       expect(route(k), '/ponds/e1', reason: '$k');
     }
+    expect(route(AlertKind.prepStepDue), '/ponds/e1/prep');
     expect(
       alertRoute(const Alert(AlertKind.feedStockLow, Severity.warning)),
       isNull,

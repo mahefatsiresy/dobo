@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/prep/prep_screen.dart';
 import 'features/alerts/alerts_screen.dart';
 import 'features/batches/batch_detail_screen.dart';
 import 'features/batches/batches_screen.dart';
@@ -178,6 +179,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                         builder: (context, state) => TreatmentScreen(
                           pondId: state.pathParameters['id']!,
                         ),
+                      ),
+                      GoRoute(
+                        path: 'prep',
+                        builder: (context, state) =>
+                            PrepScreen(pondId: state.pathParameters['id']!),
                       ),
                     ],
                   ),

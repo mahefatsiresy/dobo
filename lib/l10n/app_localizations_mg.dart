@@ -1453,7 +1453,100 @@ class AppLocalizationsMg extends AppLocalizations {
   String get alertFeedTooOld => 'Un lot d\'aliment est trop vieux';
 
   @override
-  String get alertPrepStepDue => 'Préparation : l\'étape suivante est possible';
+  String get alertPrepDry =>
+      'Séchage fini ? Vérifier les fissures, puis noter l\'assèchement';
+
+  @override
+  String get alertPrepRest => 'Repos fini : l\'étang peut être déclaré prêt';
+
+  @override
+  String get prepButton => 'Préparation';
+
+  @override
+  String prepTitle(String pond) {
+    return 'Préparation $pond';
+  }
+
+  @override
+  String get prepStepDrain => 'Vidange et curage';
+
+  @override
+  String get prepStepDry => 'Assèchement au soleil';
+
+  @override
+  String get prepStepTreat => 'Traitement (chaux vive ou chlore)';
+
+  @override
+  String get prepStepFertilise => 'Fertilisation (fumier)';
+
+  @override
+  String get prepStepFill => 'Remplissage par l\'entrée grillagée';
+
+  @override
+  String get prepStepRest => 'Repos';
+
+  @override
+  String get prepDone => 'Fait';
+
+  @override
+  String prepDoneOn(String date) {
+    return 'Fait le $date';
+  }
+
+  @override
+  String prepDryUntil(String from, String to) {
+    return 'Séchage : du $from au $to';
+  }
+
+  @override
+  String prepRestUntil(String date) {
+    return 'Repos jusqu\'au $date';
+  }
+
+  @override
+  String prepLimeDose(String range, String surface) {
+    return 'Chaux vive : $range pour $surface';
+  }
+
+  @override
+  String prepManureDose(String range, String surface) {
+    return 'Fumier : $range pour $surface';
+  }
+
+  @override
+  String get prepNoSurface =>
+      'Sans la surface de l\'étang, pas de dose : renseignez sa longueur et sa largeur';
+
+  @override
+  String get prepMarkReady => 'Prêt à empoissonner';
+
+  @override
+  String prepSkipped(String steps) {
+    return 'Étapes non faites : $steps';
+  }
+
+  @override
+  String prepRestShort(String date) {
+    return 'Le repos n\'est pas fini (jusqu\'au $date)';
+  }
+
+  @override
+  String get prepReadyConfirm => 'Déclarer l\'étang prêt à empoissonner ?';
+
+  @override
+  String get prepProductQuicklime => 'Chaux vive';
+
+  @override
+  String get prepProductChlorine => 'Chlore';
+
+  @override
+  String get prepProductManure => 'Fumier';
+
+  @override
+  String get prepDoseUsed => 'Dose utilisée';
+
+  @override
+  String get doneDate => 'Date';
 
   @override
   String alertDuplicateLog(String date) {

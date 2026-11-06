@@ -918,7 +918,97 @@
     }
   },
   "alertFeedTooOld": "Un lot d'aliment est trop vieux",
-  "alertPrepStepDue": "Préparation : l'étape suivante est possible",
+  "alertPrepDry": "Séchage fini ? Vérifier les fissures, puis noter l'assèchement",
+  "alertPrepRest": "Repos fini : l'étang peut être déclaré prêt",
+  "prepButton": "Préparation",
+  "prepTitle": "Préparation {pond}",
+  "@prepTitle": {
+    "placeholders": {
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "prepStepDrain": "Vidange et curage",
+  "prepStepDry": "Assèchement au soleil",
+  "prepStepTreat": "Traitement (chaux vive ou chlore)",
+  "prepStepFertilise": "Fertilisation (fumier)",
+  "prepStepFill": "Remplissage par l'entrée grillagée",
+  "prepStepRest": "Repos",
+  "prepDone": "Fait",
+  "prepDoneOn": "Fait le {date}",
+  "@prepDoneOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "prepDryUntil": "Séchage : du {from} au {to}",
+  "@prepDryUntil": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "prepRestUntil": "Repos jusqu'au {date}",
+  "@prepRestUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "prepLimeDose": "Chaux vive : {range} pour {surface}",
+  "@prepLimeDose": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "surface": {
+        "type": "String"
+      }
+    }
+  },
+  "prepManureDose": "Fumier : {range} pour {surface}",
+  "@prepManureDose": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "surface": {
+        "type": "String"
+      }
+    }
+  },
+  "prepNoSurface": "Sans la surface de l'étang, pas de dose : renseignez sa longueur et sa largeur",
+  "prepMarkReady": "Prêt à empoissonner",
+  "prepSkipped": "Étapes non faites : {steps}",
+  "@prepSkipped": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      }
+    }
+  },
+  "prepRestShort": "Le repos n'est pas fini (jusqu'au {date})",
+  "@prepRestShort": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "prepReadyConfirm": "Déclarer l'étang prêt à empoissonner ?",
+  "prepProductQuicklime": "Chaux vive",
+  "prepProductChlorine": "Chlore",
+  "prepProductManure": "Fumier",
+  "prepDoseUsed": "Dose utilisée",
+  "doneDate": "Date",
   "alertDuplicateLog": "Deux journaux pour le {date} : choisir lequel garder",
   "@alertDuplicateLog": {
     "placeholders": {

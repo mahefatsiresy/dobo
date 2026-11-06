@@ -1,6 +1,7 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
+import 'package:dobo/db/repositories/prep_repository.dart';
 import 'package:dobo/db/repositories/reading_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
@@ -123,4 +124,16 @@ void main() {
     role: MemberRole.worker,
     overrides: [clock],
   );
+
+  appTest("the prep alert opens the pond's checklist", (tester, db) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e2 = await PondRepository(db, session).create(pondInput('E2'));
+    await PrepRepository(
+      db,
+      session,
+    ).record(e2, PrepStep.drain, on: DateTime(2026, 3, 14));
+    await openAlerts(tester);
+    await tapAndSettle(tester, find.textContaining('fissures'));
+    expect(find.text('Préparation E2'), findsOneWidget);
+  }, overrides: [clock]);
 }

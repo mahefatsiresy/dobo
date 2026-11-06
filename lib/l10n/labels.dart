@@ -126,6 +126,21 @@ extension EnumLabels on AppLocalizations {
     WaterColour.brownTurbid => waterBrownTurbid,
   };
 
+  String prepStep(PrepStep s) => switch (s) {
+    PrepStep.drain => prepStepDrain,
+    PrepStep.dry => prepStepDry,
+    PrepStep.treat => prepStepTreat,
+    PrepStep.fertilise => prepStepFertilise,
+    PrepStep.fill => prepStepFill,
+    PrepStep.rest => prepStepRest,
+  };
+
+  String prepProduct(PrepProduct p) => switch (p) {
+    PrepProduct.quicklime => prepProductQuicklime,
+    PrepProduct.chlorine => prepProductChlorine,
+    PrepProduct.manure => prepProductManure,
+  };
+
   String observationCategory(ObservationCategory c) => switch (c) {
     ObservationCategory.dike => obsDike,
     ObservationCategory.inletScreen => obsInletScreen,
@@ -175,7 +190,8 @@ extension EnumLabels on AppLocalizations {
         formatDecimal(f['daysLeft']! as double, locale, decimals: 0),
       ),
       AlertKind.feedTooOld => alertFeedTooOld,
-      AlertKind.prepStepDue => alertPrepStepDue,
+      AlertKind.prepStepDue =>
+        f['waitingStep'] == PrepStep.rest ? alertPrepRest : alertPrepDry,
       AlertKind.duplicateDailyLog => alertDuplicateLog(
         formatDate(f['date']! as DateTime),
       ),
