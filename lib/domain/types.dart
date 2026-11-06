@@ -40,6 +40,14 @@ enum ProductForm { live, fresh, frozen, smoked, dried }
 
 enum PrepStep { drain, dry, treat, fertilise, fill, rest }
 
+/// What was put in a pond during preparation (DOMAIN §Pond preparation).
+enum PrepProduct { quicklime, chlorine, manure }
+
+/// Why feed was thrown away (DOMAIN §Feed stock).
+enum DiscardReason { mould, rancid, clumped, other }
+
+enum CustomerType { market, restaurant, supermarket, exporter, individual }
+
 enum Severity { warning, danger }
 
 class FeedingGuide {

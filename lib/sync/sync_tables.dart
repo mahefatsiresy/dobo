@@ -28,6 +28,7 @@ List<SyncTable> syncTables(AppDatabase db) => [
   SyncTable(db.batches, RowKind.reference),
   SyncTable(db.visits, RowKind.reference),
   SyncTable(db.settingOverrides, RowKind.reference),
+  SyncTable(db.customers, RowKind.reference),
   SyncTable(db.stockings, RowKind.event),
   SyncTable(db.transfers, RowKind.event),
   SyncTable(db.dailyLogs, RowKind.event),
@@ -38,4 +39,9 @@ List<SyncTable> syncTables(AppDatabase db) => [
   SyncTable(db.treatments, RowKind.event),
   SyncTable(db.visitReports, RowKind.event),
   SyncTable(db.photos, RowKind.event),
+  SyncTable(db.prepSteps, RowKind.event),
+  SyncTable(db.feedDeliveries, RowKind.event),
+  SyncTable(db.feedDiscards, RowKind.event),
+  SyncTable(db.harvests, RowKind.event),
+  SyncTable(db.sales, RowKind.event),
 ];

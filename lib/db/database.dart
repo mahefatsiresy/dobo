@@ -7,8 +7,12 @@ import 'ids.dart';
 import 'sync_state.dart';
 import 'converters.dart';
 import 'tables/batches.dart';
+import 'tables/customers.dart';
 import 'tables/daily_logs.dart';
+import 'tables/feed_deliveries.dart';
+import 'tables/feed_discards.dart';
 import 'tables/groups.dart';
+import 'tables/harvests.dart';
 import 'tables/health_events.dart';
 import 'tables/local_meta.dart';
 import 'tables/members.dart';
@@ -16,7 +20,9 @@ import 'tables/observations.dart';
 import 'tables/people.dart';
 import 'tables/photo_uploads.dart';
 import 'tables/photos.dart';
+import 'tables/prep_steps.dart';
 import 'tables/report_reads.dart';
+import 'tables/sales.dart';
 import 'tables/samples.dart';
 import 'tables/setting_overrides.dart';
 import 'tables/ponds.dart';
@@ -53,6 +59,12 @@ part 'database.g.dart';
     Photos,
     ReportReads,
     PhotoUploads,
+    PrepSteps,
+    FeedDeliveries,
+    FeedDiscards,
+    Harvests,
+    Sales,
+    Customers,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -61,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.open() => AppDatabase(driftDatabase(name: 'dobo'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -92,6 +104,14 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(schema.photos);
         await m.createTable(schema.reportReads);
         await m.createTable(schema.photoUploads);
+      },
+      from5To6: (m, schema) async {
+        await m.createTable(schema.prepSteps);
+        await m.createTable(schema.feedDeliveries);
+        await m.createTable(schema.feedDiscards);
+        await m.createTable(schema.harvests);
+        await m.createTable(schema.sales);
+        await m.createTable(schema.customers);
       },
     ),
   );

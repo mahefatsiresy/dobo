@@ -23,6 +23,10 @@ tool/server_test.sh                # Dart tests tagged `server`
   checkout or merge that adds it) loses the label: when `create-account`
   answers 503 and the edge runtime logs "failed to determine entrypoint",
   run the `chcon` again.
+- If `supabase start` stops with "failed to copy secret file into
+  container" after the analytics container crashes ("Failed to detect IP
+  version for DB_HOSTNAME"), start without analytics and Studio:
+  `supabase start -x vector,logflare,studio`. The tests don't need them.
 - `env/local.json` points the Android emulator at the host
   (`http://10.0.2.2:54321`). `env/host.json` is for tools on the host. Both
   hold the local anon key from `supabase status` and are gitignored.

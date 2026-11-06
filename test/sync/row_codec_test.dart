@@ -32,6 +32,7 @@ void main() {
       'batches',
       'visits',
       'setting_overrides',
+      'customers',
       'stockings',
       'transfers',
       'daily_logs',
@@ -42,6 +43,11 @@ void main() {
       'treatments',
       'visit_reports',
       'photos',
+      'prep_steps',
+      'feed_deliveries',
+      'feed_discards',
+      'harvests',
+      'sales',
     ]);
     expect(
       syncTables(db).map((t) => t.name).toSet(),
@@ -50,6 +56,8 @@ void main() {
     );
     expect(table('ponds').kind, RowKind.reference);
     expect(table('daily_logs').kind, RowKind.event);
+    expect(table('customers').kind, RowKind.reference);
+    expect(table('sales').kind, RowKind.event);
   });
 
   test(
