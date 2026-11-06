@@ -26,6 +26,7 @@ class DomainConfig {
     required this.feedAgeWarnDays,
     required this.feedAgeDangerDays,
     required this.lowStockDays,
+    required this.feedUsageDays,
     required this.mortalitySpikeShare,
     required this.mortalitySpikeMultiplier,
     required this.mortalitySpikeMinDeaths,
@@ -101,6 +102,7 @@ class DomainConfig {
     feedAgeWarnDays: 60,
     feedAgeDangerDays: 90,
     lowStockDays: 7,
+    feedUsageDays: 7,
     mortalitySpikeShare: 0.005,
     mortalitySpikeMultiplier: 3.0,
     mortalitySpikeMinDeaths: 5,
@@ -165,6 +167,10 @@ class DomainConfig {
   final int feedAgeWarnDays;
   final int feedAgeDangerDays;
   final int lowStockDays;
+
+  /// Days of feed averaged for "days of stock left". DOMAIN §Feed stock
+  /// [default].
+  final int feedUsageDays;
 
   /// DOMAIN §Alert rules [default].
   final double mortalitySpikeShare;
@@ -232,6 +238,7 @@ class DomainConfig {
     int? feedAgeWarnDays,
     int? feedAgeDangerDays,
     int? lowStockDays,
+    int? feedUsageDays,
     double? mortalitySpikeShare,
     double? mortalitySpikeMultiplier,
     int? mortalitySpikeMinDeaths,
@@ -275,6 +282,7 @@ class DomainConfig {
     feedAgeWarnDays: feedAgeWarnDays ?? this.feedAgeWarnDays,
     feedAgeDangerDays: feedAgeDangerDays ?? this.feedAgeDangerDays,
     lowStockDays: lowStockDays ?? this.lowStockDays,
+    feedUsageDays: feedUsageDays ?? this.feedUsageDays,
     mortalitySpikeShare: mortalitySpikeShare ?? this.mortalitySpikeShare,
     mortalitySpikeMultiplier:
         mortalitySpikeMultiplier ?? this.mortalitySpikeMultiplier,

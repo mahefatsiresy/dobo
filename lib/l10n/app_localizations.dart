@@ -2390,6 +2390,12 @@ abstract class AppLocalizations {
   /// **'Stock bas (jours restants)'**
   String get cfgLowStockDays;
 
+  /// No description provided for @cfgFeedUsageDays.
+  ///
+  /// In fr, this message translates to:
+  /// **'Consommation moyenne sur (jours)'**
+  String get cfgFeedUsageDays;
+
   /// No description provided for @cfgMortalitySpikeShare.
   ///
   /// In fr, this message translates to:

@@ -194,6 +194,12 @@ final List<ConfigKey> configKeys = [
     (c) => c.lowStockDays,
     (c, v) => c.copyWith(lowStockDays: v),
   ),
+  _int(
+    'feedUsageDays',
+    '§Feed stock',
+    (c) => c.feedUsageDays,
+    (c, v) => c.copyWith(feedUsageDays: v),
+  ),
   _double(
     'mortalitySpikeShare',
     '§Alert rules',

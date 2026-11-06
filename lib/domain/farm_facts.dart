@@ -14,6 +14,7 @@ class LogFact {
     this.waterColour,
     this.enteredBy = '',
     this.observedBy,
+    this.feedLotId,
   });
 
   final String id;
@@ -31,6 +32,9 @@ class LogFact {
 
   /// The person who saw it, when not the one entering (CLAUDE.md "Who").
   final String? observedBy;
+
+  /// The feed lot the feed came from; null when none was stamped.
+  final String? feedLotId;
 }
 
 /// Every current record that moves fish, sets their weight or feeds them:

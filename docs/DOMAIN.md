@@ -59,6 +59,7 @@ Boundaries: a weight exactly on 5, 20 or 250 g belongs to the heavier phase.
 - Feed older than 2–3 months from manufacture loses nutritional value [5.2]: **[default]** warn at 60 days, "do not use" at 90 days.
 - Discard sacks with mould, rancid smell or clumped pellets; record the discard. [5.2]
 - **[default]** low-stock warning when stock covers fewer than 7 days at the current daily usage.
+- **[default]** daily usage is the feed logged over the last 7 days (today included) ÷ 7.
 
 ## Sampling
 

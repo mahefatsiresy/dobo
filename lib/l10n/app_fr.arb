@@ -753,6 +753,7 @@
   "cfgFeedAgeWarnDays": "Aliment vieux : alerte (jours)",
   "cfgFeedAgeDangerDays": "Aliment trop vieux (jours)",
   "cfgLowStockDays": "Stock bas (jours restants)",
+  "cfgFeedUsageDays": "Consommation moyenne sur (jours)",
   "cfgMortalitySpikeShare": "Pic de mortalité : part des poissons",
   "cfgMortalitySpikeMultiplier": "Pic de mortalité : fois la moyenne",
   "cfgMortalitySpikeMinDeaths": "Pic de mortalité : morts au moins",

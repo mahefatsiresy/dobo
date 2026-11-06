@@ -20,6 +20,10 @@ void main() {
     expect(cfg.harvestHour, 6);
   });
 
+  test('M7 default: feed usage is averaged over 7 days', () {
+    expect(cfg.feedUsageDays, 7);
+  });
+
   test('every phase and structure type has a value', () {
     expect(Phase.values.every(cfg.rationRate.containsKey), isTrue);
     expect(Phase.values.every(cfg.feedingGuides.containsKey), isTrue);

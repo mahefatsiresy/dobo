@@ -223,6 +223,7 @@ String settingLabel(AppLocalizations l10n, String subject) => switch (subject) {
   'feedAgeWarnDays' => l10n.cfgFeedAgeWarnDays,
   'feedAgeDangerDays' => l10n.cfgFeedAgeDangerDays,
   'lowStockDays' => l10n.cfgLowStockDays,
+  'feedUsageDays' => l10n.cfgFeedUsageDays,
   'mortalitySpikeShare' => l10n.cfgMortalitySpikeShare,
   'mortalitySpikeMultiplier' => l10n.cfgMortalitySpikeMultiplier,
   'mortalitySpikeMinDeaths' => l10n.cfgMortalitySpikeMinDeaths,

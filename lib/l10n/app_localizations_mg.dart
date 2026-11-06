@@ -1264,6 +1264,9 @@ class AppLocalizationsMg extends AppLocalizations {
   String get cfgLowStockDays => 'Stock bas (jours restants)';
 
   @override
+  String get cfgFeedUsageDays => 'Consommation moyenne sur (jours)';
+
+  @override
   String get cfgMortalitySpikeShare => 'Pic de mortalité : part des poissons';
 
   @override

@@ -16,9 +16,9 @@ void main() {
     // bounds, oxygen, 2 renewal bounds, 3 sampling, water check, 2 FCR
     // bounds, 3 feed stock, 6 mortality and signs, stop-feeding signs, 6
     // quarantine and prep bounds, fast, harvest hour, 4 dose bounds, 4 pond
-    // design bounds, depth, 4 stocking bounds.
-    expect(configKeys, hasLength(60));
-    expect(configKeys.map((k) => k.key).toSet(), hasLength(60));
+    // design bounds, depth, 4 stocking bounds, feed usage window.
+    expect(configKeys, hasLength(61));
+    expect(configKeys.map((k) => k.key).toSet(), hasLength(61));
     expect(
       configKeys.map((k) => k.key),
       containsAll([
@@ -30,6 +30,7 @@ void main() {
         'mortalityLookbackDays',
         'stopFeedingSignDays',
         'harvestHour',
+        'feedUsageDays',
       ]),
     );
   });
