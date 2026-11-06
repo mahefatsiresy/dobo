@@ -41,14 +41,18 @@ class SetupRepository {
     // accounts is its founder's.
     final member = row?.syncState == SyncState.synced ? row : null;
     final role = member?.role ?? _role(meta[_roleKey]) ?? MemberRole.member;
+    final admin = member?.isAdmin ?? _flag(meta[_adminKey]) ?? true;
     return Session(
       associationId: associationId,
       userId: userId,
       deviceId: await db.deviceId(),
       siteId: siteId,
       role: role,
-      isAdmin: member?.isAdmin ?? _flag(meta[_adminKey]) ?? true,
-      isSales: member?.isSales ?? _flag(meta[_salesKey]) ?? false,
+      isAdmin: admin,
+      // Off the server, the phone's admin also sells (plan M7 Task 8): no
+      // one else could record a harvest. Signing in writes the server's
+      // flag.
+      isSales: member?.isSales ?? _flag(meta[_salesKey]) ?? admin,
       isLinked: meta['linked'] == '1',
     );
   }
@@ -76,6 +80,9 @@ class SetupRepository {
     Session? ids,
     MemberRole role = MemberRole.member,
     bool isAdmin = true,
+
+    /// Defaults to [isAdmin]: off the server, the admin also sells.
+    bool? isSales,
   }) => db.transaction(() async {
     if (await currentSession() != null) {
       throw StateError('Setup already done');
@@ -102,7 +109,7 @@ class SetupRepository {
       _siteKey: siteId,
       _roleKey: role.name,
       _adminKey: isAdmin ? '1' : '0',
-      _salesKey: '0',
+      _salesKey: (isSales ?? isAdmin) ? '1' : '0',
     });
     return (await currentSession())!;
   });

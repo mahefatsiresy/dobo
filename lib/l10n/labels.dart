@@ -136,6 +136,22 @@ extension EnumLabels on AppLocalizations {
     PrepStep.rest => prepStepRest,
   };
 
+  String productForm(ProductForm f) => switch (f) {
+    ProductForm.live => formLive,
+    ProductForm.fresh => formFresh,
+    ProductForm.frozen => formFrozen,
+    ProductForm.smoked => formSmoked,
+    ProductForm.dried => formDried,
+  };
+
+  String customerTypeLabel(CustomerType t) => switch (t) {
+    CustomerType.market => custMarket,
+    CustomerType.restaurant => custRestaurant,
+    CustomerType.supermarket => custSupermarket,
+    CustomerType.exporter => custExporter,
+    CustomerType.individual => custIndividual,
+  };
+
   String discardReason(DiscardReason r) => switch (r) {
     DiscardReason.mould => discardMould,
     DiscardReason.rancid => discardRancid,

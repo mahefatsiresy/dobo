@@ -104,6 +104,14 @@ class MoreScreen extends ConsumerWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.go('/more/feed'),
           ),
+          if (ref.watch(sessionProvider).value?.isSales ?? false)
+            ListTile(
+              minTileHeight: 56,
+              leading: const Icon(Icons.storefront),
+              title: Text(l10n.moreSales),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.go('/more/sales'),
+            ),
           if (admin)
             ListTile(
               minTileHeight: 56,

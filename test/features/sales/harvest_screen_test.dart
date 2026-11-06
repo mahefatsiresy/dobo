@@ -1,0 +1,75 @@
+import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/health_repository.dart';
+import 'package:dobo/domain/types.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../db/repo_fixtures.dart';
+import '../../helpers.dart';
+import 'sales_fixtures.dart';
+
+void main() {
+  Finder field(String label) => find.widgetWithText(TextFormField, label);
+
+  Future<void> fill(WidgetTester tester, {required String count}) async {
+    await enterAndSettle(tester, field('Nombre de poissons'), count);
+    await enterAndSettle(tester, field('Poids total'), '237,5');
+    await tapAndSettle(tester, find.text("Finale (l'étang est vidé)"));
+  }
+
+  appTest('a final harvest under the estimate warns about 50 missing fish', (
+    tester,
+    db,
+  ) async {
+    final farm = await SalesFarm.create(db);
+    await farm.open(tester, '/more/batches/${farm.l1}');
+    await tapAndSettle(tester, find.text('Récolter'));
+    expect(find.textContaining("Estimé dans l'étang"), findsOneWidget);
+    await fill(tester, count: '950');
+    expect(find.textContaining('50 poissons non retrouvés'), findsOneWidget);
+  });
+
+  appTest('saving a final harvest closes the batch and empties the pond', (
+    tester,
+    db,
+  ) async {
+    final farm = await SalesFarm.create(db);
+    await farm.open(tester, '/more/batches/${farm.l1}/harvest');
+    await fill(tester, count: '950');
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    expect(find.text('Clôturé'), findsOneWidget);
+    final h = await db.select(db.harvests).getSingle();
+    expect(
+      (h.pondId, h.count, h.weightG, h.isFinal),
+      (farm.e1, 950, 237500, true),
+    );
+    final e1 = await (db.select(
+      db.ponds,
+    )..where((p) => p.id.equals(farm.e1))).getSingle();
+    expect(e1.status, PondStatus.empty);
+  });
+
+  appTest('an isolated pond is not offered', (tester, db) async {
+    final farm = await SalesFarm.create(db);
+    await BatchRepository(
+      db,
+      farm.session,
+    ).transfer(moveInput(farm.l1, from: farm.e1, to: farm.e2, count: 400));
+    await HealthRepository(db, farm.session).report(
+      pondId: farm.e1,
+      signs: const {},
+      isolate: true,
+      technicianCalled: false,
+    );
+    await farm.open(tester, '/more/batches/${farm.l1}/harvest');
+    final picker = find.byKey(const ValueKey('harvest-pond'));
+    expect(
+      find.descendant(of: picker, matching: find.text('E2')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: picker, matching: find.text('E1')),
+      findsNothing,
+    );
+  });
+}

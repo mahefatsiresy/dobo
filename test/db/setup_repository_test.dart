@@ -42,6 +42,20 @@ void main() {
     expect(site.associationId, s.associationId);
   });
 
+  test("a phone set up without the server: its admin may sell, a worker "
+      'may not', () async {
+    final s = await repo.completeSetup(siteName: 'Ambohidratrimo');
+    expect((s.isAdmin, s.isSales), (true, true));
+    final other = SetupRepository(AppDatabase(NativeDatabase.memory()));
+    addTearDown(other.db.close);
+    final w = await other.completeSetup(
+      siteName: 'Ambohidratrimo',
+      role: MemberRole.worker,
+      isAdmin: false,
+    );
+    expect(w.isSales, false);
+  });
+
   test('setup runs only once', () async {
     await repo.completeSetup(siteName: 'Ambohidratrimo');
     await expectLater(repo.completeSetup(siteName: 'X'), throwsStateError);
@@ -53,19 +67,22 @@ void main() {
       expect(await repo.watchSession().first, isNull);
     });
 
-    test('an M3 phone with no role recorded is a member and admin', () async {
-      for (final (k, v) in [
-        ('association_id', 'a1'),
-        ('user_id', 'm1'),
-        ('site_id', 's1'),
-      ]) {
-        await db
-            .into(db.localMeta)
-            .insert(LocalMetaCompanion.insert(key: k, value: v));
-      }
-      final s = (await repo.watchSession().first)!;
-      expect((s.role, s.isAdmin, s.isSales), (MemberRole.member, true, false));
-    });
+    test(
+      'an M3 phone with no role recorded is a member, admin and sales',
+      () async {
+        for (final (k, v) in [
+          ('association_id', 'a1'),
+          ('user_id', 'm1'),
+          ('site_id', 's1'),
+        ]) {
+          await db
+              .into(db.localMeta)
+              .insert(LocalMetaCompanion.insert(key: k, value: v));
+        }
+        final s = (await repo.watchSession().first)!;
+        expect((s.role, s.isAdmin, s.isSales), (MemberRole.member, true, true));
+      },
+    );
 
     test('takes the role written at sign-in', () async {
       await repo.writeSignIn(

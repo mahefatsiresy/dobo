@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/sales/customers_screen.dart';
+import 'features/sales/harvest_screen.dart';
+import 'features/sales/sale_screen.dart';
+import 'features/sales/sales_screen.dart';
 import 'features/feed/feed_delivery_screen.dart';
 import 'features/feed/feed_discard_screen.dart';
 import 'features/feed/feed_stock_screen.dart';
@@ -271,10 +275,45 @@ final routerProvider = Provider<GoRouter>((ref) {
                             ),
                           ),
                           GoRoute(
+                            path: 'harvest',
+                            builder: (context, state) => HarvestScreen(
+                              batchId: state.pathParameters['id']!,
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'sell',
+                            builder: (context, state) => SaleScreen(
+                              batchId: state.pathParameters['id']!,
+                            ),
+                          ),
+                          GoRoute(
                             path: 'stockings/:stockingId/edit',
                             builder: (context, state) => StockScreen(
                               batchId: state.pathParameters['id'],
                               stockingId: state.pathParameters['stockingId'],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'sales',
+                    builder: (context, state) => const SalesScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'customers',
+                        builder: (context, state) => const CustomersScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'new',
+                            builder: (context, state) =>
+                                const CustomerFormScreen(),
+                          ),
+                          GoRoute(
+                            path: ':customerId',
+                            builder: (context, state) => CustomerFormScreen(
+                              customerId: state.pathParameters['customerId'],
                             ),
                           ),
                         ],

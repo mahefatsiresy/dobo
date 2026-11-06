@@ -920,6 +920,134 @@
   "alertFeedOld": "Un lot d'aliment vieillit : l'utiliser en priorité",
   "alertFeedExpired": "Un lot d'aliment est trop vieux : ne pas l'utiliser",
   "moreFeed": "Aliment",
+  "harvestAction": "Récolter",
+  "sellAction": "Vendre",
+  "harvestTitle": "Récolte {batch}",
+  "@harvestTitle": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "harvestPond": "Étang",
+  "harvestDate": "Date de récolte",
+  "harvestCount": "Nombre de poissons",
+  "harvestWeight": "Poids total",
+  "harvestPartial": "Partielle",
+  "harvestFinal": "Finale (l'étang est vidé)",
+  "harvestEstimate": "Estimé dans l'étang : {count} poissons",
+  "@harvestEstimate": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "harvestMissing": "{count} poissons non retrouvés (prédateurs, vol ou erreur de comptage)",
+  "@harvestMissing": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "harvestNoPond": "Aucun étang de ce lot ne peut être récolté : il est vide ou isolé",
+  "harvestsHeading": "Récoltes et ventes",
+  "harvestKindPartial": "Récolte partielle",
+  "harvestKindFinal": "Récolte finale",
+  "harvestLine": "{date} · {kind} {pond} : {count} poissons · {kg}",
+  "@harvestLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "kind": {
+        "type": "String"
+      },
+      "pond": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      },
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLine": "{customer} · {form} · {kg}",
+  "@saleLine": {
+    "placeholders": {
+      "customer": {
+        "type": "String"
+      },
+      "form": {
+        "type": "String"
+      },
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "saleTitle": "Vente {batch}",
+  "@saleTitle": {
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "saleHarvest": "Récolte",
+  "saleHarvestOption": "{date} · {pond} · {kg}",
+  "@saleHarvestOption": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "pond": {
+        "type": "String"
+      },
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "saleCustomer": "Client",
+  "saleNewCustomer": "Nouveau client",
+  "saleWeight": "Poids vendu",
+  "saleForm": "Forme",
+  "saleDate": "Date de vente",
+  "saleNote": "Bon de livraison (facultatif)",
+  "saleOverHarvest": "Plus que le poids récolté pas encore vendu ({kg})",
+  "@saleOverHarvest": {
+    "placeholders": {
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "formLive": "Vivant",
+  "formFresh": "Frais",
+  "formFrozen": "Congelé",
+  "formSmoked": "Fumé",
+  "formDried": "Séché",
+  "moreSales": "Ventes",
+  "salesTitle": "Récoltes et ventes",
+  "salesNone": "Aucune récolte enregistrée",
+  "customersTitle": "Clients",
+  "customerNew": "Nouveau client",
+  "customerEdit": "Client",
+  "customerName": "Nom",
+  "customerType": "Type",
+  "customerContact": "Contact (facultatif)",
+  "customerArchive": "Retirer de la liste",
+  "customersNone": "Aucun client",
+  "custMarket": "Marché",
+  "custRestaurant": "Restaurant",
+  "custSupermarket": "Supermarché",
+  "custExporter": "Exportateur",
+  "custIndividual": "Particulier",
   "feedTitle": "Stock d'aliment",
   "feedOnHand": "En stock",
   "feedDaysLeft": "{days} jours de stock",

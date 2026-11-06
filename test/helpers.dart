@@ -21,15 +21,19 @@ void appTest(
   bool setUp = true,
   MemberRole role = MemberRole.member,
   bool isAdmin = true,
+  bool? isSales,
   List<Override> overrides = const [],
 }) {
   testWidgets(description, (tester) async {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
     final db = AppDatabase(NativeDatabase.memory());
     if (setUp) {
-      await SetupRepository(
-        db,
-      ).completeSetup(siteName: 'Ambohidratrimo', role: role, isAdmin: isAdmin);
+      await SetupRepository(db).completeSetup(
+        siteName: 'Ambohidratrimo',
+        role: role,
+        isAdmin: isAdmin,
+        isSales: isSales,
+      );
     }
     await tester.pumpWidget(
       ProviderScope(

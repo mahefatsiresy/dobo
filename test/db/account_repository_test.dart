@@ -155,6 +155,8 @@ void main() {
         (s.associationId, s.userId),
         (sent['associationId'], sent['memberId']),
       );
+      // The server says who sells; the founder doesn't until an admin says.
+      expect(s.isSales, false);
       final site = await db.select(db.sites).getSingle();
       expect(
         (site.id, site.name, site.locationNote),

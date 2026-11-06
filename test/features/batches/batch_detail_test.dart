@@ -176,4 +176,33 @@ void main() {
     final rows = await db.select(db.stockings).get();
     expect([for (final r in rows) r.count]..sort(), [900, 1000]);
   });
+
+  appTest('Récolter and Vendre are hidden without the sales flag', (
+    tester,
+    db,
+  ) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e1 = await PondRepository(db, session).create(
+      const PondInput(
+        code: 'E1',
+        colour: PondColour.blue,
+        role: PondRole.growout,
+      ),
+    );
+    await BatchRepository(db, session).stockBatch(
+      StockInput(
+        code: 'L26-01',
+        pondId: e1,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 12500,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Plus'));
+    await tapAndSettle(tester, find.text('Lots'));
+    await tapAndSettle(tester, find.text('L26-01'));
+    expect(find.text('Récolter'), findsNothing);
+    expect(find.text('Vendre'), findsNothing);
+  }, isSales: false);
 }

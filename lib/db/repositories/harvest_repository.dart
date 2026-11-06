@@ -121,23 +121,37 @@ class HarvestRepository {
 
   /// [batchId]'s harvests, newest first, each with its sales.
   Stream<List<HarvestWithSales>> watchForBatch(String batchId) =>
-      watchTables(db, {db.harvests, db.sales}, () async {
-        final sales = await (currentEvents(
-          db,
-          db.sales,
-        )..where((s) => s.batchId.equals(batchId))).get();
-        final harvests = await (currentEvents(
-          db,
-          db.harvests,
-        )..where((h) => h.batchId.equals(batchId))).get();
-        return [
-          for (final h in harvests.reversed)
-            HarvestWithSales(h, [
-              for (final s in sales)
-                if (s.harvestId == h.id) s,
-            ]),
-        ];
-      });
+      watchTables(db, {db.harvests, db.sales}, () => _list(batchId));
+
+  /// Every batch's harvests, newest first, each with its sales.
+  Stream<List<HarvestWithSales>> watchAll() =>
+      watchTables(db, {db.harvests, db.sales}, () => _list(null));
+
+  /// A sale names the harvest version it was made from; a correction of
+  /// the harvest keeps it, so sales are matched along the harvest's chain.
+  Future<List<HarvestWithSales>> _list(String? batchId) async {
+    final sales =
+        await (currentEvents(db, db.sales)..where(
+              (s) => batchId == null
+                  ? const Constant(true)
+                  : s.batchId.equals(batchId),
+            ))
+            .get();
+    final harvests =
+        await (currentEvents(db, db.harvests)..where(
+              (h) => batchId == null
+                  ? const Constant(true)
+                  : h.batchId.equals(batchId),
+            ))
+            .get();
+    return [
+      for (final h in harvests.reversed)
+        HarvestWithSales(h, [
+          for (final s in sales)
+            if ((await db.chainIds(db.harvests, h.id)).contains(s.harvestId)) s,
+        ]),
+    ];
+  }
 
   Future<Harvest> _get(String id) =>
       (db.select(db.harvests)..where((h) => h.id.equals(id))).getSingle();

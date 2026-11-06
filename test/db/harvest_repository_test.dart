@@ -121,4 +121,42 @@ void main() {
       (l1, c, 200000, ProductForm.fresh),
     );
   });
+
+  test("every batch's harvests, newest first", () async {
+    final l2 = await batches.stockBatch(stockInput('L26-02', pondId: e2));
+    await harvests.harvest(input(e1, 100));
+    await harvests.harvest(
+      HarvestInput(
+        batchId: l2,
+        pondId: e2,
+        date: DateTime(2026, 6, 5),
+        count: 50,
+        weightG: 12500,
+        isFinal: false,
+      ),
+    );
+    final all = await harvests.watchAll().first;
+    expect(all.map((h) => h.harvest.batchId), [l2, l1]);
+  });
+
+  test('a corrected harvest keeps its sales', () async {
+    final h = await harvests.harvest(input(e1, 950, isFinal: true));
+    final c = await CustomerRepository(
+      db,
+      session,
+    ).create(const CustomerInput(name: 'Marché', type: CustomerType.market));
+    await harvests.sell(
+      SaleInput(
+        harvestId: h,
+        customerId: c,
+        date: DateTime(2026, 6, 1),
+        weightG: 100000,
+        form: ProductForm.fresh,
+      ),
+    );
+    await harvests.correct(h, input(e1, 940, isFinal: true));
+    final list = await harvests.watchForBatch(l1).first;
+    expect(list.single.harvest.count, 940);
+    expect(list.single.sales, hasLength(1));
+  });
 }

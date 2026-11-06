@@ -158,10 +158,13 @@ class AccountRepository {
     );
     await db.transaction(() async {
       if (existing == null) {
+        // The server's member row brings the sales flag (false for the
+        // founder until an admin sets it).
         await setup.completeSetup(
           siteName: siteName.trim(),
           locationNote: locationNote,
           ids: ids,
+          isSales: false,
         );
       } else {
         await setup.writeSignIn(

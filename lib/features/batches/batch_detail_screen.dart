@@ -14,6 +14,8 @@ import '../common/pond_colour.dart';
 import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
+import '../sales/sales_providers.dart';
+import '../sales/sales_screen.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
 
@@ -67,10 +69,15 @@ class BatchDetailScreen extends ConsumerWidget {
     final placements = ref.watch(placementsProvider).value;
     final ponds = ref.watch(allPondsByIdProvider).value;
     final history = ref.watch(batchHistoryProvider(batchId)).value;
+    final harvests = ref.watch(batchHarvestsProvider(batchId)).value;
+    final customers = ref.watch(customersByIdProvider).value;
+    final sales = ref.watch(sessionProvider).value?.isSales ?? false;
     if (summary == null ||
         placements == null ||
         ponds == null ||
-        history == null) {
+        history == null ||
+        harvests == null ||
+        customers == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final b = summary.batch;
@@ -146,6 +153,45 @@ class BatchDetailScreen extends ConsumerWidget {
                 ],
               ),
             ),
+          if (sales) ...[
+            if (here.any((p) => p.live.count > 0)) ...[
+              const SizedBox(height: 8),
+              FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(56),
+                ),
+                onPressed: () => context.push('/more/batches/$batchId/harvest'),
+                icon: const Icon(Icons.set_meal),
+                label: Text(l10n.harvestAction),
+              ),
+            ],
+            if (harvests.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(56),
+                ),
+                onPressed: () => context.push('/more/batches/$batchId/sell'),
+                icon: const Icon(Icons.storefront),
+                label: Text(l10n.sellAction),
+              ),
+            ],
+          ],
+          if (harvests.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Text(l10n.harvestsHeading, style: theme.textTheme.titleMedium),
+            for (final h in harvests)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: HarvestLines(
+                    entry: h,
+                    ponds: ponds,
+                    customers: customers,
+                  ),
+                ),
+              ),
+          ],
           const SizedBox(height: 16),
           Text(l10n.history, style: theme.textTheme.titleMedium),
           for (final event in history)

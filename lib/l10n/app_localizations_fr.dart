@@ -1469,6 +1469,173 @@ class AppLocalizationsFr extends AppLocalizations {
   String get moreFeed => 'Aliment';
 
   @override
+  String get harvestAction => 'Récolter';
+
+  @override
+  String get sellAction => 'Vendre';
+
+  @override
+  String harvestTitle(String batch) {
+    return 'Récolte $batch';
+  }
+
+  @override
+  String get harvestPond => 'Étang';
+
+  @override
+  String get harvestDate => 'Date de récolte';
+
+  @override
+  String get harvestCount => 'Nombre de poissons';
+
+  @override
+  String get harvestWeight => 'Poids total';
+
+  @override
+  String get harvestPartial => 'Partielle';
+
+  @override
+  String get harvestFinal => 'Finale (l\'étang est vidé)';
+
+  @override
+  String harvestEstimate(String count) {
+    return 'Estimé dans l\'étang : $count poissons';
+  }
+
+  @override
+  String harvestMissing(String count) {
+    return '$count poissons non retrouvés (prédateurs, vol ou erreur de comptage)';
+  }
+
+  @override
+  String get harvestNoPond =>
+      'Aucun étang de ce lot ne peut être récolté : il est vide ou isolé';
+
+  @override
+  String get harvestsHeading => 'Récoltes et ventes';
+
+  @override
+  String get harvestKindPartial => 'Récolte partielle';
+
+  @override
+  String get harvestKindFinal => 'Récolte finale';
+
+  @override
+  String harvestLine(
+    String date,
+    String kind,
+    String pond,
+    String count,
+    String kg,
+  ) {
+    return '$date · $kind $pond : $count poissons · $kg';
+  }
+
+  @override
+  String saleLine(String customer, String form, String kg) {
+    return '$customer · $form · $kg';
+  }
+
+  @override
+  String saleTitle(String batch) {
+    return 'Vente $batch';
+  }
+
+  @override
+  String get saleHarvest => 'Récolte';
+
+  @override
+  String saleHarvestOption(String date, String pond, String kg) {
+    return '$date · $pond · $kg';
+  }
+
+  @override
+  String get saleCustomer => 'Client';
+
+  @override
+  String get saleNewCustomer => 'Nouveau client';
+
+  @override
+  String get saleWeight => 'Poids vendu';
+
+  @override
+  String get saleForm => 'Forme';
+
+  @override
+  String get saleDate => 'Date de vente';
+
+  @override
+  String get saleNote => 'Bon de livraison (facultatif)';
+
+  @override
+  String saleOverHarvest(String kg) {
+    return 'Plus que le poids récolté pas encore vendu ($kg)';
+  }
+
+  @override
+  String get formLive => 'Vivant';
+
+  @override
+  String get formFresh => 'Frais';
+
+  @override
+  String get formFrozen => 'Congelé';
+
+  @override
+  String get formSmoked => 'Fumé';
+
+  @override
+  String get formDried => 'Séché';
+
+  @override
+  String get moreSales => 'Ventes';
+
+  @override
+  String get salesTitle => 'Récoltes et ventes';
+
+  @override
+  String get salesNone => 'Aucune récolte enregistrée';
+
+  @override
+  String get customersTitle => 'Clients';
+
+  @override
+  String get customerNew => 'Nouveau client';
+
+  @override
+  String get customerEdit => 'Client';
+
+  @override
+  String get customerName => 'Nom';
+
+  @override
+  String get customerType => 'Type';
+
+  @override
+  String get customerContact => 'Contact (facultatif)';
+
+  @override
+  String get customerArchive => 'Retirer de la liste';
+
+  @override
+  String get customersNone => 'Aucun client';
+
+  @override
+  String get custMarket => 'Marché';
+
+  @override
+  String get custRestaurant => 'Restaurant';
+
+  @override
+  String get custSupermarket => 'Supermarché';
+
+  @override
+  String get custExporter => 'Exportateur';
+
+  @override
+  String get custIndividual => 'Particulier';
+
+  @override
   String get feedTitle => 'Stock d\'aliment';
 
   @override

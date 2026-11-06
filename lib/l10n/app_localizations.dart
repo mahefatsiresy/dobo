@@ -2720,6 +2720,300 @@ abstract class AppLocalizations {
   /// **'Aliment'**
   String get moreFeed;
 
+  /// No description provided for @harvestAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolter'**
+  String get harvestAction;
+
+  /// No description provided for @sellAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vendre'**
+  String get sellAction;
+
+  /// No description provided for @harvestTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte {batch}'**
+  String harvestTitle(String batch);
+
+  /// No description provided for @harvestPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get harvestPond;
+
+  /// No description provided for @harvestDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de récolte'**
+  String get harvestDate;
+
+  /// No description provided for @harvestCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de poissons'**
+  String get harvestCount;
+
+  /// No description provided for @harvestWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids total'**
+  String get harvestWeight;
+
+  /// No description provided for @harvestPartial.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partielle'**
+  String get harvestPartial;
+
+  /// No description provided for @harvestFinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Finale (l\'étang est vidé)'**
+  String get harvestFinal;
+
+  /// No description provided for @harvestEstimate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Estimé dans l\'étang : {count} poissons'**
+  String harvestEstimate(String count);
+
+  /// No description provided for @harvestMissing.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons non retrouvés (prédateurs, vol ou erreur de comptage)'**
+  String harvestMissing(String count);
+
+  /// No description provided for @harvestNoPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun étang de ce lot ne peut être récolté : il est vide ou isolé'**
+  String get harvestNoPond;
+
+  /// No description provided for @harvestsHeading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récoltes et ventes'**
+  String get harvestsHeading;
+
+  /// No description provided for @harvestKindPartial.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte partielle'**
+  String get harvestKindPartial;
+
+  /// No description provided for @harvestKindFinal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte finale'**
+  String get harvestKindFinal;
+
+  /// No description provided for @harvestLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} · {kind} {pond} : {count} poissons · {kg}'**
+  String harvestLine(
+    String date,
+    String kind,
+    String pond,
+    String count,
+    String kg,
+  );
+
+  /// No description provided for @saleLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{customer} · {form} · {kg}'**
+  String saleLine(String customer, String form, String kg);
+
+  /// No description provided for @saleTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vente {batch}'**
+  String saleTitle(String batch);
+
+  /// No description provided for @saleHarvest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolte'**
+  String get saleHarvest;
+
+  /// No description provided for @saleHarvestOption.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} · {pond} · {kg}'**
+  String saleHarvestOption(String date, String pond, String kg);
+
+  /// No description provided for @saleCustomer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Client'**
+  String get saleCustomer;
+
+  /// No description provided for @saleNewCustomer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau client'**
+  String get saleNewCustomer;
+
+  /// No description provided for @saleWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids vendu'**
+  String get saleWeight;
+
+  /// No description provided for @saleForm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forme'**
+  String get saleForm;
+
+  /// No description provided for @saleDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de vente'**
+  String get saleDate;
+
+  /// No description provided for @saleNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bon de livraison (facultatif)'**
+  String get saleNote;
+
+  /// No description provided for @saleOverHarvest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus que le poids récolté pas encore vendu ({kg})'**
+  String saleOverHarvest(String kg);
+
+  /// No description provided for @formLive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vivant'**
+  String get formLive;
+
+  /// No description provided for @formFresh.
+  ///
+  /// In fr, this message translates to:
+  /// **'Frais'**
+  String get formFresh;
+
+  /// No description provided for @formFrozen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Congelé'**
+  String get formFrozen;
+
+  /// No description provided for @formSmoked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fumé'**
+  String get formSmoked;
+
+  /// No description provided for @formDried.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séché'**
+  String get formDried;
+
+  /// No description provided for @moreSales.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ventes'**
+  String get moreSales;
+
+  /// No description provided for @salesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récoltes et ventes'**
+  String get salesTitle;
+
+  /// No description provided for @salesNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune récolte enregistrée'**
+  String get salesNone;
+
+  /// No description provided for @customersTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clients'**
+  String get customersTitle;
+
+  /// No description provided for @customerNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau client'**
+  String get customerNew;
+
+  /// No description provided for @customerEdit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Client'**
+  String get customerEdit;
+
+  /// No description provided for @customerName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get customerName;
+
+  /// No description provided for @customerType.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type'**
+  String get customerType;
+
+  /// No description provided for @customerContact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact (facultatif)'**
+  String get customerContact;
+
+  /// No description provided for @customerArchive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer de la liste'**
+  String get customerArchive;
+
+  /// No description provided for @customersNone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun client'**
+  String get customersNone;
+
+  /// No description provided for @custMarket.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marché'**
+  String get custMarket;
+
+  /// No description provided for @custRestaurant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Restaurant'**
+  String get custRestaurant;
+
+  /// No description provided for @custSupermarket.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supermarché'**
+  String get custSupermarket;
+
+  /// No description provided for @custExporter.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exportateur'**
+  String get custExporter;
+
+  /// No description provided for @custIndividual.
+  ///
+  /// In fr, this message translates to:
+  /// **'Particulier'**
+  String get custIndividual;
+
   /// No description provided for @feedTitle.
   ///
   /// In fr, this message translates to:
