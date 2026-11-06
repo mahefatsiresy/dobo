@@ -1,7 +1,9 @@
 import '../config.dart';
 import '../dates.dart';
 import '../farm_facts.dart';
+import '../feed_lots.dart';
 import '../growth.dart';
+import '../prep.dart';
 import '../stock.dart';
 import '../types.dart';
 import '../water.dart';
@@ -64,14 +66,17 @@ class PondSigns {
 }
 
 /// Every open alert and due task for [ponds] (the active ones), sorted by
-/// [compareAlerts]. DOMAIN §Alert rules. Feed stock, feed age and pond
-/// prep need records that arrive in M7.
+/// [compareAlerts]. DOMAIN §Alert rules. [feedStock] gives the farm-wide
+/// stock and lot-age alerts; [prep] (by pond id) the waiting steps of ponds
+/// without fish.
 List<Alert> farmAlerts({
   required FarmFacts facts,
   required List<PondInfo> ponds,
   required Map<String, BatchInfo> batches,
   required Map<String, ReadingInfo> latestReadings,
   List<PondSigns> healthSigns = const [],
+  FeedStock? feedStock,
+  Map<String, PrepProgress> prep = const {},
   required DateTime now,
   required DomainConfig config,
 }) {
@@ -147,10 +152,35 @@ List<Alert> farmAlerts({
       ),
     );
 
+    final progress = prep[pond.id];
+    if (!stocked && progress != null)
+      add(_prepAlert(pond.id, progress, today, config));
+
     for (final p in here) {
       final batch = batches[p.batchId];
       if (batch == null || batch.status == BatchStatus.closed) continue;
       out.addAll(_batchAlerts(facts, pond, batch, logs, today, now, config));
+    }
+  }
+
+  if (feedStock != null) {
+    add(
+      feedStockLowAlert(
+        stockG: feedStock.onHandG,
+        dailyUsageG: feedStock.dailyUsageG,
+        config: config,
+      ),
+    );
+    for (final b in feedStock.lots) {
+      add(
+        feedTooOldAlert(
+          feedLotId: b.lot.id,
+          manufacturedOn: b.lot.manufacturedOn,
+          remainingG: b.balanceG,
+          today: today,
+          config: config,
+        ),
+      );
     }
   }
 
@@ -161,6 +191,31 @@ List<Alert> farmAlerts({
 
   final codes = {for (final p in ponds) p.id: p.code};
   return out..sort((a, b) => compareAlerts(a, b, codes));
+}
+
+/// The waiting step whose minimum time has passed: the rest after filling,
+/// else the drying after draining.
+Alert? _prepAlert(
+  String pondId,
+  PrepProgress p,
+  DateTime today,
+  DomainConfig config,
+) {
+  for (final (done, waiting) in [
+    (PrepStep.fill, PrepStep.rest),
+    (PrepStep.drain, PrepStep.dry),
+  ]) {
+    final at = p.done[done];
+    if (at == null || p.done.containsKey(waiting)) continue;
+    return prepStepDueAlert(
+      pondId: pondId,
+      lastDone: done,
+      lastDoneOn: at.date,
+      today: today,
+      config: config,
+    );
+  }
+  return null;
 }
 
 /// The colour to judge: the latest daily log's when it is from a later day
@@ -368,7 +423,11 @@ int compareAlerts(Alert a, Alert b, Map<String, String> pondCodes) {
     final byCode = ca.compareTo(cb);
     if (byCode != 0) return byCode;
   }
-  return (a.batchId ?? '').compareTo(b.batchId ?? '');
+  final byBatch = (a.batchId ?? '').compareTo(b.batchId ?? '');
+  if (byBatch != 0) return byBatch;
+  return '${a.facts['feedLotId'] ?? ''}'.compareTo(
+    '${b.facts['feedLotId'] ?? ''}',
+  );
 }
 
 /// DOMAIN §Alert rules table order, duplicate pond-days last.

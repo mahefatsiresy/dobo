@@ -79,16 +79,18 @@ void main() {
   test('drawing 30 kg from a 25 kg lot leaves 0 and 5 kg overdrawn', () {
     final s = stockOf(
       [lot('a', 25)],
-      logs: [log(20, on: 10, lotId: 'a'), log(10, on: 11, lotId: 'a')],
+      logs: [
+        log(20, on: 10, lotId: 'a'),
+        log(10, on: 11, lotId: 'a'),
+      ],
     );
     expect((balance(s, 'a'), s.onHandG, s.overdrawnG), (0, 0, 5000));
   });
 
   test('a lot at 90 days is expired and not on hand', () {
-    final s = stockOf(
-      [lot('a', 25, made: 1)],
-      on: day(1).add(const Duration(days: 90)),
-    );
+    final s = stockOf([
+      lot('a', 25, made: 1),
+    ], on: day(1).add(const Duration(days: 90)));
     final a = s.lots.single;
     expect((a.age, a.balanceG), (FeedAge.expired, 25000));
     expect((s.onHandG, s.expiredG), (0, 25000));

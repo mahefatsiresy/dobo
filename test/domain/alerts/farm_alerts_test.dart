@@ -3,7 +3,10 @@ import 'package:dobo/domain/alerts/farm_alerts.dart';
 import 'package:dobo/domain/config.dart';
 import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/farm_facts.dart';
+import 'package:dobo/domain/feed_lots.dart';
+import 'package:dobo/domain/feed_stock.dart';
 import 'package:dobo/domain/occupancy.dart';
+import 'package:dobo/domain/prep.dart';
 import 'package:dobo/domain/stock.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/domain/water.dart';
@@ -72,6 +75,8 @@ void main() {
     Map<String, ReadingInfo>? readings,
     List<PondSigns> healthSigns = const [],
     DateTime? at,
+    FeedStock? feedStock,
+    Map<String, PrepProgress> prep = const {},
   }) => farmAlerts(
     facts: FarmFacts(
       stockings: stockings ?? [stock()],
@@ -91,6 +96,8 @@ void main() {
     latestReadings:
         readings ?? {'e1': ReadingInfo(at: d(19), temperatureC: 28)},
     healthSigns: healthSigns,
+    feedStock: feedStock,
+    prep: prep,
     now: at ?? now,
     config: cfg,
   );
@@ -384,6 +391,84 @@ void main() {
       ],
     );
     expect(ofKind(all, AlertKind.fcrWorsening), isEmpty);
+  });
+
+  group('M7: feed and preparation', () {
+    FeedStock stockOf(List<(String, int, int)> lots, {int usageG = 0}) {
+      // (id, kg, manufactured that many days before today)
+      final facts = [
+        for (final (id, kg, age) in lots)
+          FeedLotFact(
+            id: id,
+            phase: Phase.growout,
+            weightG: kg * 1000,
+            manufacturedOn: d(20).subtract(Duration(days: age)),
+            deliveredOn: d(1),
+          ),
+      ];
+      return feedStock(
+        lots: facts,
+        discards: const [],
+        countedLogs: [
+          for (var day = 14; day <= 20; day++)
+            LogFact(id: 'u$day', pondId: 'e1', date: d(day), feedG: usageG),
+        ],
+        today: d(20),
+        config: cfg,
+      );
+    }
+
+    test('a lot at 61 days with a balance warns, at 90 days is danger, '
+        'empty lot is silent', () {
+      final all = alerts(
+        feedStock: stockOf([('old', 25, 61), ('expired', 25, 90)]),
+      );
+      final aged = ofKind(all, AlertKind.feedTooOld).toList();
+      expect(
+        {for (final a in aged) a.facts['feedLotId']: a.severity},
+        {'old': Severity.warning, 'expired': Severity.danger},
+      );
+      final empty = stockOf([('used', 7, 61)], usageG: 1000);
+      expect(empty.lots.single.balanceG, 0);
+      expect(ofKind(alerts(feedStock: empty), AlertKind.feedTooOld), isEmpty);
+    });
+
+    test('stock covering 5 days warns once, without a pond', () {
+      // 84 kg delivered, 7 kg a day for a week: 35 kg left, 5 days.
+      final all = alerts(feedStock: stockOf([('a', 84, 10)], usageG: 7000));
+      final low = ofKind(all, AlertKind.feedStockLow).single;
+      expect((low.pondId, low.facts['daysLeft']), (null, 5.0));
+    });
+
+    test('drained 5 days ago with no dry step is a prep alert', () {
+      final p = prepProgress(
+        pondId: 'e2',
+        steps: [
+          PrepStepFact(
+            id: 's1',
+            pondId: 'e2',
+            step: PrepStep.drain,
+            date: d(15),
+          ),
+        ],
+        lastDayWithFish: null,
+        config: cfg,
+      );
+      final due = ofKind(alerts(prep: {'e2': p}), AlertKind.prepStepDue).single;
+      expect((due.pondId, due.facts['waitingStep']), ('e2', PrepStep.dry));
+    });
+
+    test('a refilled pond from an earlier cycle raises nothing', () {
+      final p = prepProgress(
+        pondId: 'e2',
+        steps: [
+          PrepStepFact(id: 's1', pondId: 'e2', step: PrepStep.fill, date: d(2)),
+        ],
+        lastDayWithFish: d(10),
+        config: cfg,
+      );
+      expect(ofKind(alerts(prep: {'e2': p}), AlertKind.prepStepDue), isEmpty);
+    });
   });
 }
 

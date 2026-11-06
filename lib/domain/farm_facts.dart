@@ -88,6 +88,13 @@ List<Placement> placementsOf(FarmFacts f, {DateTime? until}) {
   return found < 0 ? const [] : days[found].$2;
 }
 
+/// [f]'s placements at the end of each farm day that has a fact, oldest
+/// first.
+List<(DateTime, List<Placement>)> dailyPlacements(FarmFacts f) {
+  placementsOf(f);
+  return _timelines[f]!;
+}
+
 /// Each [FarmFacts]' placements at the end of each farm day with a fact.
 final _timelines = Expando<List<(DateTime, List<Placement>)>>();
 
