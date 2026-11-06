@@ -439,6 +439,11 @@ void main() {
       expect((low.pondId, low.facts['daysLeft']), (null, 5.0));
     });
 
+    test('with no delivery on record, feed logs raise no stock alert', () {
+      final all = alerts(feedStock: stockOf(const [], usageG: 7000));
+      expect(ofKind(all, AlertKind.feedStockLow), isEmpty);
+    });
+
     test('drained 5 days ago with no dry step is a prep alert', () {
       final p = prepProgress(
         pondId: 'e2',

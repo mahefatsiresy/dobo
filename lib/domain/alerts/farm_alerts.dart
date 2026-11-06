@@ -164,7 +164,9 @@ List<Alert> farmAlerts({
     }
   }
 
-  if (feedStock != null) {
+  // Stock is tracked once a delivery is on record; before that, feed logs
+  // would read as an empty store.
+  if (feedStock != null && feedStock.lots.isNotEmpty) {
     add(
       feedStockLowAlert(
         stockG: feedStock.onHandG,
