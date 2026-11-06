@@ -10,6 +10,8 @@ import '../../domain/alerts/worker_advice.dart';
 import '../../domain/pond.dart';
 import '../../domain/types.dart';
 import '../common/farm_today.dart';
+import '../feed/feed_providers.dart';
+import '../prep/prep_providers.dart';
 import '../ponds/pond_overview.dart';
 
 /// Each pond's latest water reading.
@@ -33,11 +35,15 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
   final summaries = ref.watch(batchSummariesProvider);
   final readings = ref.watch(latestReadingsProvider);
   final health = ref.watch(_recentHealthProvider);
+  final feed = ref.watch(feedStockProvider);
+  final prep = ref.watch(prepProgressAllProvider);
   if (!facts.hasValue ||
       !ponds.hasValue ||
       !summaries.hasValue ||
       !readings.hasValue ||
-      !health.hasValue) {
+      !health.hasValue ||
+      !feed.hasValue ||
+      !prep.hasValue) {
     return const AsyncLoading();
   }
   // Recomputed at the farm's midnight and when the app comes back.
@@ -98,6 +104,8 @@ final alertsProvider = Provider<AsyncValue<List<Alert>>>((ref) {
           if (e.signs.isNotEmpty)
             PondSigns(e.pondId, DatedSigns(e.recordedAt, e.signs)),
       ],
+      feedStock: feed.requireValue,
+      prep: prep.requireValue,
       now: now,
       config: config,
     ),

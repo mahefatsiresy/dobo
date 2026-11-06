@@ -8,7 +8,7 @@ import '../sync_columns.dart';
 import 'batch_repository.dart';
 import 'watch_tables.dart';
 
-/// Every current stocking, move, sample and daily log (SPEC §4: what all
+/// Every current stocking, move, sample, daily log and harvest (SPEC §4: what all
 /// derived numbers are computed from).
 Future<FarmFacts> currentFacts(AppDatabase db) async => FarmFacts(
   stockings: [
@@ -53,6 +53,18 @@ Future<FarmFacts> currentFacts(AppDatabase db) async => FarmFacts(
         waterColour: l.waterColour,
         enteredBy: l.enteredBy,
         observedBy: l.observedBy,
+        feedLotId: l.feedLotId,
+      ),
+  ],
+  harvests: [
+    for (final h in await currentEvents(db, db.harvests).get())
+      HarvestFact(
+        batchId: h.batchId,
+        pondId: h.pondId,
+        count: h.count,
+        weightG: h.weightG,
+        isFinal: h.isFinal,
+        date: h.recordedAt,
       ),
   ],
 );

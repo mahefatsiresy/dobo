@@ -2,11 +2,12 @@ import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/errors.dart';
+import 'package:dobo/db/repositories/feed_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/domain/dates.dart';
-import 'package:drift/drift.dart' show Value;
+import 'package:drift/drift.dart' show OrderingTerm, Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -280,5 +281,88 @@ void main() {
     await logs.save(day(DateTime(2026, 3, 8), feedG: 3000));
     final latest = await logs.watchLatestBefore(DateTime(2026, 3, 9)).first;
     expect(latest[e1]?.feedGivenG, 3000);
+  });
+
+  group('feed lots', () {
+    late FeedRepository feed;
+
+    // E1 holds a batch at 12.5 g: pregrow feed.
+    setUp(() async {
+      await BatchRepository(
+        db,
+        session,
+      ).stockBatch(stockInput('L1', pondId: e1, date: DateTime(2026, 3, 1)));
+      feed = FeedRepository(db, session);
+    });
+
+    Future<String> lot(Phase phase, int madeDay) => feed.deliver(
+      FeedDeliveryInput(
+        date: DateTime(2026, 3, 2),
+        phase: phase,
+        weightG: 25000,
+        manufacturedOn: DateTime(2026, 2, madeDay),
+      ),
+    );
+
+    test(
+      "a log is stamped with the oldest usable lot of the pond's phase",
+      () async {
+        await lot(Phase.growout, 1);
+        await lot(Phase.pregrow, 20);
+        final older = await lot(Phase.pregrow, 10);
+        final id = await logs.save(day(DateTime(2026, 3, 5)));
+        final row = await (db.select(
+          db.dailyLogs,
+        )..where((l) => l.id.equals(id))).getSingle();
+        expect(row.feedLotId, older);
+      },
+    );
+
+    test('a log with no lot available saves with no lot', () async {
+      final id = await logs.save(day(DateTime(2026, 3, 5)));
+      final row = await (db.select(
+        db.dailyLogs,
+      )..where((l) => l.id.equals(id))).getSingle();
+      expect(row.feedLotId, isNull);
+    });
+
+    test('a chosen lot is kept', () async {
+      await lot(Phase.pregrow, 10);
+      final chosen = await lot(Phase.growout, 20);
+      final id = await logs.save(
+        DailyLogInput(
+          pondId: e1,
+          date: DateTime(2026, 3, 5),
+          feedGivenG: 4000,
+          feedLotId: chosen,
+        ),
+      );
+      final row = await (db.select(
+        db.dailyLogs,
+      )..where((l) => l.id.equals(id))).getSingle();
+      expect(row.feedLotId, chosen);
+    });
+
+    test('a week of transcription is stamped day by day', () async {
+      // A 5 kg lot runs out after the first day; the next day takes the
+      // other one.
+      final small = await feed.deliver(
+        FeedDeliveryInput(
+          date: DateTime(2026, 3, 2),
+          phase: Phase.pregrow,
+          weightG: 5000,
+          manufacturedOn: DateTime(2026, 2, 1),
+        ),
+      );
+      final big = await lot(Phase.pregrow, 15);
+      await logs.saveWeek([
+        day(DateTime(2026, 3, 5), feedG: 5000),
+        day(DateTime(2026, 3, 6), feedG: 4000),
+      ]);
+      final rows = await (db.select(
+        db.dailyLogs,
+      )..orderBy([(l) => OrderingTerm.asc(l.recordedAt)])).get();
+      expect(rows.map((r) => r.feedLotId), [small, big]);
+    });
   });
 }

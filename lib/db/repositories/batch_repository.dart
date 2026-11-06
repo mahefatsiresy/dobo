@@ -447,6 +447,7 @@ Set<TableInfo<Table, Object?>> placementTables(AppDatabase db) => {
   db.transfers,
   db.samples,
   db.dailyLogs,
+  db.harvests,
 };
 
 Future<List<Stocking>> _currentStockingsIn(AppDatabase db) =>

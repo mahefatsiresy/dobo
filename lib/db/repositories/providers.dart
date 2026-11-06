@@ -11,6 +11,10 @@ import '../../domain/farm_facts.dart';
 import '../../sync/providers.dart';
 import 'account_repository.dart';
 import 'batch_repository.dart';
+import 'customer_repository.dart';
+import 'feed_repository.dart';
+import 'harvest_repository.dart';
+import 'prep_repository.dart';
 import 'daily_log_repository.dart';
 import 'facts_repository.dart';
 import 'health_repository.dart';
@@ -94,6 +98,37 @@ final dailyLogRepositoryProvider = Provider<DailyLogRepository>(
     ref.watch(databaseProvider),
     ref.watch(_readySessionProvider),
     visitId: ref.watch(_visitIdProvider),
+    config: ref.watch(domainConfigProvider),
+  ),
+);
+
+final prepRepositoryProvider = Provider<PrepRepository>(
+  (ref) => PrepRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+    config: ref.watch(domainConfigProvider),
+  ),
+);
+
+final feedRepositoryProvider = Provider<FeedRepository>(
+  (ref) => FeedRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+    config: ref.watch(domainConfigProvider),
+  ),
+);
+
+final harvestRepositoryProvider = Provider<HarvestRepository>(
+  (ref) => HarvestRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
+  ),
+);
+
+final customerRepositoryProvider = Provider<CustomerRepository>(
+  (ref) => CustomerRepository(
+    ref.watch(databaseProvider),
+    ref.watch(_readySessionProvider),
   ),
 );
 

@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 
+import '../../domain/config.dart';
 import '../../domain/dates.dart';
 import '../../domain/types.dart';
 import '../database.dart';
@@ -7,6 +8,7 @@ import '../events.dart';
 import '../session.dart';
 import '../sync_state.dart';
 import 'errors.dart';
+import 'feed_repository.dart';
 
 /// One pond-day as entered on the daily log screen or a paper sheet.
 class DailyLogInput {
@@ -23,6 +25,7 @@ class DailyLogInput {
     this.waterColour,
     this.note,
     this.observedBy,
+    this.feedLotId,
   });
 
   final String pondId;
@@ -41,15 +44,26 @@ class DailyLogInput {
 
   /// The person whose paper sheet this is (transcription).
   final String? observedBy;
+
+  /// The lot the feed came from; null stamps the default lot.
+  final String? feedLotId;
 }
 
 /// Daily logs (SPEC F3). One current log per pond-day on this phone: saving
 /// a day that already has one supersedes it.
 class DailyLogRepository {
-  DailyLogRepository(this.db, this.session, {this.visitId});
+  DailyLogRepository(
+    this.db,
+    this.session, {
+    this.visitId,
+    this.config = DomainConfig.defaults,
+  });
 
   final AppDatabase db;
   final Session session;
+
+  /// For the default feed lot (plan M7 Decision 5).
+  final DomainConfig config;
 
   /// The visit open on this phone, stamped on every log.
   final String? visitId;
@@ -61,7 +75,15 @@ class DailyLogRepository {
     if (input.deaths < 0) throw ArgumentError.value(input.deaths, 'deaths');
     return db.transaction(() async {
       final existing = await forDay(input.pondId, input.date);
-      final row = _row(input);
+      final lotId =
+          input.feedLotId ??
+          existing?.feedLotId ??
+          await FeedRepository(
+            db,
+            session,
+            config: config,
+          ).defaultLotFor(input.pondId, input.date);
+      final row = _row(input).copyWith(feedLotId: Value(lotId));
       return existing == null
           ? _insert(row)
           : db.supersede(db.dailyLogs, existing.id, row);

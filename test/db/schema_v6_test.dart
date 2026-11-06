@@ -34,29 +34,32 @@ void main() {
     );
   });
 
-  test('a feed delivery is a lot with its phase and manufacture date', () async {
-    await db
-        .into(db.feedDeliveries)
-        .insert(
-          FeedDeliveriesCompanion.insert(
-            associationId: 'a1',
-            enteredBy: 'm1',
-            deviceId: 'd1',
-            recordedAt: at,
-            siteId: 's1',
-            phase: Phase.growout,
-            weightG: 50000,
-            manufacturedOn: DateTime.utc(2026, 1, 10, 21),
-            pelletMm: const Value(3),
-            proteinPct: const Value(25),
-          ),
-        );
-    final r = await db.select(db.feedDeliveries).getSingle();
-    expect(
-      (r.phase, r.weightG, r.pelletMm, r.proteinPct, r.supplier, r.label),
-      (Phase.growout, 50000, 3.0, 25.0, null, null),
-    );
-  });
+  test(
+    'a feed delivery is a lot with its phase and manufacture date',
+    () async {
+      await db
+          .into(db.feedDeliveries)
+          .insert(
+            FeedDeliveriesCompanion.insert(
+              associationId: 'a1',
+              enteredBy: 'm1',
+              deviceId: 'd1',
+              recordedAt: at,
+              siteId: 's1',
+              phase: Phase.growout,
+              weightG: 50000,
+              manufacturedOn: DateTime.utc(2026, 1, 10, 21),
+              pelletMm: const Value(3),
+              proteinPct: const Value(25),
+            ),
+          );
+      final r = await db.select(db.feedDeliveries).getSingle();
+      expect(
+        (r.phase, r.weightG, r.pelletMm, r.proteinPct, r.supplier, r.label),
+        (Phase.growout, 50000, 3.0, 25.0, null, null),
+      );
+    },
+  );
 
   test('a feed discard names its lot and reason', () async {
     await db
@@ -130,11 +133,9 @@ void main() {
           ),
         );
     final c = await db.select(db.customers).getSingle();
-    expect((c.name, c.type, c.contact, c.archived), (
-      'Marché Antsirabe',
-      CustomerType.market,
-      null,
-      false,
-    ));
+    expect(
+      (c.name, c.type, c.contact, c.archived),
+      ('Marché Antsirabe', CustomerType.market, null, false),
+    );
   });
 }

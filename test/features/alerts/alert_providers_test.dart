@@ -1,5 +1,7 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/feed_repository.dart';
+import 'package:dobo/db/repositories/prep_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/reading_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
@@ -122,4 +124,29 @@ void main() {
       sub.close();
     }, overrides: [clockProvider.overrideWithValue(() => clock)]);
   });
+
+  appTest(
+    'an old feed lot and a drained pond reach the alerts',
+    (tester, db) async {
+      final session = (await SetupRepository(db).currentSession())!;
+      final e2 = await PondRepository(db, session).create(pondInput('E2'));
+      await PrepRepository(
+        db,
+        session,
+      ).record(e2, PrepStep.drain, on: DateTime(2026, 3, 14));
+      await FeedRepository(db, session).deliver(
+        FeedDeliveryInput(
+          date: DateTime(2026, 3, 1),
+          phase: Phase.growout,
+          weightG: 25000,
+          manufacturedOn: DateTime(2026, 1, 10),
+        ),
+      );
+      final alerts = (await settled(tester, alertsProvider)).requireValue;
+      final kinds = {for (final a in alerts) a.kind: a};
+      expect(kinds[AlertKind.feedTooOld]!.severity, Severity.warning);
+      expect(kinds[AlertKind.prepStepDue]!.pondId, e2);
+    },
+    overrides: [clockProvider.overrideWithValue(() => now)],
+  );
 }

@@ -2,6 +2,7 @@ import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/facts_repository.dart';
+import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/types.dart';
@@ -72,5 +73,34 @@ void main() {
     await sub.cancel();
     expect(seen.first, 0);
     expect(seen.last, 1);
+  });
+
+  test('harvests and log lots reach FarmFacts', () async {
+    final batchId = (await db.select(db.batches).getSingle()).id;
+    await HarvestRepository(db, session).harvest(
+      HarvestInput(
+        batchId: batchId,
+        pondId: e1,
+        date: DateTime(2026, 6, 1),
+        count: 100,
+        weightG: 25000,
+        isFinal: false,
+      ),
+    );
+    await logs.save(
+      DailyLogInput(
+        pondId: e1,
+        date: DateTime(2026, 3, 5),
+        feedGivenG: 4000,
+        feedLotId: 'lot-1',
+      ),
+    );
+    final f = await currentFacts(db);
+    final h = f.harvests.single;
+    expect(
+      (h.batchId, h.count, h.weightG, h.isFinal),
+      (batchId, 100, 25000, false),
+    );
+    expect(f.logs.single.feedLotId, 'lot-1');
   });
 }
