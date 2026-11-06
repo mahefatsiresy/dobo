@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/features/common/farm_today.dart';
+import 'package:dobo/features/reports/share_report.dart';
+import 'package:dobo/features/sync/backup_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -205,4 +210,51 @@ void main() {
     expect(find.text('Récolter'), findsNothing);
     expect(find.text('Vendre'), findsNothing);
   }, isSales: false);
+
+  final shared = <File>[];
+  appTest(
+    'Fiche de traçabilité is shown to every member and shares a PDF',
+    (tester, db) async {
+      shared.clear();
+      final session = (await SetupRepository(db).currentSession())!;
+      final e1 = await PondRepository(db, session).create(
+        const PondInput(
+          code: 'E1',
+          colour: PondColour.blue,
+          role: PondRole.growout,
+        ),
+      );
+      await BatchRepository(db, session).stockBatch(
+        StockInput(
+          code: 'L26-01',
+          pondId: e1,
+          date: DateTime(2026, 3, 1),
+          count: 1000,
+          avgWeightMg: 12500,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tapAndSettle(tester, find.text('Plus'));
+      await tapAndSettle(tester, find.text('Lots'));
+      await tapAndSettle(tester, find.text('L26-01'));
+      await tester.tap(find.byTooltip('Fiche de traçabilité'));
+      // Database reads run on the test clock, fonts and the PDF off it.
+      for (var i = 0; i < 50 && shared.isEmpty; i++) {
+        await tester.pump();
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 100)),
+        );
+      }
+      await tester.pumpAndSettle();
+      expect(shared.single.path, endsWith('tracabilite-L26-01-2026-03-20.pdf'));
+    },
+    isSales: false,
+    overrides: [
+      clockProvider.overrideWithValue(() => DateTime.utc(2026, 3, 20, 6)),
+      reportSharerProvider.overrideWithValue((file) async => shared.add(file)),
+      backupDirProvider.overrideWithValue(
+        () async => Directory.systemTemp.createTemp('dobo-trace'),
+      ),
+    ],
+  );
 }

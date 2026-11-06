@@ -3,8 +3,10 @@ import 'package:dobo/domain/alerts/farm_alerts.dart';
 import 'package:dobo/domain/config.dart';
 import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/farm_facts.dart';
+import 'package:dobo/domain/feed_lots.dart';
 import 'package:dobo/domain/occupancy.dart';
 import 'package:dobo/domain/people.dart';
+import 'package:dobo/domain/prep.dart';
 import 'package:dobo/domain/report/build_report.dart';
 import 'package:dobo/domain/report/report_content.dart';
 import 'package:dobo/domain/types.dart';
@@ -65,6 +67,8 @@ void main() {
     List<(String, HealthLine)> healthLines = const [],
     List<(String, TreatmentLine)> treatments = const [],
     DateTime? from,
+    FeedStock? feedStock,
+    Map<String, PrepProgress> prep = const {},
   }) => buildReportContent(
     ReportInputs(
       header: ReportHeader(
@@ -90,6 +94,8 @@ void main() {
       latestReadings: readings,
       healthLines: healthLines,
       treatments: treatments,
+      feedStock: feedStock,
+      prep: prep,
       people: people,
       config: cfg,
     ),
@@ -354,5 +360,73 @@ void main() {
     expect(c.header.siteName, 'Ambohidratrimo');
     expect(c.pondCodes['e1'], 'E1');
     expect(c.format, ReportContent.currentFormat);
+  });
+
+  group('M7', () {
+    test('the feed section has stock on hand, days left and lots with a '
+        'balance', () {
+      FeedLotFact lot(String id, int kg, int made) => FeedLotFact(
+        id: id,
+        phase: Phase.growout,
+        weightG: kg * 1000,
+        manufacturedOn: d(made),
+        deliveredOn: d(2),
+        label: id,
+      );
+      final stock = feedStock(
+        lots: [lot('used', 5, 1), lot('full', 50, 5)],
+        discards: const [],
+        countedLogs: [
+          for (var day = 14; day <= 20; day++)
+            LogFact(id: 'f$day', pondId: 'e1', date: d(day), feedG: 1000),
+        ],
+        today: d(20),
+        config: cfg,
+      );
+      final c = build(feedStock: stock);
+      final s = c.feedStock!;
+      expect((s.onHandG, s.daysLeft, s.overdrawnG), (48000, 48.0, 0));
+      expect(s.lots.map((l) => l.label), ['full']);
+    });
+
+    test('no delivery on record leaves the feed stock out', () {
+      final stock = feedStock(
+        lots: const [],
+        discards: const [],
+        countedLogs: const [],
+        today: d(20),
+        config: cfg,
+      );
+      expect(build(feedStock: stock).feedStock, isNull);
+    });
+
+    test('a drained pond adds its drying date to Next, sorted by date', () {
+      final p = prepProgress(
+        pondId: 'e2',
+        steps: [
+          PrepStepFact(
+            id: 's',
+            pondId: 'e2',
+            step: PrepStep.drain,
+            date: d(18),
+          ),
+        ],
+        lastDayWithFish: null,
+        config: cfg,
+      );
+      final c = build(
+        samples: [
+          SampleFact(batchId: 'l1', pondId: 'e1', avgWeightG: 20, date: d(15)),
+        ],
+        prep: {'e2': p},
+      );
+      expect(c.next.map((n) => n.kind), [NextKind.prepStep, NextKind.sample]);
+      final item = c.next.first;
+      expect(
+        (item.pondId, item.step, item.batchId),
+        ('e2', PrepStep.dry, null),
+      );
+      expect(farmDate(item.date), DateTime(2026, 3, 23));
+    });
   });
 }

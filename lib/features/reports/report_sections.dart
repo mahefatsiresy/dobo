@@ -71,7 +71,11 @@ class ReportSections extends StatelessWidget {
               formatKg(c.feedTotalG, Localizations.localeOf(context)),
             ),
           ),
-        _Empty(l10n.reportFeedStockLater),
+        for (final text in l10n.reportFeedStockLines(
+          c.feedStock,
+          Localizations.localeOf(context),
+        ))
+          c.feedStock == null ? _Empty(text) : _Line(text: text),
         _Heading(l10n.reportNext),
         if (c.next.isEmpty) _Empty(l10n.reportNothing),
         for (final n in c.next)
@@ -79,7 +83,11 @@ class ReportSections extends StatelessWidget {
             pond: c.pondCodes[n.pondId],
             text: l10n.labelValue(
               formatDate(n.date),
-              _nextText(l10n, n, c.batchCodes[n.batchId] ?? '?'),
+              l10n.reportNextText(
+                n,
+                pond: c.pondCodes[n.pondId] ?? '?',
+                batch: c.batchCodes[n.batchId] ?? '?',
+              ),
             ),
           ),
         _Heading(l10n.reportObservations),
@@ -89,13 +97,6 @@ class ReportSections extends StatelessWidget {
       ],
     );
   }
-
-  static String _nextText(AppLocalizations l10n, NextItem n, String batch) =>
-      switch (n.kind) {
-        NextKind.sample => l10n.reportNextSample(batch),
-        NextKind.harvest => l10n.reportNextHarvest(batch),
-        NextKind.quarantineRelease => l10n.reportNextQuarantine(batch),
-      };
 
   static List<Widget> _observations(BuildContext context, ReportContent c) {
     final l10n = AppLocalizations.of(context);

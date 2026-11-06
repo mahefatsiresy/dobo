@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../feed/feed_providers.dart';
+import '../prep/prep_providers.dart';
 import '../../db/database.dart';
 import '../../db/database_provider.dart';
 import '../../db/repositories/providers.dart';
@@ -126,7 +128,11 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
   final groups = ref.watch(groupsProvider);
   final site = ref.watch(_siteNameProvider);
   final photos = ref.watch(_photosProvider);
+  final feedStock = ref.watch(feedStockProvider);
+  final prep = ref.watch(prepProgressAllProvider);
   if (!photos.hasValue ||
+      !feedStock.hasValue ||
+      !prep.hasValue ||
       !facts.hasValue ||
       !ponds.hasValue ||
       !summaries.hasValue ||
@@ -181,6 +187,8 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
             ),
         },
         alerts: alerts.requireValue,
+        feedStock: feedStock.requireValue,
+        prep: prep.requireValue,
         latestReadings: {
           for (final MapEntry(key: pondId, value: r)
               in readings.requireValue.entries)

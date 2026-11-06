@@ -87,4 +87,55 @@ void main() {
     );
     expect((t.batchFeedG, t.cycleFcr), (0, null));
   });
+
+  group('treatments on the sheet', () {
+    final f = FarmFacts(
+      stockings: [stock('b1', 1000, 20)],
+      transfers: [
+        TransferFact(
+          batchId: 'b1',
+          fromPondId: 'p1',
+          toPondId: 'p2',
+          count: 1000,
+          date: day(10),
+        ),
+      ],
+    );
+
+    test('a treatment naming the batch counts wherever it was given', () {
+      expect(
+        treatmentConcernsBatch(
+          f,
+          'b1',
+          treatmentBatchId: 'b1',
+          pondId: 'p9',
+          date: day(3),
+        ),
+        isTrue,
+      );
+      expect(
+        treatmentConcernsBatch(
+          f,
+          'b1',
+          treatmentBatchId: 'b2',
+          pondId: 'p1',
+          date: day(3),
+        ),
+        isFalse,
+      );
+    });
+
+    test('a treatment with no batch counts for the pond the batch was in '
+        'that day', () {
+      bool at(String pond, int d) => treatmentConcernsBatch(
+        f,
+        'b1',
+        treatmentBatchId: null,
+        pondId: pond,
+        date: day(d),
+      );
+      expect((at('p1', 5), at('p2', 5)), (true, false));
+      expect((at('p1', 12), at('p2', 12)), (false, true));
+    });
+  });
 }

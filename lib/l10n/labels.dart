@@ -4,6 +4,7 @@ import '../domain/feed_stock.dart';
 import '../domain/alerts/alert.dart';
 import '../domain/config.dart';
 import '../domain/pond.dart';
+import '../domain/report/report_content.dart';
 import '../domain/stock.dart';
 import '../domain/types.dart';
 import '../domain/water.dart';
@@ -221,6 +222,50 @@ extension EnumLabels on AppLocalizations {
         formatDate(f['date']! as DateTime),
       ),
     };
+  }
+
+  /// A report's "next" item, without its date.
+  String reportNextText(
+    NextItem n, {
+    required String pond,
+    required String batch,
+  }) => switch (n.kind) {
+    NextKind.sample => reportNextSample(batch),
+    NextKind.harvest => reportNextHarvest(batch),
+    NextKind.quarantineRelease => reportNextQuarantine(batch),
+    NextKind.prepStep =>
+      n.step == PrepStep.rest ? reportNextRest(pond) : reportNextDry(pond),
+  };
+
+  /// The report's feed stock lines; one "not tracked" line without stock.
+  List<String> reportFeedStockLines(FeedStockSection? s, Locale locale) {
+    if (s == null) return [reportFeedStockLater];
+    final onHand = formatKg(s.onHandG, locale);
+    return [
+      s.daysLeft == null
+          ? reportFeedOnHandNoUsage(onHand)
+          : reportFeedOnHand(
+              onHand,
+              formatDecimal(s.daysLeft!, locale, decimals: 0),
+            ),
+      if (s.overdrawnG > 0) feedOverdrawn(formatKg(s.overdrawnG, locale)),
+      for (final l in s.lots)
+        () {
+          final text = reportFeedLot(
+            [
+              if (l.label != null) l.label!,
+              phase(l.phase),
+            ].join(reportListSeparator),
+            formatKg(l.balanceG, locale),
+            formatDate(l.manufacturedOn),
+          );
+          return switch (l.age) {
+            FeedAge.ok => text,
+            FeedAge.old => labelValue(text, feedLotOld),
+            FeedAge.expired => labelValue(text, feedLotExpired),
+          };
+        }(),
+    ];
   }
 
   String _water(Map<String, Object?> f, Locale locale) {

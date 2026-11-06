@@ -1,4 +1,5 @@
 import 'package:dobo/domain/alerts/alert.dart';
+import 'package:dobo/domain/feed_stock.dart';
 import 'package:dobo/domain/growth.dart';
 import 'package:dobo/domain/report/report_content.dart';
 import 'package:dobo/domain/stock.dart';
@@ -36,7 +37,7 @@ void main() {
     AlertKind.quarantineEnding: {'days': 21, 'recommendedDays': 30},
     AlertKind.preHarvestFast: {'fedDuringFast': true},
     AlertKind.feedStockLow: {'daysLeft': 3},
-    AlertKind.feedTooOld: {'feedLotId': 'f1', 'age': 95},
+    AlertKind.feedTooOld: {'feedLotId': 'f1', 'age': FeedAge.expired},
     AlertKind.prepStepDue: {'waitingStep': PrepStep.dry},
     AlertKind.duplicateDailyLog: {
       'date': day,
@@ -182,8 +183,28 @@ void main() {
     ],
     feed: const [PondFeed(pondId: 'e1', feedG: 30000)],
     feedTotalG: 30000,
+    feedStock: FeedStockSection(
+      onHandG: 44000,
+      daysLeft: 7.3,
+      overdrawnG: 0,
+      lots: [
+        FeedLotLine(
+          label: 'Sacs bleus',
+          phase: Phase.growout,
+          manufacturedOn: day,
+          balanceG: 44000,
+          age: FeedAge.old,
+        ),
+      ],
+    ),
     next: [
       NextItem(kind: NextKind.sample, date: day, pondId: 'e1', batchId: 'l1'),
+      NextItem(
+        kind: NextKind.prepStep,
+        date: day,
+        pondId: 'e2',
+        step: PrepStep.dry,
+      ),
     ],
     observations: const [
       ReportObservation(
@@ -242,8 +263,38 @@ void main() {
     );
   });
 
-  test('rejects format 2', () {
-    final json = full().toJson()..['format'] = 2;
+  test('a format-2 report round-trips its feed stock and prep items', () {
+    final back = ReportContent.decode(full().encode());
+    expect(back.format, 2);
+    final stock = back.feedStock!;
+    expect((stock.onHandG, stock.daysLeft), (44000, 7.3));
+    expect(stock.lots.single.age, FeedAge.old);
+    final prep = back.next.last;
+    expect(
+      (prep.kind, prep.step, prep.batchId),
+      (NextKind.prepStep, PrepStep.dry, null),
+    );
+  });
+
+  test('a format-1 report reads with no feed stock', () {
+    final json = full().toJson()
+      ..['format'] = 1
+      ..['feedStock'] = null
+      ..['next'] = [
+        {
+          'kind': 'sample',
+          'date': day.toIso8601String(),
+          'pondId': 'e1',
+          'batchId': 'l1',
+        },
+      ];
+    final back = ReportContent.fromJson(json);
+    expect((back.format, back.feedStock), (1, null));
+    expect(back.next.single.batchId, 'l1');
+  });
+
+  test('format 3 is UnsupportedReportFormat', () {
+    final json = full().toJson()..['format'] = 3;
     expect(
       () => ReportContent.fromJson(json),
       throwsA(isA<UnsupportedReportFormat>()),

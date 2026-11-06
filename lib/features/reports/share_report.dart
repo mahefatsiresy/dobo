@@ -76,3 +76,22 @@ String reportFileName(ReportContent c) {
 
 Future<pw.Font> _font(String asset) async =>
     pw.Font.ttf(await rootBundle.load(asset));
+
+/// The PDF fonts (Noto Sans regular and bold).
+Future<(pw.Font, pw.Font)> pdfFonts() async => (
+  await _font('assets/fonts/NotoSans-Regular.ttf'),
+  await _font('assets/fonts/NotoSans-Bold.ttf'),
+);
+
+/// Writes [bytes] as [fileName] and opens the share sheet.
+Future<void> sharePdfFile(
+  WidgetRef ref,
+  String fileName,
+  Uint8List bytes,
+) async {
+  final sharer = ref.read(reportSharerProvider);
+  final dirOf = ref.read(backupDirProvider);
+  final file = File('${(await dirOf()).path}/$fileName');
+  await file.writeAsBytes(bytes, flush: true);
+  await sharer(file);
+}

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dobo/domain/dates.dart';
+import 'package:dobo/domain/feed_stock.dart';
 import 'package:dobo/domain/growth.dart';
 import 'package:dobo/domain/report/report_content.dart';
 import 'package:dobo/domain/types.dart';
@@ -129,6 +130,41 @@ void main() {
       },
     );
     expect(asked, containsAll(['missing', 'broken', 'k1', 'k2']));
+    expect(String.fromCharCodes(bytes.take(4)), '%PDF');
+  });
+
+  test('a report with feed stock and prep dates builds', () async {
+    final bytes = await buildReportPdf(
+      ReportContent(
+        header: header(),
+        pondCodes: const {'e2': 'E2'},
+        feedStock: FeedStockSection(
+          onHandG: 44000,
+          daysLeft: 7.4,
+          overdrawnG: 3000,
+          lots: [
+            FeedLotLine(
+              phase: Phase.growout,
+              manufacturedOn: d(1),
+              balanceG: 44000,
+              age: FeedAge.expired,
+            ),
+          ],
+        ),
+        next: [
+          NextItem(
+            kind: NextKind.prepStep,
+            date: d(23),
+            pondId: 'e2',
+            step: PrepStep.rest,
+          ),
+        ],
+      ),
+      l10n,
+      const Locale('fr'),
+      regular: regular,
+      bold: bold,
+    );
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
   });
 

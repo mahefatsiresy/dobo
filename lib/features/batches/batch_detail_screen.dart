@@ -16,6 +16,7 @@ import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
 import '../sales/sales_providers.dart';
 import '../sales/sales_screen.dart';
+import '../sales/share_trace.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
 
@@ -109,6 +110,11 @@ class BatchDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(b.code),
         actions: [
+          IconButton(
+            tooltip: l10n.traceTitle,
+            icon: const Icon(Icons.picture_as_pdf),
+            onPressed: () => shareTrace(context, ref, batchId),
+          ),
           IconButton(
             tooltip: l10n.batchEdit,
             icon: const Icon(Icons.edit),

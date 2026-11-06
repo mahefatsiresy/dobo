@@ -282,19 +282,21 @@ Future<Uint8List> buildReportPdf(
               formatKg(c.feedTotalG, locale),
             ),
           ),
-        empty(l10n.reportFeedStockLater),
+        for (final text in l10n.reportFeedStockLines(c.feedStock, locale))
+          c.feedStock == null ? empty(text) : line(text),
 
         heading(l10n.reportNext),
         if (c.next.isEmpty) empty(l10n.reportNothing),
         for (final n in c.next)
           line(
-            l10n.labelValue(formatDate(n.date), switch (n.kind) {
-              NextKind.sample => l10n.reportNextSample(batch(n.batchId)),
-              NextKind.harvest => l10n.reportNextHarvest(batch(n.batchId)),
-              NextKind.quarantineRelease => l10n.reportNextQuarantine(
-                batch(n.batchId),
+            l10n.labelValue(
+              formatDate(n.date),
+              l10n.reportNextText(
+                n,
+                pond: pond(n.pondId),
+                batch: batch(n.batchId),
               ),
-            }),
+            ),
             pondCode: pond(n.pondId),
           ),
 

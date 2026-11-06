@@ -2924,6 +2924,108 @@ abstract class AppLocalizations {
   /// **'Ventes'**
   String get moreSales;
 
+  /// No description provided for @traceTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de traçabilité'**
+  String get traceTitle;
+
+  /// No description provided for @traceBatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot {code}'**
+  String traceBatch(String code);
+
+  /// No description provided for @traceIdentity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identité'**
+  String get traceIdentity;
+
+  /// No description provided for @tracePonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étangs'**
+  String get tracePonds;
+
+  /// No description provided for @traceTreatments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traitements'**
+  String get traceTreatments;
+
+  /// No description provided for @traceHarvests.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récoltes'**
+  String get traceHarvests;
+
+  /// No description provided for @traceSales.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ventes'**
+  String get traceSales;
+
+  /// No description provided for @traceResults.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bilan'**
+  String get traceResults;
+
+  /// No description provided for @traceCycleFcr.
+  ///
+  /// In fr, this message translates to:
+  /// **'IC du cycle'**
+  String get traceCycleFcr;
+
+  /// No description provided for @traceCycleOngoing.
+  ///
+  /// In fr, this message translates to:
+  /// **'cycle en cours'**
+  String get traceCycleOngoing;
+
+  /// No description provided for @traceSurvival.
+  ///
+  /// In fr, this message translates to:
+  /// **'Survie'**
+  String get traceSurvival;
+
+  /// No description provided for @traceUnaccounted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poissons non retrouvés'**
+  String get traceUnaccounted;
+
+  /// No description provided for @traceFeed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment donné'**
+  String get traceFeed;
+
+  /// No description provided for @traceStocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mis en étang'**
+  String get traceStocked;
+
+  /// No description provided for @traceHarvested.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolté'**
+  String get traceHarvested;
+
+  /// No description provided for @traceLive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore en étang'**
+  String get traceLive;
+
+  /// No description provided for @traceAdvisedBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'conseillé par {who}'**
+  String traceAdvisedBy(String who);
+
   /// No description provided for @salesTitle.
   ///
   /// In fr, this message translates to:
@@ -3641,8 +3743,38 @@ abstract class AppLocalizations {
   /// No description provided for @reportFeedStockLater.
   ///
   /// In fr, this message translates to:
-  /// **'Stock d\'aliment : à partir de la gestion des stocks'**
+  /// **'Stock d\'aliment : non suivi (aucune livraison enregistrée)'**
   String get reportFeedStockLater;
+
+  /// No description provided for @reportFeedOnHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'En stock : {kg}, {days} jours de stock'**
+  String reportFeedOnHand(String kg, String days);
+
+  /// No description provided for @reportFeedOnHandNoUsage.
+  ///
+  /// In fr, this message translates to:
+  /// **'En stock : {kg}'**
+  String reportFeedOnHandNoUsage(String kg);
+
+  /// No description provided for @reportFeedLot.
+  ///
+  /// In fr, this message translates to:
+  /// **'{lot} · {kg} · fabriqué le {date}'**
+  String reportFeedLot(String lot, String kg, String date);
+
+  /// No description provided for @reportNextDry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séchage de {pond} fini ?'**
+  String reportNextDry(String pond);
+
+  /// No description provided for @reportNextRest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Repos de {pond} fini : prêt à empoissonner'**
+  String reportNextRest(String pond);
 
   /// No description provided for @reportDeaths.
   ///

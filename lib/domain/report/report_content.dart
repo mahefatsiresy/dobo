@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../alerts/alert.dart';
+import '../feed_stock.dart';
 import '../growth.dart';
 import '../stock.dart';
 import '../types.dart';
@@ -36,7 +37,8 @@ class ReportContent {
     this.visitPhotoKeys = const [],
   });
 
-  static const currentFormat = 1;
+  /// 2 (M7): typed feed stock; Next items for prep steps.
+  static const currentFormat = 2;
 
   final int format;
   final ReportHeader header;
@@ -60,8 +62,9 @@ class ReportContent {
   final List<PondFeed> feed;
   final int feedTotalG;
 
-  /// Stock on hand and lot ages: null until feed lots exist (M7).
-  final Object? feedStock;
+  /// Stock on hand and lot ages; null before any delivery is on record,
+  /// and in format-1 reports.
+  final FeedStockSection? feedStock;
   final List<NextItem> next;
   final List<ReportObservation> observations;
   final List<String> visitPhotoKeys;
@@ -86,7 +89,7 @@ class ReportContent {
     'growth': [for (final g in growth) g.toJson()],
     'feed': [for (final f in feed) f.toJson()],
     'feedTotalG': feedTotalG,
-    'feedStock': feedStock,
+    'feedStock': feedStock?.toJson(),
     'next': [for (final n in next) n.toJson()],
     'observations': [for (final o in observations) o.toJson()],
     'visitPhotoKeys': visitPhotoKeys,
@@ -126,7 +129,9 @@ class ReportContent {
       ],
       feed: [for (final f in _list(j['feed'])) PondFeed.fromJson(_map(f))],
       feedTotalG: j['feedTotalG'] as int,
-      feedStock: j['feedStock'],
+      feedStock: j['feedStock'] == null
+          ? null
+          : FeedStockSection.fromJson(_map(j['feedStock'])),
       next: [for (final n in _list(j['next'])) NextItem.fromJson(_map(n))],
       observations: [
         for (final o in _list(j['observations']))
@@ -489,33 +494,104 @@ class PondFeed {
       PondFeed(pondId: j['pondId'] as String, feedG: j['feedG'] as int);
 }
 
-enum NextKind { sample, harvest, quarantineRelease }
+/// Feed on hand when the report was published (format 2).
+class FeedStockSection {
+  const FeedStockSection({
+    required this.onHandG,
+    required this.daysLeft,
+    required this.overdrawnG,
+    this.lots = const [],
+  });
+
+  final int onHandG;
+  final double? daysLeft;
+  final int overdrawnG;
+
+  /// Lots still holding feed, oldest first.
+  final List<FeedLotLine> lots;
+
+  Map<String, Object?> toJson() => {
+    'onHandG': onHandG,
+    'daysLeft': daysLeft,
+    'overdrawnG': overdrawnG,
+    'lots': [for (final l in lots) l.toJson()],
+  };
+
+  factory FeedStockSection.fromJson(Map<String, Object?> j) => FeedStockSection(
+    onHandG: j['onHandG'] as int,
+    daysLeft: _double(j['daysLeft']),
+    overdrawnG: j['overdrawnG'] as int,
+    lots: [for (final l in _list(j['lots'])) FeedLotLine.fromJson(_map(l))],
+  );
+}
+
+class FeedLotLine {
+  const FeedLotLine({
+    this.label,
+    required this.phase,
+    required this.manufacturedOn,
+    required this.balanceG,
+    required this.age,
+  });
+
+  final String? label;
+  final Phase phase;
+  final DateTime manufacturedOn;
+  final int balanceG;
+  final FeedAge age;
+
+  Map<String, Object?> toJson() => {
+    'label': label,
+    'phase': phase.name,
+    'manufacturedOn': _date(manufacturedOn),
+    'balanceG': balanceG,
+    'age': age.name,
+  };
+
+  factory FeedLotLine.fromJson(Map<String, Object?> j) => FeedLotLine(
+    label: j['label'] as String?,
+    phase: _enum(Phase.values, j['phase'])!,
+    manufacturedOn: _parse(j['manufacturedOn'])!,
+    balanceG: j['balanceG'] as int,
+    age: _enum(FeedAge.values, j['age'])!,
+  );
+}
+
+enum NextKind { sample, harvest, quarantineRelease, prepStep }
 
 class NextItem {
   const NextItem({
     required this.kind,
     required this.date,
     required this.pondId,
-    required this.batchId,
+    this.batchId,
+    this.step,
   });
 
   final NextKind kind;
   final DateTime date;
   final String pondId;
-  final String batchId;
+
+  /// Null for a prep step, which is about an empty pond.
+  final String? batchId;
+
+  /// The prep step awaited (`dry` or `rest`) for [NextKind.prepStep].
+  final PrepStep? step;
 
   Map<String, Object?> toJson() => {
     'kind': kind.name,
     'date': _date(date),
     'pondId': pondId,
     'batchId': batchId,
+    if (step != null) 'step': step!.name,
   };
 
   factory NextItem.fromJson(Map<String, Object?> j) => NextItem(
     kind: _enum(NextKind.values, j['kind'])!,
     date: _parse(j['date'])!,
     pondId: j['pondId'] as String,
-    batchId: j['batchId'] as String,
+    batchId: j['batchId'] as String?,
+    step: _enum(PrepStep.values, j['step']),
   );
 }
 
@@ -585,6 +661,7 @@ const Map<String, List<Enum>> _factEnums = {
   'Phase': Phase.values,
   'PrepStep': PrepStep.values,
   'WarningSign': WarningSign.values,
+  'FeedAge': FeedAge.values,
 };
 
 /// Plain JSON values stay as they are; dates, enums and sets of enums are

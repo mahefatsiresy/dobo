@@ -4,6 +4,7 @@ import 'package:dobo/db/repositories/visit_repository.dart';
 import 'package:dobo/db/sync_state.dart';
 import 'package:dobo/domain/alerts/alert.dart';
 import 'package:dobo/domain/dates.dart';
+import 'package:dobo/domain/feed_stock.dart';
 import 'package:dobo/domain/report/report_content.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/domain/water.dart';
@@ -219,9 +220,52 @@ void main() {
     expect(find.text('Aucun relevé'), findsOneWidget);
     expect(find.textContaining('Fuite côté sud'), findsOneWidget);
     expect(
-      find.text("Stock d'aliment : à partir de la gestion des stocks"),
+      find.text("Stock d'aliment : non suivi (aucune livraison enregistrée)"),
       findsOneWidget,
     );
+  });
+
+  appTest('a report shows its feed stock and the drying date', (
+    tester,
+    db,
+  ) async {
+    final c = ReportContent(
+      header: empty().header,
+      pondCodes: const {'e2': 'E2'},
+      feedStock: FeedStockSection(
+        onHandG: 44000,
+        daysLeft: 7.4,
+        overdrawnG: 0,
+        lots: [
+          FeedLotLine(
+            label: 'Sacs bleus',
+            phase: Phase.growout,
+            manufacturedOn: d(1),
+            balanceG: 44000,
+            age: FeedAge.old,
+          ),
+        ],
+      ),
+      next: [
+        NextItem(
+          kind: NextKind.prepStep,
+          date: d(23),
+          pondId: 'e2',
+          step: PrepStep.dry,
+        ),
+      ],
+    );
+    final id = await pulled(tester, db, c);
+    go(tester, '/reports/$id');
+    await tester.pumpAndSettle();
+    await reveal(tester, find.textContaining('En stock'));
+    expect(find.text("En stock : 44 kg, 7 jours de stock"), findsOneWidget);
+    expect(
+      find.textContaining('Sacs bleus · Grossissement · 44 kg'),
+      findsOneWidget,
+    );
+    await reveal(tester, find.textContaining('Séchage de E2'));
+    expect(find.text('23/03/2026 : Séchage de E2 fini ?'), findsOneWidget);
   });
 
   appTest('an empty report shows each section\'s empty line', (
@@ -262,7 +306,7 @@ void main() {
   });
 
   appTest('a report from a newer app asks for an update', (tester, db) async {
-    final id = await pulled(tester, db, empty(), raw: '{"format":2}');
+    final id = await pulled(tester, db, empty(), raw: '{"format":3}');
     go(tester, '/reports/$id');
     await tester.pumpAndSettle();
     expect(

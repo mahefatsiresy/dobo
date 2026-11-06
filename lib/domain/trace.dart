@@ -108,3 +108,20 @@ List<Placement> _inPond(List<Placement> ps, String pondId) => [
   for (final p in ps)
     if (p.pondId == pondId && p.live.count > 0) p,
 ];
+
+/// Whether a treatment belongs on [batchId]'s sheet (plan M7 Decision 15):
+/// it names the batch, or names none and was given in a pond the batch was
+/// in at the end of that day.
+bool treatmentConcernsBatch(
+  FarmFacts f,
+  String batchId, {
+  required String? treatmentBatchId,
+  required String pondId,
+  required DateTime date,
+}) {
+  if (treatmentBatchId != null) return treatmentBatchId == batchId;
+  return placementsOf(
+    f,
+    until: date,
+  ).any((p) => p.batchId == batchId && p.pondId == pondId && p.live.count > 0);
+}

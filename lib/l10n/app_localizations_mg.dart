@@ -1583,6 +1583,61 @@ class AppLocalizationsMg extends AppLocalizations {
   String get moreSales => 'Ventes';
 
   @override
+  String get traceTitle => 'Fiche de traçabilité';
+
+  @override
+  String traceBatch(String code) {
+    return 'Lot $code';
+  }
+
+  @override
+  String get traceIdentity => 'Identité';
+
+  @override
+  String get tracePonds => 'Étangs';
+
+  @override
+  String get traceTreatments => 'Traitements';
+
+  @override
+  String get traceHarvests => 'Récoltes';
+
+  @override
+  String get traceSales => 'Ventes';
+
+  @override
+  String get traceResults => 'Bilan';
+
+  @override
+  String get traceCycleFcr => 'IC du cycle';
+
+  @override
+  String get traceCycleOngoing => 'cycle en cours';
+
+  @override
+  String get traceSurvival => 'Survie';
+
+  @override
+  String get traceUnaccounted => 'Poissons non retrouvés';
+
+  @override
+  String get traceFeed => 'Aliment donné';
+
+  @override
+  String get traceStocked => 'Mis en étang';
+
+  @override
+  String get traceHarvested => 'Récolté';
+
+  @override
+  String get traceLive => 'Encore en étang';
+
+  @override
+  String traceAdvisedBy(String who) {
+    return 'conseillé par $who';
+  }
+
+  @override
   String get salesTitle => 'Récoltes et ventes';
 
   @override
@@ -1997,7 +2052,32 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get reportFeedStockLater =>
-      'Stock d\'aliment : à partir de la gestion des stocks';
+      'Stock d\'aliment : non suivi (aucune livraison enregistrée)';
+
+  @override
+  String reportFeedOnHand(String kg, String days) {
+    return 'En stock : $kg, $days jours de stock';
+  }
+
+  @override
+  String reportFeedOnHandNoUsage(String kg) {
+    return 'En stock : $kg';
+  }
+
+  @override
+  String reportFeedLot(String lot, String kg, String date) {
+    return '$lot · $kg · fabriqué le $date';
+  }
+
+  @override
+  String reportNextDry(String pond) {
+    return 'Séchage de $pond fini ?';
+  }
+
+  @override
+  String reportNextRest(String pond) {
+    return 'Repos de $pond fini : prêt à empoissonner';
+  }
 
   @override
   String reportDeaths(String count) {

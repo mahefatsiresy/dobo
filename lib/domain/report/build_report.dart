@@ -3,10 +3,12 @@ import '../alerts/farm_alerts.dart';
 import '../config.dart';
 import '../dates.dart';
 import '../farm_facts.dart';
+import '../feed_lots.dart';
 import '../fcr.dart';
 import '../growth.dart';
 import '../occupancy.dart';
 import '../people.dart';
+import '../prep.dart';
 import '../types.dart';
 import '../water.dart';
 import 'report_content.dart';
@@ -44,6 +46,8 @@ class ReportInputs {
     this.treatments = const [],
     this.observations = const [],
     this.visitPhotoKeys = const [],
+    this.feedStock,
+    this.prep = const {},
     required this.people,
     required this.config,
   });
@@ -66,6 +70,12 @@ class ReportInputs {
   final List<(String pondId, TreatmentLine line)> treatments;
   final List<ReportObservation> observations;
   final List<String> visitPhotoKeys;
+
+  /// Feed on hand at publishing; null leaves the section out.
+  final FeedStock? feedStock;
+
+  /// Each pond's current preparation, by pond id.
+  final Map<String, PrepProgress> prep;
   final PeopleDirectory people;
   final DomainConfig config;
 }
@@ -111,6 +121,7 @@ ReportContent buildReportContent(ReportInputs inputs) {
     ],
     feed: _feed(counted, code),
     feedTotalG: counted.fold(0, (sum, l) => sum + l.feedG),
+    feedStock: _feedStock(inputs.feedStock),
     next: _next(inputs, live, code),
     observations: inputs.observations,
     visitPhotoKeys: inputs.visitPhotoKeys,
@@ -249,6 +260,27 @@ List<PondFeed> _feed(List<LogFact> counted, String Function(String) code) {
   ]..sort((a, b) => code(a.pondId).compareTo(code(b.pondId)));
 }
 
+/// Stock at publishing, once a delivery is on record (plan M7 Decision 14).
+FeedStockSection? _feedStock(FeedStock? s) {
+  if (s == null || s.lots.isEmpty) return null;
+  return FeedStockSection(
+    onHandG: s.onHandG,
+    daysLeft: s.daysLeft,
+    overdrawnG: s.overdrawnG,
+    lots: [
+      for (final b in s.lots)
+        if (b.balanceG > 0)
+          FeedLotLine(
+            label: b.lot.label,
+            phase: b.lot.phase,
+            manufacturedOn: b.lot.manufacturedOn,
+            balanceG: b.balanceG,
+            age: b.age,
+          ),
+    ],
+  );
+}
+
 List<NextItem> _next(
   ReportInputs inputs,
   List<Placement> live,
@@ -305,6 +337,26 @@ List<NextItem> _next(
         ),
       );
     }
+  }
+  // Empty ponds waiting on their drying or their rest (DOMAIN §Pond
+  // preparation).
+  final withFish = {for (final p in live) p.pondId};
+  for (final MapEntry(key: pondId, value: p) in inputs.prep.entries) {
+    if (!inputs.pondCodes.containsKey(pondId) || withFish.contains(pondId)) {
+      continue;
+    }
+    final (step, until) = p.done.containsKey(PrepStep.fill)
+        ? (PrepStep.rest, p.restUntil)
+        : (PrepStep.dry, p.dryUntilMin);
+    if (until == null || p.done.containsKey(step)) continue;
+    items.add(
+      NextItem(
+        kind: NextKind.prepStep,
+        date: farmDateToUtc(until),
+        pondId: pondId,
+        step: step,
+      ),
+    );
   }
   return items..sort(
     (a, b) => a.date
