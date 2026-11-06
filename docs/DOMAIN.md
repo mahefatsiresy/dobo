@@ -71,9 +71,10 @@ Boundaries: a weight exactly on 5, 20 or 250 g belongs to the heavier phase.
 All weights in grams internally.
 
 - **Live count** of a batch in a pond = stocked + transferred in − transferred out − recorded deaths − harvested.
+  A final harvest ends the batch in that pond: the live count becomes 0, and what the estimate still counted is reported as "not found" (predation, theft, counting error), never as deaths.
   Predation and theft are invisible to this count, so it is an upper bound; reports say "estimated".
 - **Biomass** = live count × latest average weight. If no sample exists yet, use the stocking average weight.
-- **Survival rate** = live count ÷ total fish that entered the batch.
+- **Survival rate** = (live count + fish harvested) ÷ total fish that entered the batch. Harvested fish survived; a final harvest's leftover estimate (fish not found) does not count as survived.
 - **Density** = live count ÷ pond surface (m²); compare against the structure type's range.
 - **Period FCR** between two samples = feed given in the period ÷ biomass gain in the period, where
   gain = (biomass now + weight of fish harvested or transferred out in the period) − (biomass at previous sample + weight transferred in).

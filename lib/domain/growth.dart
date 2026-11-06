@@ -132,6 +132,13 @@ List<FcrPeriod> fcrPeriods(
           if (t.fromPondId == pondId) outG += g;
           if (t.toPondId == pondId) inG += g;
         }
+        for (final h in f.harvests) {
+          if (h.batchId == batchId &&
+              h.pondId == pondId &&
+              inPeriod(h.date, a, b)) {
+            outG += h.weightG;
+          }
+        }
         // Another batch arriving in the period shared the feed, even if it
         // left the same day and no end-of-day state shows it.
         final visited =
@@ -210,16 +217,17 @@ FcrTrend? fcrTrend(List<FcrPeriod> periods) {
   return FcrTrend.same;
 }
 
-/// Live fish of [batchId] over all ponds ÷ fish stocked; moves between
-/// ponds neither add nor remove. Null when nothing was stocked.
+/// (Live + harvested) fish of [batchId] over all ponds ÷ fish stocked:
+/// harvested fish survived. Moves between ponds neither add nor remove.
+/// Null when nothing was stocked.
 double? batchSurvival(FarmFacts f, String batchId) {
   final stocked = f.stockings
       .where((s) => s.batchId == batchId)
       .fold(0, (n, s) => n + s.count);
-  final live = placementsOf(f)
+  final survived = placementsOf(f)
       .where((p) => p.batchId == batchId)
-      .fold(0, (n, p) => n + p.live.count);
-  return survivalRate(live: live, entered: stocked);
+      .fold(0, (n, p) => n + p.live.count + p.harvested);
+  return survivalRate(live: survived, entered: stocked);
 }
 
 /// Fish in [pondId] before any of [day]'s records.

@@ -195,4 +195,89 @@ void main() {
       expect(at(ps, 'L1', 'E2').avgWeightG, 31.2);
     });
   });
+
+  group('harvests', () {
+    HarvestFact harvest(
+      String b,
+      String p,
+      int count, {
+      bool isFinal = false,
+      DateTime? date,
+    }) => HarvestFact(
+      batchId: b,
+      pondId: p,
+      count: count,
+      weightG: count * 250,
+      isFinal: isFinal,
+      date: date ?? d2,
+    );
+
+    test('a partial harvest of 300 from 1000 leaves 700', () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: const [],
+        harvests: [harvest('L1', 'E1', 300)],
+      );
+      final p = at(ps, 'L1', 'E1');
+      expect((p.live.count, p.harvested, p.unaccounted), (700, 300, 0));
+    });
+
+    test('a final harvest of 900 when 950 are estimated leaves 0 live and '
+        '50 unaccounted', () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: const [],
+        deaths: [DeathFact(pondId: 'E1', count: 50, date: d1)],
+        harvests: [harvest('L1', 'E1', 900, isFinal: true)],
+      );
+      final p = at(ps, 'L1', 'E1');
+      expect((p.live.count, p.live.inconsistent), (0, false));
+      expect((p.harvested, p.unaccounted), (900, 50));
+    });
+
+    test('a final harvest of 1000 when 950 are estimated leaves 0 live and '
+        '0 unaccounted', () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: const [],
+        deaths: [DeathFact(pondId: 'E1', count: 50, date: d1)],
+        harvests: [harvest('L1', 'E1', 1000, isFinal: true)],
+      );
+      final p = at(ps, 'L1', 'E1');
+      expect((p.live.count, p.live.inconsistent), (0, false));
+      expect((p.harvested, p.unaccounted), (1000, 0));
+    });
+
+    test('a partial harvest of 1200 from 1000 is inconsistent', () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: const [],
+        harvests: [harvest('L1', 'E1', 1200)],
+      );
+      final p = at(ps, 'L1', 'E1');
+      expect((p.live.count, p.live.inconsistent), (0, true));
+    });
+
+    test("a final harvest in E1 leaves the batch's fish in E2 untouched", () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: [move('L1', 'E1', 'E2', 400, date: d1)],
+        harvests: [harvest('L1', 'E1', 600, isFinal: true)],
+      );
+      expect(at(ps, 'L1', 'E1').live.count, 0);
+      expect(at(ps, 'L1', 'E2').live.count, 400);
+    });
+
+    test('deaths logged on the harvest day come off before the harvest', () {
+      final ps = placements(
+        stockings: [stock('L1', 'E1', 1000, 15)],
+        transfers: const [],
+        // Listed after the harvest; the walk still applies them first.
+        harvests: [harvest('L1', 'E1', 900, isFinal: true)],
+        deaths: [DeathFact(pondId: 'E1', count: 30, date: d2)],
+      );
+      final p = at(ps, 'L1', 'E1');
+      expect((p.live.count, p.unaccounted), (0, 70));
+    });
+  });
 }

@@ -65,6 +65,26 @@ class DeathFact {
   final DateTime date;
 }
 
+/// Fish of a batch taken out of a pond for sale. A final harvest ends the
+/// batch's part in that pond (plan M7 Decision 8).
+class HarvestFact {
+  const HarvestFact({
+    required this.batchId,
+    required this.pondId,
+    required this.count,
+    required this.weightG,
+    required this.isFinal,
+    required this.date,
+  });
+
+  final String batchId;
+  final String pondId;
+  final int count;
+  final int weightG;
+  final bool isFinal;
+  final DateTime date;
+}
+
 /// The part of a batch in one pond.
 class Placement {
   const Placement({
@@ -72,10 +92,19 @@ class Placement {
     required this.pondId,
     required this.live,
     required this.avgWeightG,
+    this.harvested = 0,
+    this.unaccounted = 0,
   });
 
   final String batchId;
   final String pondId;
+
+  /// Fish harvested from this pond.
+  final int harvested;
+
+  /// Fish the estimate still counted when a final harvest emptied the pond:
+  /// predation, theft or counting errors. Never counted as deaths.
+  final int unaccounted;
 
   /// Estimated, an upper bound (DOMAIN §Formulas).
   final LiveCount live;
@@ -88,16 +117,18 @@ class Placement {
 /// Fish per (batch, pond) from stockings, moves, samples and deaths, one
 /// entry per pair any fact touches. Facts are walked in date order; on the
 /// same date stockings, then moves, then samples, then deaths, each in list
-/// order. A pond's deaths are shared between its batches in proportion to
-/// their fish at that moment; in a pond whose fish have gone they go to
-/// the batch there most recently, and in a pond that never held fish they
-/// are dropped. Harvests join in M7.
+/// order, then harvests. A pond's deaths are shared between its batches in
+/// proportion to their fish at that moment; in a pond whose fish have gone
+/// they go to the batch there most recently, and in a pond that never held
+/// fish they are dropped. A final harvest leaves no fish: what the estimate
+/// still counted becomes [Placement.unaccounted].
 List<Placement> placements({
   required List<StockingFact> stockings,
   required List<TransferFact> transfers,
   List<SampleFact> samples = const [],
   List<DeathFact> deaths = const [],
-}) => _walk(stockings, transfers, samples, deaths);
+  List<HarvestFact> harvests = const [],
+}) => _walk(stockings, transfers, samples, deaths, harvests);
 
 /// [placements] at the end of each farm day that has a fact, oldest first,
 /// from a single walk: what "fish on day D" questions are answered from.
@@ -106,9 +137,17 @@ List<(DateTime, List<Placement>)> placementSnapshots({
   required List<TransferFact> transfers,
   List<SampleFact> samples = const [],
   List<DeathFact> deaths = const [],
+  List<HarvestFact> harvests = const [],
 }) {
   final out = <(DateTime, List<Placement>)>[];
-  _walk(stockings, transfers, samples, deaths, (day, p) => out.add((day, p)));
+  _walk(
+    stockings,
+    transfers,
+    samples,
+    deaths,
+    harvests,
+    (day, p) => out.add((day, p)),
+  );
   return out;
 }
 
@@ -116,7 +155,8 @@ List<Placement> _walk(
   List<StockingFact> stockings,
   List<TransferFact> transfers,
   List<SampleFact> samples,
-  List<DeathFact> deaths, [
+  List<DeathFact> deaths,
+  List<HarvestFact> harvests, [
   void Function(DateTime day, List<Placement> placements)? onDayEnd,
 ]) {
   final pairs = <(String, String), _Pair>{};
@@ -130,6 +170,7 @@ List<Placement> _walk(
     for (final t in transfers) (t.date, 1, t),
     for (final s in samples) (s.date, 2, s),
     for (final d in deaths) (d.date, 3, d),
+    for (final h in harvests) (h.date, 4, h),
   ];
   // Dart's List.sort isn't stable: break ties on the original position.
   final order = [for (var i = 0; i < facts.length; i++) i]
@@ -148,11 +189,14 @@ List<Placement> _walk(
         pondId: p.pondId,
         live: liveCount(
           stocked: p.stocked,
-          transferredIn: p.moved,
+          transferredIn: p.moved + p.found,
           transferredOut: p.out,
           deaths: p.deaths,
+          harvested: p.harvested + p.unaccounted,
         ),
         avgWeightG: p.avgWeightG,
+        harvested: p.harvested,
+        unaccounted: p.unaccounted,
       ),
   ];
 
@@ -180,6 +224,17 @@ List<Placement> _walk(
           for (final p in pairs.values)
             if (p.pondId == d.pondId) p,
         ]);
+      case HarvestFact h:
+        final pair = touch(h.batchId, h.pondId);
+        if (h.isFinal) {
+          final left = pair.running - h.count;
+          if (left >= 0) {
+            pair.unaccounted += left;
+          } else {
+            pair.found -= left;
+          }
+        }
+        pair.harvested += h.count;
     }
   }
 
@@ -230,10 +285,17 @@ class _Pair {
   int moved = 0;
   int out = 0;
   int deaths = 0;
+  int harvested = 0;
+  int unaccounted = 0;
+
+  /// Fish a final harvest took beyond the estimate: they were there, so the
+  /// pond ends at 0, not below.
+  int found = 0;
   double? avgWeightG;
 
   /// Order of the last fact that touched this pair.
   int touched = 0;
 
-  int get running => stocked + moved - out - deaths;
+  int get running =>
+      stocked + moved + found - out - deaths - harvested - unaccounted;
 }

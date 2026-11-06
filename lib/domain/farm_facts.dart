@@ -41,6 +41,7 @@ class FarmFacts {
     this.transfers = const [],
     this.samples = const [],
     this.logs = const [],
+    this.harvests = const [],
   });
 
   const FarmFacts.empty() : this();
@@ -49,6 +50,7 @@ class FarmFacts {
   final List<TransferFact> transfers;
   final List<SampleFact> samples;
   final List<LogFact> logs;
+  final List<HarvestFact> harvests;
 }
 
 /// [placements] from [f]. With [until], only facts dated on or before
@@ -64,6 +66,7 @@ List<Placement> placementsOf(FarmFacts f, {DateTime? until}) {
         if (l.deaths > 0)
           DeathFact(pondId: l.pondId, count: l.deaths, date: l.date),
     ],
+    harvests: f.harvests,
   );
   if (days.isEmpty) return const [];
   if (until == null) return days.last.$2;

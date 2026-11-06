@@ -302,4 +302,46 @@ void main() {
     );
     expect(liveInPondAtDayStart(f, 'p1', day(9)), 990);
   });
+
+  group('harvests', () {
+    HarvestFact harvest(
+      int count,
+      int weightG, {
+      bool isFinal = false,
+      int on = 20,
+    }) => HarvestFact(
+      batchId: 'b1',
+      pondId: 'p1',
+      count: count,
+      weightG: weightG,
+      isFinal: isFinal,
+      date: day(on),
+    );
+
+    test('harvested weight in a period counts as weight out', () {
+      // 100 kg at the first sample; 200 fish (20 kg) harvested; 800 fish at
+      // 150 g = 120 kg at the second. Gain = 120 + 20 - 100 = 40 kg.
+      final f = FarmFacts(
+        stockings: [stock(1000, 20)],
+        samples: [sample(100, on: 10), sample(150, on: 25)],
+        harvests: [harvest(200, 20000, on: 20)],
+        logs: feed(60000, from: 11, to: 25),
+      );
+      expect(value(periods(f).last.fcr), closeTo(1.5, 1e-9));
+    });
+
+    test('survival counts harvested fish', () {
+      final f = FarmFacts(
+        stockings: [stock(1000, 20)],
+        logs: [deaths(50)],
+        harvests: [harvest(950, 237500, isFinal: true)],
+      );
+      expect(batchSurvival(f, 'b1'), closeTo(0.95, 1e-9));
+    });
+
+    test('survival with nothing stocked is null', () {
+      final f = FarmFacts(harvests: [harvest(10, 2500)]);
+      expect(batchSurvival(f, 'b1'), isNull);
+    });
+  });
 }
