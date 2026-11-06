@@ -46,6 +46,7 @@ void main() {
     await enterAndSettle(tester, field('Oxygène dissous'), '2');
     expect(find.text('cible 3 mg/L ou plus'), findsOneWidget);
     await tapAndSettle(tester, find.text('Enregistrer'));
+    await reveal(tester, find.text('O₂ 2 mg/L'));
     final o2 = tester.widget<Text>(find.text('O₂ 2 mg/L'));
     expect(o2.style?.color, Colors.red.shade800);
     final reading = await db.select(db.waterReadings).getSingle();

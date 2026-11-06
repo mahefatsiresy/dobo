@@ -68,6 +68,10 @@ Future<void> _reveal(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+/// Scrolls [finder] into view, whichever way it is, and waits.
+Future<void> reveal(WidgetTester tester, Finder finder) =>
+    _reveal(tester, finder);
+
 /// Taps [finder] and waits for the app to settle.
 Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
   await _reveal(tester, finder);
