@@ -4,7 +4,6 @@ import 'package:dobo/domain/config.dart';
 import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/farm_facts.dart';
 import 'package:dobo/domain/feed_lots.dart';
-import 'package:dobo/domain/feed_stock.dart';
 import 'package:dobo/domain/occupancy.dart';
 import 'package:dobo/domain/prep.dart';
 import 'package:dobo/domain/stock.dart';

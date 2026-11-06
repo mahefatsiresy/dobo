@@ -153,8 +153,9 @@ List<Alert> farmAlerts({
     );
 
     final progress = prep[pond.id];
-    if (!stocked && progress != null)
+    if (!stocked && progress != null) {
       add(_prepAlert(pond.id, progress, today, config));
+    }
 
     for (final p in here) {
       final batch = batches[p.batchId];
