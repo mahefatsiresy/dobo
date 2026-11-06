@@ -1,6 +1,7 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
+import 'package:dobo/db/repositories/feed_repository.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
@@ -155,5 +156,34 @@ void main() {
       session,
     ).forDay(e1, farmDate(DateTime.now().toUtc()));
     expect((current!.feedGivenG, current.observedBy), (3000, 'p-rakoto'));
+  });
+
+  appTest('a member sees and can change the stamped lot', (tester, db) async {
+    await stocked(tester, db); // 100 g: growout
+    final feed = FeedRepository(db, session);
+    FeedDeliveryInput lot(Phase phase, String label) => FeedDeliveryInput(
+      date: DateTime(2026, 1, 2),
+      phase: phase,
+      weightG: 25000,
+      manufacturedOn: farmDate(DateTime.now().toUtc()),
+      label: label,
+    );
+    await feed.deliver(lot(Phase.growout, 'Bleu'));
+    final other = await feed.deliver(lot(Phase.finishing, 'Rouge'));
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('E1'));
+    await tapAndSettle(tester, find.text('Journal du jour'));
+    expect(find.text("Lot d'aliment"), findsOneWidget);
+    expect(find.text('Le plus ancien (automatique)'), findsOneWidget);
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, 'Aliment donné'),
+      '4',
+    );
+    await tapAndSettle(tester, find.text('Le plus ancien (automatique)'));
+    await tapAndSettle(tester, find.textContaining('Rouge').last);
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    final log = await db.select(db.dailyLogs).getSingle();
+    expect(log.feedLotId, other);
   });
 }

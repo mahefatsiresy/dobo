@@ -1450,7 +1450,113 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get alertFeedTooOld => 'Un lot d\'aliment est trop vieux';
+  String get alertFeedOld =>
+      'Un lot d\'aliment vieillit : l\'utiliser en priorité';
+
+  @override
+  String get alertFeedExpired =>
+      'Un lot d\'aliment est trop vieux : ne pas l\'utiliser';
+
+  @override
+  String get moreFeed => 'Aliment';
+
+  @override
+  String get feedTitle => 'Stock d\'aliment';
+
+  @override
+  String get feedOnHand => 'En stock';
+
+  @override
+  String feedDaysLeft(String days) {
+    return '$days jours de stock';
+  }
+
+  @override
+  String get feedNoUsage => 'Pas de consommation ces derniers jours';
+
+  @override
+  String feedOverdrawn(String kg) {
+    return 'Plus d\'aliment donné que livré : $kg';
+  }
+
+  @override
+  String feedExpiredStock(String kg) {
+    return 'À ne pas utiliser : $kg';
+  }
+
+  @override
+  String get feedNoLots => 'Aucune livraison enregistrée';
+
+  @override
+  String feedLotMade(String date, String days) {
+    return 'Fabriqué le $date · $days jours';
+  }
+
+  @override
+  String get feedLotOld => 'À utiliser en priorité';
+
+  @override
+  String get feedLotExpired => 'À ne pas utiliser';
+
+  @override
+  String get feedDeliver => 'Livraison';
+
+  @override
+  String get feedDeliveryTitle => 'Livraison d\'aliment';
+
+  @override
+  String get feedPhase => 'Aliment pour';
+
+  @override
+  String get feedWeight => 'Poids livré';
+
+  @override
+  String get feedMadeOn => 'Date de fabrication';
+
+  @override
+  String get feedDeliveredOn => 'Date de livraison';
+
+  @override
+  String get feedPellet => 'Taille du granulé';
+
+  @override
+  String get feedProtein => 'Protéines';
+
+  @override
+  String get feedSupplier => 'Fournisseur';
+
+  @override
+  String get feedLabel => 'Marque sur les sacs';
+
+  @override
+  String get feedDiscard => 'Jeter';
+
+  @override
+  String get feedDiscardTitle => 'Aliment jeté';
+
+  @override
+  String get feedDiscardWeight => 'Poids jeté';
+
+  @override
+  String get feedDiscardReason => 'Pourquoi';
+
+  @override
+  String get discardMould => 'Moisi';
+
+  @override
+  String get discardRancid => 'Rance';
+
+  @override
+  String get discardClumped => 'En grumeaux';
+
+  @override
+  String get discardOther => 'Autre';
+
+  @override
+  String get feedLot => 'Lot d\'aliment';
+
+  @override
+  String get feedLotAuto => 'Le plus ancien (automatique)';
 
   @override
   String get alertPrepDry =>

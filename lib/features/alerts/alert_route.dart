@@ -4,6 +4,9 @@ import '../../domain/alerts/alert.dart';
 String? alertRoute(Alert a) {
   final pond = a.pondId;
   final batch = a.batchId;
+  if (a.kind == AlertKind.feedStockLow || a.kind == AlertKind.feedTooOld) {
+    return '/more/feed';
+  }
   if (pond == null) return null;
   return switch (a.kind) {
     AlertKind.waterOutOfRange || AlertKind.waterCheckDue => '/water/$pond',
@@ -19,7 +22,7 @@ String? alertRoute(Alert a) {
     AlertKind.phaseChange ||
     AlertKind.preHarvestFast => '/ponds/$pond',
     AlertKind.prepStepDue => '/ponds/$pond/prep',
-    AlertKind.feedStockLow || AlertKind.feedTooOld => null,
+    AlertKind.feedStockLow || AlertKind.feedTooOld => '/more/feed',
   };
 }
 

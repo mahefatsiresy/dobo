@@ -917,7 +917,70 @@
       }
     }
   },
-  "alertFeedTooOld": "Un lot d'aliment est trop vieux",
+  "alertFeedOld": "Un lot d'aliment vieillit : l'utiliser en priorité",
+  "alertFeedExpired": "Un lot d'aliment est trop vieux : ne pas l'utiliser",
+  "moreFeed": "Aliment",
+  "feedTitle": "Stock d'aliment",
+  "feedOnHand": "En stock",
+  "feedDaysLeft": "{days} jours de stock",
+  "@feedDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "feedNoUsage": "Pas de consommation ces derniers jours",
+  "feedOverdrawn": "Plus d'aliment donné que livré : {kg}",
+  "@feedOverdrawn": {
+    "placeholders": {
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "feedExpiredStock": "À ne pas utiliser : {kg}",
+  "@feedExpiredStock": {
+    "placeholders": {
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "feedNoLots": "Aucune livraison enregistrée",
+  "feedLotMade": "Fabriqué le {date} · {days} jours",
+  "@feedLotMade": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "feedLotOld": "À utiliser en priorité",
+  "feedLotExpired": "À ne pas utiliser",
+  "feedDeliver": "Livraison",
+  "feedDeliveryTitle": "Livraison d'aliment",
+  "feedPhase": "Aliment pour",
+  "feedWeight": "Poids livré",
+  "feedMadeOn": "Date de fabrication",
+  "feedDeliveredOn": "Date de livraison",
+  "feedPellet": "Taille du granulé",
+  "feedProtein": "Protéines",
+  "feedSupplier": "Fournisseur",
+  "feedLabel": "Marque sur les sacs",
+  "feedDiscard": "Jeter",
+  "feedDiscardTitle": "Aliment jeté",
+  "feedDiscardWeight": "Poids jeté",
+  "feedDiscardReason": "Pourquoi",
+  "discardMould": "Moisi",
+  "discardRancid": "Rance",
+  "discardClumped": "En grumeaux",
+  "discardOther": "Autre",
+  "feedLot": "Lot d'aliment",
+  "feedLotAuto": "Le plus ancien (automatique)",
   "alertPrepDry": "Séchage fini ? Vérifier les fissures, puis noter l'assèchement",
   "alertPrepRest": "Repos fini : l'étang peut être déclaré prêt",
   "prepButton": "Préparation",

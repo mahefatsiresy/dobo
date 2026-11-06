@@ -117,6 +117,13 @@ void main() {
     expect(find.byType(SnackBar), findsNothing);
   });
 
+  appTest("the worker's log screen shows no lot", (tester, db) async {
+    await twoPonds(tester, db);
+    await enterWorkerMode(tester);
+    await tapAndSettle(tester, find.text('E1'));
+    expect(find.byKey(const ValueKey('feed-lot')), findsNothing);
+  });
+
   group('the next morning', () {
     var now = DateTime.utc(2026, 3, 2, 6); // 09:00 in Madagascar
     appTest('yesterday\'s ticks are gone', (tester, db) async {

@@ -34,7 +34,7 @@ void main() {
     expect(route(AlertKind.prepStepDue), '/ponds/e1/prep');
     expect(
       alertRoute(const Alert(AlertKind.feedStockLow, Severity.warning)),
-      isNull,
+      '/more/feed',
     );
   });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../domain/feed_stock.dart';
 import '../domain/alerts/alert.dart';
 import '../domain/config.dart';
 import '../domain/pond.dart';
@@ -135,6 +136,13 @@ extension EnumLabels on AppLocalizations {
     PrepStep.rest => prepStepRest,
   };
 
+  String discardReason(DiscardReason r) => switch (r) {
+    DiscardReason.mould => discardMould,
+    DiscardReason.rancid => discardRancid,
+    DiscardReason.clumped => discardClumped,
+    DiscardReason.other => discardOther,
+  };
+
   String prepProduct(PrepProduct p) => switch (p) {
     PrepProduct.quicklime => prepProductQuicklime,
     PrepProduct.chlorine => prepProductChlorine,
@@ -189,7 +197,8 @@ extension EnumLabels on AppLocalizations {
       AlertKind.feedStockLow => alertFeedStockLow(
         formatDecimal(f['daysLeft']! as double, locale, decimals: 0),
       ),
-      AlertKind.feedTooOld => alertFeedTooOld,
+      AlertKind.feedTooOld =>
+        f['age'] == FeedAge.expired ? alertFeedExpired : alertFeedOld,
       AlertKind.prepStepDue =>
         f['waitingStep'] == PrepStep.rest ? alertPrepRest : alertPrepDry,
       AlertKind.duplicateDailyLog => alertDuplicateLog(

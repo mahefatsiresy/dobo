@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/feed/feed_delivery_screen.dart';
+import 'features/feed/feed_discard_screen.dart';
+import 'features/feed/feed_stock_screen.dart';
 import 'features/prep/prep_screen.dart';
 import 'features/alerts/alerts_screen.dart';
 import 'features/batches/batch_detail_screen.dart';
@@ -109,6 +112,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return DailyLogScreen(
             pondId: state.pathParameters['pondId']!,
             date: date == null ? farmToday() : DateTime.parse(date),
+            showLot: state.uri.queryParameters['lot'] == '1',
           );
         },
       ),
@@ -274,6 +278,22 @@ final routerProvider = Provider<GoRouter>((ref) {
                             ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'feed',
+                    builder: (context, state) => const FeedStockScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'deliver',
+                        builder: (context, state) => const FeedDeliveryScreen(),
+                      ),
+                      GoRoute(
+                        path: ':lotId/discard',
+                        builder: (context, state) => FeedDiscardScreen(
+                          lotId: state.pathParameters['lotId']!,
+                        ),
                       ),
                     ],
                   ),

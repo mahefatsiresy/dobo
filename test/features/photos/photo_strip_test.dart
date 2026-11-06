@@ -211,7 +211,10 @@ void main() {
       );
       expect(await db.select(db.photos).get(), isEmpty);
     },
-    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+    overrides: [
+      photoCaptureProvider.overrideWithValue(capture),
+      tempPhotoFiles(),
+    ],
   );
 
   appTest(
@@ -237,10 +240,16 @@ void main() {
         (photo.ownerKind, photo.ownerId),
         (PhotoOwner.healthEvent, event.id),
       );
-      await tapAndSettle(tester, find.byKey(ValueKey('photo-${photo.photoKey}')));
+      await tapAndSettle(
+        tester,
+        find.byKey(ValueKey('photo-${photo.photoKey}')),
+      );
       expect(find.text('Envoyer au serveur'), findsOneWidget);
     },
-    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+    overrides: [
+      photoCaptureProvider.overrideWithValue(capture),
+      tempPhotoFiles(),
+    ],
   );
 
   final store = FakePhotoStore();
@@ -283,7 +292,10 @@ void main() {
       )..where((m) => m.key.equals('photo_pending_owner'))).get();
       expect(after, isEmpty);
     },
-    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+    overrides: [
+      photoCaptureProvider.overrideWithValue(capture),
+      tempPhotoFiles(),
+    ],
   );
 
   final lostCapture = FakeCapture(() async => null)..lost = tinyImage;
@@ -319,7 +331,10 @@ void main() {
       )..where((m) => m.key.equals('photo_pending_owner'))).get();
       expect(left, isEmpty);
     },
-    overrides: [photoCaptureProvider.overrideWithValue(lostCapture), tempPhotoFiles()],
+    overrides: [
+      photoCaptureProvider.overrideWithValue(lostCapture),
+      tempPhotoFiles(),
+    ],
   );
 
   appTest(
@@ -351,6 +366,9 @@ void main() {
       expect(await db.select(db.photos).get(), hasLength(2));
       expect(find.byKey(ValueKey('photo-$key')), findsNothing);
     },
-    overrides: [photoCaptureProvider.overrideWithValue(capture), tempPhotoFiles()],
+    overrides: [
+      photoCaptureProvider.overrideWithValue(capture),
+      tempPhotoFiles(),
+    ],
   );
 }

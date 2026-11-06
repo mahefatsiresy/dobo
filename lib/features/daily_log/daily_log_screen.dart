@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/feed_stock.dart';
+import '../feed/feed_providers.dart';
 import '../alerts/alert_providers.dart';
 import 'stop_feeding_sign.dart';
 
@@ -11,6 +13,7 @@ import '../../db/repositories/daily_log_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
+import '../../l10n/labels.dart';
 import '../../l10n/formatting.dart';
 import '../common/big_number_field.dart';
 import '../common/colour_swatches.dart';
@@ -26,12 +29,21 @@ import '../common/form_body.dart';
 /// One pond-day (SPEC F3): the worker's screen, also used by members.
 /// Opening a day already logged edits it.
 class DailyLogScreen extends ConsumerStatefulWidget {
-  const DailyLogScreen({super.key, required this.pondId, required this.date});
+  const DailyLogScreen({
+    super.key,
+    required this.pondId,
+    required this.date,
+    this.showLot = false,
+  });
 
   final String pondId;
 
   /// Date only.
   final DateTime date;
+
+  /// A member may pick the feed lot; the worker never sees it (plan M7
+  /// Decision 5).
+  final bool showLot;
 
   @override
   ConsumerState<DailyLogScreen> createState() => _DailyLogScreenState();
@@ -52,6 +64,9 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
 
   /// Whose paper sheet the day came from: kept when it is corrected.
   String? _observedBy;
+
+  /// The feed lot; null lets the repository take the oldest usable one.
+  String? _lotId;
   var _loaded = false;
 
   @override
@@ -76,6 +91,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     _loaded = true;
     if (log == null) return;
     _observedBy = log.observedBy;
+    _lotId = log.feedLotId;
     _feed.text = formatForInput(log.feedGivenG / 1000);
     _deaths.text = '${log.deaths}';
     _note.text = log.note ?? '';
@@ -120,6 +136,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
             waterColour: _colour,
             note: note.isEmpty ? null : note,
             observedBy: _observedBy,
+            feedLotId: _lotId,
           ),
         );
     ref.invalidate(dailyLogForDayProvider((widget.pondId, widget.date)));
@@ -194,6 +211,13 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
                   : null,
               validator: (_) => _feedKg == null ? l10n.fieldRequired : null,
             ),
+            if (widget.showLot) ...[
+              gap,
+              _LotPicker(
+                value: _lotId,
+                onChanged: (id) => setState(() => _lotId = id),
+              ),
+            ],
             gap,
             heading(l10n.feedings),
             Wrap(
@@ -286,6 +310,47 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// The feed lot of a member's log: the oldest usable one unless picked.
+class _LotPicker extends ConsumerWidget {
+  const _LotPicker({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final lots = ref.watch(feedStockProvider).value?.lots ?? const [];
+    final shown = [
+      for (final b in lots)
+        if (b.lot.id == value || (b.balanceG > 0 && b.age != FeedAge.expired))
+          b.lot,
+    ];
+    return DropdownButtonFormField<String?>(
+      key: const ValueKey('feed-lot'),
+      initialValue: shown.any((l) => l.id == value) ? value : null,
+      isExpanded: true,
+      decoration: InputDecoration(labelText: l10n.feedLot),
+      items: [
+        DropdownMenuItem(child: Text(l10n.feedLotAuto)),
+        for (final l in shown)
+          DropdownMenuItem(
+            value: l.id,
+            child: Text(
+              [
+                if (l.label != null) l.label!,
+                l10n.phase(l.phase),
+                formatDate(l.manufacturedOn),
+              ].join(' · '),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+      ],
+      onChanged: onChanged,
     );
   }
 }

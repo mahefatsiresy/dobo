@@ -178,7 +178,7 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
       final log = logged[(pond.id, day)];
       if (log != null) {
         return InkWell(
-          onTap: () => context.push('/log/${pond.id}?date=${iso(day)}'),
+          onTap: () => context.push('/log/${pond.id}?date=${iso(day)}&lot=1'),
           child: Container(
             width: cellWidth,
             height: 56,

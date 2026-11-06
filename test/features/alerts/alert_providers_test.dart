@@ -125,28 +125,27 @@ void main() {
     }, overrides: [clockProvider.overrideWithValue(() => clock)]);
   });
 
-  appTest(
-    'an old feed lot and a drained pond reach the alerts',
-    (tester, db) async {
-      final session = (await SetupRepository(db).currentSession())!;
-      final e2 = await PondRepository(db, session).create(pondInput('E2'));
-      await PrepRepository(
-        db,
-        session,
-      ).record(e2, PrepStep.drain, on: DateTime(2026, 3, 14));
-      await FeedRepository(db, session).deliver(
-        FeedDeliveryInput(
-          date: DateTime(2026, 3, 1),
-          phase: Phase.growout,
-          weightG: 25000,
-          manufacturedOn: DateTime(2026, 1, 10),
-        ),
-      );
-      final alerts = (await settled(tester, alertsProvider)).requireValue;
-      final kinds = {for (final a in alerts) a.kind: a};
-      expect(kinds[AlertKind.feedTooOld]!.severity, Severity.warning);
-      expect(kinds[AlertKind.prepStepDue]!.pondId, e2);
-    },
-    overrides: [clockProvider.overrideWithValue(() => now)],
-  );
+  appTest('an old feed lot and a drained pond reach the alerts', (
+    tester,
+    db,
+  ) async {
+    final session = (await SetupRepository(db).currentSession())!;
+    final e2 = await PondRepository(db, session).create(pondInput('E2'));
+    await PrepRepository(
+      db,
+      session,
+    ).record(e2, PrepStep.drain, on: DateTime(2026, 3, 14));
+    await FeedRepository(db, session).deliver(
+      FeedDeliveryInput(
+        date: DateTime(2026, 3, 1),
+        phase: Phase.growout,
+        weightG: 25000,
+        manufacturedOn: DateTime(2026, 1, 10),
+      ),
+    );
+    final alerts = (await settled(tester, alertsProvider)).requireValue;
+    final kinds = {for (final a in alerts) a.kind: a};
+    expect(kinds[AlertKind.feedTooOld]!.severity, Severity.warning);
+    expect(kinds[AlertKind.prepStepDue]!.pondId, e2);
+  }, overrides: [clockProvider.overrideWithValue(() => now)]);
 }

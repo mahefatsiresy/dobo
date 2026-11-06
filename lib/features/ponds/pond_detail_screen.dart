@@ -301,7 +301,7 @@ class PondDetailScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           FilledButton.icon(
             style: wide,
-            onPressed: () => context.push('/log/${pond.id}'),
+            onPressed: () => context.push('/log/${pond.id}?lot=1'),
             icon: const Icon(Icons.edit_calendar),
             label: Text(l10n.dailyLog),
           ),

@@ -2702,11 +2702,203 @@ abstract class AppLocalizations {
   /// **'Stock d\'aliment : {days} jours restants'**
   String alertFeedStockLow(String days);
 
-  /// No description provided for @alertFeedTooOld.
+  /// No description provided for @alertFeedOld.
   ///
   /// In fr, this message translates to:
-  /// **'Un lot d\'aliment est trop vieux'**
-  String get alertFeedTooOld;
+  /// **'Un lot d\'aliment vieillit : l\'utiliser en priorité'**
+  String get alertFeedOld;
+
+  /// No description provided for @alertFeedExpired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un lot d\'aliment est trop vieux : ne pas l\'utiliser'**
+  String get alertFeedExpired;
+
+  /// No description provided for @moreFeed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment'**
+  String get moreFeed;
+
+  /// No description provided for @feedTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stock d\'aliment'**
+  String get feedTitle;
+
+  /// No description provided for @feedOnHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'En stock'**
+  String get feedOnHand;
+
+  /// No description provided for @feedDaysLeft.
+  ///
+  /// In fr, this message translates to:
+  /// **'{days} jours de stock'**
+  String feedDaysLeft(String days);
+
+  /// No description provided for @feedNoUsage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de consommation ces derniers jours'**
+  String get feedNoUsage;
+
+  /// No description provided for @feedOverdrawn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus d\'aliment donné que livré : {kg}'**
+  String feedOverdrawn(String kg);
+
+  /// No description provided for @feedExpiredStock.
+  ///
+  /// In fr, this message translates to:
+  /// **'À ne pas utiliser : {kg}'**
+  String feedExpiredStock(String kg);
+
+  /// No description provided for @feedNoLots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune livraison enregistrée'**
+  String get feedNoLots;
+
+  /// No description provided for @feedLotMade.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fabriqué le {date} · {days} jours'**
+  String feedLotMade(String date, String days);
+
+  /// No description provided for @feedLotOld.
+  ///
+  /// In fr, this message translates to:
+  /// **'À utiliser en priorité'**
+  String get feedLotOld;
+
+  /// No description provided for @feedLotExpired.
+  ///
+  /// In fr, this message translates to:
+  /// **'À ne pas utiliser'**
+  String get feedLotExpired;
+
+  /// No description provided for @feedDeliver.
+  ///
+  /// In fr, this message translates to:
+  /// **'Livraison'**
+  String get feedDeliver;
+
+  /// No description provided for @feedDeliveryTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Livraison d\'aliment'**
+  String get feedDeliveryTitle;
+
+  /// No description provided for @feedPhase.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment pour'**
+  String get feedPhase;
+
+  /// No description provided for @feedWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids livré'**
+  String get feedWeight;
+
+  /// No description provided for @feedMadeOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de fabrication'**
+  String get feedMadeOn;
+
+  /// No description provided for @feedDeliveredOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de livraison'**
+  String get feedDeliveredOn;
+
+  /// No description provided for @feedPellet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Taille du granulé'**
+  String get feedPellet;
+
+  /// No description provided for @feedProtein.
+  ///
+  /// In fr, this message translates to:
+  /// **'Protéines'**
+  String get feedProtein;
+
+  /// No description provided for @feedSupplier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fournisseur'**
+  String get feedSupplier;
+
+  /// No description provided for @feedLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marque sur les sacs'**
+  String get feedLabel;
+
+  /// No description provided for @feedDiscard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeter'**
+  String get feedDiscard;
+
+  /// No description provided for @feedDiscardTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment jeté'**
+  String get feedDiscardTitle;
+
+  /// No description provided for @feedDiscardWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids jeté'**
+  String get feedDiscardWeight;
+
+  /// No description provided for @feedDiscardReason.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pourquoi'**
+  String get feedDiscardReason;
+
+  /// No description provided for @discardMould.
+  ///
+  /// In fr, this message translates to:
+  /// **'Moisi'**
+  String get discardMould;
+
+  /// No description provided for @discardRancid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rance'**
+  String get discardRancid;
+
+  /// No description provided for @discardClumped.
+  ///
+  /// In fr, this message translates to:
+  /// **'En grumeaux'**
+  String get discardClumped;
+
+  /// No description provided for @discardOther.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autre'**
+  String get discardOther;
+
+  /// No description provided for @feedLot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot d\'aliment'**
+  String get feedLot;
+
+  /// No description provided for @feedLotAuto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le plus ancien (automatique)'**
+  String get feedLotAuto;
 
   /// No description provided for @alertPrepDry.
   ///
