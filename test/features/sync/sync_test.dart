@@ -1,3 +1,4 @@
+import 'package:dobo/sync/sync_tables.dart';
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/database_provider.dart';
 import 'package:dobo/db/ids.dart';
@@ -144,7 +145,7 @@ void main() {
     expect(identical(first, second), true);
     await Future.wait([first, second]);
     // One run: the site pushed, then one pull per synced table.
-    expect(server.calls, 1 + 18);
+    expect(server.calls, 1 + syncTables(db).length);
     expect(c.read(syncControllerProvider).state, SyncRunState.idle);
   });
 
