@@ -98,6 +98,25 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
+  appTest('exit right after a save takes the confirmation away too', (
+    tester,
+    db,
+  ) async {
+    await twoPonds(tester, db);
+    await enterWorkerMode(tester);
+    await tapAndSettle(tester, find.text('E1'));
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextFormField, 'Sakafo nomena'),
+      '4,2',
+    );
+    await tapAndSettle(tester, find.text('Tehirizo'));
+    expect(find.byType(SnackBar), findsOneWidget);
+
+    await tapAndSettle(tester, find.byTooltip('Hiala'));
+    expect(find.byType(SnackBar), findsNothing);
+  });
+
   group('the next morning', () {
     var now = DateTime.utc(2026, 3, 2, 6); // 09:00 in Madagascar
     appTest('yesterday\'s ticks are gone', (tester, db) async {

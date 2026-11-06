@@ -64,6 +64,9 @@ class WorkerHomeScreen extends ConsumerWidget {
               iconSize: 32,
               icon: const Icon(Icons.logout),
               onPressed: () {
+                // The worker's last "saved" belongs to the tiles; on the
+                // member's screens it would cover a form's Save.
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ref
                     .read(localeControllerProvider.notifier)
                     .set(const Locale('fr'));

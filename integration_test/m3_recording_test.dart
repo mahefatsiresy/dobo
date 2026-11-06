@@ -114,7 +114,8 @@ void main() {
     );
     await tapAndSettle(tester, find.text('Terminer la visite'));
     await confirm(tester, 'Terminer la visite');
-    expect(find.text('Démarrer une visite'), findsOneWidget);
+    // Since M6, ending a visit opens its draft report.
+    expect(find.text('Rapport de visite'), findsOneWidget);
 
     // Yesterday's paper sheet: 1 death, as Rakoto.
     final db = container.read(databaseProvider);
