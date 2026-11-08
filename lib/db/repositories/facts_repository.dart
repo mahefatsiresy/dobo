@@ -54,6 +54,7 @@ Future<FarmFacts> currentFacts(AppDatabase db) async => FarmFacts(
         enteredBy: l.enteredBy,
         observedBy: l.observedBy,
         feedLotId: l.feedLotId,
+        note: l.note,
       ),
   ],
   harvests: [

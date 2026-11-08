@@ -63,6 +63,18 @@ void main() {
     expect(l.observedBy, 'p1');
   });
 
+  test('currentFacts carries the note', () async {
+    await logs.save(
+      DailyLogInput(
+        pondId: e1,
+        date: DateTime(2026, 3, 2),
+        feedGivenG: 1000,
+        note: 'Digue fuit',
+      ),
+    );
+    expect((await currentFacts(db)).logs.single.note, 'Digue fuit');
+  });
+
   test('watchFarmFacts emits again after a daily log is saved', () async {
     final stream = watchFarmFacts(db);
     final seen = <int>[];

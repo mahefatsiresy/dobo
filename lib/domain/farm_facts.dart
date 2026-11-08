@@ -15,6 +15,7 @@ class LogFact {
     this.enteredBy = '',
     this.observedBy,
     this.feedLotId,
+    this.note,
   });
 
   final String id;
@@ -35,6 +36,9 @@ class LogFact {
 
   /// The feed lot the feed came from; null when none was stamped.
   final String? feedLotId;
+
+  /// The free note, if any (shown in the production register).
+  final String? note;
 }
 
 /// Every current record that moves fish, sets their weight or feeds them:
