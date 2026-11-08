@@ -4302,6 +4302,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Fermer'**
   String get close;
+
+  /// No description provided for @exportBuilding.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparation du fichier…'**
+  String get exportBuilding;
 }
 
 class _AppLocalizationsDelegate

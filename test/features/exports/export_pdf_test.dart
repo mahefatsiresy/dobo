@@ -121,4 +121,26 @@ void main() {
       'suivi-hebdo-site-2026-10-05-2026-10-11.pdf',
     );
   });
+
+  test('a table builds off the UI isolate from font bytes', () async {
+    ByteData bytes(String name) =>
+        ByteData.sublistView(File('assets/fonts/$name').readAsBytesSync());
+    final table = registerTable(
+      const [],
+      names,
+      l10n,
+      fr,
+      from: DateTime(2026, 3, 1),
+      to: DateTime(2026, 3, 31),
+    );
+    final pdf = await buildExportPdfInBackground(
+      table,
+      (
+        regular: bytes('NotoSans-Regular.ttf'),
+        bold: bytes('NotoSans-Bold.ttf'),
+        symbols: bytes('NotoSansMath-Symbols.ttf'),
+      ),
+    );
+    expect(String.fromCharCodes(pdf.take(4)), '%PDF');
+  });
 }

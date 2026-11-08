@@ -699,5 +699,6 @@
   "exportCsv": "CSV",
   "exportEndBeforeStart": "Mialoha ny daty fanombohana ny daty farany.",
   "exportWeeklyWholeWeeks": "Herinandro feno, Alatsinainy ka hatramin'ny Alahady.",
-  "close": "Hidio"
+  "close": "Hidio",
+  "exportBuilding": "Am-panomanana ny rakitra…"
 }

@@ -34,17 +34,14 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
   );
 
   Future<void> _build(List<Pond> ponds, {required bool print}) async {
-    final fonts = await pdfFonts();
-    final bytes = await buildPaperSheetPdf(
+    final bytes = await buildPaperSheetPdfInBackground(
       ponds: [
         for (final p in ponds)
           if (!_left.contains(p.id)) PaperPond(code: p.code, colour: p.colour),
       ],
       firstWeek: _monday,
       weeks: _weeks,
-      regular: fonts.regular,
-      bold: fonts.bold,
-      symbols: fonts.symbols,
+      fonts: await pdfFontData(),
     );
     final name = paperFileName(_monday);
     if (print) {
@@ -130,6 +127,12 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
                 ),
             ],
           ),
+          if (saving) ...[
+            const SizedBox(height: 16),
+            const LinearProgressIndicator(),
+            const SizedBox(height: 8),
+            Text(l10n.exportBuilding),
+          ],
           const SizedBox(height: 24),
           FilledButton.icon(
             style: buttonStyle,

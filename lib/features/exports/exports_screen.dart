@@ -107,12 +107,9 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
     if (csv) {
       await sharePdfFile(ref, name, utf8.encode(encodeCsv(csvRows(table))));
     } else {
-      final fonts = await pdfFonts();
-      final bytes = await buildExportPdf(
+      final bytes = await buildExportPdfInBackground(
         table,
-        regular: fonts.regular,
-        bold: fonts.bold,
-        symbols: fonts.symbols,
+        await pdfFontData(),
       );
       await sharePdfFile(ref, name, bytes);
     }
@@ -185,6 +182,12 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
             onChanged: (v) => setState(() => _pondId = v),
           ),
           if (backwards) Notice(l10n.exportEndBeforeStart, danger: true),
+          if (saving) ...[
+            const SizedBox(height: 16),
+            const LinearProgressIndicator(),
+            const SizedBox(height: 8),
+            Text(l10n.exportBuilding),
+          ],
           const SizedBox(height: 24),
           FilledButton.icon(
             style: style,

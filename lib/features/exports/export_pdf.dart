@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
@@ -79,6 +80,21 @@ Future<Uint8List> buildExportPdf(
   );
   return doc.save();
 }
+
+/// [buildExportPdf] in a background isolate: a year's register takes
+/// seconds to lay out on a low-end phone, and the screen must not freeze.
+Future<Uint8List> buildExportPdfInBackground(
+  ExportTable t,
+  PdfFontData fonts,
+) => Isolate.run(() {
+  final f = pdfFontsFrom(fonts);
+  return buildExportPdf(
+    t,
+    regular: f.regular,
+    bold: f.bold,
+    symbols: f.symbols,
+  );
+});
 
 /// `<kind>-<site>-<from>-<to>.<ext>`, with [kind] `registre` or
 /// `suivi-hebdo` (plan M8 Decision 11).

@@ -69,7 +69,7 @@ void main() {
     expect(find.text('Semaine du 09/11/2026'), findsOneWidget);
     await tapAndSettle(tester, find.byKey(const ValueKey('paperPond-E2')));
     await tapAndSettle(tester, find.byKey(const ValueKey('paperWeeks-2')));
-    await tapAndSettle(tester, find.text('Imprimer'));
+    await tester.tap(find.text('Imprimer'));
     await waitFor(tester, () => printed.isNotEmpty);
     final (name, bytes) = printed.single;
     expect(name, 'fiches-2026-11-09.pdf');
@@ -82,7 +82,7 @@ void main() {
   ) async {
     await open(tester, db);
     await tapAndSettle(tester, find.byTooltip('Semaine suivante'));
-    await tapAndSettle(tester, find.text('Partager le PDF'));
+    await tester.tap(find.text('Partager le PDF'));
     await waitFor(tester, () => shared.isNotEmpty);
     expect(shared.single.path, endsWith('fiches-2026-11-16.pdf'));
   }, overrides: overrides);

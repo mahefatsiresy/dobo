@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart' show Color, Locale;
@@ -148,6 +149,25 @@ Future<Uint8List> buildPaperSheetPdf({
   }
   return doc.save();
 }
+
+/// [buildPaperSheetPdf] in a background isolate, so the screen doesn't
+/// freeze while several weeks of pages are laid out.
+Future<Uint8List> buildPaperSheetPdfInBackground({
+  required List<PaperPond> ponds,
+  required DateTime firstWeek,
+  int weeks = 1,
+  required PdfFontData fonts,
+}) => Isolate.run(() {
+  final f = pdfFontsFrom(fonts);
+  return buildPaperSheetPdf(
+    ponds: ponds,
+    firstWeek: firstWeek,
+    weeks: weeks,
+    regular: f.regular,
+    bold: f.bold,
+    symbols: f.symbols,
+  );
+});
 
 // Pictogram columns, numbered 1… left to right; the legend uses the numbers.
 List<(int, pw.Widget, String)> _pictograms(

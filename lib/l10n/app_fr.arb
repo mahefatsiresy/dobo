@@ -1454,5 +1454,6 @@
   "exportCsv": "CSV",
   "exportEndBeforeStart": "La date de fin est avant la date de début.",
   "exportWeeklyWholeWeeks": "Semaines entières, du lundi au dimanche.",
-  "close": "Fermer"
+  "close": "Fermer",
+  "exportBuilding": "Préparation du fichier…"
 }

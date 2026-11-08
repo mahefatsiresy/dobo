@@ -698,3 +698,4 @@ exportCsv;;CSV;CSV;
 exportEndBeforeStart;;La date de fin est avant la date de début.;Mialoha ny daty fanombohana ny daty farany.;
 exportWeeklyWholeWeeks;;Semaines entières, du lundi au dimanche.;Herinandro feno, Alatsinainy ka hatramin'ny Alahady.;
 close;;Fermer;Hidio;
+exportBuilding;;Préparation du fichier…;Am-panomanana ny rakitra…;

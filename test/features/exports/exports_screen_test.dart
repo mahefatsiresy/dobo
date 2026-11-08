@@ -87,7 +87,7 @@ void main() {
     expect(find.text('11/11/2026'), findsOneWidget);
     await tapAndSettle(tester, find.byKey(const ValueKey('exportPond')));
     await tapAndSettle(tester, find.text('E1').last);
-    await tapAndSettle(tester, find.text('CSV'));
+    await tester.tap(find.text('CSV'));
     await waitForShare(tester);
     expect(
       shared.single.path,
@@ -105,7 +105,7 @@ void main() {
     await farm(tester, db);
     await open(tester);
     await tapAndSettle(tester, find.text('Suivi hebdomadaire (annexe B)'));
-    await tapAndSettle(tester, find.text('PDF'));
+    await tester.tap(find.text('PDF'));
     await waitForShare(tester);
     expect(
       shared.single.path,
@@ -145,5 +145,18 @@ void main() {
     await reveal(tester, find.text('Exports'));
     await tapAndSettle(tester, find.text('Exports'));
     expect(find.text('CSV'), findsOneWidget);
+  }, overrides: overrides);
+
+  appTest('the screen says it is building until the file is shared', (
+    tester,
+    db,
+  ) async {
+    await farm(tester, db);
+    await open(tester);
+    await tester.tap(find.text('PDF'));
+    await tester.pump();
+    expect(find.text('Préparation du fichier…'), findsOneWidget);
+    await waitForShare(tester);
+    expect(find.text('Préparation du fichier…'), findsNothing);
   }, overrides: overrides);
 }

@@ -2410,4 +2410,7 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get close => 'Hidio';
+
+  @override
+  String get exportBuilding => 'Am-panomanana ny rakitra…';
 }

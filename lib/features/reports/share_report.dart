@@ -12,6 +12,7 @@ import '../../sync/providers.dart';
 import '../../domain/report/report_content.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/file_slug.dart';
+import '../common/pdf_theme.dart';
 import '../sync/backup_actions.dart' show backupDirProvider;
 import 'report_pdf.dart';
 
@@ -84,6 +85,13 @@ Future<PdfFonts> pdfFonts() async => (
   regular: await _font('assets/fonts/NotoSans-Regular.ttf'),
   bold: await _font('assets/fonts/NotoSans-Bold.ttf'),
   symbols: await _font('assets/fonts/NotoSansMath-Symbols.ttf'),
+);
+
+/// The PDF fonts' files, for building a PDF in a background isolate.
+Future<PdfFontData> pdfFontData() async => (
+  regular: await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'),
+  bold: await rootBundle.load('assets/fonts/NotoSans-Bold.ttf'),
+  symbols: await rootBundle.load('assets/fonts/NotoSansMath-Symbols.ttf'),
 );
 
 /// Writes [bytes] as [fileName] and opens the share sheet.
