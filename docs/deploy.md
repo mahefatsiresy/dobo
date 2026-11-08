@@ -71,13 +71,62 @@ tool/server_test.sh                # Dart tests tagged `server`
    }
    ```
 
-5. Build the app for the phones:
+5. Create the release key, once (next section), then build the app for
+   the phones:
 
    ```bash
    flutter build apk --release --split-per-abi --dart-define-from-file=env/prod.json
    ```
 
    Install `app-arm64-v8a-release.apk` (or `armeabi-v7a` on older phones).
+
+## The release key
+
+Android installs a new version over the old one only when both are signed
+with the same key. A phone given a version signed with another key has to
+uninstall the app first, and uninstalling deletes every record not yet sent
+to the server. So every APK that goes on a farm phone is signed with one
+key, made once and kept forever. A release build stops with an error when
+the key is missing; it never falls back to the debug key.
+
+1. Make the key, outside this folder (the keystore must never be
+   committed):
+
+   ```bash
+   mkdir -p ~/dobo-release
+   keytool -genkeypair -v -keystore ~/dobo-release/dobo-release.jks \
+     -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias dobo
+   ```
+
+   `keytool` asks for a password and a name; the name can be the
+   association's. Use one password for both the store and the key.
+
+2. Create `android/key.properties` (gitignored):
+
+   ```properties
+   storeFile=/home/<you>/dobo-release/dobo-release.jks
+   storePassword=<password>
+   keyAlias=dobo
+   keyPassword=<password>
+   ```
+
+3. **Back up the keystore and its password now**, in two places off this
+   laptop (a USB stick kept by another family member, and an encrypted
+   cloud folder or password manager). If the key is lost, the next version
+   can't be installed over the phones' app, and each phone would have to
+   send every record, uninstall and sign in again.
+
+4. Check a build is signed with it:
+
+   ```bash
+   apksigner verify --print-certs build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+   ```
+
+   The certificate's SHA-256 matches
+   `keytool -list -v -keystore ~/dobo-release/dobo-release.jks`.
+
+Each new version raises the number after `+` in `pubspec.yaml`'s `version`
+(e.g. `1.0.0+1` to `1.0.1+2`); Android refuses to install a lower one.
 
 ## First use
 

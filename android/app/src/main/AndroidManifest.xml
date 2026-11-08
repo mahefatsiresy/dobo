@@ -2,7 +2,7 @@
     <!-- Sync with the server (SPEC §7); debug and profile add it on their own. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="dobo"
+        android:label="Dobo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
