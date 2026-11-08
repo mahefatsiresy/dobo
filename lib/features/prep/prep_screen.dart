@@ -44,6 +44,10 @@ class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
         step: step,
         done: done,
         today: ref.read(farmTodayProvider),
+        firstDate: ref
+            .read(prepProgressProvider(widget.pondId))
+            .value
+            ?.cycleStart,
       ),
     );
     if (result == null) return;
@@ -273,11 +277,20 @@ class _StepResult {
 
 /// When a step was done and, for treat and fertilise, what was used.
 class _StepDialog extends StatefulWidget {
-  const _StepDialog({required this.step, this.done, required this.today});
+  const _StepDialog({
+    required this.step,
+    this.done,
+    required this.today,
+    this.firstDate,
+  });
 
   final PrepStep step;
   final PrepStepFact? done;
   final DateTime today;
+
+  /// The day after the pond last held fish: earlier steps belong to no
+  /// cycle.
+  final DateTime? firstDate;
 
   @override
   State<_StepDialog> createState() => _StepDialogState();
@@ -316,6 +329,7 @@ class _StepDialogState extends State<_StepDialog> {
             DateField(
               label: l10n.doneDate,
               value: _date,
+              firstDate: widget.firstDate,
               onChanged: (d) => setState(() => _date = d),
             ),
             if (widget.step == PrepStep.treat) ...[

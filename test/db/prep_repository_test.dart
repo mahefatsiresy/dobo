@@ -78,4 +78,21 @@ void main() {
     await prep.delete(id);
     expect((await prep.progress(e1)).done, isEmpty);
   });
+
+  test('a step dated while the pond still held fish is refused', () async {
+    final batches = BatchRepository(db, session);
+    final l1 = await batches.stockBatch(
+      stockInput('L1', pondId: e1, date: DateTime(2026, 3, 1)),
+    );
+    final e2 = await ponds.create(pondInput('E2'));
+    await batches.transfer(
+      moveInput(l1, from: e1, to: e2, count: 1000, date: DateTime(2026, 3, 10)),
+    );
+    await expectLater(
+      prep.record(e1, PrepStep.drain, on: DateTime(2026, 3, 9)),
+      throwsArgumentError,
+    );
+    await prep.record(e1, PrepStep.drain, on: DateTime(2026, 3, 10));
+    expect((await prep.progress(e1)).done.keys, [PrepStep.drain]);
+  });
 }

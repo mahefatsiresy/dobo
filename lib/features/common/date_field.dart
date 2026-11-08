@@ -10,6 +10,7 @@ class DateField extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.onCleared,
+    this.firstDate,
   });
 
   final String label;
@@ -19,14 +20,19 @@ class DateField extends StatelessWidget {
   /// When set, the field is optional and shows a clear button.
   final VoidCallback? onCleared;
 
+  /// The earliest date the picker offers; five years back by default.
+  final DateTime? firstDate;
+
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: () async {
       final now = DateTime.now();
+      final first = firstDate ?? DateTime(now.year - 5);
+      final initial = value ?? now;
       final picked = await showDatePicker(
         context: context,
-        initialDate: value ?? now,
-        firstDate: DateTime(now.year - 5),
+        initialDate: initial.isBefore(first) ? first : initial,
+        firstDate: first,
         lastDate: DateTime(now.year + 3),
       );
       if (picked != null) {

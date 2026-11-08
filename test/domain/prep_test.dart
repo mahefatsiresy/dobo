@@ -69,6 +69,11 @@ void main() {
     expect((p.restUntil, p.canMarkReady), (null, false));
   });
 
+  test('the cycle starts the day after the pond last held fish', () {
+    expect(progress(const [], lastWithFish: day(20)).cycleStart, day(21));
+    expect(progress(const []).cycleStart, isNull);
+  });
+
   test("another pond's steps are ignored", () {
     final p = progress([step(PrepStep.drain, 1, pond: 'p2')]);
     expect(p.done, isEmpty);

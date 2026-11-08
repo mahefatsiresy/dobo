@@ -32,6 +32,7 @@ class PrepProgress {
     required this.restUntil,
     required this.canMarkReady,
     required this.skipped,
+    this.cycleStart,
   });
 
   /// The current cycle's steps, in checklist order; the latest of each.
@@ -52,6 +53,10 @@ class PrepProgress {
 
   /// Steps before the furthest one done that were not done.
   final List<PrepStep> skipped;
+
+  /// The first farm day a step of this cycle may be dated: the day after
+  /// the pond last held fish; null when it never did.
+  final DateTime? cycleStart;
 }
 
 /// The current cycle of [pondId]: steps dated after [lastDayWithFish] (all
@@ -95,6 +100,7 @@ PrepProgress prepProgress({
       for (final s in PrepStep.values)
         if (s.index < furthest && !done.containsKey(s)) s,
     ],
+    cycleStart: lastDayWithFish == null ? null : plus(lastDayWithFish, 1),
   );
 }
 

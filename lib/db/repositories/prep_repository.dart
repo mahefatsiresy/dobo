@@ -34,6 +34,7 @@ class PrepRepository {
     if (step == PrepStep.rest) throw ArgumentError.value(step, 'step');
     return db.transaction(() async {
       await _checkEmpty(pondId);
+      await _checkInCycle(pondId, on);
       final id = await _insert(pondId, step, on, product, doseG);
       final pond = await PondRepository(db, session).get(pondId);
       if (pond.status != PondStatus.ready &&
@@ -51,6 +52,7 @@ class PrepRepository {
   Future<String> markReady(String pondId, {required DateTime on}) =>
       db.transaction(() async {
         await _checkEmpty(pondId);
+        await _checkInCycle(pondId, on);
         final id = await _insert(pondId, PrepStep.rest, on, null, null);
         final pond = await PondRepository(db, session).get(pondId);
         if (pond.status != PondStatus.isolated) {
@@ -68,6 +70,7 @@ class PrepRepository {
     final old = await (db.select(
       db.prepSteps,
     )..where((s) => s.id.equals(id))).getSingle();
+    await _checkInCycle(old.pondId, on);
     return db.supersede(
       db.prepSteps,
       id,
@@ -82,7 +85,7 @@ class PrepRepository {
       prepProgress(
         pondId: pondId,
         steps: const [],
-        lastDayWithFish: null,
+        lastDayWithFish: lastDayWithFish(await currentFacts(db), pondId),
         config: config,
       );
 
@@ -119,6 +122,15 @@ class PrepRepository {
 
   Stream<Map<String, PrepProgress>> watchAll() =>
       watchTables(db, {db.prepSteps, ...placementTables(db)}, allProgress);
+
+  /// A step dated while the pond still held fish would belong to no cycle:
+  /// saved, but never shown.
+  Future<void> _checkInCycle(String pondId, DateTime on) async {
+    final start = (await progress(pondId)).cycleStart;
+    if (start != null && daysBetween(start, on) < 0) {
+      throw ArgumentError.value(on, 'on', 'before the preparation cycle');
+    }
+  }
 
   Future<void> _checkEmpty(String pondId) async {
     final occupied = (await currentPlacements(db)).any(

@@ -1,4 +1,5 @@
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/features/common/date_field.dart';
 import 'package:dobo/features/common/estimated.dart';
 import 'package:dobo/features/common/number_field.dart';
 import 'package:dobo/features/common/pond_colour.dart';
@@ -76,5 +77,26 @@ void main() {
       _frame(const PondBadge(code: 'E1', colour: PondColour.yellow)),
     );
     expect(find.text('E1'), findsOneWidget);
+  });
+
+  testWidgets('a date field with a first date opens its picker there', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _frame(
+        DateField(
+          label: 'Date',
+          value: DateTime(2026, 3, 12),
+          firstDate: DateTime(2026, 3, 10),
+          onChanged: (_) {},
+        ),
+      ),
+    );
+    await tester.tap(find.text('Date'));
+    await tester.pumpAndSettle();
+    final picker = tester.widget<DatePickerDialog>(
+      find.byType(DatePickerDialog),
+    );
+    expect(picker.firstDate, DateTime(2026, 3, 10));
   });
 }
