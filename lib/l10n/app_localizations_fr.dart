@@ -2218,4 +2218,48 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get photoDeleteConfirm =>
       'Supprimer cette photo ? Elle sera effacée de ce téléphone.';
+
+  @override
+  String get paperTitle => 'Fiche journalière';
+
+  @override
+  String paperWeek(String from, String to) {
+    return 'Semaine du $from au $to';
+  }
+
+  @override
+  String get paperWorker => 'Ouvrier';
+
+  @override
+  String get paperFeedKg => 'Aliment (kg)';
+
+  @override
+  String get paperDay => 'Jour';
+
+  @override
+  String get paperHowTo => 'Cochez la case de ce que vous voyez.';
+
+  @override
+  String get paperNoPonds => 'Aucun étang actif.';
+
+  @override
+  String get weekdayMon => 'lun.';
+
+  @override
+  String get weekdayTue => 'mar.';
+
+  @override
+  String get weekdayWed => 'mer.';
+
+  @override
+  String get weekdayThu => 'jeu.';
+
+  @override
+  String get weekdayFri => 'ven.';
+
+  @override
+  String get weekdaySat => 'sam.';
+
+  @override
+  String get weekdaySun => 'dim.';
 }

@@ -80,5 +80,19 @@
   "workerStopFeeding": "Aza omena sakafo",
   "workerReasonFast": "Hojonoina tsy ho ela",
   "workerReasonOxygen": "Tsy ampy rivotra ny rano",
-  "workerReasonDistress": "Tsy salama ny trondro"
+  "workerReasonDistress": "Tsy salama ny trondro",
+  "paperTitle": "Taratasy isan'andro",
+  "paperWeek": "Herinandro {from} – {to}",
+  "paperWorker": "Mpiasa",
+  "paperFeedKg": "Sakafo (kg)",
+  "paperDay": "Andro",
+  "paperHowTo": "Asio marika ny efajoro raha hitanao izany.",
+  "paperNoPonds": "Tsy misy dobo miasa.",
+  "weekdayMon": "Alatsinainy",
+  "weekdayTue": "Talata",
+  "weekdayWed": "Alarobia",
+  "weekdayThu": "Alakamisy",
+  "weekdayFri": "Zoma",
+  "weekdaySat": "Asabotsy",
+  "weekdaySun": "Alahady"
 }

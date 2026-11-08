@@ -3979,6 +3979,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimer cette photo ? Elle sera effacée de ce téléphone.'**
   String get photoDeleteConfirm;
+
+  /// No description provided for @paperTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche journalière'**
+  String get paperTitle;
+
+  /// No description provided for @paperWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaine du {from} au {to}'**
+  String paperWeek(String from, String to);
+
+  /// No description provided for @paperWorker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrier'**
+  String get paperWorker;
+
+  /// No description provided for @paperFeedKg.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment (kg)'**
+  String get paperFeedKg;
+
+  /// No description provided for @paperDay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jour'**
+  String get paperDay;
+
+  /// No description provided for @paperHowTo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cochez la case de ce que vous voyez.'**
+  String get paperHowTo;
+
+  /// No description provided for @paperNoPonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun étang actif.'**
+  String get paperNoPonds;
+
+  /// No description provided for @weekdayMon.
+  ///
+  /// In fr, this message translates to:
+  /// **'lun.'**
+  String get weekdayMon;
+
+  /// No description provided for @weekdayTue.
+  ///
+  /// In fr, this message translates to:
+  /// **'mar.'**
+  String get weekdayTue;
+
+  /// No description provided for @weekdayWed.
+  ///
+  /// In fr, this message translates to:
+  /// **'mer.'**
+  String get weekdayWed;
+
+  /// No description provided for @weekdayThu.
+  ///
+  /// In fr, this message translates to:
+  /// **'jeu.'**
+  String get weekdayThu;
+
+  /// No description provided for @weekdayFri.
+  ///
+  /// In fr, this message translates to:
+  /// **'ven.'**
+  String get weekdayFri;
+
+  /// No description provided for @weekdaySat.
+  ///
+  /// In fr, this message translates to:
+  /// **'sam.'**
+  String get weekdaySat;
+
+  /// No description provided for @weekdaySun.
+  ///
+  /// In fr, this message translates to:
+  /// **'dim.'**
+  String get weekdaySun;
 }
 
 class _AppLocalizationsDelegate

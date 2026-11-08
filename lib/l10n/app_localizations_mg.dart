@@ -2210,4 +2210,48 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String get photoDeleteConfirm =>
       'Supprimer cette photo ? Elle sera effacée de ce téléphone.';
+
+  @override
+  String get paperTitle => 'Taratasy isan\'andro';
+
+  @override
+  String paperWeek(String from, String to) {
+    return 'Herinandro $from – $to';
+  }
+
+  @override
+  String get paperWorker => 'Mpiasa';
+
+  @override
+  String get paperFeedKg => 'Sakafo (kg)';
+
+  @override
+  String get paperDay => 'Andro';
+
+  @override
+  String get paperHowTo => 'Asio marika ny efajoro raha hitanao izany.';
+
+  @override
+  String get paperNoPonds => 'Tsy misy dobo miasa.';
+
+  @override
+  String get weekdayMon => 'Alatsinainy';
+
+  @override
+  String get weekdayTue => 'Talata';
+
+  @override
+  String get weekdayWed => 'Alarobia';
+
+  @override
+  String get weekdayThu => 'Alakamisy';
+
+  @override
+  String get weekdayFri => 'Zoma';
+
+  @override
+  String get weekdaySat => 'Asabotsy';
+
+  @override
+  String get weekdaySun => 'Alahady';
 }

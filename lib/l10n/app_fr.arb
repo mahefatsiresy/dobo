@@ -1397,5 +1397,20 @@
   "syncPhotoCap": "Limite de photos atteinte : un administrateur peut la relever dans Réglages.",
   "settingsPhotos": "Photos",
   "settingPhotoUploadCap": "Photos envoyées au serveur, au plus",
-  "photoDeleteConfirm": "Supprimer cette photo ? Elle sera effacée de ce téléphone."
+  "photoDeleteConfirm": "Supprimer cette photo ? Elle sera effacée de ce téléphone.",
+  "paperTitle": "Fiche journalière",
+  "paperWeek": "Semaine du {from} au {to}",
+  "@paperWeek": {"placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}},
+  "paperWorker": "Ouvrier",
+  "paperFeedKg": "Aliment (kg)",
+  "paperDay": "Jour",
+  "paperHowTo": "Cochez la case de ce que vous voyez.",
+  "paperNoPonds": "Aucun étang actif.",
+  "weekdayMon": "lun.",
+  "weekdayTue": "mar.",
+  "weekdayWed": "mer.",
+  "weekdayThu": "jeu.",
+  "weekdayFri": "ven.",
+  "weekdaySat": "sam.",
+  "weekdaySun": "dim."
 }
