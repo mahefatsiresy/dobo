@@ -146,14 +146,8 @@ class _PondHealthBlock extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final h = health;
-    String actions(Set<HealthAction> a) => [
-      for (final x in a)
-        switch (x) {
-          HealthAction.isolated => l10n.actionIsolated,
-          HealthAction.technicianCalled => l10n.actionTechnician,
-          HealthAction.released => l10n.actionReleased,
-        },
-    ].join(', ');
+    String actions(Set<HealthAction> a) =>
+        [for (final x in a) l10n.healthAction(x)].join(', ');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

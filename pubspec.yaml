@@ -80,10 +80,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # Noto Sans (SIL OFL, assets/fonts/OFL.txt) for the visit report PDF.
+  # Noto Sans (SIL OFL, assets/fonts/OFL.txt) for the PDFs, and a subset of
+  # Noto Sans Math (same licence: arrows and math operators) for the signs
+  # Noto Sans lacks.
   assets:
     - assets/fonts/NotoSans-Regular.ttf
     - assets/fonts/NotoSans-Bold.ttf
+    - assets/fonts/NotoSansMath-Symbols.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

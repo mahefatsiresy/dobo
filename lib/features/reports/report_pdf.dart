@@ -10,6 +10,7 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
+import '../common/pdf_theme.dart';
 
 /// The report as an A4 PDF, in [l10n]'s language, to share through any app
 /// without the server (SPEC F8). Photos come from [photoBytes]; one that
@@ -21,6 +22,7 @@ Future<Uint8List> buildReportPdf(
   Future<Uint8List?> Function(String photoKey)? photoBytes,
   required pw.Font regular,
   required pw.Font bold,
+  pw.Font? symbols,
 }) async {
   final c = content;
   final h = c.header;
@@ -98,7 +100,7 @@ Future<Uint8List> buildReportPdf(
   ].join(', ');
 
   final doc = pw.Document(
-    theme: pw.ThemeData.withFont(base: regular, bold: bold),
+    theme: pdfTheme(regular: regular, bold: bold, symbols: symbols),
     title: l10n.reportTitle,
   );
   doc.addPage(

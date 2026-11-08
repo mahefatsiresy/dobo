@@ -2280,4 +2280,78 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get transcriptionCellDetails => 'Détails du jour';
+
+  @override
+  String get exportRegisterTitle => 'Registre de production';
+
+  @override
+  String get exportWeeklyTitle => 'Fiche de suivi hebdomadaire';
+
+  @override
+  String exportPeriod(String from, String to) {
+    return 'Du $from au $to';
+  }
+
+  @override
+  String get exportColDate => 'Date';
+
+  @override
+  String get exportColPondBatch => 'Étang / Lot';
+
+  @override
+  String get exportColOrigin => 'Provenance alevins';
+
+  @override
+  String get exportColFeedKg => 'Quantité aliment (kg)';
+
+  @override
+  String get exportColDeaths => 'Mortalité (nb)';
+
+  @override
+  String get exportColSalesKg => 'Ventes (kg)';
+
+  @override
+  String get exportColObservations => 'Observations';
+
+  @override
+  String get exportColPond => 'Étang';
+
+  @override
+  String get exportColWeekOf => 'Semaine du';
+
+  @override
+  String get exportColTemp => 'Temp. (°C)';
+
+  @override
+  String get exportColPh => 'pH';
+
+  @override
+  String get exportColOxygen => 'Oxygène (mg/L)';
+
+  @override
+  String get exportColFeedGivenKg => 'Aliment distribué (kg)';
+
+  @override
+  String get exportColAvgWeight => 'Poids moyen échantillon (g)';
+
+  @override
+  String exportFishCount(String count) {
+    return '$count poissons';
+  }
+
+  @override
+  String get exportTreatment => 'Traitement';
+
+  @override
+  String get exportHealth => 'Problème signalé';
+
+  @override
+  String exportThresholds(
+    String temp,
+    String ph,
+    String oxygen,
+    String renewal,
+  ) {
+    return 'Seuils : température $temp °C · pH $ph · oxygène ≥ $oxygen mg/L · renouvellement d\'eau $renewal % par semaine si l\'eau devient trouble.';
+  }
 }

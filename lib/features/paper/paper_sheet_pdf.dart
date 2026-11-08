@@ -12,6 +12,7 @@ import '../common/pictogram_paths.dart';
 import '../common/pictograms.dart';
 import '../common/pond_colour.dart';
 import '../transcription/week.dart';
+import '../common/pdf_theme.dart';
 
 /// A pond as its paper sheet shows it: the code painted on its stake, on
 /// its colour.
@@ -118,11 +119,12 @@ Future<Uint8List> buildPaperSheetPdf({
   int weeks = 1,
   required pw.Font regular,
   required pw.Font bold,
+  pw.Font? symbols,
 }) {
   final mg = lookupAppLocalizations(const Locale('mg'));
   final fr = lookupAppLocalizations(const Locale('fr'));
   final doc = pw.Document(
-    theme: pw.ThemeData.withFont(base: regular, bold: bold),
+    theme: pdfTheme(regular: regular, bold: bold, symbols: symbols),
     title: _both(mg.paperTitle, fr.paperTitle),
   );
   const format = PdfPageFormat(

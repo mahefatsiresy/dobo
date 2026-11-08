@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 
+import '../domain/dates.dart';
 import 'database.dart';
 import 'ids.dart';
 import 'repositories/errors.dart';
@@ -107,4 +108,17 @@ extension EventWrites on AppDatabase {
     );
     return id;
   }
+}
+
+/// [at] falls on a farm day from [from] to [to], both included.
+Expression<bool> withinFarmDays(
+  GeneratedColumn<DateTime> at,
+  DateTime from,
+  DateTime to,
+) {
+  final last = farmDate(to);
+  return at.isBiggerOrEqualValue(farmTimeToUtc(farmDate(from), 0, 0)) &
+      at.isSmallerThanValue(
+        farmTimeToUtc(DateTime(last.year, last.month, last.day + 1), 0, 0),
+      );
 }

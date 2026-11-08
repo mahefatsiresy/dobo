@@ -107,13 +107,14 @@ Future<void> shareTrace(
   final locale = Localizations.localeOf(context);
   final today = ref.read(farmTodayProvider);
   final view = await loadTraceView(ref, batchId);
-  final (regular, bold) = await pdfFonts();
+  final fonts = await pdfFonts();
   final bytes = await buildTracePdf(
     view,
     l10n,
     locale,
-    regular: regular,
-    bold: bold,
+    regular: fonts.regular,
+    bold: fonts.bold,
+    symbols: fonts.symbols,
   );
   await sharePdfFile(ref, traceFileName(view.code, today), bytes);
 }

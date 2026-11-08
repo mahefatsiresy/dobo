@@ -12,6 +12,7 @@ class WeeklyRow {
     this.oxygenMgL,
     this.feedG = 0,
     this.deaths = 0,
+    this.loggedDays = 0,
     this.avgWeightGByBatch = const {},
   });
 
@@ -25,6 +26,10 @@ class WeeklyRow {
   final int feedG;
   final int deaths;
 
+  /// Pond-days with a daily log: with none, feed and deaths are unknown,
+  /// not zero.
+  final int loggedDays;
+
   /// Each batch's latest sample of the week in this pond.
   final Map<String, double> avgWeightGByBatch;
 
@@ -33,8 +38,7 @@ class WeeklyRow {
       temperatureC == null &&
       ph == null &&
       oxygenMgL == null &&
-      feedG == 0 &&
-      deaths == 0 &&
+      loggedDays == 0 &&
       avgWeightGByBatch.isEmpty;
 }
 
@@ -101,6 +105,7 @@ List<WeeklyRow> weeklySheet({
     final oxygen = List<double?>.filled(weeks, null);
     final feed = List.filled(weeks, 0);
     final deaths = List.filled(weeks, 0);
+    final logged = List.filled(weeks, 0);
     final weights = List.generate(weeks, (_) => <String, double>{});
     final sampledAt = List.generate(weeks, (_) => <String, DateTime>{});
     // Oldest first, so the latest reading with a value wins.
@@ -116,6 +121,7 @@ List<WeeklyRow> weeklySheet({
       if (l.pondId != pond || w == null) continue;
       feed[w] += l.feedG;
       deaths[w] += l.deaths;
+      logged[w]++;
     }
     for (final s in facts.samples) {
       final w = week(s.date);
@@ -136,6 +142,7 @@ List<WeeklyRow> weeklySheet({
           oxygenMgL: oxygen[w],
           feedG: feed[w],
           deaths: deaths[w],
+          loggedDays: logged[w],
           avgWeightGByBatch: weights[w],
         ),
       );

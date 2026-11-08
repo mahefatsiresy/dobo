@@ -160,6 +160,12 @@ extension EnumLabels on AppLocalizations {
     DiscardReason.other => discardOther,
   };
 
+  String healthAction(HealthAction a) => switch (a) {
+    HealthAction.isolated => actionIsolated,
+    HealthAction.technicianCalled => actionTechnician,
+    HealthAction.released => actionReleased,
+  };
+
   String prepProduct(PrepProduct p) => switch (p) {
     PrepProduct.quicklime => prepProductQuicklime,
     PrepProduct.chlorine => prepProductChlorine,

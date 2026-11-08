@@ -43,9 +43,10 @@ void main() {
       ('E2', PondColour.green),
       ('E3', PondColour.red),
     ]) {
-      await PondRepository(db, session).create(
-        PondInput(code: code, colour: colour, role: PondRole.growout),
-      );
+      await PondRepository(
+        db,
+        session,
+      ).create(PondInput(code: code, colour: colour, role: PondRole.growout));
     }
     await tester.pumpAndSettle();
     appContainer(tester).read(routerProvider).go('/more/paper');

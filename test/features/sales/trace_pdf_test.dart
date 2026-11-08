@@ -133,6 +133,7 @@ void main() {
         fr,
         regular: font('NotoSans-Regular.ttf'),
         bold: font('NotoSans-Bold.ttf'),
+        symbols: font('NotoSansMath-Symbols.ttf'),
       );
       expect(String.fromCharCodes(bytes.take(4)), '%PDF');
     }

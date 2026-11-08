@@ -88,7 +88,8 @@ final _photosProvider = StreamProvider<List<Photo>>(
   (ref) => ref.watch(photoRepositoryProvider).watchAll(),
 );
 
-final _siteNameProvider = StreamProvider<String>((ref) {
+/// The site's name.
+final siteNameProvider = StreamProvider<String>((ref) {
   final db = ref.watch(databaseProvider);
   final siteId = ref.watch(sessionProvider).requireValue!.siteId;
   return (db.select(
@@ -126,7 +127,7 @@ final draftReportProvider = Provider.family<AsyncValue<ReportContent>, String>((
   final people = ref.watch(peopleDirectoryProvider);
   final members = ref.watch(membersProvider);
   final groups = ref.watch(groupsProvider);
-  final site = ref.watch(_siteNameProvider);
+  final site = ref.watch(siteNameProvider);
   final photos = ref.watch(_photosProvider);
   final feedStock = ref.watch(feedStockProvider);
   final prep = ref.watch(prepProgressAllProvider);

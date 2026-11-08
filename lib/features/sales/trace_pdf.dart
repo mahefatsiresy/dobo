@@ -11,6 +11,8 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
+import '../common/file_slug.dart';
+import '../common/pdf_theme.dart';
 
 /// A stocking ([fromPond] null) or a move between ponds.
 class TraceMove {
@@ -241,9 +243,10 @@ Future<Uint8List> buildTracePdf(
   Locale locale, {
   required pw.Font regular,
   required pw.Font bold,
+  pw.Font? symbols,
 }) {
   final doc = pw.Document(
-    theme: pw.ThemeData.withFont(base: regular, bold: bold),
+    theme: pdfTheme(regular: regular, bold: bold, symbols: symbols),
     title: l10n.traceTitle,
   );
   doc.addPage(
@@ -282,10 +285,7 @@ Future<Uint8List> buildTracePdf(
 /// `tracabilite-<batch code>-<yyyy-mm-dd>.pdf`, safe on any file system.
 String traceFileName(String code, DateTime day) {
   final d = farmDate(day);
-  final safe = code
-      .replaceAll(RegExp(r'[^A-Za-z0-9]+'), '-')
-      .replaceAll(RegExp(r'^-+|-+$'), '');
   String two(int n) => n.toString().padLeft(2, '0');
-  return 'tracabilite-${safe.isEmpty ? 'lot' : safe}-'
+  return 'tracabilite-${fileSlug(code, 'lot')}-'
       '${d.year}-${two(d.month)}-${two(d.day)}.pdf';
 }

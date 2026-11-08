@@ -98,6 +98,24 @@ class ReadingRepository {
           .watch()
           .map((rows) => {for (final r in rows) r.pondId: r});
 
+  /// Current water readings from the start of farm day [from] to the end of
+  /// farm day [to], oldest first.
+  Stream<List<WaterReading>> watchWaterReadingsBetween(
+    DateTime from,
+    DateTime to,
+  ) =>
+      (db.select(db.waterReadings)
+            ..where(
+              (r) =>
+                  isCurrentEvent(db.waterReadings) &
+                  withinFarmDays(r.recordedAt, from, to),
+            )
+            ..orderBy([
+              (r) => OrderingTerm.asc(r.recordedAt),
+              (r) => OrderingTerm.asc(r.createdAtDevice),
+            ]))
+          .watch();
+
   Future<String> addSample(SampleInput input) async {
     _checkSample(input);
     final row = await db.into(db.samples).insertReturning(_sample(input));

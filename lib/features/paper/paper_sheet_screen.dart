@@ -34,7 +34,7 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
   );
 
   Future<void> _build(List<Pond> ponds, {required bool print}) async {
-    final (regular, bold) = await pdfFonts();
+    final fonts = await pdfFonts();
     final bytes = await buildPaperSheetPdf(
       ponds: [
         for (final p in ponds)
@@ -42,8 +42,9 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
       ],
       firstWeek: _monday,
       weeks: _weeks,
-      regular: regular,
-      bold: bold,
+      regular: fonts.regular,
+      bold: fonts.bold,
+      symbols: fonts.symbols,
     );
     final name = paperFileName(_monday);
     if (print) {
@@ -124,9 +125,8 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
                   key: ValueKey('paperPond-${p.code}'),
                   label: PondBadge(code: p.code, colour: p.colour),
                   selected: !_left.contains(p.id),
-                  onSelected: (on) => setState(
-                    () => on ? _left.remove(p.id) : _left.add(p.id),
-                  ),
+                  onSelected: (on) =>
+                      setState(() => on ? _left.remove(p.id) : _left.add(p.id)),
                 ),
             ],
           ),

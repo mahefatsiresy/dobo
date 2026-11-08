@@ -11,6 +11,7 @@ import '../../domain/dates.dart';
 import '../../sync/providers.dart';
 import '../../domain/report/report_content.dart';
 import '../../l10n/app_localizations.dart';
+import '../common/file_slug.dart';
 import '../sync/backup_actions.dart' show backupDirProvider;
 import 'report_pdf.dart';
 
@@ -50,13 +51,15 @@ Future<void> shareReport(
   final photoBytes = ref.read(reportPhotoBytesProvider);
   final sharer = ref.read(reportSharerProvider);
   final dirOf = ref.read(backupDirProvider);
+  final fonts = await pdfFonts();
   final bytes = await buildReportPdf(
     content,
     l10n,
     locale,
     photoBytes: photoBytes,
-    regular: await _font('assets/fonts/NotoSans-Regular.ttf'),
-    bold: await _font('assets/fonts/NotoSans-Bold.ttf'),
+    regular: fonts.regular,
+    bold: fonts.bold,
+    symbols: fonts.symbols,
   );
   final file = File('${(await dirOf()).path}/${reportFileName(content)}');
   await file.writeAsBytes(bytes, flush: true);
@@ -66,21 +69,21 @@ Future<void> shareReport(
 /// `rapport-<site>-<yyyy-mm-dd>.pdf`, safe on any file system.
 String reportFileName(ReportContent c) {
   final day = farmDate(c.header.visitDay);
-  final site = c.header.siteName
-      .replaceAll(RegExp(r'[^A-Za-z0-9]+'), '-')
-      .replaceAll(RegExp(r'^-+|-+$'), '');
   String two(int n) => n.toString().padLeft(2, '0');
-  return 'rapport-${site.isEmpty ? 'site' : site}-'
+  return 'rapport-${fileSlug(c.header.siteName, 'site')}-'
       '${day.year}-${two(day.month)}-${two(day.day)}.pdf';
 }
 
 Future<pw.Font> _font(String asset) async =>
     pw.Font.ttf(await rootBundle.load(asset));
 
-/// The PDF fonts (Noto Sans regular and bold).
-Future<(pw.Font, pw.Font)> pdfFonts() async => (
-  await _font('assets/fonts/NotoSans-Regular.ttf'),
-  await _font('assets/fonts/NotoSans-Bold.ttf'),
+/// The PDF fonts: Noto Sans regular and bold, and the symbols they lack.
+typedef PdfFonts = ({pw.Font regular, pw.Font bold, pw.Font symbols});
+
+Future<PdfFonts> pdfFonts() async => (
+  regular: await _font('assets/fonts/NotoSans-Regular.ttf'),
+  bold: await _font('assets/fonts/NotoSans-Bold.ttf'),
+  symbols: await _font('assets/fonts/NotoSansMath-Symbols.ttf'),
 );
 
 /// Writes [bytes] as [fileName] and opens the share sheet.

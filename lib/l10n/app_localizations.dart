@@ -4099,6 +4099,137 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Détails du jour'**
   String get transcriptionCellDetails;
+
+  /// No description provided for @exportRegisterTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Registre de production'**
+  String get exportRegisterTitle;
+
+  /// No description provided for @exportWeeklyTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de suivi hebdomadaire'**
+  String get exportWeeklyTitle;
+
+  /// No description provided for @exportPeriod.
+  ///
+  /// In fr, this message translates to:
+  /// **'Du {from} au {to}'**
+  String exportPeriod(String from, String to);
+
+  /// No description provided for @exportColDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date'**
+  String get exportColDate;
+
+  /// No description provided for @exportColPondBatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang / Lot'**
+  String get exportColPondBatch;
+
+  /// No description provided for @exportColOrigin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Provenance alevins'**
+  String get exportColOrigin;
+
+  /// No description provided for @exportColFeedKg.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quantité aliment (kg)'**
+  String get exportColFeedKg;
+
+  /// No description provided for @exportColDeaths.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mortalité (nb)'**
+  String get exportColDeaths;
+
+  /// No description provided for @exportColSalesKg.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ventes (kg)'**
+  String get exportColSalesKg;
+
+  /// No description provided for @exportColObservations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Observations'**
+  String get exportColObservations;
+
+  /// No description provided for @exportColPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get exportColPond;
+
+  /// No description provided for @exportColWeekOf.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaine du'**
+  String get exportColWeekOf;
+
+  /// No description provided for @exportColTemp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Temp. (°C)'**
+  String get exportColTemp;
+
+  /// No description provided for @exportColPh.
+  ///
+  /// In fr, this message translates to:
+  /// **'pH'**
+  String get exportColPh;
+
+  /// No description provided for @exportColOxygen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oxygène (mg/L)'**
+  String get exportColOxygen;
+
+  /// No description provided for @exportColFeedGivenKg.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aliment distribué (kg)'**
+  String get exportColFeedGivenKg;
+
+  /// No description provided for @exportColAvgWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids moyen échantillon (g)'**
+  String get exportColAvgWeight;
+
+  /// No description provided for @exportFishCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons'**
+  String exportFishCount(String count);
+
+  /// No description provided for @exportTreatment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traitement'**
+  String get exportTreatment;
+
+  /// No description provided for @exportHealth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problème signalé'**
+  String get exportHealth;
+
+  /// No description provided for @exportThresholds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Seuils : température {temp} °C · pH {ph} · oxygène ≥ {oxygen} mg/L · renouvellement d\'eau {renewal} % par semaine si l\'eau devient trouble.'**
+  String exportThresholds(
+    String temp,
+    String ph,
+    String oxygen,
+    String renewal,
+  );
 }
 
 class _AppLocalizationsDelegate

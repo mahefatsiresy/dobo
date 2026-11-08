@@ -2272,4 +2272,78 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get transcriptionCellDetails => 'Antsipirian\'ny andro';
+
+  @override
+  String get exportRegisterTitle => 'Rejisitra famokarana';
+
+  @override
+  String get exportWeeklyTitle => 'Taratasy fanaraha-maso isan-kerinandro';
+
+  @override
+  String exportPeriod(String from, String to) {
+    return 'Nanomboka ny $from ka hatramin\'ny $to';
+  }
+
+  @override
+  String get exportColDate => 'Daty';
+
+  @override
+  String get exportColPondBatch => 'Dobo / Andiany';
+
+  @override
+  String get exportColOrigin => 'Niavian\'ny zana-trondro';
+
+  @override
+  String get exportColFeedKg => 'Sakafo (kg)';
+
+  @override
+  String get exportColDeaths => 'Maty (isa)';
+
+  @override
+  String get exportColSalesKg => 'Namidy (kg)';
+
+  @override
+  String get exportColObservations => 'Fanamarihana';
+
+  @override
+  String get exportColPond => 'Dobo';
+
+  @override
+  String get exportColWeekOf => 'Herinandro manomboka ny';
+
+  @override
+  String get exportColTemp => 'Hafanana (°C)';
+
+  @override
+  String get exportColPh => 'pH';
+
+  @override
+  String get exportColOxygen => 'Oksizena (mg/L)';
+
+  @override
+  String get exportColFeedGivenKg => 'Sakafo nomena (kg)';
+
+  @override
+  String get exportColAvgWeight => 'Lanja salanisa (g)';
+
+  @override
+  String exportFishCount(String count) {
+    return 'trondro $count';
+  }
+
+  @override
+  String get exportTreatment => 'Fitsaboana';
+
+  @override
+  String get exportHealth => 'Olana voalaza';
+
+  @override
+  String exportThresholds(
+    String temp,
+    String ph,
+    String oxygen,
+    String renewal,
+  ) {
+    return 'Fetra : hafanana $temp °C · pH $ph · oksizena ≥ $oxygen mg/L · fanavaozana rano $renewal % isan-kerinandro raha manjavozavo ny rano.';
+  }
 }

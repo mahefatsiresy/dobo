@@ -68,6 +68,7 @@ void main() {
       pondIds: ['e1'],
     );
     expect((rows.single.feedG, rows.single.deaths), (2100, 3));
+    expect(rows.single.loggedDays, 2);
   });
 
   test("a batch's latest sample in the week is its weight; two batches give "
@@ -147,14 +148,17 @@ void main() {
       to: d(15),
       pondIds: ['e1', 'e2'],
     );
-    expect([for (final r in rows) (r.pondId, r.feedG)], [
-      ('e1', 1000),
-      ('e2', 3000),
-    ]);
-    expect([for (final r in rows) r.avgWeightGByBatch], [
-      {'b1': 40.0},
-      {'b1': 44.0},
-    ]);
+    expect(
+      [for (final r in rows) (r.pondId, r.feedG)],
+      [('e1', 1000), ('e2', 3000)],
+    );
+    expect(
+      [for (final r in rows) r.avgWeightGByBatch],
+      [
+        {'b1': 40.0},
+        {'b1': 44.0},
+      ],
+    );
   });
 
   test('zero fish, zero feed', () {
@@ -165,6 +169,7 @@ void main() {
       pondIds: ['e1'],
     ).single;
     expect((row.feedG, row.deaths, row.isEmpty), (0, 0, true));
+    expect(row.loggedDays, 0);
     expect(row.avgWeightGByBatch, isEmpty);
   });
 }

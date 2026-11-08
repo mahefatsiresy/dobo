@@ -3,6 +3,7 @@ import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/reading_repository.dart';
 import 'package:dobo/db/session.dart';
+import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -135,4 +136,38 @@ void main() {
       expect(latest[e1]!.temperatureC, 27);
     },
   );
+
+  test('watchWaterReadingsBetween keeps both ends and leaves out superseded '
+      'and deleted readings', () async {
+    WaterReadingInput at(DateTime t, double ph) =>
+        WaterReadingInput(pondId: e1, at: t, ph: ph);
+    // Farm days 9–10 March: 00:00 on the 9th to 23:59 on the 10th.
+    await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 8), 23, 59), 1),
+    );
+    await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 9), 0, 0), 2),
+    );
+    final fixed = await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 9), 8, 0), 3),
+    );
+    await readings.correctWaterReading(
+      fixed,
+      at(farmTimeToUtc(DateTime(2026, 3, 9), 8, 0), 4),
+    );
+    final gone = await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 10), 9, 0), 5),
+    );
+    await readings.deleteWaterReading(gone);
+    await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 10), 23, 59), 6),
+    );
+    await readings.addWaterReading(
+      at(farmTimeToUtc(DateTime(2026, 3, 11), 0, 0), 7),
+    );
+    final rows = await readings
+        .watchWaterReadingsBetween(DateTime(2026, 3, 9), DateTime(2026, 3, 10))
+        .first;
+    expect(rows.map((r) => r.ph), [2, 4, 6]);
+  });
 }

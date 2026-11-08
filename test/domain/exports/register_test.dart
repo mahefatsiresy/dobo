@@ -201,4 +201,14 @@ void main() {
       isEmpty,
     );
   });
+
+  test('same-day rows of one kind are sorted by pond code', () {
+    final rows = productionRegister(
+      facts: FarmFacts(logs: [log('x', 'id-1', d(3)), log('y', 'id-2', d(3))]),
+      pondCodes: const {'id-1': 'E2', 'id-2': 'E1'},
+      from: from,
+      to: to,
+    );
+    expect(rows.map((r) => r.pondId), ['id-2', 'id-1']);
+  });
 }

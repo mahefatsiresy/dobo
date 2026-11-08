@@ -131,14 +131,13 @@ void main() {
     await tester.tapAt(const Offset(10, 10)); // closes the sheet
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('Enregistrer'));
-    final added = (await db.select(
-      db.dailyLogs,
-    ).get()).singleWhere((l) => l.observedBy != null);
-    expect((added.feedGivenG, added.leftover, added.waterColour), (
-      5000,
-      Leftover.some,
-      WaterColour.darkGreen,
-    ));
+    final added = (await db.select(db.dailyLogs).get()).singleWhere(
+      (l) => l.observedBy != null,
+    );
+    expect(
+      (added.feedGivenG, added.leftover, added.waterColour),
+      (5000, Leftover.some, WaterColour.darkGreen),
+    );
   });
 
   appTest('a cell with only a colour still asks for feed', (tester, db) async {

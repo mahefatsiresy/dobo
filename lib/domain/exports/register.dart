@@ -144,7 +144,7 @@ class HealthRow extends RegisterRow {
 /// The production register from [from] to [to] (farm days, both included),
 /// for one pond or all (plan M8 Decision 7). Daily logs count once per
 /// pond-day, as everywhere else ([countedLogs]). Sorted by farm day, then
-/// kind, then pond id; the formatter sorts by pond code.
+/// kind, then pond code from [pondCodes] (the id when it has none).
 List<RegisterRow> productionRegister({
   required FarmFacts facts,
   List<SaleFact> sales = const [],
@@ -153,7 +153,9 @@ List<RegisterRow> productionRegister({
   required DateTime from,
   required DateTime to,
   String? pondId,
+  Map<String, String> pondCodes = const {},
 }) {
+  String code(String id) => pondCodes[id] ?? id;
   final first = farmDayNumber(from);
   final last = farmDayNumber(to);
   bool inRange(DateTime t) {
@@ -207,7 +209,7 @@ List<RegisterRow> productionRegister({
       return [
         farmDayNumber(x.date).compareTo(farmDayNumber(y.date)),
         x._kind.compareTo(y._kind),
-        x.pondId.compareTo(y.pondId),
+        code(x.pondId).compareTo(code(y.pondId)),
         i.compareTo(j),
       ].firstWhere((c) => c != 0, orElse: () => 0);
     });
