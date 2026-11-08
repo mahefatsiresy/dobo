@@ -57,6 +57,51 @@ class BatchDetailScreen extends ConsumerWidget {
     }
   }
 
+  Future<bool> _confirmDelete(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Text(l10n.deleteConfirm),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(l10n.delete),
+              ),
+            ],
+          ),
+        ) ==
+        true;
+  }
+
+  Future<void> _deleteHarvest(
+    BuildContext context,
+    WidgetRef ref,
+    String harvestId,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (!await _confirmDelete(context)) return;
+    try {
+      await ref.read(harvestRepositoryProvider).delete(harvestId);
+    } on HarvestHasSalesException {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.harvestHasSales)));
+    }
+  }
+
+  Future<void> _deleteSale(
+    BuildContext context,
+    WidgetRef ref,
+    String saleId,
+  ) async {
+    if (!await _confirmDelete(context)) return;
+    await ref.read(harvestRepositoryProvider).deleteSale(saleId);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -194,6 +239,18 @@ class BatchDetailScreen extends ConsumerWidget {
                     entry: h,
                     ponds: ponds,
                     customers: customers,
+                    onEdit: sales
+                        ? () => context.push(
+                            '/more/batches/$batchId/harvests/'
+                            '${h.harvest.id}/edit',
+                          )
+                        : null,
+                    onDelete: sales
+                        ? () => _deleteHarvest(context, ref, h.harvest.id)
+                        : null,
+                    onDeleteSale: sales
+                        ? (s) => _deleteSale(context, ref, s.id)
+                        : null,
                   ),
                 ),
               ),

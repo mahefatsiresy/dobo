@@ -281,6 +281,13 @@ final routerProvider = Provider<GoRouter>((ref) {
                             ),
                           ),
                           GoRoute(
+                            path: 'harvests/:harvestId/edit',
+                            builder: (context, state) => HarvestScreen(
+                              batchId: state.pathParameters['id']!,
+                              harvestId: state.pathParameters['harvestId'],
+                            ),
+                          ),
+                          GoRoute(
                             path: 'sell',
                             builder: (context, state) => SaleScreen(
                               batchId: state.pathParameters['id']!,

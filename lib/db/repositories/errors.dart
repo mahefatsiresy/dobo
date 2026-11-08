@@ -41,3 +41,14 @@ class PondNotEmptyException implements Exception {
   @override
   String toString() => 'PondNotEmptyException: $pondId';
 }
+
+/// A harvest with current sales can't be deleted: the sales would point at
+/// nothing. Delete its sales first.
+class HarvestHasSalesException implements Exception {
+  const HarvestHasSalesException(this.harvestId);
+
+  final String harvestId;
+
+  @override
+  String toString() => 'HarvestHasSalesException: $harvestId';
+}

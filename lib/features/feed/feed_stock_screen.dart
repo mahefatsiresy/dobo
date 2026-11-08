@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/repositories/providers.dart';
 import '../../domain/dates.dart';
 import '../../domain/feed_lots.dart';
 import '../../domain/feed_stock.dart';
@@ -67,14 +68,37 @@ class FeedStockScreen extends ConsumerWidget {
   }
 }
 
-class _LotCard extends StatelessWidget {
+class _LotCard extends ConsumerWidget {
   const _LotCard({required this.lot, required this.today});
 
   final FeedLotBalance lot;
   final DateTime today;
 
+  Future<void> _delete(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l10n.deleteConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await ref.read(feedRepositoryProvider).deleteDelivery(lot.lot.id);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final l = lot.lot;
@@ -122,6 +146,12 @@ class _LotCard extends StatelessWidget {
                 Text(
                   formatKg(lot.balanceG, locale),
                   style: Theme.of(context).textTheme.titleLarge,
+                ),
+                TextButton(
+                  key: ValueKey('lot-delete-${l.id}'),
+                  style: TextButton.styleFrom(minimumSize: const Size(56, 56)),
+                  onPressed: () => _delete(context, ref),
+                  child: Text(l10n.feedDeleteDelivery),
                 ),
                 TextButton.icon(
                   key: ValueKey('discard-${l.id}'),

@@ -74,6 +74,9 @@ class HarvestLines extends StatelessWidget {
     required this.ponds,
     required this.customers,
     this.title,
+    this.onEdit,
+    this.onDelete,
+    this.onDeleteSale,
   });
 
   final HarvestWithSales entry;
@@ -83,11 +86,17 @@ class HarvestLines extends StatelessWidget {
   /// The batch code, when the list mixes batches.
   final String? title;
 
+  /// Shown to the sales role: correct or delete the harvest, delete a sale.
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final ValueChanged<Sale>? onDeleteSale;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final h = entry.harvest;
+    final button = TextButton.styleFrom(minimumSize: const Size(88, 56));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,13 +114,51 @@ class HarvestLines extends StatelessWidget {
         for (final s in entry.sales)
           Padding(
             padding: const EdgeInsets.only(left: 16, top: 4),
-            child: Text(
-              l10n.saleLine(
-                customers[s.customerId]?.name ?? '?',
-                l10n.productForm(s.form),
-                formatKg(s.weightG, locale),
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.saleLine(
+                      customers[s.customerId]?.name ?? '?',
+                      l10n.productForm(s.form),
+                      formatKg(s.weightG, locale),
+                    ),
+                  ),
+                ),
+                if (onDeleteSale != null)
+                  IconButton(
+                    key: ValueKey('sale-delete-${s.id}'),
+                    tooltip: l10n.delete,
+                    iconSize: 24,
+                    constraints: const BoxConstraints(
+                      minWidth: 56,
+                      minHeight: 56,
+                    ),
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () => onDeleteSale!(s),
+                  ),
+              ],
             ),
+          ),
+        if (onEdit != null || onDelete != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (onEdit != null)
+                TextButton(
+                  key: ValueKey('harvest-edit-${h.id}'),
+                  style: button,
+                  onPressed: onEdit,
+                  child: Text(l10n.correct),
+                ),
+              if (onDelete != null)
+                TextButton(
+                  key: ValueKey('harvest-delete-${h.id}'),
+                  style: button,
+                  onPressed: onDelete,
+                  child: Text(l10n.delete),
+                ),
+            ],
           ),
       ],
     );

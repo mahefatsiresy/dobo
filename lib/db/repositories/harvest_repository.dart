@@ -94,8 +94,16 @@ class HarvestRepository {
     });
   }
 
+  /// Throws [HarvestHasSalesException] while the harvest has current
+  /// sales.
   Future<void> delete(String id) => db.transaction(() async {
     final old = await _get(id);
+    final chain = await db.chainIds(db.harvests, id);
+    final sold = await (currentEvents(
+      db,
+      db.sales,
+    )..where((s) => s.harvestId.isIn(chain))).get();
+    if (sold.isNotEmpty) throw HarvestHasSalesException(id);
     await db.tombstone(db.harvests, id, session);
     await _refresh(old.batchId, old.pondId);
   });

@@ -143,6 +143,34 @@ void main() {
     expect(all.map((h) => h.harvest.batchId), [l2, l1]);
   });
 
+  test(
+    'deleting a harvest with sales is refused until they are gone',
+    () async {
+      final h = await harvests.harvest(input(e1, 950, isFinal: true));
+      final c = await CustomerRepository(
+        db,
+        session,
+      ).create(const CustomerInput(name: 'Marché', type: CustomerType.market));
+      final sale = await harvests.sell(
+        SaleInput(
+          harvestId: h,
+          customerId: c,
+          date: DateTime(2026, 6, 1),
+          weightG: 100000,
+          form: ProductForm.fresh,
+        ),
+      );
+      await expectLater(
+        harvests.delete(h),
+        throwsA(isA<HarvestHasSalesException>()),
+      );
+      expect(await status(), BatchStatus.closed);
+      await harvests.deleteSale(sale);
+      await harvests.delete(h);
+      expect(await status(), BatchStatus.active);
+    },
+  );
+
   test('a corrected harvest keeps its sales', () async {
     final h = await harvests.harvest(input(e1, 950, isFinal: true));
     final c = await CustomerRepository(

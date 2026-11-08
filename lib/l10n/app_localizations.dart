@@ -2726,6 +2726,24 @@ abstract class AppLocalizations {
   /// **'Récolter'**
   String get harvestAction;
 
+  /// No description provided for @harvestHasSales.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimez d\'abord les ventes de cette récolte'**
+  String get harvestHasSales;
+
+  /// No description provided for @harvestEditTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Corriger la récolte {batch}'**
+  String harvestEditTitle(String batch);
+
+  /// No description provided for @feedDeleteDelivery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la livraison'**
+  String get feedDeleteDelivery;
+
   /// No description provided for @sellAction.
   ///
   /// In fr, this message translates to:

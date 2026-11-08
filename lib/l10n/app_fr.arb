@@ -921,6 +921,10 @@
   "alertFeedExpired": "Un lot d'aliment est trop vieux : ne pas l'utiliser",
   "moreFeed": "Aliment",
   "harvestAction": "Récolter",
+  "harvestHasSales": "Supprimez d'abord les ventes de cette récolte",
+  "harvestEditTitle": "Corriger la récolte {batch}",
+  "@harvestEditTitle": {"placeholders": {"batch": {"type": "String"}}},
+  "feedDeleteDelivery": "Supprimer la livraison",
   "sellAction": "Vendre",
   "harvestTitle": "Récolte {batch}",
   "@harvestTitle": {

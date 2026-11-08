@@ -16,13 +16,16 @@ import '../common/notice.dart';
 import '../common/number_field.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
+import 'sales_providers.dart';
+import '../../domain/dates.dart';
 
 /// Fish taken out of a pond for sale (SPEC F12). Isolated ponds are not
-/// offered: no fish leave them.
+/// offered: no fish leave them. With [harvestId], corrects that harvest.
 class HarvestScreen extends ConsumerStatefulWidget {
-  const HarvestScreen({super.key, required this.batchId});
+  const HarvestScreen({super.key, required this.batchId, this.harvestId});
 
   final String batchId;
+  final String? harvestId;
 
   @override
   ConsumerState<HarvestScreen> createState() => _HarvestScreenState();
@@ -35,6 +38,7 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
   String? _pondId;
   var _isFinal = false;
   late var _date = ref.read(farmTodayProvider);
+  var _loaded = false;
 
   @override
   void dispose() {
@@ -50,18 +54,17 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
 
   Future<void> _save() async {
     if (!_form.currentState!.validate()) return;
-    await ref
-        .read(harvestRepositoryProvider)
-        .harvest(
-          HarvestInput(
-            batchId: widget.batchId,
-            pondId: _pondId!,
-            date: _date,
-            count: _countValue!,
-            weightG: (parseDecimal(_weight.text)! * 1000).round(),
-            isFinal: _isFinal,
-          ),
-        );
+    final input = HarvestInput(
+      batchId: widget.batchId,
+      pondId: _pondId!,
+      date: _date,
+      count: _countValue!,
+      weightG: (parseDecimal(_weight.text)! * 1000).round(),
+      isFinal: _isFinal,
+    );
+    final repo = ref.read(harvestRepositoryProvider);
+    final id = widget.harvestId;
+    await (id == null ? repo.harvest(input) : repo.correct(id, input));
     if (mounted) context.pop();
   }
 
@@ -77,8 +80,28 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
         ?.where((s) => s.batch.id == widget.batchId)
         .firstOrNull
         ?.batch;
-    if (placements == null || ponds == null || batch == null) {
+    final editing = widget.harvestId != null;
+    final old = editing
+        ? ref
+              .watch(batchHarvestsProvider(widget.batchId))
+              .value
+              ?.where((h) => h.harvest.id == widget.harvestId)
+              .firstOrNull
+              ?.harvest
+        : null;
+    if (placements == null ||
+        ponds == null ||
+        batch == null ||
+        (editing && old == null)) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (old != null && !_loaded) {
+      _loaded = true;
+      _pondId = old.pondId;
+      _isFinal = old.isFinal;
+      _date = farmDate(old.recordedAt);
+      _count.text = '${old.count}';
+      _weight.text = formatForInput(old.weightG / 1000);
     }
     final here = [
       for (final p in placements)
@@ -86,22 +109,37 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
             p.live.count > 0 &&
             ponds[p.pondId] != null &&
             ponds[p.pondId]!.status != PondStatus.isolated)
-          p,
+          p.pondId,
+      // A correction keeps its pond, emptied by the harvest itself.
+      if (old != null &&
+          !placements.any(
+            (p) =>
+                p.batchId == widget.batchId &&
+                p.pondId == old.pondId &&
+                p.live.count > 0,
+          ))
+        old.pondId,
     ];
-    if (_pondId == null || !here.any((p) => p.pondId == _pondId)) {
-      _pondId = here.firstOrNull?.pondId;
+    if (_pondId == null || !here.contains(_pondId)) {
+      _pondId = here.firstOrNull;
     }
-    final live = here
-        .where((p) => p.pondId == _pondId)
+    final live = placements
+        .where((p) => p.batchId == widget.batchId && p.pondId == _pondId)
         .fold(0, (n, p) => n + p.live.count);
     final count = _countValue;
-    final missing = _isFinal && count != null && count < live
+    final missing = !editing && _isFinal && count != null && count < live
         ? live - count
         : 0;
     const gap = SizedBox(height: 16);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.harvestTitle(batch.code))),
+      appBar: AppBar(
+        title: Text(
+          editing
+              ? l10n.harvestEditTitle(batch.code)
+              : l10n.harvestTitle(batch.code),
+        ),
+      ),
       body: here.isEmpty
           ? Padding(
               padding: const EdgeInsets.all(16),
@@ -116,18 +154,20 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
                     initialValue: _pondId,
                     decoration: InputDecoration(labelText: l10n.harvestPond),
                     items: [
-                      for (final p in here)
+                      for (final id in here)
                         DropdownMenuItem(
-                          value: p.pondId,
-                          child: Text(ponds[p.pondId]!.code),
+                          value: id,
+                          child: Text(ponds[id]?.code ?? '?'),
                         ),
                     ],
                     onChanged: (v) => setState(() => _pondId = v),
                   ),
-                  const SizedBox(height: 8),
-                  EstimatedLabel(
-                    value: l10n.harvestEstimate(formatCount(live, locale)),
-                  ),
+                  if (!editing) ...[
+                    const SizedBox(height: 8),
+                    EstimatedLabel(
+                      value: l10n.harvestEstimate(formatCount(live, locale)),
+                    ),
+                  ],
                   gap,
                   DateField(
                     label: l10n.harvestDate,

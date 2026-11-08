@@ -1,4 +1,5 @@
 import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:flutter/material.dart';
@@ -71,5 +72,65 @@ void main() {
       find.descendant(of: picker, matching: find.text('E1')),
       findsNothing,
     );
+  });
+
+  appTest('correcting a final harvest to partial reopens the batch', (
+    tester,
+    db,
+  ) async {
+    final farm = await SalesFarm.create(db);
+    final h = await farm.harvest(count: 950);
+    await farm.open(tester, '/more/batches/${farm.l1}');
+    expect(find.text('Clôturé'), findsOneWidget);
+    await tapAndSettle(tester, find.byKey(ValueKey('harvest-edit-$h')));
+    expect(field('Nombre de poissons'), findsOneWidget);
+    expect(find.text('950'), findsOneWidget);
+    await tapAndSettle(tester, find.text('Partielle'));
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    await reveal(tester, find.text('En récolte'));
+    expect(find.text('En récolte'), findsOneWidget);
+    final current = await db.select(db.harvests).get();
+    expect(current.where((r) => r.supersedesId == h), hasLength(1));
+  });
+
+  appTest('a harvest with a sale is deleted only once the sale is gone', (
+    tester,
+    db,
+  ) async {
+    final farm = await SalesFarm.create(db);
+    final h = await farm.harvest();
+    final c = await farm.customer('Marché Antsirabe');
+    final sale = await farm.harvests.sell(
+      SaleInput(
+        harvestId: h,
+        customerId: c,
+        date: DateTime(2026, 6, 1),
+        weightG: 100000,
+        form: ProductForm.fresh,
+      ),
+    );
+    await farm.open(tester, '/more/batches/${farm.l1}');
+    Future<void> confirmDelete(Key key) async {
+      await tapAndSettle(tester, find.byKey(key));
+      await tapAndSettle(
+        tester,
+        find.descendant(
+          of: find.byType(AlertDialog),
+          matching: find.text('Supprimer'),
+        ),
+      );
+    }
+
+    await confirmDelete(ValueKey('harvest-delete-$h'));
+    expect(
+      find.text("Supprimez d'abord les ventes de cette récolte"),
+      findsOneWidget,
+    );
+    await confirmDelete(ValueKey('sale-delete-$sale'));
+    expect(find.textContaining('Marché Antsirabe'), findsNothing);
+    await confirmDelete(ValueKey('harvest-delete-$h'));
+    await reveal(tester, find.text('Actif'));
+    expect(find.text('Actif'), findsOneWidget);
+    expect(find.text('Récoltes et ventes'), findsNothing);
   });
 }

@@ -112,4 +112,18 @@ void main() {
     await tapAndSettle(tester, find.textContaining('vieillit'));
     expect(find.text("Stock d'aliment"), findsOneWidget);
   }, overrides: [clock]);
+
+  appTest('a delivery entered by mistake can be deleted', (tester, db) async {
+    final id = await lot(db);
+    await openStock(tester);
+    await tapAndSettle(tester, find.byKey(ValueKey('lot-delete-$id')));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text('Supprimer'),
+      ),
+    );
+    expect(find.text('Aucune livraison enregistrée'), findsOneWidget);
+  }, overrides: [clock]);
 }

@@ -1472,6 +1472,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get harvestAction => 'Récolter';
 
   @override
+  String get harvestHasSales =>
+      'Supprimez d\'abord les ventes de cette récolte';
+
+  @override
+  String harvestEditTitle(String batch) {
+    return 'Corriger la récolte $batch';
+  }
+
+  @override
+  String get feedDeleteDelivery => 'Supprimer la livraison';
+
+  @override
   String get sellAction => 'Vendre';
 
   @override
