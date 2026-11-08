@@ -121,7 +121,10 @@ void main() {
       lot('grow-new', 25, made: 4),
       lot('grow-old', 25, made: 2),
     ]);
-    expect(defaultFeedLot(stock: s, pondPhase: Phase.growout), 'grow-old');
+    expect(
+      defaultFeedLot(stock: s, pondPhase: Phase.growout, day: today),
+      'grow-old',
+    );
   });
 
   test("with no lot of the pond's phase, the default is the oldest usable "
@@ -130,8 +133,11 @@ void main() {
       lot('a', 25, phase: Phase.fry, made: 3),
       lot('b', 25, phase: Phase.pregrow, made: 2),
     ]);
-    expect(defaultFeedLot(stock: s, pondPhase: Phase.finishing), 'b');
-    expect(defaultFeedLot(stock: s, pondPhase: null), 'b');
+    expect(
+      defaultFeedLot(stock: s, pondPhase: Phase.finishing, day: today),
+      'b',
+    );
+    expect(defaultFeedLot(stock: s, pondPhase: null, day: today), 'b');
   });
 
   test('with every lot empty or expired, there is no default', () {
@@ -140,7 +146,10 @@ void main() {
       logs: [log(5, on: 16, lotId: 'empty')],
       on: day(1).add(const Duration(days: 95)),
     );
-    expect(defaultFeedLot(stock: s, pondPhase: Phase.growout), isNull);
+    expect(
+      defaultFeedLot(stock: s, pondPhase: Phase.growout, day: today),
+      isNull,
+    );
   });
 
   test('pondPhase picks the batch with the most biomass', () {
@@ -156,5 +165,28 @@ void main() {
     );
     expect(pondPhase([at('gone', 0, 50)], 'p1', cfg), isNull);
     expect(pondPhase(const [], 'p1', cfg), isNull);
+  });
+
+  group('a log dated before a delivery', () {
+    test('stamped with that later lot, it draws as if unstamped', () {
+      // 14 logs of 10 kg before a 100 kg lot delivered on the 15th.
+      final s = stockOf(
+        [lot('a', 100, delivered: 15)],
+        logs: [for (var d = 1; d <= 14; d++) log(10, on: d, lotId: 'a')],
+      );
+      expect((balance(s, 'a'), s.overdrawnG), (100000, 0));
+    });
+
+    test('is not given a lot delivered after its day', () {
+      final s = stockOf([lot('later', 25, delivered: 15)]);
+      expect(
+        defaultFeedLot(stock: s, pondPhase: Phase.growout, day: day(10)),
+        isNull,
+      );
+      expect(
+        defaultFeedLot(stock: s, pondPhase: Phase.growout, day: day(15)),
+        'later',
+      );
+    });
   });
 }

@@ -8,6 +8,8 @@ import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/dates.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/router.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -185,5 +187,31 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     final log = await db.select(db.dailyLogs).getSingle();
     expect(log.feedLotId, other);
+  });
+
+  appTest("the lot picker leaves out lots delivered after the log's day", (
+    tester,
+    db,
+  ) async {
+    await stocked(tester, db);
+    final today = farmDate(DateTime.now().toUtc());
+    await FeedRepository(db, session).deliver(
+      FeedDeliveryInput(
+        date: today,
+        phase: Phase.growout,
+        weightG: 25000,
+        manufacturedOn: today,
+        label: 'Neuf',
+      ),
+    );
+    await tester.pumpAndSettle();
+    appContainer(tester)
+        .read(routerProvider)
+        .go(
+          '/log/$e1?date=${DateFormat('yyyy-MM-dd').format(yesterday())}&lot=1',
+        );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Le plus ancien (automatique)'));
+    expect(find.textContaining('Neuf'), findsNothing);
   });
 }

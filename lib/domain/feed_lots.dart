@@ -116,13 +116,19 @@ FeedStock feedStock({
       : ordered
             .map((l) => farmDayNumber(l.deliveredOn))
             .reduce((a, b) => a < b ? a : b);
+  final deliveredDay = {
+    for (final l in ordered) l.id: farmDayNumber(l.deliveredOn),
+  };
   for (final log in countedLogs) {
     if (log.feedG <= 0) continue;
-    if (log.feedLotId != null && left.containsKey(log.feedLotId)) {
+    final day = farmDayNumber(log.date);
+    // A lot can't feed a day before it arrived: such a stamp (a sheet
+    // transcribed late, a pre-M7 log corrected) draws as unstamped.
+    final stamped = deliveredDay[log.feedLotId];
+    if (stamped != null && stamped <= day) {
       take(log.feedLotId!, log.feedG);
       continue;
     }
-    final day = farmDayNumber(log.date);
     if (firstDelivery == null || day < firstDelivery) continue;
     var need = log.feedG;
     for (final l in ordered) {
@@ -174,14 +180,15 @@ FeedStock feedStock({
   );
 }
 
-/// The lot a new log of a pond in [pondPhase] draws from: the oldest usable
-/// lot of that phase, else the oldest usable lot. Usable: fit to use and
-/// holding feed.
-String? defaultFeedLot({required FeedStock stock, required Phase? pondPhase}) {
-  final usable = [
-    for (final b in stock.lots)
-      if (b.age != FeedAge.expired && b.balanceG > 0) b.lot,
-  ];
+/// The lot a log of [day] for a pond in [pondPhase] draws from: the oldest
+/// usable lot of that phase, else the oldest usable lot. Usable: delivered
+/// by [day], fit to use and holding feed.
+String? defaultFeedLot({
+  required FeedStock stock,
+  required Phase? pondPhase,
+  required DateTime day,
+}) {
+  final usable = [for (final b in usableLots(stock, day)) b.lot];
   for (final l in usable) {
     if (l.phase == pondPhase) return l.id;
   }
@@ -209,3 +216,13 @@ Phase? pondPhase(
   }
   return best == null ? null : phaseFor(best.avgWeightG!, config);
 }
+
+/// Lots a log of [day] may draw from: delivered by then, not past "do not
+/// use", still holding feed. Oldest first.
+List<FeedLotBalance> usableLots(FeedStock stock, DateTime day) => [
+  for (final b in stock.lots)
+    if (b.age != FeedAge.expired &&
+        b.balanceG > 0 &&
+        daysBetween(b.lot.deliveredOn, day) >= 0)
+      b,
+];

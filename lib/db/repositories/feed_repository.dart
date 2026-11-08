@@ -109,6 +109,7 @@ class FeedRepository {
     return defaultFeedLot(
       stock: stock,
       pondPhase: pondPhase(placementsOf(facts, until: day), pondId, config),
+      day: day,
     );
   }
 

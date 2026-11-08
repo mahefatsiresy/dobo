@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/feed_stock.dart';
+import '../../domain/feed_lots.dart';
 import '../feed/feed_providers.dart';
 import '../alerts/alert_providers.dart';
 import 'stop_feeding_sign.dart';
@@ -214,6 +214,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
             if (widget.showLot) ...[
               gap,
               _LotPicker(
+                day: widget.date,
                 value: _lotId,
                 onChanged: (id) => setState(() => _lotId = id),
               ),
@@ -316,19 +317,27 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
 
 /// The feed lot of a member's log: the oldest usable one unless picked.
 class _LotPicker extends ConsumerWidget {
-  const _LotPicker({required this.value, required this.onChanged});
+  const _LotPicker({
+    required this.day,
+    required this.value,
+    required this.onChanged,
+  });
 
+  /// The log's day: lots delivered later can't have fed it.
+  final DateTime day;
   final String? value;
   final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final lots = ref.watch(feedStockProvider).value?.lots ?? const [];
+    final stock = ref.watch(feedStockProvider).value;
+    final usable = stock == null
+        ? const <FeedLotBalance>[]
+        : usableLots(stock, day);
     final shown = [
-      for (final b in lots)
-        if (b.lot.id == value || (b.balanceG > 0 && b.age != FeedAge.expired))
-          b.lot,
+      for (final b in stock?.lots ?? const <FeedLotBalance>[])
+        if (b.lot.id == value || usable.contains(b)) b.lot,
     ];
     return DropdownButtonFormField<String?>(
       key: const ValueKey('feed-lot'),

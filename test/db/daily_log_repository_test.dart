@@ -343,6 +343,27 @@ void main() {
       expect(row.feedLotId, chosen);
     });
 
+    test(
+      'sheets transcribed before the first delivery leave the lot full',
+      () async {
+        final lotId = await feed.deliver(
+          FeedDeliveryInput(
+            date: DateTime(2026, 3, 15),
+            phase: Phase.pregrow,
+            weightG: 100000,
+            manufacturedOn: DateTime(2026, 3, 1),
+          ),
+        );
+        await logs.saveWeek([
+          for (var d = 8; d <= 14; d++) day(DateTime(2026, 3, d), feedG: 10000),
+        ]);
+        final rows = await db.select(db.dailyLogs).get();
+        expect(rows.map((r) => r.feedLotId).toSet(), {null});
+        final s = await feed.stock(DateTime(2026, 3, 20));
+        expect(s.lots.singleWhere((b) => b.lot.id == lotId).balanceG, 100000);
+      },
+    );
+
     test('a week of transcription is stamped day by day', () async {
       // A 5 kg lot runs out after the first day; the next day takes the
       // other one.
