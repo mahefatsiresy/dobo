@@ -11,13 +11,24 @@ import '../reports/report_providers.dart';
 import '../sales/sales_providers.dart';
 import 'export_tables.dart';
 
+/// [p]'s value. Riverpod pauses a provider no one listens to, so a plain
+/// `ref.read(p.future)` from a screen that doesn't watch [p] never ends.
+Future<T> _read<T>(WidgetRef ref, StreamProvider<T> p) async {
+  final listening = ref.listenManual(p, (_, _) {});
+  try {
+    return await ref.read(p.future);
+  } finally {
+    listening.close();
+  }
+}
+
 /// Pond, batch, origin and customer names, archived ponds included.
 Future<ExportNames> loadExportNames(WidgetRef ref) async {
-  final ponds = await ref.read(allPondsByIdProvider.future);
-  final batches = await ref.read(batchSummariesProvider.future);
-  final customers = await ref.read(customersByIdProvider.future);
+  final ponds = await _read(ref, allPondsByIdProvider);
+  final batches = await _read(ref, batchSummariesProvider);
+  final customers = await _read(ref, customersByIdProvider);
   return ExportNames(
-    site: await ref.read(siteNameProvider.future),
+    site: await _read(ref, siteNameProvider),
     ponds: {for (final p in ponds.values) p.id: p.code},
     batches: {for (final b in batches) b.batch.id: b.batch.code},
     origins: {
@@ -39,7 +50,7 @@ Future<(List<RegisterRow>, ExportNames)> loadRegister(
   String? pondId,
 }) async {
   final names = await loadExportNames(ref);
-  final facts = await ref.read(farmFactsProvider.future);
+  final facts = await _read(ref, farmFactsProvider);
   final harvests = await ref.read(harvestRepositoryProvider).watchAll().first;
   final health = ref.read(healthRepositoryProvider);
   final treatments = await health.watchTreatmentsBetween(from, to).first;
@@ -100,7 +111,7 @@ Future<(List<WeeklyRow>, ExportNames)> loadWeekly(
   String? pondId,
 }) async {
   final names = await loadExportNames(ref);
-  final facts = await ref.read(farmFactsProvider.future);
+  final facts = await _read(ref, farmFactsProvider);
   final (start, end) = wholeWeeks(from, to);
   final readings = await ref
       .read(readingRepositoryProvider)

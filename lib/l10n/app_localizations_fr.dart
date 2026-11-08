@@ -2354,4 +2354,39 @@ class AppLocalizationsFr extends AppLocalizations {
   ) {
     return 'Seuils : température $temp °C · pH $ph · oxygène ≥ $oxygen mg/L · renouvellement d\'eau $renewal % par semaine si l\'eau devient trouble.';
   }
+
+  @override
+  String get moreExports => 'Exports';
+
+  @override
+  String get exportKindRegister => 'Registre de production (annexe A)';
+
+  @override
+  String get exportKindWeekly => 'Suivi hebdomadaire (annexe B)';
+
+  @override
+  String get exportFrom => 'Du';
+
+  @override
+  String get exportTo => 'Au';
+
+  @override
+  String get exportPond => 'Étang';
+
+  @override
+  String get exportAllPonds => 'Tous les étangs';
+
+  @override
+  String get exportPdf => 'PDF';
+
+  @override
+  String get exportCsv => 'CSV';
+
+  @override
+  String get exportEndBeforeStart =>
+      'La date de fin est avant la date de début.';
+
+  @override
+  String get exportWeeklyWholeWeeks =>
+      'Semaines entières, du lundi au dimanche.';
 }

@@ -4230,6 +4230,72 @@ abstract class AppLocalizations {
     String oxygen,
     String renewal,
   );
+
+  /// No description provided for @moreExports.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exports'**
+  String get moreExports;
+
+  /// No description provided for @exportKindRegister.
+  ///
+  /// In fr, this message translates to:
+  /// **'Registre de production (annexe A)'**
+  String get exportKindRegister;
+
+  /// No description provided for @exportKindWeekly.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivi hebdomadaire (annexe B)'**
+  String get exportKindWeekly;
+
+  /// No description provided for @exportFrom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Du'**
+  String get exportFrom;
+
+  /// No description provided for @exportTo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Au'**
+  String get exportTo;
+
+  /// No description provided for @exportPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get exportPond;
+
+  /// No description provided for @exportAllPonds.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous les étangs'**
+  String get exportAllPonds;
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In fr, this message translates to:
+  /// **'PDF'**
+  String get exportPdf;
+
+  /// No description provided for @exportCsv.
+  ///
+  /// In fr, this message translates to:
+  /// **'CSV'**
+  String get exportCsv;
+
+  /// No description provided for @exportEndBeforeStart.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date de fin est avant la date de début.'**
+  String get exportEndBeforeStart;
+
+  /// No description provided for @exportWeeklyWholeWeeks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Semaines entières, du lundi au dimanche.'**
+  String get exportWeeklyWholeWeeks;
 }
 
 class _AppLocalizationsDelegate

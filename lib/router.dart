@@ -44,6 +44,7 @@ import 'features/admin/member_form_screen.dart';
 import 'features/admin/members_screen.dart';
 import 'features/admin/settings_screen.dart';
 import 'sync/providers.dart';
+import 'features/exports/exports_screen.dart';
 import 'features/paper/paper_sheet_screen.dart';
 import 'features/transcription/transcription_screen.dart';
 import 'features/visit/condition_check.dart';
@@ -356,6 +357,17 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'paper',
                     builder: (context, state) => const PaperSheetScreen(),
+                  ),
+                  GoRoute(
+                    path: 'exports',
+                    builder: (context, state) {
+                      DateTime? day(String key) {
+                        final v = state.uri.queryParameters[key];
+                        return v == null ? null : DateTime.parse(v);
+                      }
+
+                      return ExportsScreen(from: day('from'), to: day('to'));
+                    },
                   ),
                   GoRoute(
                     path: 'account',

@@ -121,5 +121,16 @@
   "exportFishCount": "trondro {count}",
   "exportTreatment": "Fitsaboana",
   "exportHealth": "Olana voalaza",
-  "exportThresholds": "Fetra : hafanana {temp} °C · pH {ph} · oksizena ≥ {oxygen} mg/L · fanavaozana rano {renewal} % isan-kerinandro raha manjavozavo ny rano."
+  "exportThresholds": "Fetra : hafanana {temp} °C · pH {ph} · oksizena ≥ {oxygen} mg/L · fanavaozana rano {renewal} % isan-kerinandro raha manjavozavo ny rano.",
+  "moreExports": "Fanondranana",
+  "exportKindRegister": "Rejisitra famokarana (tovana A)",
+  "exportKindWeekly": "Fanaraha-maso isan-kerinandro (tovana B)",
+  "exportFrom": "Nanomboka ny",
+  "exportTo": "Hatramin'ny",
+  "exportPond": "Dobo",
+  "exportAllPonds": "Dobo rehetra",
+  "exportPdf": "PDF",
+  "exportCsv": "CSV",
+  "exportEndBeforeStart": "Mialoha ny daty fanombohana ny daty farany.",
+  "exportWeeklyWholeWeeks": "Herinandro feno, Alatsinainy ka hatramin'ny Alahady."
 }

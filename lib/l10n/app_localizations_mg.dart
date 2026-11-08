@@ -2346,4 +2346,39 @@ class AppLocalizationsMg extends AppLocalizations {
   ) {
     return 'Fetra : hafanana $temp °C · pH $ph · oksizena ≥ $oxygen mg/L · fanavaozana rano $renewal % isan-kerinandro raha manjavozavo ny rano.';
   }
+
+  @override
+  String get moreExports => 'Fanondranana';
+
+  @override
+  String get exportKindRegister => 'Rejisitra famokarana (tovana A)';
+
+  @override
+  String get exportKindWeekly => 'Fanaraha-maso isan-kerinandro (tovana B)';
+
+  @override
+  String get exportFrom => 'Nanomboka ny';
+
+  @override
+  String get exportTo => 'Hatramin\'ny';
+
+  @override
+  String get exportPond => 'Dobo';
+
+  @override
+  String get exportAllPonds => 'Dobo rehetra';
+
+  @override
+  String get exportPdf => 'PDF';
+
+  @override
+  String get exportCsv => 'CSV';
+
+  @override
+  String get exportEndBeforeStart =>
+      'Mialoha ny daty fanombohana ny daty farany.';
+
+  @override
+  String get exportWeeklyWholeWeeks =>
+      'Herinandro feno, Alatsinainy ka hatramin\'ny Alahady.';
 }

@@ -1442,5 +1442,16 @@
   "exportTreatment": "Traitement",
   "exportHealth": "Problème signalé",
   "exportThresholds": "Seuils : température {temp} °C · pH {ph} · oxygène ≥ {oxygen} mg/L · renouvellement d'eau {renewal} % par semaine si l'eau devient trouble.",
-  "@exportThresholds": {"placeholders": {"temp": {"type": "String"}, "ph": {"type": "String"}, "oxygen": {"type": "String"}, "renewal": {"type": "String"}}}
+  "@exportThresholds": {"placeholders": {"temp": {"type": "String"}, "ph": {"type": "String"}, "oxygen": {"type": "String"}, "renewal": {"type": "String"}}},
+  "moreExports": "Exports",
+  "exportKindRegister": "Registre de production (annexe A)",
+  "exportKindWeekly": "Suivi hebdomadaire (annexe B)",
+  "exportFrom": "Du",
+  "exportTo": "Au",
+  "exportPond": "Étang",
+  "exportAllPonds": "Tous les étangs",
+  "exportPdf": "PDF",
+  "exportCsv": "CSV",
+  "exportEndBeforeStart": "La date de fin est avant la date de début.",
+  "exportWeeklyWholeWeeks": "Semaines entières, du lundi au dimanche."
 }
