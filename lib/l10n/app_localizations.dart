@@ -4063,6 +4063,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'dim.'**
   String get weekdaySun;
+
+  /// No description provided for @morePaper.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiches papier'**
+  String get morePaper;
+
+  /// No description provided for @paperWeeksLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de semaines'**
+  String get paperWeeksLabel;
+
+  /// No description provided for @paperPondsLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étangs'**
+  String get paperPondsLabel;
+
+  /// No description provided for @paperPrint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Imprimer'**
+  String get paperPrint;
+
+  /// No description provided for @paperShare.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partager le PDF'**
+  String get paperShare;
+
+  /// No description provided for @transcriptionCellDetails.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détails du jour'**
+  String get transcriptionCellDetails;
 }
 
 class _AppLocalizationsDelegate

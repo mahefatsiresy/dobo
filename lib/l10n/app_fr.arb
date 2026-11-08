@@ -1412,5 +1412,11 @@
   "weekdayThu": "jeu.",
   "weekdayFri": "ven.",
   "weekdaySat": "sam.",
-  "weekdaySun": "dim."
+  "weekdaySun": "dim.",
+  "morePaper": "Fiches papier",
+  "paperWeeksLabel": "Nombre de semaines",
+  "paperPondsLabel": "Étangs",
+  "paperPrint": "Imprimer",
+  "paperShare": "Partager le PDF",
+  "transcriptionCellDetails": "Détails du jour"
 }

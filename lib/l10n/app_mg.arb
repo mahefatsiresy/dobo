@@ -94,5 +94,11 @@
   "weekdayThu": "Alakamisy",
   "weekdayFri": "Zoma",
   "weekdaySat": "Asabotsy",
-  "weekdaySun": "Alahady"
+  "weekdaySun": "Alahady",
+  "morePaper": "Taratasy hosoratana",
+  "paperWeeksLabel": "Isan'ny herinandro",
+  "paperPondsLabel": "Dobo",
+  "paperPrint": "Hanonta",
+  "paperShare": "Hizara ny PDF",
+  "transcriptionCellDetails": "Antsipirian'ny andro"
 }

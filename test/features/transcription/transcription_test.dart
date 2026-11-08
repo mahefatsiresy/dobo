@@ -116,4 +116,42 @@ void main() {
     expect(find.text('Hery (membre)'), findsWidgets);
     expect(find.text('Rakoto'), findsWidgets);
   });
+  appTest('a cell\'s leftover and water colour are saved', (tester, db) async {
+    await openWeek(tester, db);
+    await tapAndSettle(tester, find.byKey(const ValueKey('sheetOf')));
+    await tapAndSettle(tester, find.text('Rakoto').last);
+    await enterAndSettle(tester, cell('kg', '2026-03-31'), '5');
+    await tapAndSettle(tester, cell('signs', '2026-03-31'));
+    await tapAndSettle(tester, find.text('Un peu de reste'));
+    await reveal(tester, find.byKey(const ValueKey(WaterColour.darkGreen)));
+    await tapAndSettle(
+      tester,
+      find.byKey(const ValueKey(WaterColour.darkGreen)),
+    );
+    await tester.tapAt(const Offset(10, 10)); // closes the sheet
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    final added = (await db.select(
+      db.dailyLogs,
+    ).get()).singleWhere((l) => l.observedBy != null);
+    expect((added.feedGivenG, added.leftover, added.waterColour), (
+      5000,
+      Leftover.some,
+      WaterColour.darkGreen,
+    ));
+  });
+
+  appTest('a cell with only a colour still asks for feed', (tester, db) async {
+    await openWeek(tester, db);
+    await tapAndSettle(tester, find.byKey(const ValueKey('sheetOf')));
+    await tapAndSettle(tester, find.text('Rakoto').last);
+    await tapAndSettle(tester, cell('signs', '2026-04-01'));
+    await reveal(tester, find.byKey(const ValueKey(WaterColour.clear)));
+    await tapAndSettle(tester, find.byKey(const ValueKey(WaterColour.clear)));
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Enregistrer'));
+    expect(find.textContaining("Indiquez l'aliment"), findsOneWidget);
+    expect(await db.select(db.dailyLogs).get(), hasLength(1));
+  });
 }

@@ -2262,4 +2262,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get weekdaySun => 'dim.';
+
+  @override
+  String get morePaper => 'Fiches papier';
+
+  @override
+  String get paperWeeksLabel => 'Nombre de semaines';
+
+  @override
+  String get paperPondsLabel => 'Étangs';
+
+  @override
+  String get paperPrint => 'Imprimer';
+
+  @override
+  String get paperShare => 'Partager le PDF';
+
+  @override
+  String get transcriptionCellDetails => 'Détails du jour';
 }

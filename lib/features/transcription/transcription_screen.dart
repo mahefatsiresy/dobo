@@ -10,6 +10,8 @@ import '../../domain/dates.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
+import '../common/colour_swatches.dart';
+import '../common/leftover_picker.dart';
 import '../common/notice.dart';
 import '../common/pond_colour.dart';
 import '../common/save_once.dart';
@@ -44,14 +46,24 @@ class _Cell {
   final kg = TextEditingController();
   final deaths = TextEditingController();
   var signs = <WarningSign>{};
+  Leftover? leftover;
+  var ateFast = false;
+  WaterColour? waterColour;
+
+  /// Anything picked in the cell's sheet (signs, leftover, colour).
+  bool get hasDetails =>
+      signs.isNotEmpty || leftover != null || ateFast || waterColour != null;
 
   bool get isEmpty =>
-      kg.text.trim().isEmpty && deaths.text.trim().isEmpty && signs.isEmpty;
+      kg.text.trim().isEmpty && deaths.text.trim().isEmpty && !hasDetails;
 
   void clear() {
     kg.clear();
     deaths.clear();
     signs = {};
+    leftover = null;
+    ateFast = false;
+    waterColour = null;
   }
 
   void dispose() {
@@ -121,6 +133,9 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
           feedGivenG: (parseDecimal(cell.kg.text)! * 1000).round(),
           deaths: parseDecimal(cell.deaths.text)?.round() ?? 0,
           warningSigns: cell.signs,
+          leftover: cell.leftover,
+          ateFast: cell.ateFast,
+          waterColour: cell.waterColour,
           observedBy: _personId,
         ),
     ]);
@@ -134,24 +149,61 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
     }
   }
 
-  Future<void> _pickSigns(_Cell cell) async {
+  /// Everything else the paper sheet has for the day: leftover, signs and
+  /// water colour (plan M8 Decision 4).
+  Future<void> _pickDetails(_Cell cell) async {
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheet) => SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: SignGrid(
-              options: WarningSign.values.toSet(),
-              selected: cell.signs,
-              onChanged: (s) {
-                setSheet(() => cell.signs = s);
-                setState(() {});
-              },
+        builder: (context, setSheet) {
+          final l10n = AppLocalizations.of(context);
+          void update(void Function() change) {
+            setSheet(change);
+            setState(() {});
+          }
+
+          return SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.transcriptionCellDetails,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(l10n.leftovers),
+                  const SizedBox(height: 8),
+                  LeftoverPicker(
+                    value: cell.leftover,
+                    ateFast: cell.ateFast,
+                    onChanged: (leftover, ateFast) => update(() {
+                      cell.leftover = leftover;
+                      cell.ateFast = ateFast;
+                    }),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(l10n.signsSeen),
+                  const SizedBox(height: 8),
+                  SignGrid(
+                    options: WarningSign.values.toSet(),
+                    selected: cell.signs,
+                    onChanged: (s) => update(() => cell.signs = s),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(l10n.waterColourLabel),
+                  const SizedBox(height: 8),
+                  ColourSwatches(
+                    value: cell.waterColour,
+                    onChanged: (c) => update(() => cell.waterColour = c),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -227,13 +279,14 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
               ),
             ),
             IconButton(
-              tooltip: l10n.signsSeen,
+              key: ValueKey('signs-${pond.id}-${iso(day)}'),
+              tooltip: l10n.transcriptionCellDetails,
               icon: Icon(
-                cell.signs.isEmpty
-                    ? Icons.add_alert_outlined
-                    : Icons.notification_important,
+                cell.hasDetails
+                    ? Icons.notification_important
+                    : Icons.add_alert_outlined,
               ),
-              onPressed: () => _pickSigns(cell),
+              onPressed: () => _pickDetails(cell),
             ),
           ],
         ),

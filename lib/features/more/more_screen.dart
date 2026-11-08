@@ -92,6 +92,13 @@ class MoreScreen extends ConsumerWidget {
           ),
           ListTile(
             minTileHeight: 56,
+            leading: const Icon(Icons.print),
+            title: Text(l10n.morePaper),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go('/more/paper'),
+          ),
+          ListTile(
+            minTileHeight: 56,
             leading: const Icon(Icons.set_meal),
             title: Text(l10n.moreBatches),
             trailing: const Icon(Icons.chevron_right),

@@ -44,6 +44,7 @@ import 'features/admin/member_form_screen.dart';
 import 'features/admin/members_screen.dart';
 import 'features/admin/settings_screen.dart';
 import 'sync/providers.dart';
+import 'features/paper/paper_sheet_screen.dart';
 import 'features/transcription/transcription_screen.dart';
 import 'features/visit/condition_check.dart';
 import 'features/visit/visit_screen.dart';
@@ -351,6 +352,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                         week: week == null ? null : DateTime.parse(week),
                       );
                     },
+                  ),
+                  GoRoute(
+                    path: 'paper',
+                    builder: (context, state) => const PaperSheetScreen(),
                   ),
                   GoRoute(
                     path: 'account',

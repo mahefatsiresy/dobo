@@ -51,6 +51,7 @@ dependencies:
   pdf: ^3.13.1
   image_picker: ^1.2.4
   flutter_image_compress: ^2.5.1
+  printing: ^5.15.1
 
 dev_dependencies:
   flutter_test:

@@ -2254,4 +2254,22 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get weekdaySun => 'Alahady';
+
+  @override
+  String get morePaper => 'Taratasy hosoratana';
+
+  @override
+  String get paperWeeksLabel => 'Isan\'ny herinandro';
+
+  @override
+  String get paperPondsLabel => 'Dobo';
+
+  @override
+  String get paperPrint => 'Hanonta';
+
+  @override
+  String get paperShare => 'Hizara ny PDF';
+
+  @override
+  String get transcriptionCellDetails => 'Antsipirian\'ny andro';
 }
