@@ -10,6 +10,10 @@ import 'package:dobo/db/repositories/photo_repository.dart';
 import 'package:dobo/db/repositories/person_repository.dart';
 import 'package:dobo/db/photo_files.dart';
 import 'package:dobo/db/ids.dart';
+import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/customer_repository.dart';
+import 'package:dobo/db/repositories/feed_repository.dart';
+import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/facts_repository.dart';
 import 'package:dobo/db/session.dart';
@@ -421,5 +425,90 @@ void main() {
       expect(m.personId, isNotNull, reason: m.name);
       expect(people.where((p) => p.id == m.personId), hasLength(1));
     }
+  });
+
+  test('M7: a harvest without the sales flag is refused and kept; with it, '
+      "the harvest, its sale, the customer and a feed delivery reach the "
+      "worker's phone", () async {
+    final founder = Session(
+      associationId: associationId,
+      userId: founderId,
+      deviceId: founderDevice,
+      siteId: siteId,
+      isAdmin: true,
+      isLinked: true,
+    );
+    final batchId = await BatchRepository(founderPhone, founder).stockBatch(
+      StockInput(
+        code: 'L$stamp',
+        pondId: pondId,
+        date: DateTime(2026, 3, 1),
+        count: 1000,
+        avgWeightMg: 20000,
+      ),
+    );
+    final lotId = await FeedRepository(founderPhone, founder).deliver(
+      FeedDeliveryInput(
+        date: DateTime(2026, 3, 2),
+        phase: Phase.growout,
+        weightG: 50000,
+        manufacturedOn: DateTime(2026, 2, 20),
+      ),
+    );
+    final harvests = HarvestRepository(founderPhone, founder);
+    HarvestInput harvest(int count) => HarvestInput(
+      batchId: batchId,
+      pondId: pondId,
+      date: DateTime(2026, 7, 1),
+      count: count,
+      weightG: count * 250,
+      isFinal: false,
+    );
+    final refused = await harvests.harvest(harvest(100));
+    final first = await founderSync.run();
+    expect(first.rejected, 1);
+    final kept = await (founderPhone.select(
+      founderPhone.harvests,
+    )..where((h) => h.id.equals(refused))).getSingle();
+    expect(kept.syncState, SyncState.rejected);
+    expect(kept.syncError, startsWith('42501'));
+
+    // An admin gives the founder the sales flag; the server accepts it.
+    await (founderPhone.update(
+      founderPhone.members,
+    )..where((m) => m.id.equals(founderId))).write(
+      MembersCompanion(
+        isSales: const Value(true),
+        updatedAtDevice: Value(utcNow()),
+        syncState: const Value(SyncState.pending),
+      ),
+    );
+    expect((await founderSync.run()).rejected, 0);
+
+    final accepted = await harvests.harvest(harvest(200));
+    final customerId = await CustomerRepository(founderPhone, founder).create(
+      const CustomerInput(name: 'Marché Antsirabe', type: CustomerType.market),
+    );
+    await harvests.sell(
+      SaleInput(
+        harvestId: accepted,
+        customerId: customerId,
+        date: DateTime(2026, 7, 1),
+        weightG: 40000,
+        form: ProductForm.fresh,
+      ),
+    );
+    expect((await founderSync.run()).rejected, 0);
+
+    await workerSync.run();
+    final w = workerPhone;
+    expect((await w.select(w.harvests).get()).map((h) => h.id), [accepted]);
+    final sale = await w.select(w.sales).getSingle();
+    expect(
+      (sale.harvestId, sale.customerId, sale.weightG),
+      (accepted, customerId, 40000),
+    );
+    expect((await w.select(w.customers).getSingle()).name, 'Marché Antsirabe');
+    expect((await w.select(w.feedDeliveries).getSingle()).id, lotId);
   });
 }

@@ -3,7 +3,7 @@
 -- a worker writes none of them.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(13);
+select plan(14);
 
 insert into associations (id, name) values
   ('00000000-0000-0000-0000-0000000000a1', 'A');
@@ -108,6 +108,19 @@ select lives_ok($$ select pg_temp.customer(
   '00000000-0000-0000-0000-0000000000e5') $$, 'a sales member adds a customer');
 select lives_ok($$ select pg_temp.sale('00000000-0000-0000-0000-000000000106',
   '00000000-0000-0000-0000-0000000000e5') $$, 'a sales member sells');
+
+select is((select error_code from sync_push('customers', jsonb_build_array(
+  jsonb_build_object(
+    'id', '00000000-0000-0000-0000-000000000107',
+    'association_id', '00000000-0000-0000-0000-0000000000a1',
+    'entered_by', '00000000-0000-0000-0000-0000000000e5',
+    'created_at_device', now(),
+    'device_id', '00000000-0000-0000-0000-0000000000d1',
+    'updated_at_device', now(),
+    'name', 'Hôtel Soa',
+    'type', 'restaurant',
+    'archived', false)))), null,
+  'a customer goes through sync_push');
 
 -- The worker -------------------------------------------------------------
 select set_config('request.jwt.claims',

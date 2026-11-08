@@ -163,6 +163,29 @@ begin
 end
 $$;
 
+-- reference_version_seen keeps its own list of reference tables.
+create or replace function reference_version_seen(
+  p_table text, p_id uuid, p_device_id uuid, p_updated_at timestamptz
+) returns boolean
+language plpgsql stable security definer set search_path = public as $$
+declare
+  seen boolean;
+begin
+  if p_table <> all (array['groups', 'members', 'sites', 'people', 'ponds',
+      'batches', 'visits', 'setting_overrides', 'customers']) then
+    raise exception 'unknown_table';
+  end if;
+  execute format('select exists (select 1 from %I where id = $1
+    and device_id = $2 and updated_at_device = $3)', p_table)
+    into seen using p_id, p_device_id, p_updated_at;
+  return seen or exists (
+    select 1 from reference_history
+    where table_name = p_table and row_id = p_id
+      and (row ->> 'device_id')::uuid = p_device_id
+      and (row ->> 'updated_at_device')::timestamptz = p_updated_at);
+end
+$$;
+
 create or replace function sync_push(p_table text, p_rows jsonb)
 returns table (id uuid, server_seq bigint, server_received_at timestamptz,
                error_code text, error_message text)
