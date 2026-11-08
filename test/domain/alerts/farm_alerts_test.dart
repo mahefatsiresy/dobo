@@ -462,6 +462,34 @@ void main() {
       expect((due.pondId, due.facts['waitingStep']), ('e2', PrepStep.dry));
     });
 
+    List<Alert> prepAlerts(List<(PrepStep, int)> steps) {
+      final p = prepProgress(
+        pondId: 'e2',
+        steps: [
+          for (final (step, on) in steps)
+            PrepStepFact(id: '$step', pondId: 'e2', step: step, date: d(on)),
+        ],
+        lastDayWithFish: null,
+        config: cfg,
+      );
+      return ofKind(alerts(prep: {'e2': p}), AlertKind.prepStepDue).toList();
+    }
+
+    test('drained, filled and marked ready: no prep alert', () {
+      expect(
+        prepAlerts([
+          (PrepStep.drain, 1),
+          (PrepStep.fill, 3),
+          (PrepStep.rest, 10),
+        ]),
+        isEmpty,
+      );
+    });
+
+    test('drained then treated without drying: no drying prompt', () {
+      expect(prepAlerts([(PrepStep.drain, 1), (PrepStep.treat, 8)]), isEmpty);
+    });
+
     test('a refilled pond from an earlier cycle raises nothing', () {
       final p = prepProgress(
         pondId: 'e2',

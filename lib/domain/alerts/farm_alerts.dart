@@ -197,7 +197,8 @@ List<Alert> farmAlerts({
 }
 
 /// The waiting step whose minimum time has passed: the rest after filling,
-/// else the drying after draining.
+/// else the drying after draining. A step the pond has moved past (any
+/// later step done) is no longer waited for.
 Alert? _prepAlert(
   String pondId,
   PrepProgress p,
@@ -209,7 +210,9 @@ Alert? _prepAlert(
     (PrepStep.drain, PrepStep.dry),
   ]) {
     final at = p.done[done];
-    if (at == null || p.done.containsKey(waiting)) continue;
+    if (at == null || p.done.keys.any((s) => s.index >= waiting.index)) {
+      continue;
+    }
     return prepStepDueAlert(
       pondId: pondId,
       lastDone: done,
