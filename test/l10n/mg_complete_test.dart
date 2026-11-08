@@ -46,4 +46,18 @@ void main() {
     ];
     expect(extra, isEmpty);
   });
+
+  test('a Malagasy text keeps the French leading and trailing spaces', () {
+    final lost = [
+      for (final k in keys)
+        if (mg[k] is String &&
+            (_lead(fr[k] as String) != _lead(mg[k] as String) ||
+                _trail(fr[k] as String) != _trail(mg[k] as String)))
+          k,
+    ];
+    expect(lost, isEmpty);
+  });
 }
+
+String _lead(String s) => s.substring(0, s.length - s.trimLeft().length);
+String _trail(String s) => s.substring(s.trimRight().length);

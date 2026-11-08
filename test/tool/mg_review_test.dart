@@ -93,4 +93,13 @@ void main() {
       '{\n  "@@locale": "mg",\n  "a": "b"\n}\n',
     );
   });
+
+  test("import keeps a cell's leading and trailing spaces", () {
+    final sheet = [
+      ['key', 'description', 'fr', 'mg', 'ok'],
+      ['save', '', 'Enregistrer', ' · ', ''],
+    ];
+    final out = applyReview(mg, sheet, frKeys: ['save']);
+    expect(out['save'], ' · ');
+  });
 }

@@ -618,7 +618,7 @@
   "reportNextRest": "Vita ny fialan-tsasatry ny {pond} : vonona hametrahana trondro",
   "reportDeaths": "Maty {count}",
   "reportObserverDeaths": "{name} {count}",
-  "reportListSeparator": "·",
+  "reportListSeparator": " · ",
   "reportUnknownPerson": "tsy fantatra",
   "reportSigns": "{date} : {signs}",
   "reportTreatmentLine": "{date} : {product}, {dose}",

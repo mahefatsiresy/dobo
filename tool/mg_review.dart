@@ -74,7 +74,9 @@ Map<String, dynamic> applyReview(
       if (e.key.startsWith('@@') && !(allOk && e.key == '@@x-review'))
         e.key: e.value,
     for (final k in frKeys)
-      if (rows[k]?[3].trim() case final text? when text.isNotEmpty)
+      // Trimmed only to test for emptiness: a separator like " · " keeps
+      // its spaces.
+      if (rows[k]?[3] case final text? when text.trim().isNotEmpty)
         k: text
       else if (mg[k] != null)
         k: mg[k],

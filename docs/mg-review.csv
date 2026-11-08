@@ -616,7 +616,7 @@ reportNextDry;;Séchage de {pond} fini ?;Vita ve ny fanamainana ny {pond} ?;
 reportNextRest;;Repos de {pond} fini : prêt à empoissonner;Vita ny fialan-tsasatry ny {pond} : vonona hametrahana trondro;
 reportDeaths;;{count} morts;Maty {count};
 reportObserverDeaths;;{name} {count};{name} {count};
-reportListSeparator;; · ;·;
+reportListSeparator;; · ; · ;
 reportUnknownPerson;;inconnu;tsy fantatra;
 reportSigns;;{date} : {signs};{date} : {signs};
 reportTreatmentLine;;{date} : {product}, {dose};{date} : {product}, {dose};

@@ -2127,7 +2127,7 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get reportListSeparator => '·';
+  String get reportListSeparator => ' · ';
 
   @override
   String get reportUnknownPerson => 'tsy fantatra';
