@@ -2389,4 +2389,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get exportWeeklyWholeWeeks =>
       'Semaines entières, du lundi au dimanche.';
+
+  @override
+  String get close => 'Fermer';
 }

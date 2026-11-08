@@ -128,8 +128,8 @@ void main() {
       tester,
       find.byKey(const ValueKey(WaterColour.darkGreen)),
     );
-    await tester.tapAt(const Offset(10, 10)); // closes the sheet
-    await tester.pumpAndSettle();
+    await reveal(tester, find.text('Fermer'));
+    await tapAndSettle(tester, find.text('Fermer'));
     await tapAndSettle(tester, find.text('Enregistrer'));
     final added = (await db.select(db.dailyLogs).get()).singleWhere(
       (l) => l.observedBy != null,
@@ -147,8 +147,8 @@ void main() {
     await tapAndSettle(tester, cell('signs', '2026-04-01'));
     await reveal(tester, find.byKey(const ValueKey(WaterColour.clear)));
     await tapAndSettle(tester, find.byKey(const ValueKey(WaterColour.clear)));
-    await tester.tapAt(const Offset(10, 10));
-    await tester.pumpAndSettle();
+    await reveal(tester, find.text('Fermer'));
+    await tapAndSettle(tester, find.text('Fermer'));
     await tapAndSettle(tester, find.text('Enregistrer'));
     expect(find.textContaining("Indiquez l'aliment"), findsOneWidget);
     expect(await db.select(db.dailyLogs).get(), hasLength(1));

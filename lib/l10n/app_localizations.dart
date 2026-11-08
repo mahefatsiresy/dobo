@@ -4296,6 +4296,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Semaines entières, du lundi au dimanche.'**
   String get exportWeeklyWholeWeeks;
+
+  /// No description provided for @close.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate

@@ -199,6 +199,16 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
                     value: cell.waterColour,
                     onChanged: (c) => update(() => cell.waterColour = c),
                   ),
+                  const SizedBox(height: 24),
+                  // The sheet can fill a small phone, leaving nothing
+                  // outside it to tap.
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(56),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.close),
+                  ),
                 ],
               ),
             ),

@@ -698,5 +698,6 @@
   "exportPdf": "PDF",
   "exportCsv": "CSV",
   "exportEndBeforeStart": "Mialoha ny daty fanombohana ny daty farany.",
-  "exportWeeklyWholeWeeks": "Herinandro feno, Alatsinainy ka hatramin'ny Alahady."
+  "exportWeeklyWholeWeeks": "Herinandro feno, Alatsinainy ka hatramin'ny Alahady.",
+  "close": "Hidio"
 }

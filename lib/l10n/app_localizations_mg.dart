@@ -2127,7 +2127,7 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get reportListSeparator => ' · ';
+  String get reportListSeparator => '·';
 
   @override
   String get reportUnknownPerson => 'tsy fantatra';
@@ -2407,4 +2407,7 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String get exportWeeklyWholeWeeks =>
       'Herinandro feno, Alatsinainy ka hatramin\'ny Alahady.';
+
+  @override
+  String get close => 'Hidio';
 }
