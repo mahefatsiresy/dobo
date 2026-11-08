@@ -146,10 +146,13 @@ class HarvestRepository {
             .get();
     return [
       for (final h in harvests.reversed)
-        HarvestWithSales(h, [
-          for (final s in sales)
-            if ((await db.chainIds(db.harvests, h.id)).contains(s.harvestId)) s,
-        ]),
+        await () async {
+          final chain = await db.chainIds(db.harvests, h.id);
+          return HarvestWithSales(h, [
+            for (final s in sales)
+              if (chain.contains(s.harvestId)) s,
+          ]);
+        }(),
     ];
   }
 

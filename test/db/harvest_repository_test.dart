@@ -9,6 +9,10 @@ import 'package:dobo/db/session.dart';
 import 'package:dobo/domain/farm_facts.dart';
 import 'package:dobo/db/repositories/facts_repository.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:drift/drift.dart'
+    show ApplyInterceptor, QueryExecutor, QueryInterceptor;
+import 'package:drift/native.dart';
+import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'repo_fixtures.dart';
@@ -159,4 +163,64 @@ void main() {
     expect(list.single.harvest.count, 940);
     expect(list.single.sales, hasLength(1));
   });
+
+  test('listing harvests looks up each harvest\'s chain once, not once per '
+      'sale', () async {
+    final counter = _ChainQueries();
+    final counted = AppDatabase(NativeDatabase.memory().interceptWith(counter));
+    addTearDown(counted.close);
+    final s = await SetupRepository(counted).completeSetup(siteName: 'A');
+    final pond = await PondRepository(counted, s).create(pondInput('E1'));
+    final batch = await BatchRepository(
+      counted,
+      s,
+    ).stockBatch(stockInput('L1', pondId: pond));
+    final repo = HarvestRepository(counted, s);
+    final c = await CustomerRepository(
+      counted,
+      s,
+    ).create(const CustomerInput(name: 'Marché', type: CustomerType.market));
+    for (var i = 0; i < 5; i++) {
+      final h = await repo.harvest(
+        HarvestInput(
+          batchId: batch,
+          pondId: pond,
+          date: DateTime(2026, 6, 1 + i),
+          count: 10,
+          weightG: 2500,
+          isFinal: false,
+        ),
+      );
+      for (var j = 0; j < 4; j++) {
+        await repo.sell(
+          SaleInput(
+            harvestId: h,
+            customerId: c,
+            date: DateTime(2026, 6, 1 + i),
+            weightG: 500,
+            form: ProductForm.fresh,
+          ),
+        );
+      }
+    }
+    counter.chains = 0;
+    final list = await repo.watchAll().first;
+    expect(list.expand((h) => h.sales), hasLength(20));
+    expect(counter.chains, lessThanOrEqualTo(5));
+  });
+}
+
+/// Counts the recursive supersede-chain queries.
+class _ChainQueries extends QueryInterceptor {
+  var chains = 0;
+
+  @override
+  Future<List<Map<String, Object?>>> runSelect(
+    QueryExecutor executor,
+    String statement,
+    List<Object?> args,
+  ) {
+    if (statement.contains('WITH RECURSIVE')) chains++;
+    return super.runSelect(executor, statement, args);
+  }
 }
