@@ -13,293 +13,293 @@ class AppLocalizationsMg extends AppLocalizations {
   String get appTitle => 'Dobo';
 
   @override
-  String get setupTitle => 'Installation';
+  String get setupTitle => 'Fametrahana';
 
   @override
-  String get setupSiteName => 'Nom du site';
+  String get setupSiteName => 'Anaran\'ny toerana';
 
   @override
-  String get setupLocationNote => 'Lieu (facultatif)';
+  String get setupLocationNote => 'Toerana (tsy voatery)';
 
   @override
-  String get setupStart => 'Commencer';
+  String get setupStart => 'Hanomboka';
 
   @override
-  String get tabPonds => 'Étangs';
+  String get tabPonds => 'Dobo';
 
   @override
-  String get tabMore => 'Plus';
+  String get tabMore => 'Hafa';
 
   @override
   String get fieldRequired => 'Ilaina';
 
   @override
-  String get estimated => 'estimé';
+  String get estimated => 'tombana';
 
   @override
-  String get pondStatusEmpty => 'Vide';
+  String get pondStatusEmpty => 'Foana';
 
   @override
-  String get pondStatusPreparing => 'En préparation';
+  String get pondStatusPreparing => 'Am-panomanana';
 
   @override
-  String get pondStatusReady => 'Prêt';
+  String get pondStatusReady => 'Vonona';
 
   @override
-  String get pondStatusStocked => 'Empoissonné';
+  String get pondStatusStocked => 'Misy trondro';
 
   @override
-  String get pondStatusIsolated => 'Isolé';
+  String get pondStatusIsolated => 'Natokana';
 
   @override
-  String get structureEarth => 'Étang en terre';
+  String get structureEarth => 'Dobo tany';
 
   @override
-  String get structureTank => 'Bassin';
+  String get structureTank => 'Fitoeran-drano';
 
   @override
-  String get structureCage => 'Cage flottante';
+  String get structureCage => 'Tranom-trondro mitsinkafona';
 
   @override
-  String get roleBreeding => 'Reproduction';
+  String get roleBreeding => 'Fiterahana';
 
   @override
-  String get roleNursery => 'Frayère (alevins)';
+  String get roleNursery => 'Fitaizana zana-trondro';
 
   @override
-  String get rolePregrow => 'Prégrossissement';
+  String get rolePregrow => 'Fampitomboana voalohany';
 
   @override
-  String get roleGrowout => 'Grossissement';
+  String get roleGrowout => 'Fampitomboana';
 
   @override
-  String get roleHolding => 'Stockage avant vente';
+  String get roleHolding => 'Fitehirizana alohan\'ny fivarotana';
 
   @override
-  String get roleQuarantine => 'Quarantaine';
+  String get roleQuarantine => 'Fitokanana';
 
   @override
-  String get supplyBarrage => 'Barrage';
+  String get supplyBarrage => 'Tohodrano';
 
   @override
-  String get supplyDerivation => 'Dérivation';
+  String get supplyDerivation => 'Lakandrano mivily';
 
   @override
-  String get supplyMarsh => 'Marais';
+  String get supplyMarsh => 'Honahona';
 
   @override
-  String get colourBlue => 'Bleu';
+  String get colourBlue => 'Manga';
 
   @override
-  String get colourGreen => 'Vert';
+  String get colourGreen => 'Maitso';
 
   @override
-  String get colourYellow => 'Jaune';
+  String get colourYellow => 'Mavo';
 
   @override
-  String get colourOrange => 'Orange';
+  String get colourOrange => 'Volomboasary';
 
   @override
-  String get colourRed => 'Rouge';
+  String get colourRed => 'Mena';
 
   @override
-  String get colourPurple => 'Violet';
+  String get colourPurple => 'Volomparasy';
 
   @override
-  String get colourBrown => 'Marron';
+  String get colourBrown => 'Volontany';
 
   @override
-  String get colourBlack => 'Noir';
+  String get colourBlack => 'Mainty';
 
   @override
-  String get batchStatusQuarantine => 'Quarantaine';
+  String get batchStatusQuarantine => 'Fitokanana';
 
   @override
-  String get batchStatusActive => 'Actif';
+  String get batchStatusActive => 'Mandeha';
 
   @override
-  String get batchStatusHarvesting => 'En récolte';
+  String get batchStatusHarvesting => 'Am-pijonoana';
 
   @override
-  String get batchStatusClosed => 'Clôturé';
+  String get batchStatusClosed => 'Vita';
 
   @override
-  String get phaseFry => 'Alevinage';
+  String get phaseFry => 'Zana-trondro';
 
   @override
-  String get phasePregrow => 'Prégrossissement';
+  String get phasePregrow => 'Fampitomboana voalohany';
 
   @override
-  String get phaseGrowout => 'Grossissement';
+  String get phaseGrowout => 'Fampitomboana';
 
   @override
-  String get phaseFinishing => 'Finition';
+  String get phaseFinishing => 'Famaranana';
 
   @override
-  String get densityBelow => 'Densité trop faible';
+  String get densityBelow => 'Vitsy loatra ny trondro';
 
   @override
-  String get densityWithin => 'Densité correcte';
+  String get densityWithin => 'Ampy tsara ny trondro';
 
   @override
-  String get densityAbove => 'Densité trop forte';
+  String get densityAbove => 'Be loatra ny trondro';
 
   @override
   String warnSurfaceTooSmall(String min, String max) {
-    return 'Surface sous $min m² (conseillé : $min à $max m²)';
+    return 'Velarana latsaky ny $min m² (soso-kevitra : $min ka hatramin\'ny $max m²)';
   }
 
   @override
   String warnSurfaceTooLarge(String min, String max) {
-    return 'Surface au-dessus de $max m² (conseillé : $min à $max m²)';
+    return 'Velarana mihoatra ny $max m² (soso-kevitra : $min ka hatramin\'ny $max m²)';
   }
 
   @override
   String warnNotElongated(String min, String max) {
-    return 'Étang peu allongé (conseillé : longueur = $min à $max fois la largeur)';
+    return 'Tsy dia lava ny dobo (soso-kevitra : lava $min ka hatramin\'ny $max heny noho ny sakany)';
   }
 
   @override
   String warnTooElongated(String min, String max) {
-    return 'Étang très allongé (conseillé : longueur = $min à $max fois la largeur)';
+    return 'Lava loatra ny dobo (soso-kevitra : lava $min ka hatramin\'ny $max heny noho ny sakany)';
   }
 
   @override
   String warnTooShallow(String min) {
-    return 'Profondeur moyenne sous $min m';
+    return 'Halalina salanisa latsaky ny $min m';
   }
 
   @override
-  String get morePeople => 'Personnes';
+  String get morePeople => 'Olona';
 
   @override
-  String get moreBatches => 'Lots';
+  String get moreBatches => 'Andiany';
 
   @override
-  String get personName => 'Nom';
+  String get personName => 'Anarana';
 
   @override
-  String get personPhone => 'Téléphone';
+  String get personPhone => 'Finday';
 
   @override
-  String get personNote => 'Note';
+  String get personNote => 'Fanamarihana';
 
   @override
-  String get personActive => 'Actif';
+  String get personActive => 'Mavitrika';
 
   @override
   String personOfMember(String name) {
-    return '$name (membre)';
+    return '$name (mpikambana)';
   }
 
   @override
   String personOfWorker(String name) {
-    return '$name (ouvrier)';
+    return '$name (mpiasa)';
   }
 
   @override
-  String get personRenameFromAdmin => 'Renommer depuis Admin › Membres';
+  String get personRenameFromAdmin =>
+      'Ovay ny anarana ao amin\'ny Admin › Mpikambana';
 
   @override
-  String get personInactive => 'Inactif';
+  String get personInactive => 'Tsy mavitrika';
 
   @override
   String get save => 'Tehirizo';
 
   @override
-  String get add => 'Ajouter';
+  String get add => 'Ampio';
 
   @override
-  String get peopleEmpty =>
-      'Aucune personne : ajoutez les ouvriers et les membres';
+  String get peopleEmpty => 'Tsy misy olona : ampio ny mpiasa sy ny mpikambana';
 
   @override
-  String get pondAdd => 'Ajouter un étang';
+  String get pondAdd => 'Hanampy dobo';
 
   @override
-  String get pondsEmpty => 'Aucun étang : ajoutez le premier';
+  String get pondsEmpty => 'Tsy misy dobo : ampio ny voalohany';
 
   @override
-  String get pondCode => 'Code';
+  String get pondCode => 'Kaody';
 
   @override
-  String get pondColourLabel => 'Couleur';
+  String get pondColourLabel => 'Loko';
 
   @override
-  String get pondStructure => 'Type';
+  String get pondStructure => 'Karazana';
 
   @override
-  String get pondRoleLabel => 'Rôle';
+  String get pondRoleLabel => 'Anjara asa';
 
   @override
-  String get pondWaterSupply => 'Alimentation en eau';
+  String get pondWaterSupply => 'Loharano';
 
   @override
-  String get notSpecified => 'Non précisé';
+  String get notSpecified => 'Tsy voalaza';
 
   @override
-  String get pondLength => 'Longueur';
+  String get pondLength => 'Halavany';
 
   @override
-  String get pondWidth => 'Largeur';
+  String get pondWidth => 'Sakany';
 
   @override
-  String get pondSurfaceOverride => 'Surface mesurée (facultatif)';
+  String get pondSurfaceOverride => 'Velarana norefesina (tsy voatery)';
 
   @override
-  String get pondDepthInlet => 'Profondeur à l\'entrée';
+  String get pondDepthInlet => 'Halalina eo am-pidirana';
 
   @override
-  String get pondDepthOutlet => 'Profondeur à la sortie';
+  String get pondDepthOutlet => 'Halalina eo am-pivoahana';
 
   @override
-  String get pondStatusLabel => 'État';
+  String get pondStatusLabel => 'Toetra';
 
   @override
-  String get duplicateCode => 'Ce code existe déjà';
+  String get duplicateCode => 'Efa misy io kaody io';
 
   @override
-  String get pondFish => 'Poissons';
+  String get pondFish => 'Trondro';
 
   @override
-  String get pondBiomass => 'Biomasse';
+  String get pondBiomass => 'Lanjan\'ny trondro rehetra';
 
   @override
-  String get pondDensity => 'Densité';
+  String get pondDensity => 'Hakitroky';
 
   @override
-  String get pondSurface => 'Surface';
+  String get pondSurface => 'Velarana';
 
   @override
-  String get inconsistent => 'À vérifier';
+  String get inconsistent => 'Hamarinina';
 
   @override
-  String get pondStock => 'Empoissonner';
+  String get pondStock => 'Hametraka trondro';
 
   @override
-  String get pondTransfer => 'Transférer';
+  String get pondTransfer => 'Hamindra';
 
   @override
-  String get edit => 'Modifier';
+  String get edit => 'Ovaina';
 
   @override
-  String get archive => 'Archiver';
+  String get archive => 'Arahina';
 
   @override
-  String get cancel => 'Annuler';
+  String get cancel => 'Aoka ihany';
 
   @override
-  String get avgWeight => 'Poids moyen';
+  String get avgWeight => 'Lanja salanisa';
 
   @override
-  String get pondNoFish => 'Pas de poissons';
+  String get pondNoFish => 'Tsy misy trondro';
 
   @override
-  String get adultFeed => 'aliment adulte';
+  String get adultFeed => 'sakafon\'ny lehibe';
 
   @override
   String pondSurfaceComputed(String surface) {
-    return 'Surface calculée : $surface';
+    return 'Velarana voakajy : $surface';
   }
 
   @override
@@ -309,173 +309,177 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String archiveConfirm(String code) {
-    return 'Archiver l\'étang $code ? Il disparaîtra des listes.';
+    return 'Harahina ve ny dobo $code ? Tsy hiseho amin\'ny lisitra intsony izy.';
   }
 
   @override
   String feedingGuide(String protein, String pellet, String meals) {
-    return 'Aliment : $protein de protéines, granulé $pellet, $meals repas par jour';
+    return 'Sakafo : proteinina $protein, voany $pellet, in-$meals isan\'andro';
   }
 
   @override
-  String get stockTitle => 'Empoissonner';
+  String get stockTitle => 'Hametraka trondro';
 
   @override
-  String get batchCode => 'Code du lot';
+  String get batchCode => 'Kaodin\'ny andiany';
 
   @override
-  String get stockDate => 'Date d\'empoissonnement';
+  String get stockDate => 'Daty nametrahana';
 
   @override
-  String get stockCount => 'Nombre d\'alevins';
+  String get stockCount => 'Isan\'ny zana-trondro';
 
   @override
-  String get strain => 'Souche (ex. GIFT)';
+  String get strain => 'Karazany (oh. GIFT)';
 
   @override
-  String get hatchery => 'Écloserie';
+  String get hatchery => 'Toeram-pamokarana zana-trondro';
 
   @override
-  String get certificate => 'N° de certificat sanitaire';
+  String get certificate => 'Laharan\'ny taratasy fahasalamana';
 
   @override
-  String get monosex => 'Tout mâle (monosexe)';
+  String get monosex => 'Lahy avokoa';
 
   @override
-  String get yes => 'Oui';
+  String get yes => 'Eny';
 
   @override
-  String get no => 'Non';
+  String get no => 'Tsia';
 
   @override
-  String get unknown => 'Ne sait pas';
+  String get unknown => 'Tsy fantatra';
 
   @override
-  String get plannedHarvest => 'Récolte prévue (facultatif)';
+  String get plannedHarvest => 'Fijonoana kasaina (tsy voatery)';
 
   @override
-  String get pickPond => 'Étang';
+  String get pickPond => 'Dobo';
 
   @override
-  String get warnPondIsolated => 'Étang isolé : à éviter';
+  String get warnPondIsolated => 'Dobo natokana : aleo halaviriana';
 
   @override
-  String get warnDensityBelow => 'Densité sous le minimum conseillé';
+  String get warnDensityBelow =>
+      'Ambany noho ny farany ambany soso-kevitra ny hakitroky';
 
   @override
-  String get warnDensityAbove => 'Densité au-dessus du maximum conseillé';
+  String get warnDensityAbove =>
+      'Ambony noho ny farany ambony soso-kevitra ny hakitroky';
 
   @override
-  String get batchesEmpty => 'Aucun lot : empoissonnez un étang depuis sa page';
+  String get batchesEmpty =>
+      'Tsy misy andiany : mametraha trondro amin\'ny pejin\'ny dobo iray';
 
   @override
-  String get history => 'Historique';
+  String get history => 'Tantara';
 
   @override
-  String get eventStocking => 'Empoissonnement';
+  String get eventStocking => 'Fametrahana trondro';
 
   @override
-  String get eventTransfer => 'Transfert';
+  String get eventTransfer => 'Famindrana';
 
   @override
-  String get correct => 'Corriger';
+  String get correct => 'Hanitsy';
 
   @override
-  String get delete => 'Supprimer';
+  String get delete => 'Fafana';
 
   @override
-  String get deleteConfirm => 'Supprimer cet enregistrement ?';
+  String get deleteConfirm => 'Hofafana ve ity firaketana ity ?';
 
   @override
-  String get fishPerPond => 'Poissons par étang';
+  String get fishPerPond => 'Trondro isaky ny dobo';
 
   @override
-  String get batchEdit => 'Modifier le lot';
+  String get batchEdit => 'Hanova ny andiany';
 
   @override
-  String get correctionTitle => 'Corriger';
+  String get correctionTitle => 'Hanitsy';
 
   @override
   String acclimatised(String min, String max) {
-    return 'Acclimatés $min à $max min';
+    return 'Nampahazatra $min ka hatramin\'ny $max min';
   }
 
   @override
   String acclimatiseReminder(String min, String max) {
-    return 'Faire flotter le sac fermé $min à $max min sur l\'étang avant de lâcher les alevins.';
+    return 'Avelao hitsinkafona eo ambonin\'ny dobo mandritra ny $min ka hatramin\'ny $max min ny kitapo mihidy alohan\'ny handefasana ny zana-trondro.';
   }
 
   @override
   String densityResult(String density, String min, String max) {
-    return 'Densité après empoissonnement : $density /m² (conseillé : $min à $max)';
+    return 'Hakitroky aorian\'ny fametrahana : $density /m² (soso-kevitra : $min ka hatramin\'ny $max)';
   }
 
   @override
   String warnPondNotReady(String status) {
-    return 'L\'étang n\'est pas marqué prêt ($status)';
+    return 'Tsy voamarika ho vonona ny dobo ($status)';
   }
 
   @override
   String warnWeightOutsideRange(String min, String max) {
-    return 'Poids moyen hors des $min à $max g conseillés';
+    return 'Lanja salanisa ivelan\'ny $min ka hatramin\'ny $max g soso-kevitra';
   }
 
   @override
   String stockedOn(String date) {
-    return 'Empoissonné le $date';
+    return 'Napetraka tamin\'ny $date';
   }
 
   @override
   String initialStock(String count, String weight, String date) {
-    return 'Départ : $count alevins de $weight, le $date';
+    return 'Fanombohana : zana-trondro $count mavesatra $weight, tamin\'ny $date';
   }
 
   @override
   String plannedHarvestOn(String date) {
-    return 'Récolte prévue le $date';
+    return 'Fijonoana kasaina amin\'ny $date';
   }
 
   @override
-  String get toPond => 'Vers l\'étang';
+  String get toPond => 'Mankany amin\'ny dobo';
 
   @override
-  String get transferCount => 'Nombre de poissons';
+  String get transferCount => 'Isan\'ny trondro';
 
   @override
-  String get transferDate => 'Date du transfert';
+  String get transferDate => 'Daty namindrana';
 
   @override
-  String get avgWeightOptional => 'Poids moyen (facultatif)';
+  String get avgWeightOptional => 'Lanja salanisa (tsy voatery)';
 
   @override
-  String get warnDestIsolated => 'L\'étang de destination est isolé';
+  String get warnDestIsolated => 'Natokana ny dobo halehana';
 
   @override
-  String get isolatedSource => 'Étang isolé : aucun poisson ne doit en sortir';
+  String get isolatedSource =>
+      'Dobo natokana : tsy tokony hisy trondro hivoaka';
 
   @override
   String transferTitle(String code, String pond) {
-    return 'Transférer $code depuis $pond';
+    return 'Hamindra $code avy amin\'ny $pond';
   }
 
   @override
   String estimateIn(String count, String pond) {
-    return '≈ $count dans $pond';
+    return '≈ $count ao amin\'ny $pond';
   }
 
   @override
   String warnAboveEstimate(String count) {
-    return 'Plus que l\'estimation ($count)';
+    return 'Mihoatra ny tombana ($count)';
   }
 
   @override
   String destDensity(String pond, String density, String min, String max) {
-    return 'Densité de $pond après transfert : $density /m² (conseillé : $min à $max)';
+    return 'Hakitroky ao amin\'ny $pond aorian\'ny famindrana : $density /m² (soso-kevitra : $min ka hatramin\'ny $max)';
   }
 
   @override
   String get pondNotEmpty =>
-      'Cet étang contient encore des poissons : transférez-les d\'abord.';
+      'Mbola misy trondro ity dobo ity : afindrao aloha izy ireo.';
 
   @override
   String get signNoAppetite => 'Tsy mihinana';
@@ -544,31 +548,31 @@ class AppLocalizationsMg extends AppLocalizations {
   String get waterBrownTurbid => 'Volontany, manjavozavo';
 
   @override
-  String get obsDike => 'Digues';
+  String get obsDike => 'Fefiloha';
 
   @override
-  String get obsInletScreen => 'Grilles d\'entrée';
+  String get obsInletScreen => 'Harato eo am-pidirana';
 
   @override
-  String get obsPredatorNets => 'Filets anti-prédateurs';
+  String get obsPredatorNets => 'Harato fiarovana amin\'ny mpihaza';
 
   @override
-  String get obsFence => 'Clôture';
+  String get obsFence => 'Fefy';
 
   @override
-  String get obsGrass => 'Herbe';
+  String get obsGrass => 'Ahitra';
 
   @override
-  String get obsPredators => 'Prédateurs';
+  String get obsPredators => 'Mpihaza';
 
   @override
-  String get obsTheft => 'Vol';
+  String get obsTheft => 'Halatra';
 
   @override
-  String get obsOther => 'Autre';
+  String get obsOther => 'Hafa';
 
   @override
-  String get workerMode => 'Mode ouvrier';
+  String get workerMode => 'Fomba fiasan\'ny mpiasa';
 
   @override
   String get workerToday => 'Androany';
@@ -618,260 +622,263 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get waterReading => 'Relevé d\'eau';
+  String get waterReading => 'Fandrefesana rano';
 
   @override
-  String get sampling => 'Échantillonnage';
+  String get sampling => 'Fandanjana santionany';
 
   @override
-  String get temperature => 'Température';
+  String get temperature => 'Hafanana';
 
   @override
   String get ph => 'pH';
 
   @override
-  String get oxygen => 'Oxygène dissous';
+  String get oxygen => 'Oksizena levona';
 
   @override
-  String get renewedPct => 'Eau renouvelée';
+  String get renewedPct => 'Rano novaina';
 
   @override
-  String get readingTime => 'Heure du relevé';
+  String get readingTime => 'Ora nandrefesana';
 
   @override
-  String get sampleFish => 'Poissons pesés';
+  String get sampleFish => 'Trondro nolanjaina';
 
   @override
-  String get sampleWeight => 'Poids total';
+  String get sampleWeight => 'Lanja iraisana';
 
   @override
-  String get sampleDate => 'Date de pesée';
+  String get sampleDate => 'Daty nandanjana';
 
   @override
-  String get renewWater => 'Couleur : renouveler l\'eau';
+  String get renewWater => 'Loko : ovay ny rano';
 
   @override
   String targetRange(String min, String max, String unit) {
-    return 'cible $min à $max $unit';
+    return 'tanjona $min ka hatramin\'ny $max $unit';
   }
 
   @override
   String targetMin(String min, String unit) {
-    return 'cible $min $unit ou plus';
+    return 'tanjona $min $unit na mihoatra';
   }
 
   @override
   String lastReading(String date) {
-    return 'Dernier relevé, le $date :';
+    return 'Fandrefesana farany, tamin\'ny $date :';
   }
 
   @override
   String smallSample(String min) {
-    return 'Petit échantillon (moins de $min poissons)';
+    return 'Santionany kely (latsaky ny trondro $min)';
   }
 
   @override
   String sampleAverage(String weight) {
-    return 'Poids moyen : $weight';
+    return 'Lanja salanisa : $weight';
   }
 
   @override
-  String get transcription => 'Saisie des fiches';
+  String get transcription => 'Fandikana ny taratasy';
 
   @override
-  String get sheetOf => 'Fiche de';
+  String get sheetOf => 'Taratasin\'i';
 
   @override
-  String get previousWeek => 'Semaine précédente';
+  String get previousWeek => 'Herinandro teo aloha';
 
   @override
-  String get nextWeek => 'Semaine suivante';
+  String get nextWeek => 'Herinandro manaraka';
 
   @override
   String get feedMissing =>
-      'Indiquez l\'aliment pour chaque case remplie (0 si rien n\'a été donné).';
+      'Asio ny sakafo isaky ny efajoro feno (0 raha tsy nisy nomena).';
 
   @override
   String weekOfLabel(String date) {
-    return 'Semaine du $date';
+    return 'Herinandro manomboka ny $date';
   }
 
   @override
-  String get reportProblem => 'Signaler un problème';
+  String get reportProblem => 'Hilaza olana';
 
   @override
-  String get suspectedIssue => 'Problème suspecté (facultatif)';
+  String get suspectedIssue => 'Olana ahiana (tsy voatery)';
 
   @override
-  String get isolatePond => 'Isoler l\'étang';
+  String get isolatePond => 'Hanokana ny dobo';
 
   @override
-  String get technicianCalled => 'Technicien ou vétérinaire appelé';
+  String get technicianCalled =>
+      'Nantsoina ny teknisianina na ny dokotera biby';
 
   @override
   String get healthResponse =>
-      'Isoler l\'étang, ne déplacer ni poissons ni eau vers les autres étangs, appeler un technicien ou un vétérinaire avant tout traitement.';
+      'Atokàny ny dobo, aza mamindra trondro na rano mankany amin\'ny dobo hafa, antsoy ny teknisianina na ny dokotera biby alohan\'ny fitsaboana rehetra.';
 
   @override
-  String get healthInfoTitle => 'Information, pas un diagnostic';
+  String get healthInfoTitle => 'Fampahalalana, tsy fitiliana';
 
   @override
   String get diseaseStrepto => 'Streptococcose';
 
   @override
   String get diseaseStreptoSigns =>
-      'nage désordonnée, yeux gonflés, mortalité rapide ; favorisée par une forte densité et la chaleur.';
+      'milomano tsy milamina, maso mivonto, maty haingana ; mahalala azy ny hakitroky be sy ny hafanana.';
 
   @override
   String get diseaseAeromonas => 'Aeromonas';
 
   @override
   String get diseaseAeromonasSigns =>
-      'ulcères de la peau, nageoires qui saignent ; liée à une eau de mauvaise qualité ou aux blessures de manipulation.';
+      'fery amin\'ny hoditra, elatra mandeha ra ; avy amin\'ny rano ratsy na ratra noho ny fikarakarana.';
 
   @override
-  String get diseaseParasites => 'Parasites externes (Trichodina, Ich)';
+  String get diseaseParasites => 'Katsentsitra ivelany (Trichodina, Ich)';
 
   @override
   String get diseaseParasitesSigns =>
-      'se frotte aux parois ou au fond, trop de mucus, points blancs.';
+      'mikosokosoka amin\'ny rindrina na ny fanambany, be lalotra, teboka fotsy.';
 
   @override
-  String get releaseIsolation => 'Lever l\'isolement';
+  String get releaseIsolation => 'Hanaisotra ny fitokanana';
 
   @override
-  String get treatment => 'Traitement';
+  String get treatment => 'Fitsaboana';
 
   @override
-  String get product => 'Produit';
+  String get product => 'Vokatra';
 
   @override
-  String get dose => 'Dose';
+  String get dose => 'Fatra';
 
   @override
-  String get advisedBy => 'Conseillé par';
+  String get advisedBy => 'Nanoro hevitra';
 
   @override
-  String get treatmentDate => 'Date du traitement';
+  String get treatmentDate => 'Daty nitsaboana';
 
   @override
-  String get healthHistory => 'Santé';
+  String get healthHistory => 'Fahasalamana';
 
   @override
-  String get actionIsolated => 'isolé';
+  String get actionIsolated => 'natokana';
 
   @override
-  String get actionTechnician => 'technicien appelé';
+  String get actionTechnician => 'nantsoina ny teknisianina';
 
   @override
-  String get actionReleased => 'isolement levé';
+  String get actionReleased => 'nesorina ny fitokanana';
 
   @override
-  String get batchOptional => 'Lot (facultatif)';
+  String get batchOptional => 'Andiany (tsy voatery)';
 
   @override
   String releaseConfirm(String code) {
-    return 'Lever l\'isolement de $code ? Les poissons pourront de nouveau en sortir.';
+    return 'Hesorina ve ny fitokanana an\'i $code ? Afaka hivoaka indray ny trondro.';
   }
 
   @override
-  String get tabVisit => 'Visite';
+  String get tabVisit => 'Fitsidihana';
 
   @override
-  String get startVisit => 'Démarrer une visite';
+  String get startVisit => 'Hanomboka fitsidihana';
 
   @override
-  String get sectionWater => 'Eau';
+  String get sectionWater => 'Rano';
 
   @override
-  String get sectionSamples => 'Échantillons';
+  String get sectionSamples => 'Santionany';
 
   @override
-  String get sectionConditions => 'État des étangs';
+  String get sectionConditions => 'Toetry ny dobo';
 
   @override
-  String get sectionBiosecurity => 'Biosécurité';
+  String get sectionBiosecurity => 'Fiarovana ara-pahasalamana';
 
   @override
-  String get sectionObservations => 'Observations';
+  String get sectionObservations => 'Fanamarihana';
 
   @override
-  String get summary => 'Résumé';
+  String get summary => 'Famintinana';
 
   @override
-  String get allDone => 'Tout est fait';
+  String get allDone => 'Vita daholo';
 
   @override
-  String get endVisit => 'Terminer la visite';
+  String get endVisit => 'Hamarana ny fitsidihana';
 
   @override
   String get endVisitConfirm =>
-      'Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.';
+      'Hamarana ny fitsidihana ve ? Ny tatitra dia homanina avy amin\'izay voasoratra.';
 
   @override
-  String get visitEnded => 'terminée';
+  String get visitEnded => 'vita';
 
   @override
-  String get visitOngoing => 'en cours';
+  String get visitOngoing => 'mbola mandeha';
 
   @override
-  String get addObservation => 'Ajouter une observation';
+  String get addObservation => 'Hanampy fanamarihana';
 
   @override
-  String get observationText => 'Observation';
+  String get observationText => 'Fanamarihana';
 
   @override
-  String get category => 'Catégorie';
+  String get category => 'Sokajy';
 
   @override
-  String get conditionOk => 'OK';
+  String get conditionOk => 'Tsara';
 
   @override
-  String get conditionProblem => 'Problème';
+  String get conditionProblem => 'Olana';
 
   @override
-  String get pastVisits => 'Visites précédentes';
+  String get pastVisits => 'Fitsidihana teo aloha';
 
   @override
-  String get noVisits => 'Aucune visite pour l\'instant';
+  String get noVisits => 'Mbola tsy misy fitsidihana';
 
   @override
   String get bioDisinfect =>
-      'Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)';
+      'Harato, siny ary harato kely voadio isaky ny dobo (klôro voaharoharo, avy eo sasana)';
 
   @override
-  String get bioToolsPerPond => 'Un jeu d\'outils par étang si possible';
+  String get bioToolsPerPond =>
+      'Fitaovana iray andiany isaky ny dobo raha azo atao';
 
   @override
-  String get bioFootbath => 'Pédiluve ou bottes propres à l\'entrée';
+  String get bioFootbath => 'Fanasana tongotra na baoty madio eo am-pidirana';
 
   @override
-  String get bioAnimals => 'Canards et autres animaux tenus à l\'écart';
+  String get bioAnimals => 'Gana sy biby hafa ampitaina lavitra';
 
   @override
   String get bioPredators =>
-      'Filets anti-prédateurs et petite clôture en place';
+      'Harato fiarovana amin\'ny mpihaza sy fefy kely voapetraka';
 
   @override
-  String get bioProtection => 'Gants et bottes pour la chaux et le chlore';
+  String get bioProtection =>
+      'Fonon-tanana sy baoty ho an\'ny sokay sy ny klôro';
 
   @override
   String get bioNotAlone =>
-      'Personne ne travaille seul pendant une vidange ou une grosse pêche';
+      'Tsy misy miasa irery mandritra ny fanariana rano na jono lehibe';
 
   @override
   String visitOpenSince(String time) {
-    return 'Visite en cours depuis $time';
+    return 'Fitsidihana mandeha nanomboka tamin\'ny $time';
   }
 
   @override
   String sampleOfIn(String batch, String pond) {
-    return '$batch dans $pond';
+    return '$batch ao amin\'ny $pond';
   }
 
   @override
   String conditionsOf(String pond) {
-    return 'État de $pond';
+    return 'Toetry ny $pond';
   }
 
   @override
@@ -955,151 +962,154 @@ class AppLocalizationsMg extends AppLocalizations {
   String get createSubmit => 'Mamorona';
 
   @override
-  String get moreAccount => 'Compte';
+  String get moreAccount => 'Kaonty';
 
   @override
-  String get accountSignOut => 'Se déconnecter';
+  String get accountSignOut => 'Hivoaka';
 
   @override
-  String get accountSignOutQuestion => 'Se déconnecter de ce téléphone ?';
+  String get accountSignOutQuestion => 'Hivoaka amin\'ity finday ity ve ?';
 
   @override
   String accountSignOutPending(int count) {
-    return '$count enregistrements ne sont pas encore envoyés. Ils restent sur ce téléphone et partiront à la prochaine synchronisation.';
+    return 'Firaketana $count mbola tsy lasa. Mijanona ao amin\'ity finday ity izy ireo ary handeha amin\'ny fampifanarahana manaraka.';
   }
 
   @override
-  String get accountRole => 'Rôle';
+  String get accountRole => 'Anjara';
 
   @override
-  String get roleMember => 'Membre';
+  String get roleMember => 'Mpikambana';
 
   @override
-  String get roleWorker => 'Ouvrier';
+  String get roleWorker => 'Mpiasa';
 
   @override
-  String get roleAdmin => 'Administrateur';
+  String get roleAdmin => 'Mpitantana';
 
   @override
-  String get roleSales => 'Ventes';
+  String get roleSales => 'Fivarotana';
 
   @override
-  String get moreSync => 'Synchronisation';
+  String get moreSync => 'Fampifanarahana';
 
   @override
   String syncLast(String at) {
-    return 'Dernière synchronisation : $at';
+    return 'Fampifanarahana farany : $at';
   }
 
   @override
-  String get syncNever => 'Jamais synchronisé';
+  String get syncNever => 'Mbola tsy nampifanarahana mihitsy';
 
   @override
   String syncPending(int count) {
-    return 'En attente d\'envoi : $count';
+    return 'Miandry handefasana : $count';
   }
 
   @override
   String syncRejectedCount(int count) {
-    return 'Refusés : $count';
+    return 'Nolavina : $count';
   }
 
   @override
   String get syncNow => 'Alefaso';
 
   @override
-  String get syncRetry => 'Réessayer les refusés';
+  String get syncRetry => 'Andramo indray ireo nolavina';
 
   @override
   String get syncRelogin => 'Hiditra indray';
 
   @override
-  String get syncLink => 'Créer le compte de l\'association';
+  String get syncLink => 'Hamorona ny kaontin\'ny fikambanana';
 
   @override
-  String get syncStateRunning => 'Synchronisation en cours…';
+  String get syncStateRunning => 'Am-pampifanarahana…';
 
   @override
   String get syncStateOffline =>
-      'Pas de connexion : les données restent sur le téléphone.';
+      'Tsy misy fifandraisana : mijanona ao amin\'ny finday ny angona.';
 
   @override
   String get syncStateSignedOut =>
-      'Session terminée : reconnectez-vous pour envoyer les données.';
+      'Tapitra ny fidirana : midira indray mba handefasana ny angona.';
 
   @override
-  String get syncStateUnlinked => 'Ce téléphone n\'est relié à aucun compte.';
+  String get syncStateUnlinked =>
+      'Tsy mifandray amin\'ny kaonty ity finday ity.';
 
   @override
   String get syncStateNotConfigured =>
-      'Aucun serveur dans cette version : les données restent sur le téléphone.';
+      'Tsy misy mpizara amin\'ity dikan-teny ity : mijanona ao amin\'ny finday ny angona.';
 
   @override
   String syncStateFailed(String error) {
-    return 'La synchronisation a échoué : $error';
+    return 'Tsy nahomby ny fampifanarahana : $error';
   }
 
   @override
-  String get rejectRole => 'Votre rôle ne permet pas cet enregistrement';
+  String get rejectRole =>
+      'Tsy mahazo manao io firaketana io ianao noho ny anjaranao';
 
   @override
-  String get rejectLastAdmin => 'Il doit rester au moins un administrateur';
+  String get rejectLastAdmin =>
+      'Tsy maintsy misy mpitantana iray farafahakeliny';
 
   @override
   String rejectOther(String reason) {
-    return 'Refusé : $reason';
+    return 'Nolavina : $reason';
   }
 
   @override
-  String get tableDailyLogs => 'Journal';
+  String get tableDailyLogs => 'Diary';
 
   @override
-  String get tableWaterReadings => 'Relevé d\'eau';
+  String get tableWaterReadings => 'Fandrefesana rano';
 
   @override
-  String get tableSamples => 'Échantillonnage';
+  String get tableSamples => 'Fandanjana santionany';
 
   @override
-  String get tableObservations => 'Observation';
+  String get tableObservations => 'Fanamarihana';
 
   @override
-  String get tableHealthEvents => 'Problème de santé';
+  String get tableHealthEvents => 'Olana ara-pahasalamana';
 
   @override
-  String get tableTreatments => 'Traitement';
+  String get tableTreatments => 'Fitsaboana';
 
   @override
-  String get tableStockings => 'Empoissonnement';
+  String get tableStockings => 'Fametrahana trondro';
 
   @override
-  String get tableTransfers => 'Transfert';
+  String get tableTransfers => 'Famindrana';
 
   @override
-  String get tablePonds => 'Étang';
+  String get tablePonds => 'Dobo';
 
   @override
-  String get tableBatches => 'Lot';
+  String get tableBatches => 'Andiany';
 
   @override
-  String get tablePeople => 'Personne';
+  String get tablePeople => 'Olona';
 
   @override
-  String get tableSites => 'Site';
+  String get tableSites => 'Toerana';
 
   @override
-  String get tableVisits => 'Visite';
+  String get tableVisits => 'Fitsidihana';
 
   @override
-  String get tableGroups => 'Branche';
+  String get tableGroups => 'Sampana';
 
   @override
-  String get tableMembers => 'Membre';
+  String get tableMembers => 'Mpikambana';
 
   @override
-  String get tableSettingOverrides => 'Réglage';
+  String get tableSettingOverrides => 'Fikirana';
 
   @override
-  String get backupExport => 'Exporter une sauvegarde';
+  String get backupExport => 'Hamoaka tahiry';
 
   @override
   String get backupImport => 'Hampiditra tahiry';
@@ -1116,7 +1126,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get backupOtherAssociation => 'An\'ny fikambanana hafa io tahiry io';
 
   @override
-  String get moreAdmin => 'Administration';
+  String get moreAdmin => 'Fitantanana';
 
   @override
   String get moreLanguage => 'Fiteny';
@@ -1128,47 +1138,47 @@ class AppLocalizationsMg extends AppLocalizations {
   String get languageMalagasy => 'Malagasy';
 
   @override
-  String get adminMembers => 'Membres';
+  String get adminMembers => 'Mpikambana';
 
   @override
-  String get adminGroups => 'Branches';
+  String get adminGroups => 'Sampana';
 
   @override
-  String get memberNew => 'Nouveau compte';
+  String get memberNew => 'Kaonty vaovao';
 
   @override
-  String get memberName => 'Nom';
+  String get memberName => 'Anarana';
 
   @override
-  String get memberGroup => 'Branche';
+  String get memberGroup => 'Sampana';
 
   @override
-  String get memberNoGroup => 'Sans branche';
+  String get memberNoGroup => 'Tsy misy sampana';
 
   @override
-  String get memberActive => 'Actif';
+  String get memberActive => 'Mavitrika';
 
   @override
-  String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';
+  String get memberPerson => 'Taratasin\'ny mpiasa (tsy voatery)';
 
   @override
-  String get memberNone => 'Aucune';
+  String get memberNone => 'Tsy misy';
 
   @override
-  String get memberInactive => 'Inactif';
+  String get memberInactive => 'Tsy mavitrika';
 
   @override
-  String get groupName => 'Nom de la branche';
+  String get groupName => 'Anaran\'ny sampana';
 
   @override
-  String get groupsEmpty => 'Aucune branche';
+  String get groupsEmpty => 'Tsy misy sampana';
 
   @override
-  String get adminSettings => 'Réglages';
+  String get adminSettings => 'Fikirana';
 
   @override
   String get settingsIntro =>
-      'Laissez vide pour garder la valeur du dossier d\'élevage.';
+      'Avelao ho foana raha hitazona ny sandan\'ny boky fiompiana.';
 
   @override
   String get settingMin => 'min';
@@ -1178,185 +1188,197 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String settingDefault(String value) {
-    return 'Dossier : $value';
+    return 'Boky : $value';
   }
 
   @override
-  String get settingsSaved => 'Réglages enregistrés';
+  String get settingsSaved => 'Voatahiry ny fikirana';
 
   @override
-  String get cfgFryMaxG => 'Fin de l\'alevinage (g)';
+  String get cfgFryMaxG => 'Fiafaran\'ny dingana zana-trondro (g)';
 
   @override
-  String get cfgPregrowMaxG => 'Fin du prégrossissement (g)';
+  String get cfgPregrowMaxG => 'Fiafaran\'ny fampitomboana voalohany (g)';
 
   @override
-  String get cfgGrowoutMaxG => 'Fin du grossissement (g)';
+  String get cfgGrowoutMaxG => 'Fiafaran\'ny fampitomboana (g)';
 
   @override
-  String get cfgRationRateFry => 'Ration en alevinage (part de la biomasse)';
+  String get cfgRationRateFry =>
+      'Anjara sakafo amin\'ny zana-trondro (ampahany amin\'ny lanja)';
 
   @override
   String get cfgRationRatePregrow =>
-      'Ration en prégrossissement (part de la biomasse)';
+      'Anjara sakafo amin\'ny fampitomboana voalohany (ampahany amin\'ny lanja)';
 
   @override
   String get cfgRationRateGrowout =>
-      'Ration en grossissement (part de la biomasse)';
+      'Anjara sakafo amin\'ny fampitomboana (ampahany amin\'ny lanja)';
 
   @override
   String get cfgRationRateFinishing =>
-      'Ration en finition (part de la biomasse)';
+      'Anjara sakafo amin\'ny famaranana (ampahany amin\'ny lanja)';
 
   @override
-  String get cfgMaxRationRate => 'Ration maximale (part de la biomasse)';
+  String get cfgMaxRationRate =>
+      'Anjara sakafo ambony indrindra (ampahany amin\'ny lanja)';
 
   @override
-  String get cfgLeftoverReduction => 'Baisse après des restes (part)';
+  String get cfgLeftoverReduction => 'Fihenana raha misy sisa (ampahany)';
 
   @override
-  String get cfgAteFastIncrease => 'Hausse si tout est mangé vite (part)';
+  String get cfgAteFastIncrease => 'Fitomboana raha lany haingana (ampahany)';
 
   @override
-  String get cfgDensityPerM2Earth => 'Densité en étang de terre (poissons/m²)';
+  String get cfgDensityPerM2Earth =>
+      'Hakitroky amin\'ny dobo tany (trondro/m²)';
 
   @override
-  String get cfgDensityPerM2Tank => 'Densité en bassin (poissons/m²)';
+  String get cfgDensityPerM2Tank =>
+      'Hakitroky amin\'ny fitoeran-drano (trondro/m²)';
 
   @override
-  String get cfgDensityPerM2Cage => 'Densité en cage (poissons/m²)';
+  String get cfgDensityPerM2Cage =>
+      'Hakitroky amin\'ny tranom-trondro (trondro/m²)';
 
   @override
-  String get cfgTemperatureC => 'Température (°C)';
+  String get cfgTemperatureC => 'Hafanana (°C)';
 
   @override
   String get cfgPh => 'pH';
 
   @override
-  String get cfgMinOxygenMgL => 'Oxygène minimum (mg/L)';
+  String get cfgMinOxygenMgL => 'Oksizena farany ambany (mg/L)';
 
   @override
   String get cfgWaterRenewalPctPerWeek =>
-      'Renouvellement de l\'eau (% par semaine)';
+      'Fanavaozana rano (% isan-kerinandro)';
 
   @override
-  String get cfgSampleIntervalDays => 'Jours entre deux échantillonnages';
+  String get cfgSampleIntervalDays => 'Andro elanelan\'ny fandanjana roa';
 
   @override
-  String get cfgSampleMinFish => 'Poissons pesés, au moins';
+  String get cfgSampleMinFish => 'Trondro lanjaina, farafahakeliny';
 
   @override
-  String get cfgSampleMaxFish => 'Poissons pesés, au plus';
+  String get cfgSampleMaxFish => 'Trondro lanjaina, farafahabetsany';
 
   @override
-  String get cfgWaterCheckIntervalDays => 'Jours entre deux relevés d\'eau';
+  String get cfgWaterCheckIntervalDays =>
+      'Andro elanelan\'ny fandrefesana rano roa';
 
   @override
-  String get cfgFcrTarget => 'IC visé';
+  String get cfgFcrTarget => 'IC kendrena';
 
   @override
-  String get cfgFeedAgeWarnDays => 'Aliment vieux : alerte (jours)';
+  String get cfgFeedAgeWarnDays =>
+      'Sakafo efa antitra : fampitandremana (andro)';
 
   @override
-  String get cfgFeedAgeDangerDays => 'Aliment trop vieux (jours)';
+  String get cfgFeedAgeDangerDays => 'Sakafo antitra loatra (andro)';
 
   @override
-  String get cfgLowStockDays => 'Stock bas (jours restants)';
+  String get cfgLowStockDays => 'Tahiry ambany (andro sisa)';
 
   @override
-  String get cfgFeedUsageDays => 'Consommation moyenne sur (jours)';
+  String get cfgFeedUsageDays => 'Fanjifana salanisa mandritra ny (andro)';
 
   @override
-  String get cfgMortalitySpikeShare => 'Pic de mortalité : part des poissons';
+  String get cfgMortalitySpikeShare =>
+      'Fahafatesana tampoka : ampahan\'ny trondro';
 
   @override
   String get cfgMortalitySpikeMultiplier =>
-      'Pic de mortalité : fois la moyenne';
+      'Fahafatesana tampoka : heny noho ny salanisa';
 
   @override
-  String get cfgMortalitySpikeMinDeaths => 'Pic de mortalité : morts au moins';
+  String get cfgMortalitySpikeMinDeaths =>
+      'Fahafatesana tampoka : maty farafahakeliny';
 
   @override
-  String get cfgMortalityTrailingDays => 'Pic de mortalité : jours de moyenne';
+  String get cfgMortalityTrailingDays =>
+      'Fahafatesana tampoka : andro ikajiana ny salanisa';
 
   @override
-  String get cfgWarningSignLookbackDays => 'Signes d\'alerte récents (jours)';
+  String get cfgWarningSignLookbackDays =>
+      'Famantarana loza vao haingana (andro)';
 
   @override
-  String get cfgMortalityLookbackDays => 'Pic de mortalité affiché (jours)';
+  String get cfgMortalityLookbackDays => 'Fahafatesana tampoka aseho (andro)';
 
   @override
   String get cfgStopFeedingSignDays =>
-      'Ne pas nourrir après des signes de stress (jours)';
+      'Aza manome sakafo aorian\'ny famantarana tebiteby (andro)';
 
   @override
-  String get cfgQuarantineDays => 'Quarantaine (jours)';
+  String get cfgQuarantineDays => 'Fitokanana (andro)';
 
   @override
-  String get cfgDryingDays => 'Assèchement (jours)';
+  String get cfgDryingDays => 'Fanamainana (andro)';
 
   @override
-  String get cfgRestDays => 'Repos après remplissage (jours)';
+  String get cfgRestDays => 'Fialan-tsasatra aorian\'ny famenoana (andro)';
 
   @override
-  String get cfgPreHarvestFastHours => 'Jeûne avant la récolte (heures)';
+  String get cfgPreHarvestFastHours =>
+      'Tsy fanomezan-tsakafo alohan\'ny fijonoana (ora)';
 
   @override
-  String get cfgHarvestHour => 'Heure de début de la récolte';
+  String get cfgHarvestHour => 'Ora anombohan\'ny fijonoana';
 
   @override
-  String get cfgLimeKgPerM2 => 'Chaux (kg/m²)';
+  String get cfgLimeKgPerM2 => 'Sokay (kg/m²)';
 
   @override
-  String get cfgManureKgPerM2 => 'Fumier (kg/m²)';
+  String get cfgManureKgPerM2 => 'Zezika (kg/m²)';
 
   @override
-  String get cfgPondSurfaceM2 => 'Surface d\'un étang (m²)';
+  String get cfgPondSurfaceM2 => 'Velaran\'ny dobo iray (m²)';
 
   @override
-  String get cfgPondLengthWidthRatio => 'Rapport longueur / largeur';
+  String get cfgPondLengthWidthRatio => 'Fifandanjan\'ny halavany sy ny sakany';
 
   @override
-  String get cfgMinDepthM => 'Profondeur minimale (m)';
+  String get cfgMinDepthM => 'Halalina farany ambany (m)';
 
   @override
-  String get cfgStockingWeightG => 'Poids à l\'empoissonnement (g)';
+  String get cfgStockingWeightG => 'Lanja amin\'ny fametrahana (g)';
 
   @override
-  String get cfgAcclimatisationMinutes => 'Acclimatation (minutes)';
+  String get cfgAcclimatisationMinutes => 'Fampahazarana (minitra)';
 
   @override
-  String get cfgSectionPhases => 'Phases';
+  String get cfgSectionPhases => 'Dingana';
 
   @override
-  String get cfgSectionFeeding => 'Alimentation';
+  String get cfgSectionFeeding => 'Fanomezan-tsakafo';
 
   @override
-  String get cfgSectionPonds => 'Étangs';
+  String get cfgSectionPonds => 'Dobo';
 
   @override
-  String get cfgSectionWaterQuality => 'Qualité de l\'eau';
+  String get cfgSectionWaterQuality => 'Kalitaon\'ny rano';
 
   @override
-  String get cfgSectionSampling => 'Échantillonnage';
+  String get cfgSectionSampling => 'Fandanjana santionany';
 
   @override
-  String get cfgSectionAlertRules => 'Alertes';
+  String get cfgSectionAlertRules => 'Fampitandremana';
 
   @override
-  String get cfgSectionFormulas => 'Calculs';
+  String get cfgSectionFormulas => 'Kajy';
 
   @override
-  String get cfgSectionFeedStock => 'Stock d\'aliment';
+  String get cfgSectionFeedStock => 'Tahiry sakafo';
 
   @override
-  String get cfgSectionSpeciesAndFingerlings => 'Alevins';
+  String get cfgSectionSpeciesAndFingerlings => 'Zana-trondro';
 
   @override
-  String get cfgSectionPondPreparation => 'Préparation des étangs';
+  String get cfgSectionPondPreparation => 'Fanomanana ny dobo';
 
   @override
-  String get cfgSectionHarvestAndDelivery => 'Récolte';
+  String get cfgSectionHarvestAndDelivery => 'Fijonoana';
 
   @override
   String get takeoverTitle => 'Haverina ity telefaonina ity';
@@ -1374,155 +1396,155 @@ class AppLocalizationsMg extends AppLocalizations {
   String get errorNotAdmin => 'Tsy mpitantana io kaonty io.';
 
   @override
-  String get tabAlerts => 'Alertes';
+  String get tabAlerts => 'Fampitandremana';
 
   @override
-  String get alertsEmpty => 'Aucune alerte, rien à faire';
+  String get alertsEmpty => 'Tsy misy fampitandremana, tsy misy atao';
 
   @override
-  String get alertsAll => 'Tous';
+  String get alertsAll => 'Rehetra';
 
   @override
   String alertWaterLow(String param, String value) {
-    return '$param trop bas : $value';
+    return '$param ambany loatra : $value';
   }
 
   @override
   String alertWaterHigh(String param, String value) {
-    return '$param trop haut : $value';
+    return '$param ambony loatra : $value';
   }
 
   @override
   String get alertWaterColour =>
-      'Eau trop verte ou trouble : renouveler l\'eau';
+      'Maitso loatra na manjavozavo ny rano : ovay ny rano';
 
   @override
   String alertFcrWorsening(String batch) {
-    return 'Lot $batch : IC en hausse deux fois de suite';
+    return 'Andiany $batch : niakatra indroa nisesy ny IC';
   }
 
   @override
   String alertGrowthStalled(String batch) {
-    return 'Lot $batch : pas de croissance depuis le dernier échantillonnage';
+    return 'Andiany $batch : tsy nitombo hatramin\'ny fandanjana farany';
   }
 
   @override
   String alertMortalitySpike(String deaths, String date) {
-    return '$deaths morts le $date';
+    return 'Maty $deaths tamin\'ny $date';
   }
 
   @override
   String alertWarningSignSeen(String signs) {
-    return 'Signes d\'alerte : $signs';
+    return 'Famantarana loza : $signs';
   }
 
   @override
   String alertPhaseChange(String batch, String phase) {
-    return 'Lot $batch : passe en $phase, changer d\'aliment et de nombre de repas';
+    return 'Andiany $batch : miditra amin\'ny $phase, ovay ny sakafo sy ny isan\'ny fanomezana';
   }
 
   @override
   String alertSampleDue(String batch, String days) {
-    return 'Lot $batch : échantillonnage à faire ($days jours)';
+    return 'Andiany $batch : tokony handanjana ($days andro)';
   }
 
   @override
-  String get alertWaterCheckDue => 'Relevé d\'eau à faire';
+  String get alertWaterCheckDue => 'Tokony handrefesana ny rano';
 
   @override
   String alertQuarantineEnding(String batch, String days, String recommended) {
-    return 'Lot $batch : $days jours de quarantaine, transfert conseillé avant le jour $recommended';
+    return 'Andiany $batch : $days andro fitokanana, tsara afindra alohan\'ny andro $recommended';
   }
 
   @override
   String alertPreHarvestFast(String batch) {
-    return 'Lot $batch : jeûne avant la récolte, ne pas nourrir';
+    return 'Andiany $batch : tsy fanomezan-tsakafo alohan\'ny fijonoana, aza omena sakafo';
   }
 
   @override
   String alertPreHarvestFed(String batch) {
-    return 'Lot $batch : jeûne avant la récolte, mais de l\'aliment a été donné';
+    return 'Andiany $batch : tsy fanomezan-tsakafo alohan\'ny fijonoana, nefa nisy sakafo nomena';
   }
 
   @override
   String alertFeedStockLow(String days) {
-    return 'Stock d\'aliment : $days jours restants';
+    return 'Tahiry sakafo : andro $days sisa';
   }
 
   @override
   String get alertFeedOld =>
-      'Un lot d\'aliment vieillit : l\'utiliser en priorité';
+      'Efa antitra ny andiana sakafo iray : ampiasao aloha';
 
   @override
   String get alertFeedExpired =>
-      'Un lot d\'aliment est trop vieux : ne pas l\'utiliser';
+      'Antitra loatra ny andiana sakafo iray : aza ampiasaina';
 
   @override
-  String get moreFeed => 'Aliment';
+  String get moreFeed => 'Sakafo';
 
   @override
-  String get harvestAction => 'Récolter';
+  String get harvestAction => 'Hanjono';
 
   @override
   String get harvestHasSales =>
-      'Supprimez d\'abord les ventes de cette récolte';
+      'Fafao aloha ny fivarotana tamin\'ity fijonoana ity';
 
   @override
   String harvestEditTitle(String batch) {
-    return 'Corriger la récolte $batch';
+    return 'Hanitsy ny fijonoana $batch';
   }
 
   @override
-  String get feedDeleteDelivery => 'Supprimer la livraison';
+  String get feedDeleteDelivery => 'Hamafa ny fanaterana';
 
   @override
-  String get sellAction => 'Vendre';
+  String get sellAction => 'Hivarotra';
 
   @override
   String harvestTitle(String batch) {
-    return 'Récolte $batch';
+    return 'Fijonoana $batch';
   }
 
   @override
-  String get harvestPond => 'Étang';
+  String get harvestPond => 'Dobo';
 
   @override
-  String get harvestDate => 'Date de récolte';
+  String get harvestDate => 'Daty nanjonoana';
 
   @override
-  String get harvestCount => 'Nombre de poissons';
+  String get harvestCount => 'Isan\'ny trondro';
 
   @override
-  String get harvestWeight => 'Poids total';
+  String get harvestWeight => 'Lanja iraisana';
 
   @override
-  String get harvestPartial => 'Partielle';
+  String get harvestPartial => 'Ampahany';
 
   @override
-  String get harvestFinal => 'Finale (l\'étang est vidé)';
+  String get harvestFinal => 'Farany (foana ny dobo)';
 
   @override
   String harvestEstimate(String count) {
-    return 'Estimé dans l\'étang : $count poissons';
+    return 'Tombana ao amin\'ny dobo : trondro $count';
   }
 
   @override
   String harvestMissing(String count) {
-    return '$count poissons non retrouvés (prédateurs, vol ou erreur de comptage)';
+    return 'Trondro $count tsy hita (mpihaza, halatra na diso fanisana)';
   }
 
   @override
   String get harvestNoPond =>
-      'Aucun étang de ce lot ne peut être récolté : il est vide ou isolé';
+      'Tsy misy dobo ahafahana manjono ity andiany ity : foana na natokana';
 
   @override
-  String get harvestsHeading => 'Récoltes et ventes';
+  String get harvestsHeading => 'Fijonoana sy fivarotana';
 
   @override
-  String get harvestKindPartial => 'Récolte partielle';
+  String get harvestKindPartial => 'Fijonoana ampahany';
 
   @override
-  String get harvestKindFinal => 'Récolte finale';
+  String get harvestKindFinal => 'Fijonoana farany';
 
   @override
   String harvestLine(
@@ -1532,7 +1554,7 @@ class AppLocalizationsMg extends AppLocalizations {
     String count,
     String kg,
   ) {
-    return '$date · $kind $pond : $count poissons · $kg';
+    return '$date · $kind $pond : trondro $count · $kg';
   }
 
   @override
@@ -1542,11 +1564,11 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String saleTitle(String batch) {
-    return 'Vente $batch';
+    return 'Fivarotana $batch';
   }
 
   @override
-  String get saleHarvest => 'Récolte';
+  String get saleHarvest => 'Fijonoana';
 
   @override
   String saleHarvestOption(String date, String pond, String kg) {
@@ -1554,379 +1576,381 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get saleCustomer => 'Client';
+  String get saleCustomer => 'Mpanjifa';
 
   @override
-  String get saleNewCustomer => 'Nouveau client';
+  String get saleNewCustomer => 'Mpanjifa vaovao';
 
   @override
-  String get saleWeight => 'Poids vendu';
+  String get saleWeight => 'Lanja namidy';
 
   @override
-  String get saleForm => 'Forme';
+  String get saleForm => 'Endrika';
 
   @override
-  String get saleDate => 'Date de vente';
+  String get saleDate => 'Daty nivarotana';
 
   @override
-  String get saleNote => 'Bon de livraison (facultatif)';
+  String get saleNote => 'Taratasy fanaterana (tsy voatery)';
 
   @override
   String saleOverHarvest(String kg) {
-    return 'Plus que le poids récolté pas encore vendu ($kg)';
+    return 'Mihoatra ny lanja nojonoina mbola tsy lafo ($kg)';
   }
 
   @override
-  String get formLive => 'Vivant';
+  String get formLive => 'Velona';
 
   @override
-  String get formFresh => 'Frais';
+  String get formFresh => 'Vaovao';
 
   @override
-  String get formFrozen => 'Congelé';
+  String get formFrozen => 'Nangatsiahina';
 
   @override
-  String get formSmoked => 'Fumé';
+  String get formSmoked => 'Nalaina setroka';
 
   @override
-  String get formDried => 'Séché';
+  String get formDried => 'Maina';
 
   @override
-  String get moreSales => 'Ventes';
+  String get moreSales => 'Fivarotana';
 
   @override
-  String get traceTitle => 'Fiche de traçabilité';
+  String get traceTitle => 'Taratasy fanarahana ny andiany';
 
   @override
   String traceBatch(String code) {
-    return 'Lot $code';
+    return 'Andiany $code';
   }
 
   @override
-  String get traceIdentity => 'Identité';
+  String get traceIdentity => 'Mombamomba';
 
   @override
-  String get tracePonds => 'Étangs';
+  String get tracePonds => 'Dobo';
 
   @override
-  String get traceTreatments => 'Traitements';
+  String get traceTreatments => 'Fitsaboana';
 
   @override
-  String get traceHarvests => 'Récoltes';
+  String get traceHarvests => 'Fijonoana';
 
   @override
-  String get traceSales => 'Ventes';
+  String get traceSales => 'Fivarotana';
 
   @override
-  String get traceResults => 'Bilan';
+  String get traceResults => 'Vokatra';
 
   @override
-  String get traceCycleFcr => 'IC du cycle';
+  String get traceCycleFcr => 'IC amin\'ny tsingerina';
 
   @override
-  String get traceCycleOngoing => 'cycle en cours';
+  String get traceCycleOngoing => 'mbola mandeha ny tsingerina';
 
   @override
-  String get traceSurvival => 'Survie';
+  String get traceSurvival => 'Velona tavela';
 
   @override
-  String get traceUnaccounted => 'Poissons non retrouvés';
+  String get traceUnaccounted => 'Trondro tsy hita';
 
   @override
-  String get traceFeed => 'Aliment donné';
+  String get traceFeed => 'Sakafo nomena';
 
   @override
-  String get traceStocked => 'Mis en étang';
+  String get traceStocked => 'Napetraka tao anaty dobo';
 
   @override
-  String get traceHarvested => 'Récolté';
+  String get traceHarvested => 'Nojonoina';
 
   @override
-  String get traceLive => 'Encore en étang';
+  String get traceLive => 'Mbola ao anaty dobo';
 
   @override
   String traceAdvisedBy(String who) {
-    return 'conseillé par $who';
+    return 'nanoroan\'i $who hevitra';
   }
 
   @override
-  String get salesTitle => 'Récoltes et ventes';
+  String get salesTitle => 'Fijonoana sy fivarotana';
 
   @override
-  String get salesNone => 'Aucune récolte enregistrée';
+  String get salesNone => 'Tsy misy fijonoana voasoratra';
 
   @override
-  String get customersTitle => 'Clients';
+  String get customersTitle => 'Mpanjifa';
 
   @override
-  String get customerNew => 'Nouveau client';
+  String get customerNew => 'Mpanjifa vaovao';
 
   @override
-  String get customerEdit => 'Client';
+  String get customerEdit => 'Mpanjifa';
 
   @override
-  String get customerName => 'Nom';
+  String get customerName => 'Anarana';
 
   @override
-  String get customerType => 'Type';
+  String get customerType => 'Karazana';
 
   @override
-  String get customerContact => 'Contact (facultatif)';
+  String get customerContact => 'Fifandraisana (tsy voatery)';
 
   @override
-  String get customerArchive => 'Retirer de la liste';
+  String get customerArchive => 'Esory amin\'ny lisitra';
 
   @override
-  String get customersNone => 'Aucun client';
+  String get customersNone => 'Tsy misy mpanjifa';
 
   @override
-  String get custMarket => 'Marché';
+  String get custMarket => 'Tsena';
 
   @override
-  String get custRestaurant => 'Restaurant';
+  String get custRestaurant => 'Trano fisakafoanana';
 
   @override
-  String get custSupermarket => 'Supermarché';
+  String get custSupermarket => 'Fivarotana lehibe';
 
   @override
-  String get custExporter => 'Exportateur';
+  String get custExporter => 'Mpanondrana';
 
   @override
-  String get custIndividual => 'Particulier';
+  String get custIndividual => 'Olon-tsotra';
 
   @override
-  String get feedTitle => 'Stock d\'aliment';
+  String get feedTitle => 'Tahiry sakafo';
 
   @override
-  String get feedOnHand => 'En stock';
+  String get feedOnHand => 'Ao amin\'ny tahiry';
 
   @override
   String feedDaysLeft(String days) {
-    return '$days jours de stock';
+    return 'Tahiry ho an\'ny andro $days';
   }
 
   @override
-  String get feedNoUsage => 'Pas de consommation ces derniers jours';
+  String get feedNoUsage => 'Tsy nisy fanjifana tato ho ato';
 
   @override
   String feedOverdrawn(String kg) {
-    return 'Plus d\'aliment donné que livré : $kg';
+    return 'Sakafo nomena mihoatra noho ny natolotra : $kg';
   }
 
   @override
   String feedExpiredStock(String kg) {
-    return 'À ne pas utiliser : $kg';
+    return 'Tsy azo ampiasaina : $kg';
   }
 
   @override
-  String get feedNoLots => 'Aucune livraison enregistrée';
+  String get feedNoLots => 'Tsy misy fanaterana voasoratra';
 
   @override
   String feedLotMade(String date, String days) {
-    return 'Fabriqué le $date · $days jours';
+    return 'Natao tamin\'ny $date · $days andro';
   }
 
   @override
-  String get feedLotOld => 'À utiliser en priorité';
+  String get feedLotOld => 'Ampiasao aloha';
 
   @override
-  String get feedLotExpired => 'À ne pas utiliser';
+  String get feedLotExpired => 'Aza ampiasaina';
 
   @override
-  String get feedDeliver => 'Livraison';
+  String get feedDeliver => 'Fanaterana';
 
   @override
-  String get feedDeliveryTitle => 'Livraison d\'aliment';
+  String get feedDeliveryTitle => 'Fanaterana sakafo';
 
   @override
-  String get feedPhase => 'Aliment pour';
+  String get feedPhase => 'Sakafo ho an\'ny';
 
   @override
-  String get feedWeight => 'Poids livré';
+  String get feedWeight => 'Lanja natolotra';
 
   @override
-  String get feedMadeOn => 'Date de fabrication';
+  String get feedMadeOn => 'Daty nanamboarana';
 
   @override
-  String get feedDeliveredOn => 'Date de livraison';
+  String get feedDeliveredOn => 'Daty nanaterana';
 
   @override
-  String get feedPellet => 'Taille du granulé';
+  String get feedPellet => 'Haben\'ny voany';
 
   @override
-  String get feedProtein => 'Protéines';
+  String get feedProtein => 'Proteinina';
 
   @override
-  String get feedSupplier => 'Fournisseur';
+  String get feedSupplier => 'Mpamatsy';
 
   @override
-  String get feedLabel => 'Marque sur les sacs';
+  String get feedLabel => 'Marika eo amin\'ny gony';
 
   @override
-  String get feedDiscard => 'Jeter';
+  String get feedDiscard => 'Hanary';
 
   @override
-  String get feedDiscardTitle => 'Aliment jeté';
+  String get feedDiscardTitle => 'Sakafo nariana';
 
   @override
-  String get feedDiscardWeight => 'Poids jeté';
+  String get feedDiscardWeight => 'Lanja nariana';
 
   @override
-  String get feedDiscardReason => 'Pourquoi';
+  String get feedDiscardReason => 'Antony';
 
   @override
-  String get discardMould => 'Moisi';
+  String get discardMould => 'Bobongolo';
 
   @override
-  String get discardRancid => 'Rance';
+  String get discardRancid => 'Maimbo';
 
   @override
-  String get discardClumped => 'En grumeaux';
+  String get discardClumped => 'Nitambatra';
 
   @override
-  String get discardOther => 'Autre';
+  String get discardOther => 'Hafa';
 
   @override
-  String get feedLot => 'Lot d\'aliment';
+  String get feedLot => 'Andiana sakafo';
 
   @override
-  String get feedLotAuto => 'Le plus ancien (automatique)';
+  String get feedLotAuto => 'Ny tranainy indrindra (ho azy)';
 
   @override
   String get alertPrepDry =>
-      'Séchage fini ? Vérifier les fissures, puis noter l\'assèchement';
+      'Vita ve ny fanamainana ? Jereo ny triatra, avy eo soraty ny fanamainana';
 
   @override
-  String get alertPrepRest => 'Repos fini : l\'étang peut être déclaré prêt';
+  String get alertPrepRest =>
+      'Vita ny fialan-tsasatra : azo ambara ho vonona ny dobo';
 
   @override
-  String get prepButton => 'Préparation';
+  String get prepButton => 'Fanomanana';
 
   @override
   String prepTitle(String pond) {
-    return 'Préparation $pond';
+    return 'Fanomanana $pond';
   }
 
   @override
-  String get prepStepDrain => 'Vidange et curage';
+  String get prepStepDrain => 'Fanariana rano sy fanadiovana fotaka';
 
   @override
-  String get prepStepDry => 'Assèchement au soleil';
+  String get prepStepDry => 'Fanamainana amin\'ny masoandro';
 
   @override
-  String get prepStepTreat => 'Traitement (chaux vive ou chlore)';
+  String get prepStepTreat => 'Fitsaboana (sokay velona na klôro)';
 
   @override
-  String get prepStepFertilise => 'Fertilisation (fumier)';
+  String get prepStepFertilise => 'Fanomezana zezika';
 
   @override
-  String get prepStepFill => 'Remplissage par l\'entrée grillagée';
+  String get prepStepFill => 'Famenoana amin\'ny fidirana misy harato';
 
   @override
-  String get prepStepRest => 'Repos';
+  String get prepStepRest => 'Fialan-tsasatra';
 
   @override
-  String get prepDone => 'Fait';
+  String get prepDone => 'Vita';
 
   @override
   String prepDoneOn(String date) {
-    return 'Fait le $date';
+    return 'Vita tamin\'ny $date';
   }
 
   @override
   String prepDryUntil(String from, String to) {
-    return 'Séchage : du $from au $to';
+    return 'Fanamainana : $from ka hatramin\'ny $to';
   }
 
   @override
   String prepRestUntil(String date) {
-    return 'Repos jusqu\'au $date';
+    return 'Fialan-tsasatra hatramin\'ny $date';
   }
 
   @override
   String prepLimeDose(String range, String surface) {
-    return 'Chaux vive : $range pour $surface';
+    return 'Sokay velona : $range ho an\'ny $surface';
   }
 
   @override
   String prepManureDose(String range, String surface) {
-    return 'Fumier : $range pour $surface';
+    return 'Zezika : $range ho an\'ny $surface';
   }
 
   @override
   String get prepNoSurface =>
-      'Sans la surface de l\'étang, pas de dose : renseignez sa longueur et sa largeur';
+      'Raha tsy misy ny velaran\'ny dobo dia tsy misy fatra : asio ny halavany sy ny sakany';
 
   @override
-  String get prepMarkReady => 'Prêt à empoissonner';
+  String get prepMarkReady => 'Vonona hametrahana trondro';
 
   @override
   String prepSkipped(String steps) {
-    return 'Étapes non faites : $steps';
+    return 'Dingana tsy natao : $steps';
   }
 
   @override
   String prepRestShort(String date) {
-    return 'Le repos n\'est pas fini (jusqu\'au $date)';
+    return 'Tsy mbola vita ny fialan-tsasatra (hatramin\'ny $date)';
   }
 
   @override
-  String get prepReadyConfirm => 'Déclarer l\'étang prêt à empoissonner ?';
+  String get prepReadyConfirm =>
+      'Ambara ho vonona hametrahana trondro ve ny dobo ?';
 
   @override
-  String get prepProductQuicklime => 'Chaux vive';
+  String get prepProductQuicklime => 'Sokay velona';
 
   @override
-  String get prepProductChlorine => 'Chlore';
+  String get prepProductChlorine => 'Klôro';
 
   @override
-  String get prepProductManure => 'Fumier';
+  String get prepProductManure => 'Zezika';
 
   @override
-  String get prepDoseUsed => 'Dose utilisée';
+  String get prepDoseUsed => 'Fatra nampiasaina';
 
   @override
-  String get doneDate => 'Date';
+  String get doneDate => 'Daty';
 
   @override
   String alertDuplicateLog(String date) {
-    return 'Deux journaux pour le $date : choisir lequel garder';
+    return 'Diary roa tamin\'ny $date : safidio izay hotazonina';
   }
 
   @override
-  String get duplicateKeep => 'Garder celui-ci';
+  String get duplicateKeep => 'Tazomy ity';
 
   @override
-  String get duplicateResolved => 'Résolu : un seul journal pour ce jour';
+  String get duplicateResolved =>
+      'Voavaha : diary iray monja ho an\'io andro io';
 
   @override
   String duplicateEnteredBy(String name) {
-    return 'Saisi par $name';
+    return 'Nosoratan\'i $name';
   }
 
   @override
   String duplicateObservedBy(String name) {
-    return 'Vu par $name';
+    return 'Hitan\'i $name';
   }
 
   @override
-  String get duplicateOtherPhone => 'un autre téléphone';
+  String get duplicateOtherPhone => 'finday hafa';
 
   @override
-  String get staleRecord =>
-      'Ce journal a déjà été changé sur un autre téléphone';
+  String get staleRecord => 'Efa novaina tamin\'ny finday hafa ity diary ity';
 
   @override
-  String get rationToday => 'Ration du jour';
+  String get rationToday => 'Sakafo anio';
 
   @override
   String lastWeighed(String days) {
-    return 'Dernière pesée : il y a $days j';
+    return 'Fandanjana farany : $days andro lasa izay';
   }
 
   @override
   String notSampledYet(String days) {
-    return 'Pas encore échantillonné, empoissonné il y a $days j';
+    return 'Mbola tsy nolanjaina, napetraka $days andro lasa izay';
   }
 
   @override
@@ -1936,23 +1960,23 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String survivalValue(String pct) {
-    return 'Survie : $pct %';
+    return 'Velona tavela : $pct %';
   }
 
   @override
-  String get chartWeight => 'Poids moyen (g)';
+  String get chartWeight => 'Lanja salanisa (g)';
 
   @override
-  String get chartDeaths => 'Morts par jour';
+  String get chartDeaths => 'Maty isan\'andro';
 
   @override
-  String get chartFcr => 'IC par période';
+  String get chartFcr => 'IC isaky ny vanim-potoana';
 
   @override
-  String get chartEmpty => 'Pas encore de données';
+  String get chartEmpty => 'Mbola tsy misy angona';
 
   @override
-  String get fcrStalled => 'pas de croissance';
+  String get fcrStalled => 'tsy mitombo';
 
   @override
   String get workerStopFeeding => 'Aza omena sakafo';
@@ -1977,22 +2001,22 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get tabReports => 'Rapports';
+  String get tabReports => 'Tatitra';
 
   @override
-  String get reportTitle => 'Rapport de visite';
+  String get reportTitle => 'Tatitry ny fitsidihana';
 
   @override
-  String get reportsEmpty => 'Aucun rapport pour l\'instant';
+  String get reportsEmpty => 'Mbola tsy misy tatitra';
 
   @override
-  String get reportDraft => 'Brouillon — à publier';
+  String get reportDraft => 'Drafitra — mbola havoaka';
 
   @override
-  String get reportPublish => 'Publier';
+  String get reportPublish => 'Havoaka';
 
   @override
-  String get reportShare => 'Partager';
+  String get reportShare => 'Hizara';
 
   @override
   String reportCardTitle(String date, String member) {
@@ -2001,99 +2025,100 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String reportPeriod(String from, String to) {
-    return 'Du $from au $to';
+    return 'Nanomboka ny $from ka hatramin\'ny $to';
   }
 
   @override
   String reportAuthor(String member) {
-    return 'Par $member';
+    return 'Nataon\'i $member';
   }
 
   @override
   String reportAuthorGroup(String member, String group) {
-    return 'Par $member ($group)';
+    return 'Nataon\'i $member ($group)';
   }
 
   @override
   String reportPublishedOn(String date) {
-    return 'Publié le $date';
+    return 'Navoaka tamin\'ny $date';
   }
 
   @override
   String get reportUpdateApp =>
-      'Mettez l\'application à jour pour lire ce rapport.';
+      'Havaozy ny fampiharana mba hamakiana ity tatitra ity.';
 
   @override
-  String get reportSummary => 'Résumé';
+  String get reportSummary => 'Famintinana';
 
   @override
-  String get reportAlerts => 'Alertes';
+  String get reportAlerts => 'Fampitandremana';
 
   @override
-  String get reportHealth => 'Santé';
+  String get reportHealth => 'Fahasalamana';
 
   @override
-  String get reportWater => 'Eau';
+  String get reportWater => 'Rano';
 
   @override
-  String get reportGrowth => 'Croissance';
+  String get reportGrowth => 'Fitomboana';
 
   @override
-  String get reportFeed => 'Aliment';
+  String get reportFeed => 'Sakafo';
 
   @override
-  String get reportNext => 'À venir';
+  String get reportNext => 'Ho avy';
 
   @override
-  String get reportObservations => 'Observations et photos';
+  String get reportObservations => 'Fanamarihana sy sary';
 
   @override
-  String get reportNothing => 'Rien à signaler';
+  String get reportNothing => 'Tsy misy holazaina';
 
   @override
-  String get reportNoSummary => 'Pas de résumé';
+  String get reportNoSummary => 'Tsy misy famintinana';
 
   @override
-  String get reportNoReading => 'Aucun relevé';
+  String get reportNoReading => 'Tsy misy fandrefesana';
 
   @override
-  String get reportNoFish => 'Aucun poisson en étang';
+  String get reportNoFish => 'Tsy misy trondro anaty dobo';
 
   @override
-  String get reportNoFeed => 'Aucun aliment noté sur la période';
+  String get reportNoFeed =>
+      'Tsy nisy sakafo voasoratra nandritra io fotoana io';
 
   @override
   String get reportFeedStockLater =>
-      'Stock d\'aliment : non suivi (aucune livraison enregistrée)';
+      'Tahiry sakafo : tsy arahina (tsy misy fanaterana voasoratra)';
 
   @override
   String reportFeedOnHand(String kg, String days) {
-    return 'En stock : $kg, $days jours de stock';
+    return 'Ao amin\'ny tahiry : $kg, tahiry ho an\'ny andro $days';
   }
 
   @override
   String reportFeedOnHandNoUsage(String kg) {
-    return 'En stock : $kg';
+    return 'Ao amin\'ny tahiry : $kg';
   }
 
   @override
   String reportFeedLot(String lot, String kg, String date) {
-    return '$lot · $kg · fabriqué le $date';
+    return '$lot · $kg · natao tamin\'ny $date';
   }
 
   @override
   String reportNextDry(String pond) {
-    return 'Séchage de $pond fini ?';
+    return 'Vita ve ny fanamainana ny $pond ?';
   }
 
   @override
   String reportNextRest(String pond) {
-    return 'Repos de $pond fini : prêt à empoissonner';
+    return 'Vita ny fialan-tsasatry ny $pond : vonona hametrahana trondro';
   }
 
   @override
   String reportDeaths(String count) {
-    return '$count morts';
+    return 'Maty $count';
   }
 
   @override
@@ -2105,7 +2130,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get reportListSeparator => ' · ';
 
   @override
-  String get reportUnknownPerson => 'inconnu';
+  String get reportUnknownPerson => 'tsy fantatra';
 
   @override
   String reportSigns(String date, String signs) {
@@ -2124,92 +2149,93 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String reportReadingOn(String date) {
-    return 'Relevé du $date';
+    return 'Fandrefesana tamin\'ny $date';
   }
 
   @override
   String reportGrowthLine(String batch, String weight, String date) {
-    return '$batch · $weight (pesé le $date)';
+    return '$batch · $weight (nolanjaina tamin\'ny $date)';
   }
 
   @override
-  String get reportBiomass => 'Biomasse';
+  String get reportBiomass => 'Lanjan\'ny trondro rehetra';
 
   @override
-  String get reportFish => 'Poissons';
+  String get reportFish => 'Trondro';
 
   @override
-  String get reportFcrShared => 'bassin partagé';
+  String get reportFcrShared => 'dobo iombonana';
 
   @override
-  String get reportFcrNoSample => 'pas encore pesé';
+  String get reportFcrNoSample => 'mbola tsy nolanjaina';
 
   @override
-  String get reportTrendWorse => 'en hausse';
+  String get reportTrendWorse => 'miakatra';
 
   @override
-  String get reportTrendBetter => 'en baisse';
+  String get reportTrendBetter => 'midina';
 
   @override
-  String get reportTrendSame => 'stable';
+  String get reportTrendSame => 'tsy miova';
 
   @override
-  String get reportFeedTotal => 'Total';
+  String get reportFeedTotal => 'Totaly';
 
   @override
   String reportNextSample(String batch) {
-    return 'Pesée de $batch';
+    return 'Fandanjana ny $batch';
   }
 
   @override
   String reportNextHarvest(String batch) {
-    return 'Récolte de $batch';
+    return 'Fijonoana ny $batch';
   }
 
   @override
   String reportNextQuarantine(String batch) {
-    return 'Fin de quarantaine de $batch';
+    return 'Fiafaran\'ny fitokanana ny $batch';
   }
 
   @override
   String reportAllOk(String items) {
-    return 'En ordre : $items';
+    return 'Milamina : $items';
   }
 
   @override
-  String get photoAdd => 'Ajouter une photo';
+  String get photoAdd => 'Hanampy sary';
 
   @override
-  String get photoUpload => 'Envoyer au serveur';
+  String get photoUpload => 'Halefa any amin\'ny mpizara';
 
   @override
-  String get photoDelete => 'Supprimer la photo';
+  String get photoDelete => 'Hamafa ny sary';
 
   @override
   String get photoFailed =>
-      'La photo n\'a pas pu être prise. L\'enregistrement se fait sans elle.';
+      'Tsy azo nalaina ny sary. Voatahiry tsy misy azy ny firaketana.';
 
   @override
-  String get photoUnavailable => 'Photo pas encore disponible';
+  String get photoUnavailable => 'Mbola tsy misy ny sary';
 
   @override
   String syncPhotosWaiting(int count) {
-    return 'Photos en attente d\'envoi : $count';
+    return 'Sary miandry handefasana : $count';
   }
 
   @override
   String get syncPhotoCap =>
-      'Limite de photos atteinte : un administrateur peut la relever dans Réglages.';
+      'Tratra ny fetran\'ny sary : afaka mampiakatra azy ao amin\'ny Fikirana ny mpitantana.';
 
   @override
-  String get settingsPhotos => 'Photos';
+  String get settingsPhotos => 'Sary';
 
   @override
-  String get settingPhotoUploadCap => 'Photos envoyées au serveur, au plus';
+  String get settingPhotoUploadCap =>
+      'Sary alefa any amin\'ny mpizara, farafahabetsany';
 
   @override
   String get photoDeleteConfirm =>
-      'Supprimer cette photo ? Elle sera effacée de ce téléphone.';
+      'Hofafana ve ity sary ity ? Ho voafafa amin\'ity finday ity izy.';
 
   @override
   String get paperTitle => 'Taratasy isan\'andro';

@@ -65,3 +65,24 @@ TZ=UTC flutter test          # the same under UTC (farm dates must not shift)
 tool/server_test.sh          # against the local Supabase stack
 flutter test integration_test/m5_guidance_test.dart -d <device>  # on a device
 ```
+
+## Malagasy review
+
+Every string has a Malagasy text in `lib/l10n/app_mg.arb`. The texts are
+Claude's drafts until a Malagasy speaker reviews them, in
+`docs/mg-review.csv` (one row per string: key, description, French,
+Malagasy, ok).
+
+1. `dart run tool/mg_review.dart export` refreshes the sheet from the ARB
+   files. It keeps the `ok` marks, and clears a mark whose French text has
+   changed since.
+2. Open the sheet in LibreOffice or Google Sheets, with `;` as the separator
+   and UTF-8. Correct the `mg` column and write `ok` in the last column once
+   a row reads right. Save it as CSV with the same separator.
+3. `dart run tool/mg_review.dart import`, then `flutter gen-l10n`.
+
+Conventions: everyday Malagasy over loanwords (*trondro* fish, *sakafo*
+feed, *dobo* pond, *maty* deaths, *andiany* batch). Units, codes and
+numbers stay as they are. Text in braces (`{count}`, `{date}`) is filled in
+by the app and must stay as it is; `test/l10n/mg_complete_test.dart` fails
+if one goes missing.
