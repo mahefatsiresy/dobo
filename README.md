@@ -86,3 +86,8 @@ feed, *dobo* pond, *maty* deaths, *andiany* batch). Units, codes and
 numbers stay as they are. Text in braces (`{count}`, `{date}`) is filled in
 by the app and must stay as it is; `test/l10n/mg_complete_test.dart` fails
 if one goes missing.
+
+## Field test
+
+`docs/field-test.md` is the protocol for trying the worker screens and the
+paper sheet on the farm, and what to change afterwards.

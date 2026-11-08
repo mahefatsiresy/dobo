@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../domain/types.dart';
 
-/// Stand-in pictograms until the worker's artwork (M8).
+/// Stand-in pictograms until the worker's artwork, chosen from the field
+/// test (`docs/field-test.md`). The paper sheet draws the same glyphs from
+/// `pictogram_paths.dart`: change an icon here, then rerun
+/// `tool/pictogram_paths.py` so paper and screen stay alike.
 IconData warningSignIcon(WarningSign s) => switch (s) {
   WarningSign.noAppetite => Icons.no_food,
   WarningSign.surfaceSwimming => Icons.vertical_align_top,
