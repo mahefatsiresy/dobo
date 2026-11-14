@@ -1,11 +1,10 @@
--- Roles and row-level security (SPEC §3, plan Decision 6), and creating
--- an association (Task 2).
+-- Roles and row-level security (SPEC §3, plan Decision 6). Founding is
+-- tested in founding_test.sql.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(28);
+select plan(23);
 
 -- Association A: admin (b1), member (b2), worker (b3). Association B: b4.
--- b5 and b6 have accounts but no member row yet.
 insert into associations (id, name) values
   ('00000000-0000-0000-0000-0000000000a1', 'A'),
   ('00000000-0000-0000-0000-0000000000a2', 'B');
@@ -13,9 +12,7 @@ insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-0000000000b1', 'admin@a.mg'),
   ('00000000-0000-0000-0000-0000000000b2', 'member@a.mg'),
   ('00000000-0000-0000-0000-0000000000b3', 'rakoto@ouvriers.dobo.invalid'),
-  ('00000000-0000-0000-0000-0000000000b4', 'other@b.mg'),
-  ('00000000-0000-0000-0000-0000000000b5', 'founder@c.mg'),
-  ('00000000-0000-0000-0000-0000000000b6', 'late@d.mg');
+  ('00000000-0000-0000-0000-0000000000b4', 'other@b.mg');
 insert into members (id, association_id, entered_by, created_at_device,
   device_id, updated_at_device, name, role, is_admin, locale, user_id)
 values
@@ -196,40 +193,6 @@ select set_config('request.jwt.claims',
   '{"sub":"00000000-0000-0000-0000-0000000000b4"}', true);
 select is((select count(*)::int from ponds), 0, 'another association sees no pond of A');
 select is((select count(*)::int from daily_logs), 0, 'another association sees no log of A');
-
--- Creating an association ------------------------------------------------
-select set_config('request.jwt.claims',
-  '{"sub":"00000000-0000-0000-0000-0000000000b5"}', true);
-select lives_ok($$
-  select create_association('00000000-0000-0000-0000-0000000000a3', 'C',
-    '00000000-0000-0000-0000-0000000000f7', 'Branche 1',
-    '00000000-0000-0000-0000-0000000000e5', 'Founder', 'fr',
-    '00000000-0000-0000-0000-0000000000d5')
-$$, 'a new account can create an association');
-select is((select is_admin from members
-           where id = '00000000-0000-0000-0000-0000000000e5'),
-  true, 'the founder is an admin of it');
-select lives_ok($$
-  select create_association('00000000-0000-0000-0000-0000000000a3', 'C',
-    '00000000-0000-0000-0000-0000000000f7', 'Branche 1',
-    '00000000-0000-0000-0000-0000000000e5', 'Founder', 'fr',
-    '00000000-0000-0000-0000-0000000000d5')
-$$, 'the founder may retry after a lost answer');
-select throws_ok($$
-  select create_association('00000000-0000-0000-0000-0000000000a4', 'D',
-    '00000000-0000-0000-0000-0000000000f8', 'Branche 1',
-    '00000000-0000-0000-0000-0000000000e6', 'Founder', 'fr',
-    '00000000-0000-0000-0000-0000000000d5')
-$$, 'P0001', 'already_member', 'a member cannot create a second association');
-
-select set_config('request.jwt.claims',
-  '{"sub":"00000000-0000-0000-0000-0000000000b6"}', true);
-select throws_ok($$
-  select create_association('00000000-0000-0000-0000-0000000000a1', 'A again',
-    '00000000-0000-0000-0000-0000000000fa', 'Branche 1',
-    '00000000-0000-0000-0000-0000000000e7', 'Late', 'fr',
-    '00000000-0000-0000-0000-0000000000d6')
-$$, 'P0001', 'association_exists', 'an existing association cannot be taken over');
 
 reset role;
 select * from finish();
