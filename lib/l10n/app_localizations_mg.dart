@@ -1175,6 +1175,21 @@ class AppLocalizationsMg extends AppLocalizations {
   String get consoleSignOut => 'Hivoaka';
 
   @override
+  String get consoleAdminsOnly => 'Ho an\'ny mpitantana ihany ny console.';
+
+  @override
+  String get consoleIdleNotice =>
+      'Nivoaka rehefa tsy nisy hetsika nandritra ny 30 minitra.';
+
+  @override
+  String get consoleSignInTitle => 'Hiditra ao amin\'ny console';
+
+  @override
+  String consoleRefused(String code) {
+    return 'Nolavin\'ny mpizara : $code';
+  }
+
+  @override
   String get memberPerson => 'Taratasin\'ny mpiasa (tsy voatery)';
 
   @override

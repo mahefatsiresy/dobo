@@ -1167,6 +1167,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get consoleSignOut => 'Se déconnecter';
 
   @override
+  String get consoleAdminsOnly =>
+      'La console est réservée aux administrateurs.';
+
+  @override
+  String get consoleIdleNotice => 'Déconnecté après 30 minutes sans activité.';
+
+  @override
+  String get consoleSignInTitle => 'Connexion à la console';
+
+  @override
+  String consoleRefused(String code) {
+    return 'Le serveur a refusé : $code';
+  }
+
+  @override
   String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';
 
   @override

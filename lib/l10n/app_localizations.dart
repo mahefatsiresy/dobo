@@ -2204,6 +2204,30 @@ abstract class AppLocalizations {
   /// **'Se déconnecter'**
   String get consoleSignOut;
 
+  /// No description provided for @consoleAdminsOnly.
+  ///
+  /// In fr, this message translates to:
+  /// **'La console est réservée aux administrateurs.'**
+  String get consoleAdminsOnly;
+
+  /// No description provided for @consoleIdleNotice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Déconnecté après 30 minutes sans activité.'**
+  String get consoleIdleNotice;
+
+  /// No description provided for @consoleSignInTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion à la console'**
+  String get consoleSignInTitle;
+
+  /// No description provided for @consoleRefused.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur a refusé : {code}'**
+  String consoleRefused(String code);
+
   /// No description provided for @memberPerson.
   ///
   /// In fr, this message translates to:

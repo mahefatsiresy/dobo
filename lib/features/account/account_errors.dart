@@ -1,5 +1,5 @@
 import '../../l10n/app_localizations.dart';
-import '../../db/repositories/account_repository.dart';
+import '../../db/repositories/errors.dart';
 import '../../sync/auth_gateway.dart';
 import '../../sync/sync_api.dart';
 

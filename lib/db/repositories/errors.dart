@@ -52,3 +52,13 @@ class HarvestHasSalesException implements Exception {
   @override
   String toString() => 'HarvestHasSalesException: $harvestId';
 }
+
+/// An admin takeover waits until the worker's [count] records are sent.
+class UnsentRecords implements Exception {
+  const UnsentRecords(this.count);
+
+  final int count;
+
+  @override
+  String toString() => 'UnsentRecords($count)';
+}

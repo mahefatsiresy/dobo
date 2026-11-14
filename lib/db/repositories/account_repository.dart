@@ -6,6 +6,9 @@ import '../../sync/sync_tables.dart';
 import '../database.dart';
 import '../sync_state.dart';
 import 'setup_repository.dart';
+import 'errors.dart';
+
+export 'errors.dart' show UnsentRecords;
 
 /// Signing in and out, and creating the association (SPEC §3, §7; plan
 /// Decisions 2, 3, 12). Records on the phone are never deleted here.
@@ -125,12 +128,3 @@ class AccountRepository {
   }
 }
 
-/// An admin takeover waits until the worker's [count] records are sent.
-class UnsentRecords implements Exception {
-  const UnsentRecords(this.count);
-
-  final int count;
-
-  @override
-  String toString() => 'UnsentRecords($count)';
-}

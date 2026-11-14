@@ -715,6 +715,17 @@
   "consoleNavMembers": "Membres",
   "consoleNavPeople": "Personnes",
   "consoleSignOut": "Se déconnecter",
+  "consoleAdminsOnly": "La console est réservée aux administrateurs.",
+  "consoleIdleNotice": "Déconnecté après 30 minutes sans activité.",
+  "consoleSignInTitle": "Connexion à la console",
+  "consoleRefused": "Le serveur a refusé : {code}",
+  "@consoleRefused": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
   "memberPerson": "Fiche de l'ouvrier (facultatif)",
   "memberNone": "Aucune",
   "memberInactive": "Inactif",

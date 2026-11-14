@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/mg_fallback.dart';
 import '../locale_controller.dart';
+import 'console_providers.dart';
 import 'console_router.dart';
+import 'idle_guard.dart';
 
 /// The web console (SPEC F16): the app's translations and theme, its own
 /// desktop pages.
@@ -30,6 +32,17 @@ class ConsoleApp extends ConsumerWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
+      // An admin's session ends after 30 minutes without use (SPEC F16).
+      builder: (context, child) {
+        final signedIn = ref.watch(consoleSessionProvider).value != null;
+        return IdleGuard(
+          enabled: signedIn,
+          onIdle: () => ref
+              .read(consoleSessionProvider.notifier)
+              .signOut(notice: 'idle'),
+          child: child!,
+        );
+      },
     );
   }
 }
