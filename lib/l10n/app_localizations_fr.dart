@@ -1149,6 +1149,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resetPinDone => 'Code PIN changé';
 
   @override
+  String get consoleTitle => 'Dobo — console';
+
+  @override
+  String get consoleNavAssociation => 'Association';
+
+  @override
+  String get consoleNavGroups => 'Groupes';
+
+  @override
+  String get consoleNavMembers => 'Membres';
+
+  @override
+  String get consoleNavPeople => 'Personnes';
+
+  @override
+  String get consoleSignOut => 'Se déconnecter';
+
+  @override
   String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';
 
   @override

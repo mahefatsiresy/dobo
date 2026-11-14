@@ -1157,6 +1157,24 @@ class AppLocalizationsMg extends AppLocalizations {
   String get resetPinDone => 'Voaova ny kaody PIN';
 
   @override
+  String get consoleTitle => 'Dobo — console';
+
+  @override
+  String get consoleNavAssociation => 'Fikambanana';
+
+  @override
+  String get consoleNavGroups => 'Sampana';
+
+  @override
+  String get consoleNavMembers => 'Mpikambana';
+
+  @override
+  String get consoleNavPeople => 'Olona';
+
+  @override
+  String get consoleSignOut => 'Hivoaka';
+
+  @override
   String get memberPerson => 'Taratasin\'ny mpiasa (tsy voatery)';
 
   @override

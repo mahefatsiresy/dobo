@@ -2168,6 +2168,42 @@ abstract class AppLocalizations {
   /// **'Code PIN changé'**
   String get resetPinDone;
 
+  /// No description provided for @consoleTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dobo — console'**
+  String get consoleTitle;
+
+  /// No description provided for @consoleNavAssociation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Association'**
+  String get consoleNavAssociation;
+
+  /// No description provided for @consoleNavGroups.
+  ///
+  /// In fr, this message translates to:
+  /// **'Groupes'**
+  String get consoleNavGroups;
+
+  /// No description provided for @consoleNavMembers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Membres'**
+  String get consoleNavMembers;
+
+  /// No description provided for @consoleNavPeople.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personnes'**
+  String get consoleNavPeople;
+
+  /// No description provided for @consoleSignOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
+  String get consoleSignOut;
+
   /// No description provided for @memberPerson.
   ///
   /// In fr, this message translates to:

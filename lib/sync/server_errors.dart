@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:http/http.dart' show ClientException;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'network_errors_stub.dart'
+    if (dart.library.io) 'network_errors_io.dart';
 import 'sync_api.dart';
 
 /// Runs [call] against Supabase, turning a missing network into
@@ -11,11 +12,7 @@ import 'sync_api.dart';
 Future<T> guardServer<T>(Future<T> Function() call) async {
   try {
     return await call().timeout(const Duration(seconds: 30));
-  } on SocketException {
-    throw SyncOffline();
   } on TimeoutException {
-    throw SyncOffline();
-  } on HttpException {
     throw SyncOffline();
   } on ClientException {
     throw SyncOffline();
@@ -28,5 +25,9 @@ Future<T> guardServer<T>(Future<T> Function() call) async {
   } on AuthException catch (e) {
     if (e.statusCode == null) throw SyncOffline();
     throw SyncSignedOut();
+  } catch (e) {
+    // dart:io's SocketException and HttpException, on the phone only.
+    if (isIoNetworkError(e)) throw SyncOffline();
+    rethrow;
   }
 }
