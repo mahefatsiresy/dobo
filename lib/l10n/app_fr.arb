@@ -734,6 +734,27 @@
   "consoleNewGroup": "Nouveau groupe",
   "consoleNewPerson": "Nouvelle personne",
   "consoleNothingYet": "Rien pour l'instant",
+  "consoleLogin": "Identifiant",
+  "consoleAgain": "Encore une fois",
+  "consoleSecretsDiffer": "Les deux saisies diffèrent",
+  "consoleDeactivate": "Désactiver",
+  "consoleReactivate": "Réactiver",
+  "consoleDeactivateAsk": "Désactiver le compte de {name} ? Il ne pourra plus se connecter ; ses relevés restent.",
+  "@consoleDeactivateAsk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "consoleReactivateAsk": "Réactiver le compte de {name} ?",
+  "@consoleReactivateAsk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "consoleRefused": "Le serveur a refusé : {code}",
   "@consoleRefused": {
     "placeholders": {

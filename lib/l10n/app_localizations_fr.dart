@@ -1226,6 +1226,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get consoleNothingYet => 'Rien pour l\'instant';
 
   @override
+  String get consoleLogin => 'Identifiant';
+
+  @override
+  String get consoleAgain => 'Encore une fois';
+
+  @override
+  String get consoleSecretsDiffer => 'Les deux saisies diffèrent';
+
+  @override
+  String get consoleDeactivate => 'Désactiver';
+
+  @override
+  String get consoleReactivate => 'Réactiver';
+
+  @override
+  String consoleDeactivateAsk(String name) {
+    return 'Désactiver le compte de $name ? Il ne pourra plus se connecter ; ses relevés restent.';
+  }
+
+  @override
+  String consoleReactivateAsk(String name) {
+    return 'Réactiver le compte de $name ?';
+  }
+
+  @override
   String consoleRefused(String code) {
     return 'Le serveur a refusé : $code';
   }

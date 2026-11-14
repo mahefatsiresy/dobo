@@ -1234,6 +1234,31 @@ class AppLocalizationsMg extends AppLocalizations {
   String get consoleNothingYet => 'Tsy mbola misy';
 
   @override
+  String get consoleLogin => 'Anarana fidirana';
+
+  @override
+  String get consoleAgain => 'Averina indray';
+
+  @override
+  String get consoleSecretsDiffer => 'Tsy mitovy ireo roa nosoratana';
+
+  @override
+  String get consoleDeactivate => 'Atsaharo';
+
+  @override
+  String get consoleReactivate => 'Averina ampiasaina';
+
+  @override
+  String consoleDeactivateAsk(String name) {
+    return 'Hatsahatra ve ny kaontin\'i $name? Tsy afaka miditra intsony izy; mijanona ireo voarakitra.';
+  }
+
+  @override
+  String consoleReactivateAsk(String name) {
+    return 'Hampiasaina indray ve ny kaontin\'i $name?';
+  }
+
+  @override
   String consoleRefused(String code) {
     return 'Nolavin\'ny mpizara : $code';
   }

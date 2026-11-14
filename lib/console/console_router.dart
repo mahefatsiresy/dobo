@@ -7,6 +7,7 @@ import 'console_shell.dart';
 import 'pages/association_page.dart';
 import 'pages/found_page.dart';
 import 'pages/groups_page.dart';
+import 'pages/members_page.dart';
 import 'pages/people_page.dart';
 import 'pages/sign_in_page.dart';
 
@@ -58,7 +59,7 @@ final consoleRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/membres',
-            builder: (context, state) => const _Placeholder('/membres'),
+            builder: (context, state) => const MembersPage(),
           ),
           GoRoute(
             path: '/personnes',
@@ -74,12 +75,3 @@ final consoleRouterProvider = Provider<GoRouter>((ref) {
   });
   return router;
 });
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder(this.name);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) => Center(child: Text(name));
-}

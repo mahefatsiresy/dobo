@@ -34,18 +34,22 @@ class FakeConsoleApi implements ConsoleApi {
   /// Every founding sent, refused or not.
   final plannedSeen = <Founding>[];
   final createdAccounts = <NewAccount>[];
+
+  /// Every account sent, refused or not.
+  final accountAttempts = <NewAccount>[];
   final resets = <(String, String)>[];
 
   void _net() {
     if (offline) throw SyncOffline();
   }
 
-  void _write() {
+  /// [account]: an edge function's refusal, which comes as [AuthFailed].
+  void _write({bool account = false}) {
     _net();
     final code = failNextWrite;
     if (code != null) {
       failNextWrite = null;
-      throw ConsoleWriteFailed(code);
+      throw account ? AuthFailed(code) : ConsoleWriteFailed(code);
     }
   }
 
@@ -159,7 +163,8 @@ class FakeConsoleApi implements ConsoleApi {
 
   @override
   Future<void> createAccount(NewAccount a) async {
-    _write();
+    accountAttempts.add(a);
+    _write(account: true);
     createdAccounts.add(a);
     memberRows.add(
       MemberRow(
@@ -179,7 +184,7 @@ class FakeConsoleApi implements ConsoleApi {
 
   @override
   Future<void> resetSecret(String memberId, String secret) async {
-    _write();
+    _write(account: true);
     resets.add((memberId, secret));
   }
 

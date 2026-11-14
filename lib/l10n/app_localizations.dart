@@ -2318,6 +2318,48 @@ abstract class AppLocalizations {
   /// **'Rien pour l\'instant'**
   String get consoleNothingYet;
 
+  /// No description provided for @consoleLogin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiant'**
+  String get consoleLogin;
+
+  /// No description provided for @consoleAgain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Encore une fois'**
+  String get consoleAgain;
+
+  /// No description provided for @consoleSecretsDiffer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les deux saisies diffèrent'**
+  String get consoleSecretsDiffer;
+
+  /// No description provided for @consoleDeactivate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Désactiver'**
+  String get consoleDeactivate;
+
+  /// No description provided for @consoleReactivate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réactiver'**
+  String get consoleReactivate;
+
+  /// No description provided for @consoleDeactivateAsk.
+  ///
+  /// In fr, this message translates to:
+  /// **'Désactiver le compte de {name} ? Il ne pourra plus se connecter ; ses relevés restent.'**
+  String consoleDeactivateAsk(String name);
+
+  /// No description provided for @consoleReactivateAsk.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réactiver le compte de {name} ?'**
+  String consoleReactivateAsk(String name);
+
   /// No description provided for @consoleRefused.
   ///
   /// In fr, this message translates to:

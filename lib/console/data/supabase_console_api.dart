@@ -184,7 +184,12 @@ class SupabaseConsoleApi implements ConsoleApi {
   Future<void> createAccount(NewAccount a) async {
     final personId = a.personId ?? accountPersonId(a.memberId);
     await savePerson(PersonRow(id: personId, name: a.name), isNew: true);
-    await _invoke('create-account', {...a.toJson(), 'personId': personId});
+    // This browser stamps the member row, whatever [a] says.
+    await _invoke('create-account', {
+      ...a.toJson(),
+      'personId': personId,
+      'deviceId': deviceId,
+    });
   }
 
   @override

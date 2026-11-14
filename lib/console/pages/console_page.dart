@@ -60,7 +60,8 @@ class AsyncRows<T> extends StatelessWidget {
   }
 }
 
-/// A table filling the page's width.
+/// A table at least as wide as the page; wider ones scroll sideways
+/// rather than overflow on a small screen.
 class ConsoleTable extends StatelessWidget {
   const ConsoleTable({super.key, required this.columns, required this.rows});
 
@@ -68,11 +69,17 @@ class ConsoleTable extends StatelessWidget {
   final List<DataRow> rows;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: double.infinity,
-    child: DataTable(
-      columns: [for (final c in columns) DataColumn(label: Text(c))],
-      rows: rows,
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: constraints.maxWidth),
+        child: DataTable(
+          columnSpacing: 24,
+          columns: [for (final c in columns) DataColumn(label: Text(c))],
+          rows: rows,
+        ),
+      ),
     ),
   );
 }
