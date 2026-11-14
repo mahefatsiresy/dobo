@@ -170,7 +170,9 @@ class _ToggleDialogState extends ConsumerState<_ToggleDialog> {
       _error = null;
     });
     try {
-      await ref.read(consoleApiProvider).saveMember(m.copyWith(active: !m.active));
+      await ref
+          .read(consoleApiProvider)
+          .saveMember(m.copyWith(active: !m.active));
       ref.invalidate(membersProvider);
       if (mounted) Navigator.of(context).pop();
     } catch (e) {

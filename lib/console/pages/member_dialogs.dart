@@ -196,7 +196,10 @@ class _AccountDialogState extends ConsumerState<AccountDialog> {
               SegmentedButton<String>(
                 segments: [
                   ButtonSegment(value: 'fr', label: Text(l10n.languageFrench)),
-                  ButtonSegment(value: 'mg', label: Text(l10n.languageMalagasy)),
+                  ButtonSegment(
+                    value: 'mg',
+                    label: Text(l10n.languageMalagasy),
+                  ),
                 ],
                 selected: {_locale},
                 onSelectionChanged: (s) => setState(() => _locale = s.single),

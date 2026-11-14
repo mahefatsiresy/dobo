@@ -36,7 +36,9 @@ class AssociationPage extends ConsumerWidget {
               ),
             ],
             save: (v, _) async {
-              await ref.read(consoleApiProvider).renameAssociation(v['nameField']!);
+              await ref
+                  .read(consoleApiProvider)
+                  .renameAssociation(v['nameField']!);
               await ref.read(consoleSessionProvider.notifier).reload();
             },
           ),

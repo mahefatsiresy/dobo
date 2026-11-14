@@ -24,7 +24,10 @@ class ConsolePage extends StatelessWidget {
       Row(
         children: [
           Expanded(
-            child: Text(title, style: Theme.of(context).textTheme.headlineSmall),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
           ?action,
         ],
@@ -46,7 +49,9 @@ class AsyncRows<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return switch (value) {
-      AsyncData(:final value) when value.isEmpty => Text(l10n.consoleNothingYet),
+      AsyncData(:final value) when value.isEmpty => Text(
+        l10n.consoleNothingYet,
+      ),
       AsyncData(:final value) => builder(value),
       AsyncError(:final error) => Text(
         consoleErrorText(l10n, error),

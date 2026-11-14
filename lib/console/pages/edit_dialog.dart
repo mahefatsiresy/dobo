@@ -59,7 +59,8 @@ class _EditDialog extends StatefulWidget {
 
 class _EditDialogState extends State<_EditDialog> {
   late final _controllers = {
-    for (final f in widget.fields) f.key: TextEditingController(text: f.initial),
+    for (final f in widget.fields)
+      f.key: TextEditingController(text: f.initial),
   };
   late bool _active = widget.active ?? true;
   bool _busy = false;

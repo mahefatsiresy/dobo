@@ -73,9 +73,13 @@ class _FoundPageState extends ConsumerState<FoundPage> {
   bool get _differ => _again.text.isNotEmpty && _again.text != _password.text;
 
   bool get _valid =>
-      [_code, _association, _group, _name, _site].every(
-        (c) => c.text.trim().isNotEmpty,
-      ) &&
+      [
+        _code,
+        _association,
+        _group,
+        _name,
+        _site,
+      ].every((c) => c.text.trim().isNotEmpty) &&
       accountProblem(
             role: MemberRole.member,
             login: _email.text,

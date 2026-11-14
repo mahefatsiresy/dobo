@@ -103,16 +103,19 @@ class SupabaseConsoleApi implements ConsoleApi {
   );
 
   @override
-  Future<List<GroupRow>> groups() async =>
-      [for (final r in await _rows('groups')) GroupRow.fromJson(r)];
+  Future<List<GroupRow>> groups() async => [
+    for (final r in await _rows('groups')) GroupRow.fromJson(r),
+  ];
 
   @override
-  Future<List<MemberRow>> members() async =>
-      [for (final r in await _rows('members')) MemberRow.fromJson(r)];
+  Future<List<MemberRow>> members() async => [
+    for (final r in await _rows('members')) MemberRow.fromJson(r),
+  ];
 
   @override
-  Future<List<PersonRow>> people() async =>
-      [for (final r in await _rows('people')) PersonRow.fromJson(r)];
+  Future<List<PersonRow>> people() async => [
+    for (final r in await _rows('people')) PersonRow.fromJson(r),
+  ];
 
   @override
   Future<void> saveGroup(GroupRow g, {bool isNew = false}) =>

@@ -38,10 +38,7 @@ final consoleRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
-      GoRoute(
-        path: '/fonder',
-        builder: (context, state) => const FoundPage(),
-      ),
+      GoRoute(path: '/fonder', builder: (context, state) => const FoundPage()),
       GoRoute(
         path: '/connexion',
         builder: (context, state) => const SignInPage(),

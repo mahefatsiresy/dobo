@@ -37,9 +37,9 @@ class ConsoleApp extends ConsumerWidget {
         final signedIn = ref.watch(consoleSessionProvider).value != null;
         return IdleGuard(
           enabled: signedIn,
-          onIdle: () => ref
-              .read(consoleSessionProvider.notifier)
-              .signOut(notice: 'idle'),
+          onActivity: () => ref.read(consoleSessionProvider.notifier).touch(),
+          onIdle: () =>
+              ref.read(consoleSessionProvider.notifier).signOut(notice: 'idle'),
           child: child!,
         );
       },

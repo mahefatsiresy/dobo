@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'console/console_app.dart';
 import 'console/console_providers.dart';
+import 'console/data/activity_store.dart';
 import 'console/data/browser_device.dart';
 import 'console/data/supabase_console_api.dart';
 import 'sync/server_config.dart';
@@ -25,13 +26,15 @@ Future<void> main() async {
     return;
   }
   await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
-  final deviceId = await browserDeviceId(await SharedPreferences.getInstance());
+  final prefs = await SharedPreferences.getInstance();
+  final deviceId = await browserDeviceId(prefs);
   runApp(
     ProviderScope(
       overrides: [
         consoleApiProvider.overrideWithValue(
           SupabaseConsoleApi(Supabase.instance.client, deviceId),
         ),
+        consoleActivityProvider.overrideWithValue(PrefsActivityStore(prefs)),
       ],
       child: const ConsoleApp(),
     ),

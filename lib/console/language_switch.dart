@@ -24,7 +24,9 @@ class ConsoleLanguageSwitch extends ConsumerWidget {
       ref.invalidate(membersProvider);
       await ref.read(consoleSessionProvider.notifier).reload();
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text(consoleErrorText(l10n, e))));
+      messenger.showSnackBar(
+        SnackBar(content: Text(consoleErrorText(l10n, e))),
+      );
     }
   }
 

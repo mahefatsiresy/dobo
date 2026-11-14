@@ -3,11 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../locale_controller.dart';
 import '../sync/auth_gateway.dart';
+import 'console_config.dart';
+import 'data/activity_store.dart';
 import 'data/console_api.dart';
 
 /// The console's server. `lib/main_web.dart` provides it; tests fake it.
 final consoleApiProvider = Provider<ConsoleApi>(
   (ref) => throw StateError('consoleApiProvider is set in main_web.dart'),
+);
+
+/// When the admin last used the console; `main_web.dart` keeps it in the
+/// browser.
+final consoleActivityProvider = Provider<ActivityStore>(
+  (ref) => MemoryActivityStore(),
+);
+
+/// Now, in UTC (tests set it).
+final consoleClockProvider = Provider<DateTime Function()>(
+  (ref) =>
+      () => DateTime.now().toUtc(),
 );
 
 /// Who is signed in to the console: an active admin, or null (SPEC F16;
@@ -34,13 +48,22 @@ class ConsoleSession extends AsyncNotifier<ConsoleMe?> {
   @override
   Future<ConsoleMe?> build() async {
     if (!_api.hasSession) return null;
+    // A session left open in a closed tab or a reloaded page: the idle
+    // limit still counts from the last use.
+    final last = ref.read(consoleActivityProvider).last;
+    final now = ref.read(consoleClockProvider)();
+    if (last != null && now.difference(last) >= consoleIdleLimit) {
+      await _api.signOut();
+      _notice('idle');
+      return null;
+    }
     try {
       return await _accept(await _api.me());
     } on AuthFailed catch (e) {
       await _api.signOut();
-      _notice(e.code == 'admins_only' || e.code == 'no_member'
-          ? 'admins_only'
-          : null);
+      _notice(
+        e.code == 'admins_only' || e.code == 'no_member' ? 'admins_only' : null,
+      );
       return null;
     }
   }
@@ -74,8 +97,13 @@ class ConsoleSession extends AsyncNotifier<ConsoleMe?> {
       rethrow;
     }
     _notice(null);
+    await touch();
     state = AsyncData(me);
   }
+
+  /// Records a use of the console now.
+  Future<void> touch() =>
+      ref.read(consoleActivityProvider).touch(ref.read(consoleClockProvider)());
 
   /// After founding, the founder is already signed in.
   Future<void> reload() async {

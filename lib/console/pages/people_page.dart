@@ -52,7 +52,12 @@ class PeoplePage extends ConsumerWidget {
                 isNew: true,
               )
             : api.savePerson(
-                p.copyWith(name: name, phone: phone, note: note, active: active),
+                p.copyWith(
+                  name: name,
+                  phone: phone,
+                  note: note,
+                  active: active,
+                ),
               ));
         ref.invalidate(peopleProvider);
       },

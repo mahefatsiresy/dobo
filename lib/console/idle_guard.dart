@@ -12,12 +12,16 @@ class IdleGuard extends StatefulWidget {
     super.key,
     required this.child,
     required this.onIdle,
+    this.onActivity,
     this.limit = consoleIdleLimit,
     this.enabled = true,
   });
 
   final Widget child;
   final VoidCallback onIdle;
+
+  /// Called on input, at most once a minute (the last use is saved).
+  final VoidCallback? onActivity;
   final Duration limit;
 
   /// Off while nobody is signed in.
@@ -29,6 +33,7 @@ class IdleGuard extends StatefulWidget {
 
 class _IdleGuardState extends State<IdleGuard> {
   Timer? _timer;
+  final _sinceSaved = Stopwatch();
 
   @override
   void initState() {
@@ -55,18 +60,31 @@ class _IdleGuardState extends State<IdleGuard> {
     _timer = widget.enabled ? Timer(widget.limit, widget.onIdle) : null;
   }
 
-  bool _onKey(KeyEvent event) {
+  void _input() {
     _restart();
+    if (!widget.enabled) return;
+    if (_sinceSaved.isRunning &&
+        _sinceSaved.elapsed < const Duration(minutes: 1)) {
+      return;
+    }
+    _sinceSaved
+      ..reset()
+      ..start();
+    widget.onActivity?.call();
+  }
+
+  bool _onKey(KeyEvent event) {
+    _input();
     return false;
   }
 
   @override
   Widget build(BuildContext context) => Listener(
     behavior: HitTestBehavior.translucent,
-    onPointerDown: (_) => _restart(),
-    onPointerMove: (_) => _restart(),
-    onPointerHover: (_) => _restart(),
-    onPointerSignal: (_) => _restart(),
+    onPointerDown: (_) => _input(),
+    onPointerMove: (_) => _input(),
+    onPointerHover: (_) => _input(),
+    onPointerSignal: (_) => _input(),
     child: widget.child,
   );
 }

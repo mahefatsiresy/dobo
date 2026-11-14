@@ -1,5 +1,6 @@
 import 'package:dobo/console/console_providers.dart';
 import 'package:dobo/console/console_router.dart';
+import 'package:dobo/console/data/activity_store.dart';
 import 'package:dobo/console/idle_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -67,5 +68,55 @@ void main() {
       find.text('Déconnecté après 30 minutes sans activité.'),
       findsOneWidget,
     );
+  });
+
+  group('the last activity survives a reload or a closed tab', () {
+    final now = DateTime.utc(2026, 11, 14, 12);
+
+    Future<FakeConsoleApi> reopen(
+      WidgetTester tester,
+      MemoryActivityStore store,
+    ) async {
+      final api = FakeConsoleApi(me: consoleAdmin())..signedIn = true;
+      await pumpConsole(
+        tester,
+        at: '/membres',
+        overrides: [
+          consoleApiProvider.overrideWithValue(api),
+          consoleActivityProvider.overrideWithValue(store),
+          consoleClockProvider.overrideWithValue(() => now),
+        ],
+      );
+      return api;
+    }
+
+    testWidgets('a session reopened after 31 minutes without use is signed '
+        'out with the idle notice', (tester) async {
+      final store = MemoryActivityStore()
+        ..last = now.subtract(const Duration(minutes: 31));
+      final api = await reopen(tester, store);
+      expect(api.signedOut, true);
+      expect(
+        find.text('Déconnecté après 30 minutes sans activité.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a session used 10 minutes ago stays open', (tester) async {
+      final store = MemoryActivityStore()
+        ..last = now.subtract(const Duration(minutes: 10));
+      final api = await reopen(tester, store);
+      expect(api.signedOut, false);
+      expect(find.byKey(const Key('navMembers')), findsOneWidget);
+    });
+
+    testWidgets('a tap is saved as the last activity', (tester) async {
+      final store = MemoryActivityStore()
+        ..last = now.subtract(const Duration(minutes: 10));
+      await reopen(tester, store);
+      await tester.tap(find.byKey(const Key('navGroups')));
+      await tester.pumpAndSettle();
+      expect(store.last, now);
+    });
   });
 }
