@@ -22,13 +22,8 @@ class SupabaseAuthGateway implements AuthGateway {
 
   /// Wrong credentials and the like are [AuthFailed]; no network is still
   /// `SyncOffline`.
-  Future<void> _auth(Future<AuthResponse> Function() call) async {
-    try {
-      await guardServer(call);
-    } on AuthApiException catch (e) {
-      throw AuthFailed(e.code ?? 'auth_failed');
-    }
-  }
+  Future<void> _auth(Future<AuthResponse> Function() call) =>
+      guardSignIn(call);
 
   @override
   Future<void> signOut() async {

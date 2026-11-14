@@ -21,18 +21,12 @@ class SupabaseConsoleApi implements ConsoleApi {
   bool get hasSession => client.auth.currentSession != null;
 
   @override
-  Future<void> signIn(String email, String password) async {
-    try {
-      await guardServer(
-        () => client.auth.signInWithPassword(
-          email: email.trim().toLowerCase(),
-          password: password,
-        ),
-      );
-    } on AuthApiException catch (e) {
-      throw AuthFailed(e.code ?? 'auth_failed');
-    }
-  }
+  Future<void> signIn(String email, String password) => guardSignIn(
+    () => client.auth.signInWithPassword(
+      email: email.trim().toLowerCase(),
+      password: password,
+    ),
+  );
 
   @override
   Future<void> signOut() async {
