@@ -11,7 +11,8 @@ class ServerEnv {
       anonKey = _required('SUPABASE_ANON_KEY'),
       serviceRoleKey = _required('SUPABASE_SERVICE_ROLE_KEY'),
       dbUrl = _required('SUPABASE_DB_URL'),
-      foundingCode = _required('FOUNDING_CODE');
+      foundingCode = _required('FOUNDING_CODE'),
+      publishableKey = _required('SUPABASE_PUBLISHABLE_KEY');
 
   final String url;
   final String anonKey;
@@ -22,6 +23,10 @@ class ServerEnv {
 
   /// The local founding code, from `supabase/functions/.env`.
   final String foundingCode;
+
+  /// The new-style key (`sb_publishable_…`), which is not a JWT. The
+  /// hosted project hands out this kind.
+  final String publishableKey;
 
   static String _required(String name) {
     final value = Platform.environment[name];

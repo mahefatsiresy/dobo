@@ -120,6 +120,30 @@ void main() {
       await associationsWithIds([a['associationId'], b['associationId']]),
       1,
     );
+    // The loser's login was removed with its founding.
+    final loser = results[0].$1 == 403 ? a : b;
+    await expectLater(
+      env.signedInClient(loser['email']! as String, 'motdepasse1'),
+      throwsA(isA<AuthException>()),
+    );
+  });
+
+  test('founding works with a publishable key, which is not a JWT', () async {
+    final client = SupabaseClient(
+      env.url,
+      env.publishableKey,
+      authOptions: const AuthClientOptions(autoRefreshToken: false),
+    );
+    late int status;
+    try {
+      status = (await client.functions.invoke(
+        'found-association',
+        body: founding(),
+      )).status;
+    } on FunctionException catch (e) {
+      status = e.status;
+    }
+    expect(status, 200);
   });
 
   test('OPTIONS answers 204 with the CORS headers', () async {

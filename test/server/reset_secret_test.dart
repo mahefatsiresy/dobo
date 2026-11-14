@@ -104,6 +104,23 @@ void main() {
     expect((answer as Map)['error'], 'bad_secret');
   });
 
+  test('a call with no session gets not_admin, whatever the gateway lets '
+      'through', () async {
+    final nobody = SupabaseClient(
+      env.url,
+      env.publishableKey,
+      authOptions: const AuthClientOptions(autoRefreshToken: false),
+    );
+    for (final fn in ['reset-secret', 'create-account']) {
+      final (status, answer) = await call(nobody, fn, {
+        'memberId': a.memberId,
+        'secret': 'pirate123',
+      });
+      expect((status, (answer as Map)['error']), (403, 'not_admin'), reason: fn);
+    }
+    await env.signedInClient(a.email, a.password);
+  });
+
   test('a plain member gets not_admin', () async {
     final m = await account(
       a,

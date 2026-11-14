@@ -84,6 +84,11 @@ tool/server_test.sh                # Dart tests tagged `server`
    supabase functions deploy create-account found-association reset-secret
    ```
 
+   `supabase/config.toml` deploys the three functions with the gateway's
+   JWT check off (`verify_jwt = false`): the project's publishable key
+   (`sb_publishable_…`) is not a JWT, and the check would refuse founding,
+   which has no session. Each function checks its caller itself.
+
    Note the founding code it prints: the dashboard and `supabase secrets
    list` show only a digest of it. Give it to the founder with the
    console's address. It works for one founding only; to found another
