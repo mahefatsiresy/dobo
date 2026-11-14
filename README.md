@@ -2,7 +2,7 @@
 
 Offline-first Android app for a family association in Madagascar that raises
 Nile tilapia in ponds. It replaces the paper production log and builds the
-visit report. See `docs/SPEC.md` (features) and `docs/DOMAIN.md` (farming
+visit report. A web console lets admins found and manage the association. See `docs/SPEC.md` (features) and `docs/DOMAIN.md` (farming
 rules).
 
 ## Run the app
@@ -40,6 +40,20 @@ adb shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false
 adb shell svc wifi enable
 adb shell svc data enable
 ```
+
+## Web console
+
+Admins found and manage the association from a web console built from the
+same code (SPEC F16): founding with the founding code, groups, members and
+workers, people, password and PIN reset. It is online only. Run it against
+the local server in Chromium:
+
+```bash
+flutter run -d chrome -t lib/main_web.dart --dart-define-from-file=env/host.json
+```
+
+Building, hosting on Cloudflare Pages and the founding code are in
+`docs/deploy.md`.
 
 ## Local server
 

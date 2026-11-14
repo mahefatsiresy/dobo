@@ -1,28 +1,42 @@
 # Server: local development and the hosted project
 
 The app syncs with a Supabase project (SPEC §7). The schema, row-level
-security and the `create-account` function live in `supabase/`. A build
-reads the server address from `--dart-define-from-file=env/<name>.json`.
-A build without one runs fully offline and sets the phone up locally, as
-before M4.
+security and the edge functions (`create-account`, `found-association`,
+`reset-secret`) live in `supabase/`. A build reads the server address from
+`--dart-define-from-file=env/<name>.json`. A phone build without one runs
+fully offline and sets the phone up locally, as before M4.
+
+The association is founded in the web console (SPEC F16), never on a
+phone. The console is a Flutter Web build of the same code
+(`lib/main_web.dart`), hosted as static files on Cloudflare Pages.
 
 ## Local development (Fedora, podman)
 
 ```bash
 systemctl --user start podman.socket
 export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+cp supabase/functions/.env.example supabase/functions/.env   # once
 supabase start                     # first run downloads the images
-supabase functions serve &         # serves create-account
-supabase test db                   # pgTAP: tables, roles, sync_push
+supabase functions serve &         # serves the three functions
+supabase test db                   # pgTAP: tables, roles, sync_push, founding
 tool/server_test.sh                # Dart tests tagged `server`
 ```
+
+- `supabase/functions/.env` (gitignored) holds the local founding code,
+  `FOUNDING_CODE=dobo-local-founding`. A code is spent by the first
+  founding that uses it. To found again locally (the M4 walk-through, the
+  console by hand), make it usable again:
+  `psql "$(supabase status -o env | sed -n 's/^DB_URL=//p' | tr -d '"')" -c 'truncate founding_codes_spent'`.
+  The server tests do this themselves.
+- Sign-ups are off locally too (`supabase/config.toml`), as on the hosted
+  project. Accounts come only from the functions.
 
 - SELinux blocks the edge runtime from reading the bind-mounted function
   folder. Label it with `chcon -Rt container_file_t supabase/functions`.
   `restorecon -R supabase/functions` undoes it. A file git writes anew (a
   checkout or merge that adds it) loses the label: when `create-account`
   answers 503 and the edge runtime logs "failed to determine entrypoint",
-  run the `chcon` again.
+  run the `chcon` again. `supabase db reset` wipes the local database.
 - If `supabase start` stops with "failed to copy secret file into
   container" after the analytics container crashes ("Failed to detect IP
   version for DB_HOSTNAME"), start without analytics and Studio:
@@ -43,24 +57,37 @@ tool/server_test.sh                # Dart tests tagged `server`
 - To cut and restore an emulator's network, run `adb root` once, then
   `adb shell svc wifi disable|enable` and `adb shell svc data disable|enable`.
 - The M4 walk-through (`integration_test/m4_sync_test.dart`) explains its
-  three parts at the top of the file.
+  three parts at the top of the file. Its founder part founds through
+  `found-association`: pass `--dart-define=FOUNDING_CODE=dobo-local-founding`.
+- Run the console against the local server in Chromium:
+  `flutter run -d chrome -t lib/main_web.dart --dart-define-from-file=env/host.json`.
 
 ## The hosted project (once)
 
 1. Create a project on supabase.com. Choose a region near Madagascar, for
    example `eu-central` or `ap-south`.
-2. Under Authentication → Sign In / Providers → Email, turn **off**
-   "Confirm email": the founder signs up from the app, and admins create
-   every other account. Keep the minimum password length at **6**, because
-   worker PINs are 6 digits.
+2. Under Authentication → Sign In / Providers:
+   - turn **off** "Allow new users to sign up". Every account, the
+     founder's included, is made by an edge function through the admin
+     API, which works with sign-ups off. The anon key is inside every APK
+     and the console, so open sign-ups would let anyone make an account;
+   - keep the minimum password length at **6**, because worker PINs are 6
+     digits.
 3. From this folder:
 
    ```bash
    supabase login
    supabase link --project-ref <project-ref>
    supabase db push                         # the migrations in supabase/migrations
-   supabase functions deploy create-account
+   CODE=$(openssl rand -hex 12); echo "Founding code: $CODE"
+   supabase secrets set FOUNDING_CODE="$CODE"
+   supabase functions deploy create-account found-association reset-secret
    ```
+
+   Note the founding code it prints: the dashboard and `supabase secrets
+   list` show only a digest of it. Give it to the founder with the
+   console's address. It works for one founding only; to found another
+   association some day, set a new one the same way.
 
 4. Create `env/prod.json` (gitignored):
 
@@ -128,29 +155,46 @@ the key is missing; it never falls back to the debug key.
 Each new version raises the number after `+` in `pubspec.yaml`'s `version`
 (e.g. `1.0.0+1` to `1.0.1+2`); Android refuses to install a lower one.
 
+## The web console
+
+A static site: build it, then upload `build/web` to Cloudflare Pages
+(free plan). Node is needed for `npx`.
+
+Once:
+
+```bash
+npx wrangler login
+npx wrangler pages project create dobo-console --production-branch main
+```
+
+Each time the console changes:
+
+```bash
+flutter build web -t lib/main_web.dart --release --dart-define-from-file=env/prod.json
+npx wrangler pages deploy build/web --project-name dobo-console --branch main
+```
+
+It is served at `https://dobo-console.pages.dev` (a custom domain can be
+added later in the Cloudflare dashboard, with no change here). The pages
+use `#` addresses (`/#/membres`), so no rewrite rule is needed. Only
+active admins can stay signed in; 30 minutes without use signs out.
+
 ## First use
 
-1. On the founder's phone, choose "Créer l'association". A phone that
-   already holds records keeps them: its association, site and records
-   become the server's. The founder is the association's first admin.
+1. **Found the association** in the console: open its address, choose
+   "Fonder une association", and fill in the founding code, the
+   association, the first branch, your name, email and password, and the
+   site. You are its first admin, and the console opens the members page.
 
-2. **Close sign-ups.** In the dashboard, under Authentication → Sign In /
-   Providers, turn **off** "Allow new users to sign up". The anon key is
-   inside every APK, so while sign-ups are open anyone holding the APK can
-   make an account and an association of their own. Row-level security
-   keeps them out of the family's data, but they would still add rows and
-   use storage. Accounts made under Plus → Administration go through the
-   `create-account` function and the admin API, which still works with
-   sign-ups off. Only "Créer l'association" needs them on: turn them back
-   on just long enough if a new association ever has to be founded.
+2. In the console (Membres) or on a phone (Plus → Administration →
+   Membres), create everyone else's account: members get an email and
+   password, workers a username and PIN. No email is sent; hand the
+   password or PIN over in person. Each person signs in once with a
+   network connection, and the phone works offline from then on. A
+   forgotten password or PIN is replaced from the same page ("Nouveau
+   mot de passe" / "Nouveau code PIN").
 
-3. The founder creates everyone else's account under Plus → Administration
-   → Membres: members get an email and password, workers a username and
-   PIN. No email is sent; hand the password or PIN over in person. Each
-   person signs in once with a network connection, and the phone works
-   offline from then on.
-
-4. **Name a second admin** among the members (tick "admin" when creating
+3. **Name a second admin** among the members (tick "admin" when creating
    the account, or later on the member's page). An admin who loses their
    phone or forgets their password can then be helped by the other. The
    server never lets the last active admin lose the flag or be deactivated.
