@@ -40,20 +40,7 @@ void main() {
 
   setUpAll(() async {
     env = ServerEnv.fromEnvironment();
-    founder = await env.signedUpClient('founder$stamp@test.mg', 'motdepasse1');
-    await founder.rpc<void>(
-      'create_association',
-      params: {
-        'p_association_id': newId(),
-        'p_association_name': 'Famille $stamp',
-        'p_group_id': newId(),
-        'p_group_name': 'Branche 1',
-        'p_member_id': newId(),
-        'p_member_name': 'Founder',
-        'p_locale': 'fr',
-        'p_device_id': deviceId,
-      },
-    );
+    founder = (await env.foundAssociation(name: 'Famille $stamp')).client;
   });
 
   test('an admin creates a worker who can then sign in with the PIN', () async {

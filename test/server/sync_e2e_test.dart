@@ -57,23 +57,13 @@ void main() {
   setUpAll(() async {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
     env = ServerEnv.fromEnvironment();
-    associationId = newId();
-    founderId = newId();
     workerId = newId();
 
-    founderClient = env.anonClient();
+    final founded = await env.foundAssociation(name: 'Famille $stamp');
+    associationId = founded.associationId;
+    founderId = founded.memberId;
+    founderClient = founded.client;
     final founder = SupabaseAuthGateway(founderClient);
-    await founder.signUp(email: 'f$stamp@test.mg', password: 'motdepasse1');
-    await founder.createAssociation(
-      associationId: associationId,
-      associationName: 'Famille $stamp',
-      groupId: newId(),
-      groupName: 'Branche 1',
-      memberId: founderId,
-      memberName: 'Founder',
-      locale: 'fr',
-      deviceId: founderDevice,
-    );
     await founder.createAccount(
       NewAccount(
         memberId: workerId,
@@ -393,9 +383,11 @@ void main() {
       ).run(),
       1,
     );
+    // The worker's and the member's accounts; the founder's person came
+    // with the founding.
     expect(
       await PersonRepository(founderPhone, founder).ensureAccountPeople(),
-      greaterThanOrEqualTo(3),
+      greaterThanOrEqualTo(2),
     );
     await founderSync.run();
 

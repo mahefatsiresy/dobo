@@ -50,3 +50,6 @@ app.*.map.json
 # Supabase connection settings (dart-define files)
 env/*.json
 !env/example.json
+
+# Local secrets for `supabase functions serve` (FOUNDING_CODE)
+supabase/functions/.env

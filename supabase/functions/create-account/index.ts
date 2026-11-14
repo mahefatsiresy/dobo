@@ -1,11 +1,19 @@
 // Creates a member's or a worker's account (SPEC F14; plan Decision 3).
 // Only an active admin may call it. The account is confirmed at once, so no
 // email is ever sent; the admin passes the password or PIN on in person.
-import { createClient } from "jsr:@supabase/supabase-js@2";
-
-const workerEmailDomain = "ouvriers.dobo.invalid";
-const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const username = /^[a-z0-9._-]{3,30}$/;
+import {
+  callerMember,
+  email as emailPattern,
+  fail,
+  minPasswordLength,
+  pin,
+  preflight,
+  reply,
+  serviceClient,
+  uuid,
+  workerEmailDomain,
+  workerUsername as username,
+} from "../_shared/http.ts";
 
 type Body = {
   memberId: string;
@@ -21,24 +29,13 @@ type Body = {
   deviceId: string;
 };
 
-const reply = (status: number, body: unknown) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-
-const fail = (status: number, error: string) => reply(status, { error });
-
 Deno.serve(async (req) => {
+  const early = preflight(req);
+  if (early) return early;
   if (req.method !== "POST") return fail(405, "method_not_allowed");
 
-  const url = Deno.env.get("SUPABASE_URL")!;
-  const caller = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, {
-    global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } },
-    auth: { persistSession: false },
-  });
-  const { data: me } = await caller.rpc("current_member");
-  if (!me?.id || !me.is_admin) return fail(403, "not_admin");
+  const me = await callerMember(req);
+  if (!me || !me.is_admin) return fail(403, "not_admin");
 
   let b: Body;
   try {
@@ -58,17 +55,15 @@ Deno.serve(async (req) => {
   let email: string;
   if (b.role === "worker") {
     if (!username.test(b.login ?? "")) return fail(400, "bad_login");
-    if (!/^\d{6}$/.test(b.secret ?? "")) return fail(400, "bad_secret");
+    if (!pin.test(b.secret ?? "")) return fail(400, "bad_secret");
     email = `${b.login}@${workerEmailDomain}`;
   } else {
-    if (!/^[^@\s]+@[^@\s]+$/.test(b.login ?? "")) return fail(400, "bad_login");
-    if ((b.secret ?? "").length < 8) return fail(400, "bad_secret");
+    if (!emailPattern.test(b.login ?? "")) return fail(400, "bad_login");
+    if ((b.secret ?? "").length < minPasswordLength) return fail(400, "bad_secret");
     email = b.login.toLowerCase();
   }
 
-  const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
-    auth: { persistSession: false },
-  });
+  const admin = serviceClient();
   const { data: created, error: authError } = await admin.auth.admin.createUser({
     email,
     password: b.secret,
