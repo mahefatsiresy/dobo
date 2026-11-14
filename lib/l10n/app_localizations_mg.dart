@@ -1219,6 +1219,21 @@ class AppLocalizationsMg extends AppLocalizations {
   String get consoleBadCode => 'Diso na efa nampiasaina ny kaody fanorenana';
 
   @override
+  String get consoleRename => 'Ovay ny anarana';
+
+  @override
+  String get consoleEdit => 'Ovay';
+
+  @override
+  String get consoleNewGroup => 'Sampana vaovao';
+
+  @override
+  String get consoleNewPerson => 'Olona vaovao';
+
+  @override
+  String get consoleNothingYet => 'Tsy mbola misy';
+
+  @override
   String consoleRefused(String code) {
     return 'Nolavin\'ny mpizara : $code';
   }

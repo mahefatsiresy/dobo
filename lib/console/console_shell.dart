@@ -5,16 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import 'console_config.dart';
 import 'console_providers.dart';
+import 'language_switch.dart';
 
 /// The admin pages' frame (SPEC F16): a side menu, sign-out at its foot,
 /// and the page in a column no wider than [consoleMaxWidth].
 class ConsoleShell extends ConsumerWidget {
-  const ConsoleShell({super.key, required this.child, this.footer = const []});
+  const ConsoleShell({super.key, required this.child});
 
   final Widget child;
-
-  /// Extra controls at the menu's foot, above sign-out (the language).
-  final List<Widget> footer;
 
   static const sections = [
     ('/association', 'navAssociation', Icons.home_work_outlined),
@@ -64,7 +62,7 @@ class ConsoleShell extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...footer,
+                      const ConsoleLanguageSwitch(),
                       const SizedBox(height: 8),
                       TextButton.icon(
                         key: const Key('consoleSignOut'),

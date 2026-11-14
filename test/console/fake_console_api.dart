@@ -141,6 +141,20 @@ class FakeConsoleApi implements ConsoleApi {
     _write();
     final i = memberRows.indexWhere((r) => r.id == m.id);
     memberRows[i] = m;
+    // The signed-in account reads its own row, as on the server.
+    final me = account;
+    if (me != null && me.memberId == m.id) {
+      account = ConsoleMe(
+        memberId: me.memberId,
+        associationId: me.associationId,
+        associationName: me.associationName,
+        name: m.name,
+        role: m.role,
+        isAdmin: m.isAdmin,
+        active: m.active,
+        locale: m.locale,
+      );
+    }
   }
 
   @override

@@ -729,6 +729,11 @@
   "consolePasswordsDiffer": "Les deux mots de passe diffèrent",
   "consoleFoundSubmit": "Fonder",
   "consoleBadCode": "Code de fondation faux ou déjà utilisé",
+  "consoleRename": "Renommer",
+  "consoleEdit": "Modifier",
+  "consoleNewGroup": "Nouveau groupe",
+  "consoleNewPerson": "Nouvelle personne",
+  "consoleNothingYet": "Rien pour l'instant",
   "consoleRefused": "Le serveur a refusé : {code}",
   "@consoleRefused": {
     "placeholders": {

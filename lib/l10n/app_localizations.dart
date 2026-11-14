@@ -2288,6 +2288,36 @@ abstract class AppLocalizations {
   /// **'Code de fondation faux ou déjà utilisé'**
   String get consoleBadCode;
 
+  /// No description provided for @consoleRename.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renommer'**
+  String get consoleRename;
+
+  /// No description provided for @consoleEdit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier'**
+  String get consoleEdit;
+
+  /// No description provided for @consoleNewGroup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau groupe'**
+  String get consoleNewGroup;
+
+  /// No description provided for @consoleNewPerson.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouvelle personne'**
+  String get consoleNewPerson;
+
+  /// No description provided for @consoleNothingYet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien pour l\'instant'**
+  String get consoleNothingYet;
+
   /// No description provided for @consoleRefused.
   ///
   /// In fr, this message translates to:

@@ -1211,6 +1211,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get consoleBadCode => 'Code de fondation faux ou déjà utilisé';
 
   @override
+  String get consoleRename => 'Renommer';
+
+  @override
+  String get consoleEdit => 'Modifier';
+
+  @override
+  String get consoleNewGroup => 'Nouveau groupe';
+
+  @override
+  String get consoleNewPerson => 'Nouvelle personne';
+
+  @override
+  String get consoleNothingYet => 'Rien pour l\'instant';
+
+  @override
   String consoleRefused(String code) {
     return 'Le serveur a refusé : $code';
   }

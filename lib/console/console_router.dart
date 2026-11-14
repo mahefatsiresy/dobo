@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import 'console_providers.dart';
 import 'console_shell.dart';
+import 'pages/association_page.dart';
 import 'pages/found_page.dart';
+import 'pages/groups_page.dart';
+import 'pages/people_page.dart';
 import 'pages/sign_in_page.dart';
 
 /// Pages anyone may open; the others are for a signed-in admin.
@@ -45,11 +48,22 @@ final consoleRouterProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         builder: (context, state, child) => ConsoleShell(child: child),
         routes: [
-          for (final path in ['/association', '/groupes', '/membres', '/personnes'])
-            GoRoute(
-              path: path,
-              builder: (context, state) => _Placeholder(path),
-            ),
+          GoRoute(
+            path: '/association',
+            builder: (context, state) => const AssociationPage(),
+          ),
+          GoRoute(
+            path: '/groupes',
+            builder: (context, state) => const GroupsPage(),
+          ),
+          GoRoute(
+            path: '/membres',
+            builder: (context, state) => const _Placeholder('/membres'),
+          ),
+          GoRoute(
+            path: '/personnes',
+            builder: (context, state) => const PeoplePage(),
+          ),
         ],
       ),
     ],
