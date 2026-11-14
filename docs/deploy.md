@@ -130,12 +130,30 @@ Each new version raises the number after `+` in `pubspec.yaml`'s `version`
 
 ## First use
 
-On the founder's phone, choose "Créer l'association". A phone that already
-holds records keeps them: its association, site and records become the
-server's. The founder then creates everyone else's account under Plus →
-Administration → Membres: members get an email and password, workers a
-username and PIN. Each person signs in once with a network connection, and
-the phone works offline from then on.
+1. On the founder's phone, choose "Créer l'association". A phone that
+   already holds records keeps them: its association, site and records
+   become the server's. The founder is the association's first admin.
+
+2. **Close sign-ups.** In the dashboard, under Authentication → Sign In /
+   Providers, turn **off** "Allow new users to sign up". The anon key is
+   inside every APK, so while sign-ups are open anyone holding the APK can
+   make an account and an association of their own. Row-level security
+   keeps them out of the family's data, but they would still add rows and
+   use storage. Accounts made under Plus → Administration go through the
+   `create-account` function and the admin API, which still works with
+   sign-ups off. Only "Créer l'association" needs them on: turn them back
+   on just long enough if a new association ever has to be founded.
+
+3. The founder creates everyone else's account under Plus → Administration
+   → Membres: members get an email and password, workers a username and
+   PIN. No email is sent; hand the password or PIN over in person. Each
+   person signs in once with a network connection, and the phone works
+   offline from then on.
+
+4. **Name a second admin** among the members (tick "admin" when creating
+   the account, or later on the member's page). An admin who loses their
+   phone or forgets their password can then be helped by the other. The
+   server never lets the last active admin lose the flag or be deactivated.
 
 A worker's phone has no way out of the worker home. To take it back, an
 admin long-presses the title on the worker home and signs in with their
