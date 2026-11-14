@@ -896,9 +896,6 @@ class AppLocalizationsMg extends AppLocalizations {
   String get welcomeWorker => 'Mpiasa aho';
 
   @override
-  String get welcomeCreate => 'Hamorona ny fikambanana';
-
-  @override
   String get loginTitle => 'Fidirana';
 
   @override
@@ -945,21 +942,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get pinSixDigits => 'Isa 6';
-
-  @override
-  String get createTitle => 'Hamorona ny fikambanana';
-
-  @override
-  String get createAssociationName => 'Anaran\'ny fikambanana';
-
-  @override
-  String get createGroupName => 'Anaran\'ny sampanao';
-
-  @override
-  String get createYourName => 'Ny anaranao';
-
-  @override
-  String get createSubmit => 'Mamorona';
 
   @override
   String get moreAccount => 'Kaonty';
@@ -1019,9 +1001,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get syncRelogin => 'Hiditra indray';
-
-  @override
-  String get syncLink => 'Hamorona ny kaontin\'ny fikambanana';
 
   @override
   String get syncStateRunning => 'Am-pampifanarahana…';
@@ -1157,6 +1136,25 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get memberActive => 'Mavitrika';
+
+  @override
+  String get resetPassword => 'Teny miafina vaovao';
+
+  @override
+  String get resetPin => 'Kaody PIN vaovao';
+
+  @override
+  String get resetHint =>
+      'Omeo mivantana ilay olona izany. Mijanona ho mifandray ireo findainy efa niditra.';
+
+  @override
+  String get resetConfirm => 'Ovay';
+
+  @override
+  String get resetPasswordDone => 'Voaova ny teny miafina';
+
+  @override
+  String get resetPinDone => 'Voaova ny kaody PIN';
 
   @override
   String get memberPerson => 'Taratasin\'ny mpiasa (tsy voatery)';

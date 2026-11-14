@@ -11,7 +11,8 @@ import '../sync_state.dart';
 import 'person_repository.dart';
 
 /// Members and their accounts (SPEC F14). Editing works offline and syncs
-/// like any reference row; only creating an account needs the network.
+/// like any reference row; only creating an account and resetting its
+/// password or PIN need the network.
 class MemberRepository {
   MemberRepository(this.db, this.session, this.auth);
 
@@ -101,6 +102,13 @@ class MemberRepository {
       await PersonRepository(db, session).ensureAccountPeople();
     }
     return account.memberId;
+  }
+
+  /// An admin sets a new password or PIN for [memberId]'s account (online).
+  /// Nothing is stored on the phone.
+  Future<void> resetSecret(String memberId, String secret) async {
+    final gateway = auth ?? (throw const AuthFailed('no_server'));
+    await gateway.resetSecret(memberId: memberId, secret: secret);
   }
 }
 

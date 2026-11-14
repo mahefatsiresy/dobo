@@ -1694,12 +1694,6 @@ abstract class AppLocalizations {
   /// **'Je suis ouvrier'**
   String get welcomeWorker;
 
-  /// No description provided for @welcomeCreate.
-  ///
-  /// In fr, this message translates to:
-  /// **'Créer l\'association'**
-  String get welcomeCreate;
-
   /// No description provided for @loginTitle.
   ///
   /// In fr, this message translates to:
@@ -1789,36 +1783,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'6 chiffres'**
   String get pinSixDigits;
-
-  /// No description provided for @createTitle.
-  ///
-  /// In fr, this message translates to:
-  /// **'Créer l\'association'**
-  String get createTitle;
-
-  /// No description provided for @createAssociationName.
-  ///
-  /// In fr, this message translates to:
-  /// **'Nom de l\'association'**
-  String get createAssociationName;
-
-  /// No description provided for @createGroupName.
-  ///
-  /// In fr, this message translates to:
-  /// **'Nom de votre branche'**
-  String get createGroupName;
-
-  /// No description provided for @createYourName.
-  ///
-  /// In fr, this message translates to:
-  /// **'Votre nom'**
-  String get createYourName;
-
-  /// No description provided for @createSubmit.
-  ///
-  /// In fr, this message translates to:
-  /// **'Créer'**
-  String get createSubmit;
 
   /// No description provided for @moreAccount.
   ///
@@ -1921,12 +1885,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Se reconnecter'**
   String get syncRelogin;
-
-  /// No description provided for @syncLink.
-  ///
-  /// In fr, this message translates to:
-  /// **'Créer le compte de l\'association'**
-  String get syncLink;
 
   /// No description provided for @syncStateRunning.
   ///
@@ -2173,6 +2131,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Actif'**
   String get memberActive;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get resetPassword;
+
+  /// No description provided for @resetPin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau code PIN'**
+  String get resetPin;
+
+  /// No description provided for @resetHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donnez-le à la personne en main propre. Ses téléphones déjà connectés le restent.'**
+  String get resetHint;
+
+  /// No description provided for @resetConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer'**
+  String get resetConfirm;
+
+  /// No description provided for @resetPasswordDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe changé'**
+  String get resetPasswordDone;
+
+  /// No description provided for @resetPinDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code PIN changé'**
+  String get resetPinDone;
 
   /// No description provided for @memberPerson.
   ///

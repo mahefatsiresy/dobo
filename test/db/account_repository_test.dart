@@ -115,70 +115,6 @@ void main() {
     },
   );
 
-  test('creating the association from an M3 phone keeps its ids', () async {
-    final local = await setup.completeSetup(siteName: 'Ambohidratrimo');
-    await repo.createAssociation(
-      associationName: 'Famille Rabe',
-      groupName: 'Branche 1',
-      memberName: 'Soa',
-      email: 'soa@a.mg',
-      password: 'motdepasse',
-      siteName: 'ignored',
-    );
-    final sent = auth.createdAssociations.single;
-    expect(
-      (sent['associationId'], sent['memberId']),
-      (local.associationId, local.userId),
-    );
-    expect(sent['deviceId'], await db.deviceId());
-    expect(await db.select(db.sites).get(), hasLength(1));
-    final s = (await setup.currentSession())!;
-    expect((s.userId, s.siteId, s.isAdmin), (local.userId, local.siteId, true));
-    expect((await meta())['linked'], '1');
-  });
-
-  test(
-    'creating the association on an empty phone sets the phone up',
-    () async {
-      await repo.createAssociation(
-        associationName: 'Famille Rabe',
-        groupName: 'Branche 1',
-        memberName: 'Soa',
-        email: 'soa@a.mg',
-        password: 'motdepasse',
-        siteName: 'Ambohidratrimo',
-        locationNote: 'RN4',
-      );
-      final sent = auth.createdAssociations.single;
-      final s = (await setup.currentSession())!;
-      expect(
-        (s.associationId, s.userId),
-        (sent['associationId'], sent['memberId']),
-      );
-      // The server says who sells; the founder doesn't until an admin says.
-      expect(s.isSales, false);
-      final site = await db.select(db.sites).getSingle();
-      expect(
-        (site.id, site.name, site.locationNote),
-        (s.siteId, 'Ambohidratrimo', 'RN4'),
-      );
-    },
-  );
-
-  test('an account already made by a failed attempt is signed into', () async {
-    final retry = FakeAuthGateway(existingEmails: {'soa@a.mg'});
-    await AccountRepository(db, setup, retry).createAssociation(
-      associationName: 'Famille Rabe',
-      groupName: 'Branche 1',
-      memberName: 'Soa',
-      email: 'soa@a.mg',
-      password: 'motdepasse',
-      siteName: 'Ambohidratrimo',
-    );
-    expect(retry.signedIn, true);
-    expect(retry.createdAssociations, hasLength(1));
-  });
-
   test('no network: nothing is written', () async {
     auth.offline = true;
     await expectLater(
@@ -192,54 +128,6 @@ void main() {
     final local = await setup.completeSetup(siteName: 'Ambohidratrimo');
     await logs(2, local.associationId);
     expect(await repo.pendingCount(), 3); // the site and two logs
-  });
-
-  test(
-    'a signed-out phone with records cannot found a second association',
-    () async {
-      await setup.completeSetup(siteName: 'Ambohidratrimo');
-      await repo.signOut();
-      final before = await meta();
-      await expectLater(
-        repo.createAssociation(
-          associationName: 'Autre',
-          groupName: 'Branche 1',
-          memberName: 'Soa',
-          email: 'soa@x.mg',
-          password: 'motdepasse',
-          siteName: 'X',
-        ),
-        throwsA(
-          isA<AuthFailed>().having((e) => e.code, 'code', 'other_association'),
-        ),
-      );
-      expect(await meta(), before);
-      expect(auth.createdAssociations, isEmpty);
-    },
-  );
-
-  test('the founder retries after a lost answer and ends linked, with the '
-      'same ids', () async {
-    auth.loseNextAssociationAnswer = true;
-    Future<void> create() => repo.createAssociation(
-      associationName: 'Famille Rabe',
-      groupName: 'Branche 1',
-      memberName: 'Soa',
-      email: 'soa@a.mg',
-      password: 'motdepasse',
-      siteName: 'Ambohidratrimo',
-    );
-    await expectLater(create(), throwsA(isA<SyncOffline>()));
-    expect(await setup.currentSession(), isNull);
-    await create();
-    final [first, second] = auth.createdAssociations;
-    for (final key in ['associationId', 'memberId', 'groupId']) {
-      expect(second[key], first[key], reason: key);
-    }
-    final s = (await setup.currentSession())!;
-    expect(s.associationId, first['associationId']);
-    expect((await meta())['linked'], '1');
-    expect((await meta()).keys.where((k) => k.startsWith('planned_')), isEmpty);
   });
 }
 

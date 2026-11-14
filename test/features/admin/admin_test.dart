@@ -169,4 +169,71 @@ void main() {
       expect(tile.onChanged, isNull, reason: label);
     }
   }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
+
+  Future<void> addWorker(AppDatabase db, WidgetTester tester) async {
+    final s = (await appContainer(tester).read(sessionProvider.future))!;
+    await db
+        .into(db.members)
+        .insert(
+          MembersCompanion.insert(
+            id: const Value('w1'),
+            associationId: s.associationId,
+            enteredBy: s.userId,
+            deviceId: s.deviceId,
+            name: 'Rakoto',
+            role: MemberRole.worker,
+            locale: 'mg',
+            login: const Value('rakoto'),
+            syncState: const Value(SyncState.synced),
+          ),
+        );
+  }
+
+  appTest("an admin resets a worker's PIN from the member page", (
+    tester,
+    db,
+  ) async {
+    await addWorker(db, tester);
+    await openMembers(tester);
+    await tapAndSettle(tester, find.text('Rakoto'));
+    await reveal(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    expect(find.text('Nouveau code PIN'), findsWidgets);
+    await enterAndSettle(tester, find.byKey(const Key('newSecret')), '654321');
+    await tapAndSettle(tester, find.byKey(const Key('confirmReset')));
+
+    expect(auth.resets, [('w1', '654321')]);
+    expect(find.text('Code PIN changé'), findsOneWidget);
+  }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
+
+  appTest('a 5-digit PIN cannot be confirmed', (tester, db) async {
+    await addWorker(db, tester);
+    await openMembers(tester);
+    await tapAndSettle(tester, find.text('Rakoto'));
+    await reveal(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    await enterAndSettle(tester, find.byKey(const Key('newSecret')), '65432');
+    final confirm = tester.widget<FilledButton>(
+      find.byKey(const Key('confirmReset')),
+    );
+    expect(confirm.onPressed, isNull);
+  }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
+
+  appTest('a reset with no network says so and keeps the dialog open', (
+    tester,
+    db,
+  ) async {
+    await addWorker(db, tester);
+    await openMembers(tester);
+    await tapAndSettle(tester, find.text('Rakoto'));
+    await reveal(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    await enterAndSettle(tester, find.byKey(const Key('newSecret')), '654321');
+    auth.offline = true;
+    await tapAndSettle(tester, find.byKey(const Key('confirmReset')));
+
+    expect(auth.resets, isEmpty);
+    expect(find.byKey(const Key('newSecret')), findsOneWidget);
+    expect(find.text('Connexion nécessaire'), findsOneWidget);
+  }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
 }

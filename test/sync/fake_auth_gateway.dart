@@ -5,7 +5,7 @@ import 'package:dobo/sync/sync_api.dart';
 /// Accounts without a server: one member to sign in as, a password to
 /// check, and a switch for having no network.
 class FakeAuthGateway implements AuthGateway {
-  FakeAuthGateway({this.member, this.password, this.existingEmails = const {}});
+  FakeAuthGateway({this.member, this.password});
 
   /// Who [myMember] says is signed in.
   RemoteMember? member;
@@ -13,20 +13,16 @@ class FakeAuthGateway implements AuthGateway {
   /// The only accepted password or PIN; null accepts any.
   String? password;
 
-  /// Emails [signUp] refuses as taken.
-  final Set<String> existingEmails;
 
   /// Every call fails as if the phone had no network.
   bool offline = false;
 
-  /// The next createAssociation is applied, then its answer is lost.
-  bool loseNextAssociationAnswer = false;
-
   bool signedIn = false;
-  final _signedUp = <String>{};
   String? lastEmail;
-  final createdAssociations = <Map<String, String>>[];
   final createdAccounts = <NewAccount>[];
+
+  /// Every (member id, new secret) reset, in order.
+  final resets = <(String, String)>[];
 
   void _net() {
     if (offline) throw SyncOffline();
@@ -46,62 +42,12 @@ class FakeAuthGateway implements AuthGateway {
   }
 
   @override
-  Future<void> signUp({required String email, required String password}) async {
-    _net();
-    if (existingEmails.contains(email) || _signedUp.contains(email)) {
-      throw const AuthFailed('user_already_exists');
-    }
-    _signedUp.add(email);
-    lastEmail = email;
-    signedIn = true;
-  }
-
-  @override
   Future<void> signOut() async => signedIn = false;
 
   @override
   Future<RemoteMember> myMember() async {
     _net();
     return member ?? (throw const AuthFailed('no_member'));
-  }
-
-  @override
-  Future<void> createAssociation({
-    required String associationId,
-    required String associationName,
-    required String groupId,
-    required String groupName,
-    required String memberId,
-    required String memberName,
-    required String locale,
-    required String deviceId,
-  }) async {
-    _net();
-    createdAssociations.add({
-      'associationId': associationId,
-      'associationName': associationName,
-      'groupId': groupId,
-      'groupName': groupName,
-      'memberId': memberId,
-      'memberName': memberName,
-      'locale': locale,
-      'deviceId': deviceId,
-    });
-    member = RemoteMember(
-      id: memberId,
-      associationId: associationId,
-      associationName: associationName,
-      siteId: null,
-      name: memberName,
-      role: MemberRole.member,
-      isAdmin: true,
-      isSales: false,
-      locale: locale,
-    );
-    if (loseNextAssociationAnswer) {
-      loseNextAssociationAnswer = false;
-      throw SyncOffline();
-    }
   }
 
   @override
@@ -130,6 +76,15 @@ class FakeAuthGateway implements AuthGateway {
       'login': account.login,
       'user_id': 'u-${account.memberId}',
     };
+  }
+
+  @override
+  Future<void> resetSecret({
+    required String memberId,
+    required String secret,
+  }) async {
+    _net();
+    resets.add((memberId, secret));
   }
 }
 

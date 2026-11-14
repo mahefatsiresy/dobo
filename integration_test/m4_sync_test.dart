@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dobo/app.dart';
 import 'package:dobo/db/database_provider.dart';
+import 'package:dobo/db/ids.dart';
 import 'package:dobo/db/repositories/providers.dart';
 import 'package:dobo/features/sync/backup_actions.dart';
 import 'package:dobo/sync/server_config.dart';
@@ -20,8 +22,10 @@ import '../test/helpers.dart';
 /// Three parts, each on a freshly cleared app, chosen with M4_PART; M4_RUN
 /// makes the accounts unique:
 ///
-///   founder  creates the association, a pond, the worker's account and a
-///            stocking; records offline; syncs when the network is back.
+///   founder  founds the association through the found-association
+///            function (as the web console does), signs in on the phone,
+///            then adds a pond, the worker's account and a stocking;
+///            records offline; syncs when the network is back.
 ///            It prints M4:OFFLINE_PLEASE and M4:ONLINE_PLEASE and waits
 ///            until the host has cut or restored the emulator's network
 ///            (adb shell svc wifi disable|enable; svc data disable|enable),
@@ -32,13 +36,20 @@ import '../test/helpers.dart';
 ///
 ///   flutter test integration_test/m4_sync_test.dart -d DEVICE \
 ///     --dart-define-from-file=env/local.json \
-///     --dart-define=M4_PART=founder --dart-define=M4_RUN=123
+///     --dart-define=M4_PART=founder --dart-define=M4_RUN=123 \
+///     --dart-define=FOUNDING_CODE=dobo-local-founding
+///
+/// The local founding code is spent once used. Before the founder part,
+/// make it usable again on the host:
+///   psql "$DB_URL" -c 'truncate founding_codes_spent'
+/// with DB_URL from `supabase status -o env`.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   const part = String.fromEnvironment('M4_PART');
   const run = String.fromEnvironment('M4_RUN');
   const backupName = String.fromEnvironment('M4_BACKUP');
+  const foundingCode = String.fromEnvironment('FOUNDING_CODE');
 
   Finder field(String label) => find.widgetWithText(TextFormField, label);
 
@@ -66,6 +77,43 @@ void main() {
       return false;
     } finally {
       client.close(force: true);
+    }
+  }
+
+  /// Founds the association as the web console does (SPEC F16).
+  Future<void> foundAssociation(String email) async {
+    final memberId = newId();
+    final client = HttpClient();
+    try {
+      final req = await client.postUrl(
+        Uri.parse('$supabaseUrl/functions/v1/found-association'),
+      );
+      req.headers
+        ..contentType = ContentType.json
+        ..set('apikey', supabaseAnonKey)
+        ..set('Authorization', 'Bearer $supabaseAnonKey');
+      req.write(
+        jsonEncode({
+          'code': foundingCode,
+          'email': email,
+          'password': 'motdepasse1',
+          'founderName': 'Soa',
+          'associationName': 'Famille',
+          'groupName': 'Branche 1',
+          'siteName': 'Ambohidratrimo',
+          'associationId': newId(),
+          'groupId': newId(),
+          'siteId': newId(),
+          'memberId': memberId,
+          'personId': accountPersonId(memberId),
+          'deviceId': newId(),
+        }),
+      );
+      final res = await req.close();
+      final body = await res.transform(utf8.decoder).join();
+      expect(res.statusCode, 200, reason: body);
+    } finally {
+      client.close();
     }
   }
 
@@ -113,22 +161,20 @@ void main() {
 
         // 1. Online: the association, a pond, the worker's account, a
         // stocking; then sync.
-        await tapAndSettle(tester, find.byKey(const Key('welcomeCreate')));
-        await enterAndSettle(tester, field("Nom de l'association"), 'Famille');
+        expect(foundingCode, isNotEmpty, reason: 'pass FOUNDING_CODE');
+        await foundAssociation('founder$run@test.mg');
+        await tapAndSettle(tester, find.byKey(const Key('welcomeMember')));
         await enterAndSettle(
           tester,
-          field('Nom de votre branche'),
-          'Branche 1',
-        );
-        await enterAndSettle(tester, field('Votre nom'), 'Soa');
-        await enterAndSettle(
-          tester,
-          field('Adresse e-mail'),
+          find.byKey(const Key('login')),
           'founder$run@test.mg',
         );
-        await enterAndSettle(tester, field('Mot de passe'), 'motdepasse1');
-        await enterAndSettle(tester, field('Nom du site'), 'Ambohidratrimo');
-        await tapAndSettle(tester, find.text('Créer'));
+        await enterAndSettle(
+          tester,
+          find.byKey(const Key('secret')),
+          'motdepasse1',
+        );
+        await tapAndSettle(tester, find.byKey(const Key('signIn')));
         await pumpUntil(tester, find.text('Ajouter un étang'));
 
         await tapAndSettle(tester, find.text('Ajouter un étang'));

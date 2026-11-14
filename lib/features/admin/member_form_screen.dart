@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../db/database.dart';
 import '../../db/ids.dart';
 import '../../db/repositories/providers.dart';
+import '../../domain/accounts.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../sync/auth_gateway.dart';
@@ -14,10 +15,12 @@ import '../common/form_body.dart';
 import '../common/save_once.dart';
 import '../people/people_providers.dart';
 import 'members_screen.dart';
+import 'reset_secret_dialog.dart';
 
 /// A member's account (SPEC F14). Editing works offline; a new account
 /// needs the network and a login: email and password for a member,
-/// username and 6-digit PIN for a worker.
+/// username and 6-digit PIN for a worker. An account's password or PIN is
+/// reset from here, online.
 class MemberFormScreen extends ConsumerStatefulWidget {
   const MemberFormScreen({super.key, this.memberId});
 
@@ -40,6 +43,7 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
   bool _sales = false;
   bool _active = true;
   String _locale = 'fr';
+  bool _hasLogin = false;
   bool _loaded = false;
   String? _error;
 
@@ -71,17 +75,38 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
     _sales = m.isSales;
     _active = m.active;
     _locale = m.locale;
+    _hasLogin = m.login != null;
   }
 
   bool get _valid {
     if (_name.text.trim().isEmpty) return false;
     if (!_isNew) return true;
-    final login = _login.text.trim();
-    final secret = _secret.text;
-    return _role == MemberRole.worker
-        ? RegExp(r'^[a-z0-9._-]{3,30}$').hasMatch(login.toLowerCase()) &&
-              RegExp(r'^\d{6}$').hasMatch(secret)
-        : login.contains('@') && secret.length >= 8;
+    return accountProblem(
+          role: _role,
+          login: _login.text,
+          secret: _secret.text,
+        ) ==
+        null;
+  }
+
+  Future<void> _reset() async {
+    final l10n = AppLocalizations.of(context);
+    final done = await showResetSecretDialog(
+      context,
+      memberId: widget.memberId!,
+      role: _role,
+    );
+    if (done && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _role == MemberRole.worker
+                ? l10n.resetPinDone
+                : l10n.resetPasswordDone,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _save() async {
@@ -146,6 +171,8 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
     // Nobody removes their own rights: one wrong tap could leave the
     // association without an admin.
     final own = widget.memberId == ref.watch(sessionProvider).value?.userId;
+    // A build with no server has no accounts to reset.
+    final canReset = ref.watch(memberRepositoryProvider).auth != null;
     return Scaffold(
       appBar: AppBar(title: Text(_isNew ? l10n.memberNew : _name.text)),
       body: FormBody(
@@ -274,6 +301,18 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
             ),
           ],
           const SizedBox(height: 24),
+          if (!_isNew && _hasLogin && canReset) ...[
+            OutlinedButton.icon(
+              key: const Key('resetSecret'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              icon: const Icon(Icons.key),
+              label: Text(worker ? l10n.resetPin : l10n.resetPassword),
+              onPressed: _reset,
+            ),
+            const SizedBox(height: 16),
+          ],
           FilledButton(
             key: const Key('saveMember'),
             style: FilledButton.styleFrom(

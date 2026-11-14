@@ -103,12 +103,6 @@ class SyncScreen extends ConsumerWidget {
                 worker ? '/welcome/login?worker=1' : '/welcome/login',
               ),
             ),
-          if (view.state == SyncRunState.unlinked)
-            button(
-              l10n.syncLink,
-              Icons.add_home_work,
-              () => context.push('/welcome/create'),
-            ),
           const Divider(height: 32),
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(

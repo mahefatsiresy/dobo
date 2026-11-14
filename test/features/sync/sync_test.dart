@@ -118,13 +118,12 @@ void main() {
     );
   }, overrides: online());
 
-  appTest('an M3 phone is offered to create the association\'s account', (
-    tester,
-    db,
-  ) async {
+  appTest('an unlinked phone says so and offers no founding: that is done '
+      'in the web console', (tester, db) async {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Synchronisation'));
-    expect(find.text('Créer le compte de l\'association'), findsOneWidget);
+    expect(find.text("Ce téléphone n'est relié à aucun compte."), findsOneWidget);
+    expect(find.text('Créer le compte de l\'association'), findsNothing);
   }, overrides: online());
 
   test('two syncs asked for at once run once', () async {

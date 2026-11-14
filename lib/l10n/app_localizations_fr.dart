@@ -889,9 +889,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get welcomeWorker => 'Je suis ouvrier';
 
   @override
-  String get welcomeCreate => 'Créer l\'association';
-
-  @override
   String get loginTitle => 'Connexion';
 
   @override
@@ -939,21 +936,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pinSixDigits => '6 chiffres';
-
-  @override
-  String get createTitle => 'Créer l\'association';
-
-  @override
-  String get createAssociationName => 'Nom de l\'association';
-
-  @override
-  String get createGroupName => 'Nom de votre branche';
-
-  @override
-  String get createYourName => 'Votre nom';
-
-  @override
-  String get createSubmit => 'Créer';
 
   @override
   String get moreAccount => 'Compte';
@@ -1013,9 +995,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncRelogin => 'Se reconnecter';
-
-  @override
-  String get syncLink => 'Créer le compte de l\'association';
 
   @override
   String get syncStateRunning => 'Synchronisation en cours…';
@@ -1149,6 +1128,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get memberActive => 'Actif';
+
+  @override
+  String get resetPassword => 'Nouveau mot de passe';
+
+  @override
+  String get resetPin => 'Nouveau code PIN';
+
+  @override
+  String get resetHint =>
+      'Donnez-le à la personne en main propre. Ses téléphones déjà connectés le restent.';
+
+  @override
+  String get resetConfirm => 'Changer';
+
+  @override
+  String get resetPasswordDone => 'Mot de passe changé';
+
+  @override
+  String get resetPinDone => 'Code PIN changé';
 
   @override
   String get memberPerson => 'Fiche de l\'ouvrier (facultatif)';

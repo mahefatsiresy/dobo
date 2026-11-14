@@ -34,7 +34,6 @@ import 'features/reports/reports_screen.dart';
 import 'features/readings/water_reading_screen.dart';
 import 'features/setup/setup_screen.dart';
 import 'features/account/account_screen.dart';
-import 'features/account/create_association_screen.dart';
 import 'features/account/login_screen.dart';
 import 'features/account/welcome_screen.dart';
 import 'features/sync/sync_screen.dart';
@@ -96,10 +95,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               worker: state.uri.queryParameters['worker'] == '1',
               takeover: state.uri.queryParameters['takeover'] == '1',
             ),
-          ),
-          GoRoute(
-            path: 'create',
-            builder: (context, state) => const CreateAssociationScreen(),
           ),
           GoRoute(
             path: 'local',

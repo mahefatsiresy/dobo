@@ -4,8 +4,8 @@ import '../domain/types.dart';
 import 'auth_gateway.dart';
 import 'server_errors.dart';
 
-/// [AuthGateway] over Supabase Auth, the `create_association` function and
-/// the `create-account` edge function.
+/// [AuthGateway] over Supabase Auth and the `create-account` and
+/// `reset-secret` edge functions.
 class SupabaseAuthGateway implements AuthGateway {
   SupabaseAuthGateway(this.client);
 
@@ -19,10 +19,6 @@ class SupabaseAuthGateway implements AuthGateway {
       _auth(
         () => client.auth.signInWithPassword(email: email, password: password),
       );
-
-  @override
-  Future<void> signUp({required String email, required String password}) =>
-      _auth(() => client.auth.signUp(email: email, password: password));
 
   /// Wrong credentials and the like are [AuthFailed]; no network is still
   /// `SyncOffline`.
@@ -79,38 +75,6 @@ class SupabaseAuthGateway implements AuthGateway {
   }
 
   @override
-  Future<void> createAssociation({
-    required String associationId,
-    required String associationName,
-    required String groupId,
-    required String groupName,
-    required String memberId,
-    required String memberName,
-    required String locale,
-    required String deviceId,
-  }) async {
-    try {
-      await guardServer(
-        () => client.rpc<void>(
-          'create_association',
-          params: {
-            'p_association_id': associationId,
-            'p_association_name': associationName,
-            'p_group_id': groupId,
-            'p_group_name': groupName,
-            'p_member_id': memberId,
-            'p_member_name': memberName,
-            'p_locale': locale,
-            'p_device_id': deviceId,
-          },
-        ),
-      );
-    } on PostgrestException catch (e) {
-      throw AuthFailed(e.message);
-    }
-  }
-
-  @override
   Future<Map<String, Object?>> createAccount(NewAccount account) async {
     try {
       final res = await guardServer(
@@ -118,12 +82,31 @@ class SupabaseAuthGateway implements AuthGateway {
       );
       return (res.data as Map).cast<String, Object?>();
     } on FunctionException catch (e) {
-      final details = e.details;
-      throw AuthFailed(
-        details is Map && details['error'] is String
-            ? details['error'] as String
-            : 'status_${e.status}',
-      );
+      throw AuthFailed(_functionError(e));
     }
+  }
+
+  @override
+  Future<void> resetSecret({
+    required String memberId,
+    required String secret,
+  }) async {
+    try {
+      await guardServer(
+        () => client.functions.invoke(
+          'reset-secret',
+          body: {'memberId': memberId, 'secret': secret},
+        ),
+      );
+    } on FunctionException catch (e) {
+      throw AuthFailed(_functionError(e));
+    }
+  }
+
+  static String _functionError(FunctionException e) {
+    final details = e.details;
+    return details is Map && details['error'] is String
+        ? details['error'] as String
+        : 'status_${e.status}';
   }
 }

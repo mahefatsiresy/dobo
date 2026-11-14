@@ -3,10 +3,7 @@ import 'package:drift/drift.dart';
 import '../../sync/auth_gateway.dart';
 import '../../sync/sync_engine.dart';
 import '../../sync/sync_tables.dart';
-import '../../domain/types.dart';
 import '../database.dart';
-import '../ids.dart';
-import '../session.dart';
 import '../sync_state.dart';
 import 'setup_repository.dart';
 
@@ -100,96 +97,6 @@ class AccountRepository {
       await _setMeta(_lastMemberKey, me.id);
       // Rows refused under someone else's role may be this member's to send.
       if (previous != null && previous != me.id) await retryRejectedRows(db);
-    });
-  }
-
-  /// The founder's first step. On a phone that already records (M2/M3), the
-  /// association, member and site keep the ids the phone made.
-  Future<void> createAssociation({
-    required String associationName,
-    required String groupName,
-    required String memberName,
-    required String email,
-    required String password,
-    required String siteName,
-    String? locationNote,
-  }) async {
-    final existing = await setup.currentSession();
-    // Signed out, but holding an association's records: sign back in to it.
-    if (existing == null && await _meta('association_id') != null) {
-      throw const AuthFailed('other_association');
-    }
-    final login = email.trim().toLowerCase();
-    try {
-      await auth.signUp(email: login, password: password);
-    } on AuthFailed catch (e) {
-      // An earlier attempt made the account, then the network dropped.
-      if (e.code != 'user_already_exists') rethrow;
-      await auth.signIn(email: login, password: password);
-    }
-    // Ids are planned once and kept until it works: if the server created
-    // the association but its answer was lost, the retry sends the same
-    // ids and the server knows them as this founder's.
-    Future<String> planned(String key, String? current) async {
-      if (current != null) return current;
-      final kept = await _meta('planned_$key');
-      if (kept != null) return kept;
-      final id = newId();
-      await _setMeta('planned_$key', id);
-      return id;
-    }
-
-    final ids = Session(
-      associationId: await planned('association_id', existing?.associationId),
-      userId: await planned('member_id', existing?.userId),
-      deviceId: await db.deviceId(),
-      siteId: await planned('site_id', existing?.siteId),
-    );
-    final groupId = await planned('group_id', null);
-    await auth.createAssociation(
-      associationId: ids.associationId,
-      associationName: associationName.trim(),
-      groupId: groupId,
-      groupName: groupName.trim(),
-      memberId: ids.userId,
-      memberName: memberName.trim(),
-      locale: 'fr',
-      deviceId: ids.deviceId,
-    );
-    await db.transaction(() async {
-      if (existing == null) {
-        // The server's member row brings the sales flag (false for the
-        // founder until an admin sets it).
-        await setup.completeSetup(
-          siteName: siteName.trim(),
-          locationNote: locationNote,
-          ids: ids,
-          isSales: false,
-        );
-      } else {
-        await setup.writeSignIn(
-          associationId: ids.associationId,
-          memberId: ids.userId,
-          siteId: ids.siteId,
-          role: MemberRole.member,
-          isAdmin: true,
-          isSales: false,
-        );
-      }
-      await _setMeta(linkedKey, '1');
-      await _setMeta(_lastMemberKey, ids.userId);
-      await (db.delete(db.localMeta)..where(
-            (m) => m.key.isIn([
-              for (final k in [
-                'association_id',
-                'member_id',
-                'site_id',
-                'group_id',
-              ])
-                'planned_$k',
-            ]),
-          ))
-          .go();
     });
   }
 

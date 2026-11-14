@@ -1,34 +1,25 @@
 import '../domain/types.dart';
 
-/// Accounts on the server (SPEC §3, F14). Only signing in, creating the
-/// association and creating an account need the network; everything after
-/// works offline.
+/// Accounts on the server (SPEC §3, F14). Only signing in, creating an
+/// account and resetting a secret need the network; everything after works
+/// offline. Associations are founded in the web console (F16), never here.
 abstract interface class AuthGateway {
   bool get hasSession;
 
   /// Throws [AuthFailed] for a wrong login, `SyncOffline` with no network.
   Future<void> signIn({required String email, required String password});
-  Future<void> signUp({required String email, required String password});
   Future<void> signOut();
 
   /// The signed-in account's member row. Throws [AuthFailed] (`no_member`)
   /// when the account has none or it is deactivated.
   Future<RemoteMember> myMember();
 
-  /// The founder's first step (server `create_association`).
-  Future<void> createAssociation({
-    required String associationId,
-    required String associationName,
-    required String groupId,
-    required String groupName,
-    required String memberId,
-    required String memberName,
-    required String locale,
-    required String deviceId,
-  });
-
   /// An admin creates someone's account; returns the new member row.
   Future<Map<String, Object?>> createAccount(NewAccount account);
+
+  /// An admin sets a new password or PIN for [memberId]'s account. Throws
+  /// [AuthFailed] (`not_admin`, `no_member`, `bad_secret`).
+  Future<void> resetSecret({required String memberId, required String secret});
 }
 
 /// The signed-in member, as the server knows them.

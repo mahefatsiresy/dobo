@@ -6,8 +6,9 @@ import '../../l10n/app_localizations.dart';
 import '../../locale_controller.dart';
 import '../sync/backup_actions.dart';
 
-/// First launch (plan Decision 4): sign in as a member or a worker, or
-/// create the association. Readable in French and Malagasy.
+/// First launch: sign in as a member or a worker, or import a backup. A
+/// phone never founds an association; that is done in the web console
+/// (SPEC F16). Readable in French and Malagasy.
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
@@ -59,12 +60,6 @@ class WelcomeScreen extends ConsumerWidget {
             Icons.person,
             l10n.welcomeMember,
             '/welcome/login',
-          ),
-          big(
-            const Key('welcomeCreate'),
-            Icons.add_home_work,
-            l10n.welcomeCreate,
-            '/welcome/create',
           ),
           // A phone that broke: its backup works here with no network.
           OutlinedButton.icon(
