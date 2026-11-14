@@ -19,11 +19,11 @@ Today the paper log can't calculate anything: no biomass, no feed ration, no FCR
 - Build a visit report automatically and share it with all members.
 - Work fully offline; sync when a connection appears.
 - Be usable by a newly trained worker with no prior phone experience.
+- Let admins found and manage the association from a web console (F16), which later grows the app's other features.
 
 **Non-goals (v1)**
 - Money: prices, costs, income, profit sharing between groups. (Planned later; keep the schema open.)
 - Sensors, automatic feeders, hardware integration.
-- A web dashboard. Members use the phone app.
 - Disease diagnosis or treatment advice.
 - Bulk photo storage.
 
@@ -42,7 +42,7 @@ Structure: **Association → Group (family branch) → Member.** Each member bel
 | `worker` | The one trained worker with a phone | Daily log for assigned site's ponds; view pond status and today's tasks. Nothing else. |
 | `member` | Family representatives | Everything a worker can, plus transcription, visits, water readings, samples, observations, treatments, pond prep, feed stock, batch stocking and transfers, read all reports. |
 | `sales` | A permission flag on selected members | Record harvests and sales; manage customers. |
-| `admin` | One or more members | Manage sites, ponds, groups, people, accounts, roles, settings and threshold overrides. |
+| `admin` | One or more members | Manage sites, ponds, groups, people, accounts, roles, settings and threshold overrides, on the phone or in the web console (F16). |
 
 `sales` and `admin` are flags added to a member, not separate accounts. Permissions are enforced by Supabase RLS on the server and by hiding UI on the device. Groups are for attribution and report display only: they never limit what a member sees or edits.
 
@@ -145,21 +145,33 @@ Record deliveries (creating feed lots with manufacture date) and discards. Daily
 Print or PDF-export blank sheets for workers that mirror F3 and F4 exactly: pond codes and colours pre-filled, a row per day, boxes for feed and deaths, the warning-sign and water-colour pictograms to tick. The paper and the transcription grid have the same layout so copying is mechanical.
 
 ### F14. Accounts and administration (admin)
-Invite members, assign group and flags, create the worker's account, deactivate accounts. Edit per-site setting overrides with the DOMAIN value shown beside each.
+Invite members, assign group and flags, create the worker's account, deactivate accounts, reset a member's password or a worker's PIN. Edit per-site setting overrides with the DOMAIN value shown beside each. The association itself is founded in the web console (F16), never on a phone.
 
 ### F15. Exports (member)
 Annex A production register and Annex B weekly sheet as PDF and CSV, for any date range and pond.
+
+### F16. Web console (admin first)
+A website for a desktop browser, built with Flutter Web from the same code as the app: the same domain logic, translations (French by default, Malagasy, the choice stored on the account), pictograms and validation rules, with its own desktop layouts (side menu, tables, forms in dialogs) rather than the phone screens.
+- **Online only.** The server is the source of truth; the console keeps no local database. Its writes follow the phones' record rules (append-only events, `supersedes_id`, tombstones, sync columns), the browser being one more device. A failed write shows an error and keeps the form for a retry.
+- **Who:** admins in v1. Members and the sales flag get pages later as their features arrive (sales management first), with the app's roles: the console hides what a role can't do, the server refuses it. Workers never sign in to the console.
+- **Founding the association:** a public founding page asks for a founding code, the association name, the first group, the founder's name, email and password, and the site name and location note. It creates the founder's login, the association, group, site and the founder as admin in one step. The code is a server secret; a used code is spent. Public sign-ups stay closed.
+- **v1 pages:** association name; groups (create, rename); members and workers (list, create, edit role, group and flags, deactivate and reactivate, reset password or PIN); people (list, create, edit). Nothing is deleted.
+- **Reset:** an admin types the new password or PIN for any account of the association, theirs included, and hands it over in person. Sessions already open are not revoked; a lost phone is handled by deactivating its account.
+- **Session:** kept until sign-out, always visible in the menu; 30 minutes without use signs the console out.
+- The phone's own admin pages (F14) stay; both write the same rows.
 
 ## 6. Navigation
 
 - **Worker:** Home (pond tiles + today's tasks) → Daily log. That's all.
 - **Member:** tabs for Ponds (dashboard), Visit, Alerts, Reports, More (transcription, batches, feed, prep, health, sales if flagged, exports, paper sheets, admin if flagged, sync status).
+- **First launch (phone):** sign in as a member, sign in as a worker, or import a backup. A phone never founds an association.
+- **Web console:** the founding page, sign-in, then a side menu: Association, Groups, Members, People (Sites, Ponds, Sales and Reports later).
 
 ## 7. Sync
 
 Design goal: a phone can be offline for weeks, several phones record the same ponds, and nothing is ever lost or overwritten.
 
-- **Local first:** writes go to SQLite immediately and are marked `pending`. The UI never waits on the network.
+- **Local first** (phones; the web console is online only, F16): writes go to SQLite immediately and are marked `pending`. The UI never waits on the network.
 - **Push:** when online (and on app open, on resume, every few minutes while online, and on a manual "sync now"), pending rows are sent in batches. The server upserts by `id`, so retries are idempotent. Confirmed rows become `synced`.
 - **Pull:** the client asks for rows with `server_seq` greater than its last cursor, for its association, and applies them.
 - **Event records** never conflict: they are only inserted. Corrections and deletions arrive as new rows (`supersedes_id`, `is_tombstone`); readers take the latest non-superseded version.
@@ -193,7 +205,7 @@ Design goal: a phone can be offline for weeks, several phones record the same po
 
 ## 11. Milestones
 
-Each ends with tests passing and an airplane-mode test on an Android emulator (CLAUDE.md §Working).
+Each ends with tests passing and an airplane-mode test on an Android emulator (CLAUDE.md §Working); M9 is checked in a browser against the local server instead.
 
 | # | Milestone | Contents |
 |---|---|---|
@@ -206,6 +218,7 @@ Each ends with tests passing and an airplane-mode test on an Android emulator (C
 | M6 | Visit report | F8 with PDF and share |
 | M7 | Operations | F10, F11, F12 |
 | M8 | Paper and exports | F13, F15, Malagasy translation review, field test with the worker |
+| M9 | Web console | F16: founding on the web (and off the phones), admin pages, password and PIN reset (also on the phone), hosting |
 
 ## 12. Open questions for the user
 

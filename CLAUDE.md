@@ -1,6 +1,6 @@
 # Dobo — tilapia pond farm tracker
 
-Offline-first Android app for a family association in Madagascar that raises Nile tilapia in ponds. It replaces the paper production log and produces the **visit report** the family reads after each farm visit.
+Offline-first Android app for a family association in Madagascar that raises Nile tilapia in ponds. It replaces the paper production log and produces the **visit report** the family reads after each farm visit. A web console (SPEC F16) built from the same code lets admins found and manage the association.
 
 Source handbook (French): `Dossier_Elevage_Tilapia_Etangs.docx`. `docs/DOMAIN.md` is its distilled, authoritative form; where the two disagree, ask the user.
 
@@ -11,7 +11,7 @@ Source handbook (French): `Dossier_Elevage_Tilapia_Etangs.docx`. `docs/DOMAIN.md
 
 ## Non-negotiables
 
-1. **Offline-first.** Every feature works with no network. On the phone, the local database is the source of truth; the server is a sync hub. A saved record survives sync, app updates, logout and crashes. Losing farm data is the one unforgivable bug.
+1. **Offline-first** on the phone. Every phone feature works with no network. On the phone, the local database is the source of truth; the server is a sync hub. A saved record survives sync, app updates, logout and crashes. Losing farm data is the one unforgivable bug. The web console is online only, but writes records by the same rules (2.) through the same sync push.
 2. **Append-only records.** Daily logs, readings, samples, treatments, sales: a correction is a new record carrying `supersedes_id`; a deletion is a tombstone record. This keeps the traceability log intact and makes sync merge-free. See SPEC §Sync.
 3. **Field-worker screens** are for someone who has never used a phone: one task per screen, touch targets ≥ 56dp, icons plus numbers, numeric keypad, every field optional except the number being recorded, nothing to type in free text. Entering a day must be faster than writing the paper sheet.
 4. **Farming numbers live in `lib/domain/config.dart`**, each with the value and source line from DOMAIN.md. Screens, alerts and calculations read them from there; admins can override per site.
@@ -23,10 +23,11 @@ Source handbook (French): `Dossier_Elevage_Tilapia_Etangs.docx`. `docs/DOMAIN.md
 
 Flutter, Drift, Supabase and a custom sync were chosen by the user; the packages named for state, routing, i18n and PDF are Claude's planning defaults.
 
-- Flutter (stable), Dart with sound null safety, Android only. Phones are low-end and a few years old: test on a 2 GB RAM emulator, keep the APK moderate in size (a well-chosen package is fine; it needn't be minimal), avoid heavy animations. **[Claude's call]** `minSdk` 26 (Android 8).
+- Flutter (stable), Dart with sound null safety, Android for the app and Flutter Web for the console (`lib/main_web.dart`). Phone-only code (Drift native, photo files, backup, `path_provider`) stays out of the web build through conditional imports. Phones are low-end and a few years old: test on a 2 GB RAM emulator, keep the APK moderate in size (a well-chosen package is fine; it needn't be minimal), avoid heavy animations. **[Claude's call]** `minSdk` 26 (Android 8).
 - Local database: SQLite via Drift (`drift`, `drift_flutter`), with versioned schema migrations and a migration test per version.
 - Backend: Supabase (`supabase_flutter`: Postgres, Auth, Storage). Row-level security enforces roles server-side; the app hides what a role can't do, the server refuses it.
 - Sync: a custom push/pull engine in `lib/sync/` (SPEC §Sync), no third-party sync service.
+- Web hosting: the console's static build on Cloudflare Pages (`docs/deploy.md`).
 - State: Riverpod. Routing: `go_router`.
 - i18n: `flutter_localizations` + ARB files, locales `fr` and `mg`. Every user-facing string comes from the ARB files. Flutter's Material and Cupertino localizations don't include Malagasy, so `mg` needs fallback delegates that serve French for built-in widget strings.
 - IDs: `uuid` package (v7). Photos: `image_picker` + `flutter_image_compress`.
@@ -41,6 +42,7 @@ lib/domain/           pure Dart logic + config.dart (thresholds, rates, duration
 lib/db/               Drift tables, DAOs, migrations
 lib/sync/             push/pull engine, sync status
 lib/features/<name>/  screens, widgets and providers for one feature
+lib/console/          the web console: its pages, layouts and server data layer
 lib/l10n/             app_fr.arb, app_mg.arb
 supabase/             SQL migrations, RLS policies
 test/                 mirrors lib/
@@ -81,4 +83,4 @@ Use these words in code, translation keys and conversation. The French term is w
 
 ## Working
 
-Build milestone by milestone (SPEC §Milestones). A milestone is done when its features pass their tests and work on an Android emulator in airplane mode, then sync correctly once the network is back.
+Build milestone by milestone (SPEC §Milestones). A milestone is done when its features pass their tests and work on an Android emulator in airplane mode, then sync correctly once the network is back. Console work is checked in a browser against the local server, and what it writes must then reach a phone by sync.
