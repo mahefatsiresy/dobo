@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../console_errors.dart';
@@ -97,6 +98,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                     key: const Key('consoleSignIn'),
                     onPressed: _busy ? null : _signIn,
                     child: Text(l10n.loginSubmit),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => context.go('/fonder'),
+                    child: Text(l10n.consoleFoundLink),
                   ),
                 ],
               ),

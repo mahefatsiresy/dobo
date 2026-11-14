@@ -2222,6 +2222,72 @@ abstract class AppLocalizations {
   /// **'Connexion à la console'**
   String get consoleSignInTitle;
 
+  /// No description provided for @consoleFoundLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fonder une association'**
+  String get consoleFoundLink;
+
+  /// No description provided for @consoleFoundTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fonder l\'association'**
+  String get consoleFoundTitle;
+
+  /// No description provided for @consoleFoundIntro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une seule fois, par la personne qui sera le premier administrateur. Le code de fondation vous a été donné avec l\'adresse de la console.'**
+  String get consoleFoundIntro;
+
+  /// No description provided for @consoleFoundCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de fondation'**
+  String get consoleFoundCode;
+
+  /// No description provided for @consoleFoundAssociation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de l\'association'**
+  String get consoleFoundAssociation;
+
+  /// No description provided for @consoleFoundGroup.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de votre branche'**
+  String get consoleFoundGroup;
+
+  /// No description provided for @consoleFoundName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre nom'**
+  String get consoleFoundName;
+
+  /// No description provided for @consoleFoundPasswordAgain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe, encore une fois'**
+  String get consoleFoundPasswordAgain;
+
+  /// No description provided for @consolePasswordsDiffer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les deux mots de passe diffèrent'**
+  String get consolePasswordsDiffer;
+
+  /// No description provided for @consoleFoundSubmit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fonder'**
+  String get consoleFoundSubmit;
+
+  /// No description provided for @consoleBadCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de fondation faux ou déjà utilisé'**
+  String get consoleBadCode;
+
   /// No description provided for @consoleRefused.
   ///
   /// In fr, this message translates to:

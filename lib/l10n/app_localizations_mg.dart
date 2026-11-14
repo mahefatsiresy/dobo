@@ -1185,6 +1185,40 @@ class AppLocalizationsMg extends AppLocalizations {
   String get consoleSignInTitle => 'Hiditra ao amin\'ny console';
 
   @override
+  String get consoleFoundLink => 'Hanorina fikambanana';
+
+  @override
+  String get consoleFoundTitle => 'Hanorina ny fikambanana';
+
+  @override
+  String get consoleFoundIntro =>
+      'Indray mandeha monja, ataon\'ilay ho mpitantana voalohany. Nomena anao niaraka tamin\'ny adiresin\'ny console ny kaody fanorenana.';
+
+  @override
+  String get consoleFoundCode => 'Kaody fanorenana';
+
+  @override
+  String get consoleFoundAssociation => 'Anaran\'ny fikambanana';
+
+  @override
+  String get consoleFoundGroup => 'Anaran\'ny sampanao';
+
+  @override
+  String get consoleFoundName => 'Ny anaranao';
+
+  @override
+  String get consoleFoundPasswordAgain => 'Teny miafina, indray mandeha indray';
+
+  @override
+  String get consolePasswordsDiffer => 'Tsy mitovy ireo teny miafina roa';
+
+  @override
+  String get consoleFoundSubmit => 'Hanorina';
+
+  @override
+  String get consoleBadCode => 'Diso na efa nampiasaina ny kaody fanorenana';
+
+  @override
   String consoleRefused(String code) {
     return 'Nolavin\'ny mpizara : $code';
   }

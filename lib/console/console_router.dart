@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'console_providers.dart';
 import 'console_shell.dart';
+import 'pages/found_page.dart';
 import 'pages/sign_in_page.dart';
 
 /// Pages anyone may open; the others are for a signed-in admin.
@@ -35,7 +36,7 @@ final consoleRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/fonder',
-        builder: (context, state) => const _Placeholder('fonder'),
+        builder: (context, state) => const FoundPage(),
       ),
       GoRoute(
         path: '/connexion',

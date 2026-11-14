@@ -30,6 +30,9 @@ class FakeConsoleApi implements ConsoleApi {
   final memberRows = <MemberRow>[];
   final peopleRows = <PersonRow>[];
   final foundings = <Founding>[];
+
+  /// Every founding sent, refused or not.
+  final plannedSeen = <Founding>[];
   final createdAccounts = <NewAccount>[];
   final resets = <(String, String)>[];
 
@@ -73,6 +76,7 @@ class FakeConsoleApi implements ConsoleApi {
 
   @override
   Future<void> foundAssociation(Founding f) async {
+    plannedSeen.add(f);
     _net();
     foundings.add(f);
     account = ConsoleMe(

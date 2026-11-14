@@ -1177,6 +1177,40 @@ class AppLocalizationsFr extends AppLocalizations {
   String get consoleSignInTitle => 'Connexion à la console';
 
   @override
+  String get consoleFoundLink => 'Fonder une association';
+
+  @override
+  String get consoleFoundTitle => 'Fonder l\'association';
+
+  @override
+  String get consoleFoundIntro =>
+      'Une seule fois, par la personne qui sera le premier administrateur. Le code de fondation vous a été donné avec l\'adresse de la console.';
+
+  @override
+  String get consoleFoundCode => 'Code de fondation';
+
+  @override
+  String get consoleFoundAssociation => 'Nom de l\'association';
+
+  @override
+  String get consoleFoundGroup => 'Nom de votre branche';
+
+  @override
+  String get consoleFoundName => 'Votre nom';
+
+  @override
+  String get consoleFoundPasswordAgain => 'Mot de passe, encore une fois';
+
+  @override
+  String get consolePasswordsDiffer => 'Les deux mots de passe diffèrent';
+
+  @override
+  String get consoleFoundSubmit => 'Fonder';
+
+  @override
+  String get consoleBadCode => 'Code de fondation faux ou déjà utilisé';
+
+  @override
   String consoleRefused(String code) {
     return 'Le serveur a refusé : $code';
   }

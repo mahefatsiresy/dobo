@@ -718,6 +718,17 @@
   "consoleAdminsOnly": "La console est réservée aux administrateurs.",
   "consoleIdleNotice": "Déconnecté après 30 minutes sans activité.",
   "consoleSignInTitle": "Connexion à la console",
+  "consoleFoundLink": "Fonder une association",
+  "consoleFoundTitle": "Fonder l'association",
+  "consoleFoundIntro": "Une seule fois, par la personne qui sera le premier administrateur. Le code de fondation vous a été donné avec l'adresse de la console.",
+  "consoleFoundCode": "Code de fondation",
+  "consoleFoundAssociation": "Nom de l'association",
+  "consoleFoundGroup": "Nom de votre branche",
+  "consoleFoundName": "Votre nom",
+  "consoleFoundPasswordAgain": "Mot de passe, encore une fois",
+  "consolePasswordsDiffer": "Les deux mots de passe diffèrent",
+  "consoleFoundSubmit": "Fonder",
+  "consoleBadCode": "Code de fondation faux ou déjà utilisé",
   "consoleRefused": "Le serveur a refusé : {code}",
   "@consoleRefused": {
     "placeholders": {

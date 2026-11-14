@@ -7,6 +7,7 @@ import 'data/console_api.dart';
 /// account messages, plus the console's own.
 String consoleErrorText(AppLocalizations l10n, Object error) => switch (error) {
   AuthFailed(code: 'admins_only') => l10n.consoleAdminsOnly,
+  AuthFailed(code: 'bad_code') => l10n.consoleBadCode,
   ConsoleWriteFailed(code: 'last_admin') => l10n.rejectLastAdmin,
   ConsoleWriteFailed(:final code) => l10n.consoleRefused(code),
   _ => accountErrorText(l10n, error),
