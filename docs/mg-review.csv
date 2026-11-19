@@ -738,3 +738,11 @@ pondLogDone;On a pond row: today's daily log is recorded.;Journal fait;Vita ny d
 pondLogNotYet;On a pond row: no daily log yet today.;Pas encore de journal;Mbola tsy misy diarin'ny andro;
 pondPrepNext;A pond being prepared: its status, then the next preparation step.;{status} : {step};{status} : {step};
 pondFishCount;"On a pond row: the estimated number of fish, already formatted (1 240); the screen puts ≈ in front.";{count} poissons;trondro {count};
+pondPrepare;Pinned action on a pond without fish that is empty or being prepared.;Préparer l'étang;Hanomana ny dobo;
+weighAction;Action on a batch on the pond page: weigh a sample of its fish.;Peser;Lanjaina;
+feedGivenToday;On the pond page once today is logged: the feed given today.;Donné : {amount};Nomena : {amount};
+growthSummary;Folded weight chart: latest average weight, its change since the previous weighing (signed, e.g. +12 g) and over how many days.;{weight}, {delta} en {days} j;{weight}, {delta} tao anatin'ny {days} andro;
+deathsSummary;Folded deaths chart: deaths over the chart's window of days.;{count, plural, =0{Aucun mort} =1{1 mort} other{{count} morts}} en {days} j;Maty {count} tao anatin'ny {days} andro;
+healthSummary;Folded health history: how many events and treatments, and the date of the latest.;{count, plural, =1{1 événement} other{{count} événements}}, dernier le {date};Zava-nitranga {count}, ny farany {date};
+pondFacts;Folded section on the pond page with its role, structure, surface, depths and density.;Étang;Dobo;
+moreActions;Tooltip of the ⋮ menu on the pond page (edit, archive).;Plus d'actions;Asa hafa;

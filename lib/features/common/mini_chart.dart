@@ -36,6 +36,7 @@ class MiniChart extends StatelessWidget {
     required this.title,
     required this.formatY,
     this.emptyText,
+    this.showTitle = true,
   });
 
   final List<ChartSeries> series;
@@ -43,6 +44,10 @@ class MiniChart extends StatelessWidget {
   final String title;
   final String Function(double) formatY;
   final String? emptyText;
+
+  /// False under a heading that already names the chart; the title still
+  /// labels it for screen readers.
+  final bool showTitle;
 
   static final _day = DateFormat('dd/MM');
 
@@ -58,7 +63,9 @@ class MiniChart extends StatelessWidget {
       for (final p in all)
         if (p.y != null) p.y!,
     ];
-    final header = Text(title, style: theme.textTheme.titleSmall);
+    final header = showTitle
+        ? Text(title, style: theme.textTheme.titleSmall)
+        : const SizedBox.shrink();
     if (all.isEmpty) {
       return Semantics(
         label: title,

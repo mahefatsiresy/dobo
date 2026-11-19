@@ -92,54 +92,7 @@ class StockedPondRow extends StatelessWidget {
             style: text.bodyMedium?.copyWith(color: c.warning),
           ),
         const SizedBox(height: 4),
-        Row(
-          children: [
-            Icon(
-              loggedToday ? Icons.task_alt : Icons.schedule,
-              size: 18,
-              color: loggedToday ? c.ok : c.inkMuted,
-            ),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Text(
-                loggedToday ? l10n.pondLogDone : l10n.pondLogNotYet,
-                style: text.bodySmall?.copyWith(
-                  color: loggedToday ? c.ok : c.inkMuted,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-
-    final today = Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (stopFeeding.isNotEmpty) ...[
-          Icon(Icons.no_meals, color: c.danger, size: 32),
-          Text(
-            l10n.workerStopFeeding,
-            textAlign: TextAlign.end,
-            style: text.labelLarge?.copyWith(color: c.danger),
-          ),
-        ] else if (o.rationG > 0) ...[
-          Text(
-            l10n.rationToday,
-            textAlign: TextAlign.end,
-            style: text.bodySmall,
-          ),
-          // The loud number never splits from its unit: it shrinks instead.
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerRight,
-            child: EstimatedLabel(
-              key: rationKey,
-              value: formatKg(o.rationG, locale),
-              style: text.headlineSmall,
-            ),
-          ),
-        ],
+        LogStatus(logged: loggedToday),
       ],
     );
 
@@ -156,7 +109,7 @@ class StockedPondRow extends StatelessWidget {
             const SizedBox(width: 12),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 112),
-              child: today,
+              child: TodayFeed(rationG: o.rationG, stopFeeding: stopFeeding),
             ),
           ],
         ),
@@ -259,6 +212,83 @@ class _RowFrame extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Whether today's daily log exists: a tick and "Journal fait", or a clock
+/// and "Pas encore de journal".
+class LogStatus extends StatelessWidget {
+  const LogStatus({super.key, required this.logged});
+
+  final bool logged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final c = context.dobo;
+    final colour = logged ? c.ok : c.inkMuted;
+    return Row(
+      children: [
+        Icon(logged ? Icons.task_alt : Icons.schedule, size: 18, color: colour),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            logged ? l10n.pondLogDone : l10n.pondLogNotYet,
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: colour),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Today's ration as the loudest number, or the stop-feeding sign; nothing
+/// when there is no ration to suggest.
+class TodayFeed extends StatelessWidget {
+  const TodayFeed({
+    super.key,
+    required this.rationG,
+    required this.stopFeeding,
+  });
+
+  final int rationG;
+  final Set<StopFeedingReason> stopFeeding;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (stopFeeding.isNotEmpty) ...[
+          Icon(Icons.no_meals, color: c.danger, size: 32),
+          Text(
+            l10n.workerStopFeeding,
+            textAlign: TextAlign.end,
+            style: text.labelLarge?.copyWith(color: c.danger),
+          ),
+        ] else if (rationG > 0) ...[
+          Text(
+            l10n.rationToday,
+            textAlign: TextAlign.end,
+            style: text.bodySmall,
+          ),
+          // The loud number never splits from its unit: it shrinks instead.
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerRight,
+            child: EstimatedLabel(
+              key: rationKey,
+              value: formatKg(rationG, Localizations.localeOf(context)),
+              style: text.headlineSmall,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

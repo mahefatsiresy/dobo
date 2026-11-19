@@ -234,6 +234,8 @@ void main() {
 
       appContainer(tester).read(routerProvider).go('/ponds/$e1');
       await tester.pumpAndSettle();
+      // The health history is folded to one line; open it.
+      await tapAndSettle(tester, find.text('Santé'));
       await tapAndSettle(tester, find.text('Ajouter une photo'));
       final photo = await db.select(db.photos).getSingle();
       expect(

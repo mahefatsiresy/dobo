@@ -9,6 +9,7 @@ void main() {
     WidgetTester tester,
     List<ChartPoint> points, {
     ChartStyle style = ChartStyle.line,
+    bool showTitle = true,
   }) => tester.pumpWidget(
     MaterialApp(
       home: Scaffold(
@@ -18,6 +19,7 @@ void main() {
           title: 'Poids moyen',
           formatY: (v) => v.toStringAsFixed(0),
           emptyText: 'Pas encore de données',
+          showTitle: showTitle,
         ),
       ),
     ),
@@ -69,6 +71,19 @@ void main() {
   testWidgets('semantics label is the title', (tester) async {
     final handle = tester.ensureSemantics();
     await pump(tester, [ChartPoint(d(1), 10), ChartPoint(d(2), 11)]);
+    expect(find.bySemanticsLabel(RegExp('Poids moyen')), findsWidgets);
+    handle.dispose();
+  });
+
+  testWidgets('a chart under its own section heading hides its title', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await pump(tester, [
+      ChartPoint(d(1), 10),
+      ChartPoint(d(2), 11),
+    ], showTitle: false);
+    expect(find.text('Poids moyen'), findsNothing);
     expect(find.bySemanticsLabel(RegExp('Poids moyen')), findsWidgets);
     handle.dispose();
   });

@@ -4542,6 +4542,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count} poissons'**
   String pondFishCount(String count);
+
+  /// Pinned action on a pond without fish that is empty or being prepared.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préparer l\'étang'**
+  String get pondPrepare;
+
+  /// Action on a batch on the pond page: weigh a sample of its fish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Peser'**
+  String get weighAction;
+
+  /// On the pond page once today is logged: the feed given today.
+  ///
+  /// In fr, this message translates to:
+  /// **'Donné : {amount}'**
+  String feedGivenToday(String amount);
+
+  /// Folded weight chart: latest average weight, its change since the previous weighing (signed, e.g. +12 g) and over how many days.
+  ///
+  /// In fr, this message translates to:
+  /// **'{weight}, {delta} en {days} j'**
+  String growthSummary(String weight, String delta, int days);
+
+  /// Folded deaths chart: deaths over the chart's window of days.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun mort} =1{1 mort} other{{count} morts}} en {days} j'**
+  String deathsSummary(int count, int days);
+
+  /// Folded health history: how many events and treatments, and the date of the latest.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 événement} other{{count} événements}}, dernier le {date}'**
+  String healthSummary(int count, String date);
+
+  /// Folded section on the pond page with its role, structure, surface, depths and density.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang'**
+  String get pondFacts;
+
+  /// Tooltip of the ⋮ menu on the pond page (edit, archive).
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus d\'actions'**
+  String get moreActions;
 }
 
 class _AppLocalizationsDelegate

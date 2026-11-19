@@ -7,6 +7,7 @@ import 'package:dobo/features/readings/water_reading_screen.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/features/common/mini_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -33,6 +34,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('E1'));
+    await tapAndSettle(tester, find.byTooltip("Plus d'actions"));
     await tapAndSettle(tester, find.text('Archiver'));
     await tapAndSettle(
       tester,
@@ -113,6 +115,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Vide'), findsOneWidget);
     await tapAndSettle(tester, find.text('E1'));
+    await tapAndSettle(tester, find.byTooltip("Plus d'actions"));
     await tapAndSettle(tester, find.text('Modifier'));
     await tapAndSettle(tester, find.text('Vide'));
     await tapAndSettle(tester, find.text('Prêt').last);
@@ -239,7 +242,7 @@ void main() {
       expect(find.text('IC : —'), findsOneWidget);
     }, overrides: [clock]);
 
-    appTest('three charts, no overflow on a 360 × 640 phone', (
+    appTest('three charts open one by one, no overflow on a 360 × 640 phone', (
       tester,
       db,
     ) async {
@@ -250,16 +253,21 @@ void main() {
       await weighedPond(db);
       await tester.pumpAndSettle();
       await tapAndSettle(tester, find.text('E1'));
+      expect(find.byType(MiniChart), findsNothing); // folded
+      var opened = 0;
       for (final title in [
         'Poids moyen (g)',
         'Morts par jour',
         'IC par période',
       ]) {
-        await tester.scrollUntilVisible(
-          find.text(title),
-          200,
-          scrollable: find.byType(Scrollable).first,
+        await tapAndSettle(tester, find.text(title));
+        opened++;
+        expect(
+          find.byType(MiniChart, skipOffstage: false),
+          findsNWidgets(opened),
         );
+        expect(tester.takeException(), isNull);
+        // The chart keeps its name for screen readers.
         expect(
           find.bySemanticsLabel(RegExp(RegExp.escape(title))),
           findsWidgets,

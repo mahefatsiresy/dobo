@@ -31,7 +31,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('E1'));
-    await tapAndSettle(tester, find.text('Échantillonnage'));
+    await tapAndSettle(tester, find.text('Peser'));
   }
 
   appTest('a sample needs fish and a weight', (tester, db) async {
@@ -52,6 +52,7 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     final s = await db.select(db.samples).getSingle();
     expect((s.fishCount, s.totalWeightG), (20, 620));
-    expect(find.text('Poids moyen : 31 g'), findsOneWidget); // pond page
+    // The pond page's batch line: estimated fish, then the weighed 31 g.
+    expect(find.textContaining(', 31 g'), findsOneWidget);
   });
 }

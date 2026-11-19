@@ -35,7 +35,7 @@ void main() {
   Future<void> openPrep(WidgetTester tester) async {
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('E1'));
-    await tapAndSettle(tester, find.text('Préparation'));
+    await tapAndSettle(tester, find.text("Préparer l'étang"));
   }
 
   appTest('a 300 m² pond shows quicklime 30–60 kg and manure 6–9 kg', (
@@ -131,5 +131,6 @@ void main() {
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('E1'));
     expect(find.text('Préparation'), findsNothing);
+    expect(find.text("Préparer l'étang"), findsNothing);
   }, overrides: [clock]);
 }

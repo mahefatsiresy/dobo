@@ -76,6 +76,6 @@ void main() {
     await tapAndSettle(tester, find.text('Empoissonner'));
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text('Empoissonner'), findsOneWidget);
-    expect(find.text('Archiver'), findsOneWidget);
+    expect(find.byTooltip("Plus d'actions"), findsOneWidget); // the pond page
   });
 }

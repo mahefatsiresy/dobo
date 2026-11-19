@@ -2553,4 +2553,36 @@ class AppLocalizationsMg extends AppLocalizations {
   String pondFishCount(String count) {
     return 'trondro $count';
   }
+
+  @override
+  String get pondPrepare => 'Hanomana ny dobo';
+
+  @override
+  String get weighAction => 'Lanjaina';
+
+  @override
+  String feedGivenToday(String amount) {
+    return 'Nomena : $amount';
+  }
+
+  @override
+  String growthSummary(String weight, String delta, int days) {
+    return '$weight, $delta tao anatin\'ny $days andro';
+  }
+
+  @override
+  String deathsSummary(int count, int days) {
+    return 'Maty $count tao anatin\'ny $days andro';
+  }
+
+  @override
+  String healthSummary(int count, String date) {
+    return 'Zava-nitranga $count, ny farany $date';
+  }
+
+  @override
+  String get pondFacts => 'Dobo';
+
+  @override
+  String get moreActions => 'Asa hafa';
 }

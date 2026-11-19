@@ -93,6 +93,9 @@ void main() {
     expect(find.textContaining('À vérifier'), findsOneWidget); // the band
     expect(find.text('≈\u00a00 poissons'), findsOneWidget);
     await tapAndSettle(tester, find.text('E1'));
+    // The "saved" snackbar covers the pinned bar until it fades.
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('Journal du jour'));
     expect(find.textContaining('≈'), findsNothing);
   });

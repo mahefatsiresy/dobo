@@ -57,7 +57,9 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
     await isolate(tester);
 
-    expect(find.text('Étang isolé'), findsWidgets); // pond page
+    // The band heads the pond page, above where the form left it.
+    await reveal(tester, find.text('Étang isolé'));
+    expect(find.text('Étang isolé'), findsWidgets);
     await tapAndSettle(tester, find.text('Transférer'));
     expect(
       find.text('Étang isolé : aucun poisson ne doit en sortir'),
@@ -106,7 +108,9 @@ void main() {
       'Dr Rabe',
     );
     await tapAndSettle(tester, find.text('Enregistrer'));
-    expect(find.textContaining('Sel'), findsOneWidget); // health history
+    // The health history is folded to one line; open it.
+    await tapAndSettle(tester, find.text('Santé'));
+    expect(find.textContaining('Sel'), findsOneWidget);
     final t = await db.select(db.treatments).getSingle();
     expect((t.product, t.dose, t.advisedBy), ('Sel', '3 kg', 'Dr Rabe'));
   });

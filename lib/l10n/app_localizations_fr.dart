@@ -2542,4 +2542,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String pondFishCount(String count) {
     return '$count poissons';
   }
+
+  @override
+  String get pondPrepare => 'Préparer l\'étang';
+
+  @override
+  String get weighAction => 'Peser';
+
+  @override
+  String feedGivenToday(String amount) {
+    return 'Donné : $amount';
+  }
+
+  @override
+  String growthSummary(String weight, String delta, int days) {
+    return '$weight, $delta en $days j';
+  }
+
+  @override
+  String deathsSummary(int count, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count morts',
+      one: '1 mort',
+      zero: 'Aucun mort',
+    );
+    return '$_temp0 en $days j';
+  }
+
+  @override
+  String healthSummary(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count événements',
+      one: '1 événement',
+    );
+    return '$_temp0, dernier le $date';
+  }
+
+  @override
+  String get pondFacts => 'Étang';
+
+  @override
+  String get moreActions => 'Plus d\'actions';
 }

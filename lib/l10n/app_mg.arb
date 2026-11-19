@@ -739,5 +739,13 @@
   "pondLogDone": "Vita ny diarin'ny andro",
   "pondLogNotYet": "Mbola tsy misy diarin'ny andro",
   "pondPrepNext": "{status} : {step}",
-  "pondFishCount": "trondro {count}"
+  "pondFishCount": "trondro {count}",
+  "pondPrepare": "Hanomana ny dobo",
+  "weighAction": "Lanjaina",
+  "feedGivenToday": "Nomena : {amount}",
+  "growthSummary": "{weight}, {delta} tao anatin'ny {days} andro",
+  "deathsSummary": "Maty {count} tao anatin'ny {days} andro",
+  "healthSummary": "Zava-nitranga {count}, ny farany {date}",
+  "pondFacts": "Dobo",
+  "moreActions": "Asa hafa"
 }

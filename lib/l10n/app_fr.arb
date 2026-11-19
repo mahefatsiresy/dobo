@@ -1562,5 +1562,69 @@
         "type": "String"
       }
     }
+  },
+  "pondPrepare": "Préparer l'étang",
+  "@pondPrepare": {
+    "description": "Pinned action on a pond without fish that is empty or being prepared."
+  },
+  "weighAction": "Peser",
+  "@weighAction": {
+    "description": "Action on a batch on the pond page: weigh a sample of its fish."
+  },
+  "feedGivenToday": "Donné : {amount}",
+  "@feedGivenToday": {
+    "description": "On the pond page once today is logged: the feed given today.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "growthSummary": "{weight}, {delta} en {days} j",
+  "@growthSummary": {
+    "description": "Folded weight chart: latest average weight, its change since the previous weighing (signed, e.g. +12 g) and over how many days.",
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "delta": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "deathsSummary": "{count, plural, =0{Aucun mort} =1{1 mort} other{{count} morts}} en {days} j",
+  "@deathsSummary": {
+    "description": "Folded deaths chart: deaths over the chart's window of days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "healthSummary": "{count, plural, =1{1 événement} other{{count} événements}}, dernier le {date}",
+  "@healthSummary": {
+    "description": "Folded health history: how many events and treatments, and the date of the latest.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pondFacts": "Étang",
+  "@pondFacts": {
+    "description": "Folded section on the pond page with its role, structure, surface, depths and density."
+  },
+  "moreActions": "Plus d'actions",
+  "@moreActions": {
+    "description": "Tooltip of the ⋮ menu on the pond page (edit, archive)."
   }
 }
