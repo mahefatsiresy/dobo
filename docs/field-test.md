@@ -4,7 +4,10 @@ M8 ends with the app tried on the farm by the worker who will use it every
 day. The point is to find out, before the app replaces the paper log, whether:
 
 - the worker can record a day on the phone without help, and faster than on
-  paper (SPEC §2 anti-goal);
+  paper (SPEC §2 anti-goal), on the screens of design step 3
+  (`docs/design.md`): a normal day is the feed, the leftover and Save on
+  one screen; signs, water colour and feedings sit behind their own
+  buttons;
 - each pictogram means to the worker what the app thinks it means;
 - the paper sheet copies into the transcription grid box by box.
 
@@ -13,9 +16,10 @@ notes. Write the notes in this file's tables (a copy, or a printout).
 
 ## Before the first visit
 
-- A release APK built against the hosted project (`docs/deploy.md`), on the
-  worker's phone, signed in with the worker's account. Check that the worker
-  home shows today's ponds.
+- A release APK built from `main` (design step 3 or later) against the
+  hosted project (`docs/deploy.md`), on the worker's phone, signed in with
+  the worker's account. Check that the worker home shows the ponds holding
+  fish and "0 / N vita" at the top.
 - Two weeks of paper sheets printed for every pond (Plus → Fiches papier,
   2 weeks, Imprimer), and a pen.
 - A watch or a second phone for timing.
@@ -37,8 +41,35 @@ are done.
 | | | | |
 
 If the phone is slower than paper on most ponds, note which step takes the
-time (finding the pond, typing the feed, the leftover, the signs, the colour,
-saving).
+time: finding the pond, typing the feed, closing the number pad, the
+leftover, Save, or (on a pond with something to report) finding the signs
+or the colour.
+
+Watch in particular:
+
+- After typing the feed, does the worker find Save ("Tehirizo") with the
+  number pad still open, or close the pad first, or press back and lose
+  the day?
+- Does the worker read the ration at the top (the bowl and the kg) as the
+  amount to give?
+- After saving, does the worker see the tick on the tile and the count
+  at the top ("2 / 5 vita") go up?
+
+### 1b. A day with something to report (timed)
+
+On one pond, ask the worker to record a day where they saw a warning sign
+and noticed the water colour (choose them with the worker, from what they
+see that day, or pretend). The signs are behind **Famantarana**, the colour
+behind **Loko ny rano**, the number of feedings behind **Impiry**; each
+opens its own page with a large **Vita** button.
+
+| Pond | Phone (s) | Found Famantarana alone? | Found Loko ny rano alone? | Pressed Vita, or back? |
+|---|---|---|---|---|
+| | | | | |
+
+Then ask for a day with deaths: once the number is above 0, **Endrika**
+(what the dead fish looked like) appears beside it. Note whether the worker
+notices it.
 
 ### 2. The pictograms, one by one
 
@@ -70,8 +101,18 @@ write the worker's words in Malagasy. Mark it **yes** if the meaning matches,
 | 19 | Water green | | |
 | 20 | Water dark green | | |
 | 21 | Water brown, cloudy | | |
+| 22 | Feed bowl (the amount to give) | | |
+| 23 | Don't feed (crossed fork and knife) | | |
+| 24 | Tick on a pond tile (done today) | | |
 
-The numbers are the ones printed on the paper sheet.
+Numbers 1–21 are the ones printed on the paper sheet; 22–24 are on the
+phone only (the worker home and the daily log).
+
+For 22: at small sizes the bowl can look like a helmet. If the worker
+doesn't say "food" or "how much to give", mark it **no**.
+
+For 23: also ask whether the sign is big enough to notice at a glance on
+the daily log screen, where it is smaller than the ration on other ponds.
 
 ### 3. The words on screen
 
@@ -104,7 +145,9 @@ that the worker's days arrived.
 - **A pictogram marked no:** it needs new artwork. Draw or choose a
   replacement with the worker's description in mind, then change it in two
   places:
-  - the screen icon, in `lib/features/common/pictograms.dart`;
+  - the screen icon, in `lib/features/common/pictograms.dart` (the feed
+    bowl is `feedIcon` there; it is on screen only, so it has no paper
+    outline);
   - the paper outline, in `lib/features/common/pictogram_paths.dart`. If the
     replacement is another Material icon, change `pictograms.dart` and rerun
     `tool/pictogram_paths.py` (its header says how). For your own artwork,
@@ -114,3 +157,6 @@ that the worker's days arrived.
   (README, "Malagasy review").
 - **Phone slower than paper:** note the slow step in an issue; it's a
   product question for the family before the app replaces paper.
+- **Save lost under the number pad, or signs and colour not found behind
+  their buttons:** note it with the step; it decides whether the daily
+  log changes before the app replaces paper (`docs/design.md` §Step 3).
