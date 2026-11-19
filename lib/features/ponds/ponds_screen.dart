@@ -4,18 +4,19 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
-import '../../l10n/labels.dart';
-import '../common/pond_colour.dart';
-import 'pond_figures.dart';
-import 'pond_overview.dart';
-import '../../domain/types.dart';
-import '../common/notice.dart';
-import '../../domain/alerts/alert.dart';
 import '../../l10n/formatting.dart';
-import '../alerts/alert_providers.dart';
-import '../common/estimated.dart';
 import '../../theme/tokens.dart';
+import '../alerts/alert_providers.dart';
+import '../common/attention_band.dart';
+import '../common/estimated.dart';
+import '../daily_log/daily_log_providers.dart';
+import '../prep/prep_providers.dart';
+import 'pond_attention.dart';
+import 'pond_overview.dart';
+import 'pond_row.dart';
 
+/// The member's ponds (docs/design.md §Step 1): which ponds need someone
+/// and how much to feed each, at a glance, in code order.
 class PondsScreen extends ConsumerWidget {
   const PondsScreen({super.key});
 
@@ -23,114 +24,168 @@ class PondsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final overviews = ref.watch(pondOverviewsProvider).value;
+    // Ponds are set up by admins (SPEC §3).
+    final isAdmin = ref.watch(sessionProvider).value?.isAdmin ?? false;
+    final add = isAdmin
+        ? _AddPondRow(onTap: () => context.go('/ponds/new'))
+        : null;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabPonds)),
-      // Ponds are set up by admins (SPEC §3).
-      floatingActionButton: (ref.watch(sessionProvider).value?.isAdmin ?? false)
-          ? FloatingActionButton.extended(
-              heroTag: null, // Tabs keep each branch alive: shared tags clash.
-              onPressed: () => context.go('/ponds/new'),
-              icon: const Icon(Icons.add),
-              label: Text(l10n.pondAdd),
-            )
-          : null,
-      body: overviews == null
-          ? const Center(child: CircularProgressIndicator())
-          : overviews.isEmpty
-          ? Center(child: Text(l10n.pondsEmpty))
-          : ListView(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 88),
-              children: [
-                for (final o in overviews)
-                  Card(
-                    child: InkWell(
-                      onTap: () => context.go('/ponds/${o.pond.id}'),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            PondTag(code: o.pond.code, colour: o.pond.colour),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.pondRole(o.pond.role),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium,
-                                  ),
-                                  Text(l10n.pondStatus(o.status)),
-                                  if (o.status == PondStatus.isolated)
-                                    Notice(
-                                      l10n.pondIsolatedBanner,
-                                      danger: true,
-                                    ),
-                                  const SizedBox(height: 4),
-                                  PondFigures(overview: o),
-                                  if (o.rationG > 0)
-                                    Wrap(
-                                      spacing: 8,
-                                      children: [
-                                        Text(l10n.labelColon(l10n.rationToday)),
-                                        EstimatedLabel(
-                                          value: formatKg(
-                                            o.rationG,
-                                            Localizations.localeOf(context),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  _AlertCounts(
-                                    alerts: ref.watch(
-                                      pondAlertsProvider(o.pond.id),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+      body: switch (overviews) {
+        null => const Center(child: CircularProgressIndicator()),
+        [] => ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(l10n.pondsEmpty),
             ),
+            ?add,
+          ],
+        ),
+        final overviews => _PondList(overviews: overviews, add: add),
+      },
     );
   }
 }
 
-/// Red and amber counts of a pond's alerts; nothing when it has none.
-class _AlertCounts extends StatelessWidget {
-  const _AlertCounts({required this.alerts});
+class _PondList extends ConsumerWidget {
+  const _PondList({required this.overviews, required this.add});
 
-  final List<Alert> alerts;
+  final List<PondOverview> overviews;
+  final Widget? add;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final logged = ref.watch(loggedTodayProvider).value ?? const {};
+    final prep = ref.watch(prepProgressAllProvider).value ?? const {};
+    var totalG = 0;
+    var dangerPonds = 0;
+    final rows = <Widget>[];
+    for (final o in overviews) {
+      final id = o.pond.id;
+      final attention = pondAttention(o, ref.watch(pondAlertsProvider(id)));
+      if (attention?.severity == BandSeverity.danger) dangerPonds++;
+      void open() => context.go('/ponds/$id');
+      if (o.liveCount == 0 && !o.inconsistent) {
+        rows.add(
+          ShortPondRow(
+            overview: o,
+            attention: attention,
+            prep: prep[id],
+            onTap: open,
+          ),
+        );
+        continue;
+      }
+      final stop = ref.watch(stopFeedingProvider(id));
+      if (stop.isEmpty) totalG += o.rationG;
+      rows.add(
+        StockedPondRow(
+          overview: o,
+          attention: attention,
+          loggedToday: logged.contains(id),
+          stopFeeding: stop,
+          onTap: open,
+        ),
+      );
+    }
+    return ListView(
+      children: [
+        _TopLines(totalG: totalG, dangerPonds: dangerPonds),
+        const Divider(),
+        for (final row in rows) ...[row, const Divider()],
+        ?add,
+      ],
+    );
+  }
+}
+
+/// Today's ration over the ponds that may be fed, and how many ponds show
+/// a danger band.
+class _TopLines extends StatelessWidget {
+  const _TopLines({required this.totalG, required this.dangerPonds});
+
+  final int totalG;
+  final int dangerPonds;
 
   @override
   Widget build(BuildContext context) {
-    final danger = alerts.where((a) => a.severity == Severity.danger).length;
-    final warning = alerts.length - danger;
-    Widget chip(IconData icon, Color colour, int n) => Padding(
-      padding: const EdgeInsets.only(right: 12, top: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
+    final danger = dangerPonds > 0;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: colour),
-          const SizedBox(width: 4),
-          Text(
-            '$n',
-            style: TextStyle(color: colour, fontWeight: FontWeight.bold),
+          if (totalG > 0)
+            Wrap(
+              spacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  l10n.labelColon(l10n.pondsRationTotal),
+                  style: text.bodyLarge,
+                ),
+                Text(
+                  approx(formatKg(totalG, Localizations.localeOf(context))),
+                  style: text.titleLarge?.copyWith(
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Icon(
+                danger ? Icons.error : Icons.check_circle,
+                color: danger ? c.danger : c.ok,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.pondsDangerCount(dangerPonds),
+                  style: text.bodyLarge?.copyWith(
+                    color: danger ? c.danger : c.ink,
+                    fontWeight: danger ? FontWeight.w600 : null,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
-    return Row(
-      children: [
-        if (danger > 0) chip(Icons.error, context.dobo.danger, danger),
-        if (warning > 0) chip(Icons.warning, context.dobo.warning, warning),
-      ],
-    );
   }
+}
+
+class _AddPondRow extends StatelessWidget {
+  const _AddPondRow({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 56),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            const Icon(Icons.add),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context).pondAdd,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

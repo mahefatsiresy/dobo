@@ -1508,5 +1508,59 @@
   "exportEndBeforeStart": "La date de fin est avant la date de début.",
   "exportWeeklyWholeWeeks": "Semaines entières, du lundi au dimanche.",
   "close": "Fermer",
-  "exportBuilding": "Préparation du fichier…"
+  "exportBuilding": "Préparation du fichier…",
+  "pondsRationTotal": "Ration du jour, tous les étangs",
+  "@pondsRationTotal": {
+    "description": "Above the ponds list, before today's suggested feed summed over the ponds that may be fed (shown as '≈ 12,4 kg')."
+  },
+  "pondsDangerCount": "{count, plural, =0{Aucun étang en danger} =1{1 étang en danger} other{{count} étangs en danger}}",
+  "@pondsDangerCount": {
+    "description": "Above the ponds list: how many ponds show a red (danger) band.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bandMore": "{lead}, et {count, plural, =1{1 autre} other{{count} autres}}",
+  "@bandMore": {
+    "description": "A pond row's band: its most urgent item, then how many other alerts the pond has.",
+    "placeholders": {
+      "lead": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pondLogDone": "Journal fait",
+  "@pondLogDone": {
+    "description": "On a pond row: today's daily log is recorded."
+  },
+  "pondLogNotYet": "Pas encore de journal",
+  "@pondLogNotYet": {
+    "description": "On a pond row: no daily log yet today."
+  },
+  "pondPrepNext": "{status} : {step}",
+  "@pondPrepNext": {
+    "description": "A pond being prepared: its status, then the next preparation step.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "pondFishCount": "{count} poissons",
+  "@pondFishCount": {
+    "description": "On a pond row: the estimated number of fish, already formatted (1 240); the screen puts ≈ in front.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

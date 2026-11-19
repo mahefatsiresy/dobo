@@ -90,8 +90,8 @@ void main() {
     );
     await tapAndSettle(tester, find.text('Enregistrer'));
     await tapAndSettle(tester, find.text('Étangs')); // back to the pond list
-    expect(find.text('À vérifier'), findsOneWidget);
-    expect(find.text('≈\u00a00'), findsOneWidget);
+    expect(find.textContaining('À vérifier'), findsOneWidget); // the band
+    expect(find.text('≈\u00a00 poissons'), findsOneWidget);
     await tapAndSettle(tester, find.text('E1'));
     await tapAndSettle(tester, find.text('Journal du jour'));
     expect(find.textContaining('≈'), findsNothing);

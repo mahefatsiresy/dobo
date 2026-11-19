@@ -731,3 +731,10 @@ exportEndBeforeStart;;La date de fin est avant la date de début.;Mialoha ny dat
 exportWeeklyWholeWeeks;;Semaines entières, du lundi au dimanche.;Herinandro feno, Alatsinainy ka hatramin'ny Alahady.;
 close;;Fermer;Hidio;
 exportBuilding;;Préparation du fichier…;Am-panomanana ny rakitra…;
+pondsRationTotal;Above the ponds list, before today's suggested feed summed over the ponds that may be fed (shown as '≈ 12,4 kg').;Ration du jour, tous les étangs;Sakafo anio, dobo rehetra;
+pondsDangerCount;Above the ponds list: how many ponds show a red (danger) band.;{count, plural, =0{Aucun étang en danger} =1{1 étang en danger} other{{count} étangs en danger}};{count, plural, =0{Tsy misy dobo atahorana} other{Dobo {count} atahorana}};
+bandMore;A pond row's band: its most urgent item, then how many other alerts the pond has.;{lead}, et {count, plural, =1{1 autre} other{{count} autres}};{lead}, ary {count} hafa;
+pondLogDone;On a pond row: today's daily log is recorded.;Journal fait;Vita ny diarin'ny andro;
+pondLogNotYet;On a pond row: no daily log yet today.;Pas encore de journal;Mbola tsy misy diarin'ny andro;
+pondPrepNext;A pond being prepared: its status, then the next preparation step.;{status} : {step};{status} : {step};
+pondFishCount;"On a pond row: the estimated number of fish, already formatted (1 240); the screen puts ≈ in front.";{count} poissons;trondro {count};

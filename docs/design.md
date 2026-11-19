@@ -116,22 +116,28 @@ screenshots from seeded demo farms on the host and on the test phone.
 ### Step 1: ponds list (decided)
 
 - Code order (E1, E2…): people find a pond by its stake.
-- Above the list, one line each: today's total ration across ponds
-  (`≈`), and how many ponds have a danger band.
+- Above the list: today's total ration across the ponds that may be fed
+  (`≈`, the value never split from its label's line), and how many ponds
+  have a danger band.
 - A stocked pond's row:
 
   ```
-  ┌────────────────────────────────────────────┐
-  │ ⚠  Oxygène bas, et 1 autre alerte          │ ← band, only when needed
-  ├──────┬─────────────────────────────────────┤
-  │      │ Grossissement            ≈ 2,4 kg   │ ← ration: the loud number
-  │  E1  │ ≈ 1 240 poissons         ✓ Journal  │
-  │      │ ≈ 186 kg, 150 g                     │
+  ┌──────┬─────────────────────────────────────┐
+  │      │ ⚠ Oxygène bas, et 1 autre            │ ← band, only when needed,
+  │      ├─────────────────────────────────────┤   beside its own stake
+  │  E1  │ Grossissement         Ration du jour │
+  │      │ ≈ 1 240 poissons          ≈ 2,4 kg   │ ← ration: the loud number
+  │      │ ≈ 186 kg, 150 g                      │
+  │      │ ✓ Journal fait                       │
   └──────┴─────────────────────────────────────┘
   ```
 
+  - The stake runs down beside the band, so a band can't be read as the
+    row above's. **[Claude's call, after the first goldens]**
   - The band names the most urgent item (isolated, inconsistent count, then
     alerts in alert order) and how many more.
+  - The average weight follows the biomass only when the pond holds one
+    batch.
   - Phase replaces role and structure; density shows only out of range.
   - When the pond should not be fed today (pre-harvest fast, low oxygen,
     surface swimming), the ration's place shows the stop-feeding sign

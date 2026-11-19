@@ -2518,4 +2518,39 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get exportBuilding => 'Am-panomanana ny rakitra…';
+
+  @override
+  String get pondsRationTotal => 'Sakafo anio, dobo rehetra';
+
+  @override
+  String pondsDangerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dobo $count atahorana',
+      zero: 'Tsy misy dobo atahorana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bandMore(String lead, int count) {
+    return '$lead, ary $count hafa';
+  }
+
+  @override
+  String get pondLogDone => 'Vita ny diarin\'ny andro';
+
+  @override
+  String get pondLogNotYet => 'Mbola tsy misy diarin\'ny andro';
+
+  @override
+  String pondPrepNext(String status, String step) {
+    return '$status : $step';
+  }
+
+  @override
+  String pondFishCount(String count) {
+    return 'trondro $count';
+  }
 }

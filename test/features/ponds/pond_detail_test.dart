@@ -93,7 +93,9 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Empoissonné'), findsNWidgets(2));
+    // Both hold fish: stocked rows with their count, neither empty.
+    expect(find.text('≈\u00a0100 poissons'), findsOneWidget);
+    expect(find.text('≈\u00a01\u202f000 poissons'), findsOneWidget);
     expect(find.text('Vide'), findsNothing);
   });
 

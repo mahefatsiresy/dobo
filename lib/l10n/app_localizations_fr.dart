@@ -2500,4 +2500,46 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exportBuilding => 'Préparation du fichier…';
+
+  @override
+  String get pondsRationTotal => 'Ration du jour, tous les étangs';
+
+  @override
+  String pondsDangerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count étangs en danger',
+      one: '1 étang en danger',
+      zero: 'Aucun étang en danger',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bandMore(String lead, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count autres',
+      one: '1 autre',
+    );
+    return '$lead, et $_temp0';
+  }
+
+  @override
+  String get pondLogDone => 'Journal fait';
+
+  @override
+  String get pondLogNotYet => 'Pas encore de journal';
+
+  @override
+  String pondPrepNext(String status, String step) {
+    return '$status : $step';
+  }
+
+  @override
+  String pondFishCount(String count) {
+    return '$count poissons';
+  }
 }

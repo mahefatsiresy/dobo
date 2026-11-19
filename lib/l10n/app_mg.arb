@@ -732,5 +732,12 @@
   "exportEndBeforeStart": "Mialoha ny daty fanombohana ny daty farany.",
   "exportWeeklyWholeWeeks": "Herinandro feno, Alatsinainy ka hatramin'ny Alahady.",
   "close": "Hidio",
-  "exportBuilding": "Am-panomanana ny rakitra…"
+  "exportBuilding": "Am-panomanana ny rakitra…",
+  "pondsRationTotal": "Sakafo anio, dobo rehetra",
+  "pondsDangerCount": "{count, plural, =0{Tsy misy dobo atahorana} other{Dobo {count} atahorana}}",
+  "bandMore": "{lead}, ary {count} hafa",
+  "pondLogDone": "Vita ny diarin'ny andro",
+  "pondLogNotYet": "Mbola tsy misy diarin'ny andro",
+  "pondPrepNext": "{status} : {step}",
+  "pondFishCount": "trondro {count}"
 }

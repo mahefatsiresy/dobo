@@ -4500,6 +4500,48 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Préparation du fichier…'**
   String get exportBuilding;
+
+  /// Above the ponds list, before today's suggested feed summed over the ponds that may be fed (shown as '≈ 12,4 kg').
+  ///
+  /// In fr, this message translates to:
+  /// **'Ration du jour, tous les étangs'**
+  String get pondsRationTotal;
+
+  /// Above the ponds list: how many ponds show a red (danger) band.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun étang en danger} =1{1 étang en danger} other{{count} étangs en danger}}'**
+  String pondsDangerCount(int count);
+
+  /// A pond row's band: its most urgent item, then how many other alerts the pond has.
+  ///
+  /// In fr, this message translates to:
+  /// **'{lead}, et {count, plural, =1{1 autre} other{{count} autres}}'**
+  String bandMore(String lead, int count);
+
+  /// On a pond row: today's daily log is recorded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Journal fait'**
+  String get pondLogDone;
+
+  /// On a pond row: no daily log yet today.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de journal'**
+  String get pondLogNotYet;
+
+  /// A pond being prepared: its status, then the next preparation step.
+  ///
+  /// In fr, this message translates to:
+  /// **'{status} : {step}'**
+  String pondPrepNext(String status, String step);
+
+  /// On a pond row: the estimated number of fish, already formatted (1 240); the screen puts ≈ in front.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons'**
+  String pondFishCount(String count);
 }
 
 class _AppLocalizationsDelegate

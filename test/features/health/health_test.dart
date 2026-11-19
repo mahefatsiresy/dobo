@@ -66,7 +66,8 @@ void main() {
     expect(find.text('Enregistrer'), findsNothing);
     await tapAndSettle(tester, find.byType(BackButton));
     await tapAndSettle(tester, find.text('Étangs'));
-    expect(find.text('Étang isolé'), findsOneWidget); // E1's card only
+    // E1's band only.
+    expect(find.textContaining('Étang isolé'), findsOneWidget);
     final event = await db.select(db.healthEvents).getSingle();
     expect(event.signs, {WarningSign.rubbing});
   });
@@ -84,7 +85,7 @@ void main() {
     );
     expect(find.text('Étang isolé'), findsNothing);
     await tapAndSettle(tester, find.text('Étangs'));
-    expect(find.text('Empoissonné'), findsOneWidget); // E1's card
+    expect(find.textContaining('Étang isolé'), findsNothing); // no band
   });
 
   appTest('a treatment is recorded and never suggested', (tester, db) async {
