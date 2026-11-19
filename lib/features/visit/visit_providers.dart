@@ -41,18 +41,22 @@ final checklistProvider = Provider.family<VisitChecklist?, String>((
   final samples = ref.watch(_samplesProvider(visitId)).value;
   final observations = ref.watch(visitObservationsProvider(visitId)).value;
   final last = ref.watch(_lastSampleOrStockingProvider).value;
+  final summaries = ref.watch(batchSummariesProvider).value;
   if (ponds == null ||
       readings == null ||
       samples == null ||
       observations == null ||
-      last == null) {
+      last == null ||
+      summaries == null) {
     return null;
   }
+  final batches = {for (final s in summaries) s.batch.id: s.batch};
   return buildChecklist(
     ponds: ponds,
     readingsThisVisit: readings,
     samplesThisVisit: samples,
     observationsThisVisit: observations,
+    batches: batches,
     lastSampleOrStocking: last,
     today: ref.watch(farmTodayProvider),
     config: ref.watch(domainConfigProvider),
@@ -63,12 +67,15 @@ final checklistProvider = Provider.family<VisitChecklist?, String>((
 final visitPreviewProvider = Provider<VisitChecklist?>((ref) {
   final ponds = ref.watch(pondOverviewsProvider).value;
   final last = ref.watch(_lastSampleOrStockingProvider).value;
-  if (ponds == null || last == null) return null;
+  final summaries = ref.watch(batchSummariesProvider).value;
+  if (ponds == null || last == null || summaries == null) return null;
+  final batches = {for (final s in summaries) s.batch.id: s.batch};
   return buildChecklist(
     ponds: ponds,
     readingsThisVisit: const [],
     samplesThisVisit: const [],
     observationsThisVisit: const [],
+    batches: batches,
     lastSampleOrStocking: last,
     today: ref.watch(farmTodayProvider),
     config: ref.watch(domainConfigProvider),

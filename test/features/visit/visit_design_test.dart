@@ -153,7 +153,36 @@ void main() {
     await tapAndSettle(tester, find.text('Commencer la visite'));
     expect(find.textContaining('Visite en cours depuis'), findsOneWidget);
     expect(find.text('0 / $total'), findsOneWidget);
+    // Nothing done yet: no green tick (colour means something).
+    expect(find.byIcon(Icons.check_circle), findsNothing);
   });
+
+  _visitTest(
+    'ending early on a small phone in Malagasy: the question scrolls into view',
+    size: const Size(320, 568),
+    open: true,
+    (tester, db) async {
+      appContainer(tester)
+          .read(localeControllerProvider.notifier)
+          .set(const Locale('mg'));
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpAndSettle();
+      await tapAndSettle(tester, find.text('Hamarana ny fitsidihana'));
+      final question = find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.textContaining('Hamarana ihany ve'),
+      );
+      expect(
+        find.ancestor(
+          of: question,
+          matching: find.byType(SingleChildScrollView),
+        ),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   _visitTest(
     'ponds in code order; the band between header and checks',
@@ -404,6 +433,18 @@ void main() {
       open: open,
       during: (v, farm) async {
         await v.allOk(farm['E1']!, problems: {ObservationCategory.dike});
+        final batch = await (v.db.select(
+          v.db.batches,
+        )..where((b) => b.code.equals('L-E2'))).getSingle();
+        await v.readings.addSample(
+          SampleInput(
+            batchId: batch.id,
+            pondId: farm['E2']!,
+            date: DateTime(2026, 3, 15),
+            fishCount: 40,
+            totalWeightG: 6080,
+          ),
+        );
         await v.observations.addObservation(
           pondId: farm['E2'],
           category: ObservationCategory.dike,

@@ -1,4 +1,5 @@
 import 'package:dobo/domain/config.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/ponds/pond_overview.dart';
 import 'package:dobo/features/visit/visit_checklist.dart';
@@ -36,6 +37,7 @@ void main() {
     observationsThisVisit: [
       for (final (p, c) in observed) observationRow(p, c),
     ],
+    batches: batches,
     lastSampleOrStocking:
         last ??
         {
@@ -119,6 +121,7 @@ void main() {
       ponds: [overview('E1', [])],
       readingsThisVisit: const [],
       samplesThisVisit: const [],
+      batches: batches,
       observationsThisVisit: [
         observationRow('E1', ObservationCategory.dike, ok: false),
         for (final k in five.skip(1)) observationRow('E1', k),
@@ -137,6 +140,7 @@ void main() {
       ponds: [overview('E1', [])],
       readingsThisVisit: const [],
       samplesThisVisit: const [],
+      batches: batches,
       observationsThisVisit: [
         observationRow('E1', ObservationCategory.other, ok: null),
         observationRow(null, ObservationCategory.theft, ok: null),
@@ -176,5 +180,47 @@ void main() {
       ],
     );
     expect([for (final p in c.ponds) p.overview.pond.code], ['E1', 'E2']);
+  });
+
+  test('a sample of this visit stays once its batch has left the pond', () {
+    // L1 was sampled in E1, then harvested or moved out: no fish of it left.
+    final c = build(ponds: [overview('E1', [])], sampled: [('L1', 'E1')]);
+    final s = pondOf(c, 'E1').checks.whereType<SampleCheck>().single;
+    expect((s.batch.id, s.done), ('L1', true));
+  });
+
+  test('read twice in this visit, the latest reading and sample show', () {
+    final early = readingRow('E1').copyWith(id: 'r1', ph: const Value(6.0));
+    final late = readingRow('E1').copyWith(
+      id: 'r2',
+      ph: const Value(7.5),
+      recordedAt: early.recordedAt.add(const Duration(hours: 1)),
+    );
+    final first = sampleRow('L1', 'E1').copyWith(id: 's1', fishCount: 30);
+    final second = sampleRow('L1', 'E1').copyWith(
+      id: 's2',
+      fishCount: 40,
+      recordedAt: first.recordedAt.add(const Duration(hours: 1)),
+    );
+    for (final (readings, samples) in [
+      ([late, early], [second, first]),
+      ([early, late], [first, second]),
+    ]) {
+      final c = buildChecklist(
+        ponds: [
+          overview('E1', ['L1']),
+        ],
+        readingsThisVisit: readings,
+        samplesThisVisit: samples,
+        observationsThisVisit: const [],
+        batches: batches,
+        lastSampleOrStocking: {('L1', 'E1'): DateTime(2026, 3, 1)},
+        today: today,
+        config: cfg,
+      );
+      final checks = pondOf(c, 'E1').checks;
+      expect((checks.first as WaterCheck).reading?.id, 'r2');
+      expect(checks.whereType<SampleCheck>().single.sample?.id, 's2');
+    }
   });
 }

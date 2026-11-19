@@ -104,12 +104,41 @@ VisitChecklist buildChecklist({
   required List<WaterReading> readingsThisVisit,
   required List<Sample> samplesThisVisit,
   required List<Observation> observationsThisVisit,
+  required Map<String, Batch> batches,
   required Map<(String, String), DateTime> lastSampleOrStocking,
   required DateTime today,
   required DomainConfig config,
 }) {
-  final readings = {for (final r in readingsThisVisit) r.pondId: r};
-  final samples = {for (final s in samplesThisVisit) (s.batchId, s.pondId): s};
+  // Read or sampled twice in this visit: the latest shows.
+  int byTime(DateTime a, DateTime b, DateTime a2, DateTime b2) {
+    final t = a.compareTo(b);
+    return t != 0 ? t : a2.compareTo(b2);
+  }
+
+  final readings = {
+    for (final r
+        in [...readingsThisVisit]..sort(
+          (a, b) => byTime(
+            a.recordedAt,
+            b.recordedAt,
+            a.createdAtDevice,
+            b.createdAtDevice,
+          ),
+        ))
+      r.pondId: r,
+  };
+  final samples = {
+    for (final s
+        in [...samplesThisVisit]..sort(
+          (a, b) => byTime(
+            a.recordedAt,
+            b.recordedAt,
+            a.createdAtDevice,
+            b.createdAtDevice,
+          ),
+        ))
+      (s.batchId, s.pondId): s,
+  };
   final answers = <String, Map<ObservationCategory, Observation>>{};
   final notes = <String?, List<Observation>>{};
   for (final o in observationsThisVisit) {
@@ -135,17 +164,24 @@ VisitChecklist buildChecklist({
 
   PondVisit visitOf(PondOverview o) {
     final id = o.pond.id;
-    final batches = [...o.batches]
-      ..sort((a, b) => a.batch.code.compareTo(b.batch.code));
+    final live = {for (final b in o.batches) b.batch.id: b};
+    // Batches with fish here, and any sampled here in this visit that has
+    // since left (harvested, moved): a done check never disappears.
+    final sampleBatches = <Batch>[
+      for (final b in o.batches) b.batch,
+      for (final (batchId, pondId) in samples.keys)
+        if (pondId == id && !live.containsKey(batchId)) ?batches[batchId],
+    ]..sort((a, b) => a.code.compareTo(b.code));
     return PondVisit(
       overview: o,
       checks: [
         if (o.liveCount > 0 || readings.containsKey(id))
           WaterCheck(readings[id]),
-        for (final b in batches)
-          if (samples.containsKey((b.batch.id, id)) ||
-              (b.placement.live.count > 0 && sampleDue(b.batch.id, id)))
-            SampleCheck(b.batch, samples[(b.batch.id, id)]),
+        for (final b in sampleBatches)
+          if (samples.containsKey((b.id, id)) ||
+              ((live[b.id]?.placement.live.count ?? 0) > 0 &&
+                  sampleDue(b.id, id)))
+            SampleCheck(b, samples[(b.id, id)]),
         InspectionCheck(answers[id] ?? const {}),
       ],
       observations: notes[id] ?? const [],

@@ -44,6 +44,8 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        // A long list in Malagasy at large text must not cut the question.
+        scrollable: true,
         content: Text(
           items.isEmpty
               ? l10n.endVisitConfirm
@@ -219,8 +221,11 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
                 ),
               ),
               if (checklist != null) ...[
-                Icon(Icons.check_circle, color: c.ok),
-                const SizedBox(width: 4),
+                // Green only once something is done (colour means something).
+                if (checklist.done > 0) ...[
+                  Icon(Icons.check_circle, color: c.ok),
+                  const SizedBox(width: 4),
+                ],
                 Text(
                   l10n.visitProgress(checklist.done, checklist.total),
                   style: text.titleMedium,
