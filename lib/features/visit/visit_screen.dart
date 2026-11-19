@@ -11,6 +11,7 @@ import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
 import '../common/save_once.dart';
 import '../photos/photo_strip.dart';
+import 'visit_checklist.dart';
 import 'visit_providers.dart';
 import '../../theme/tokens.dart';
 
@@ -207,7 +208,9 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
           )
         else ...[
           section(l10n.sectionWater, [
-            for (final p in checklist.waterDue)
+            for (final (p, _) in checklist.open.where(
+              (e) => e.$2 is WaterCheck,
+            ))
               todo(
                 ValueKey('water-${p.code}'),
                 p,
@@ -216,7 +219,10 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
               ),
           ]),
           section(l10n.sectionSamples, [
-            for (final (b, p) in checklist.samplesDue)
+            for (final (p, SampleCheck(batch: b))
+                in checklist.open
+                    .where((e) => e.$2 is SampleCheck)
+                    .map((e) => (e.$1, e.$2 as SampleCheck)))
               todo(
                 ValueKey('sample-${b.code}-${p.code}'),
                 p,
@@ -225,7 +231,9 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
               ),
           ]),
           section(l10n.sectionConditions, [
-            for (final p in checklist.conditionsDue)
+            for (final (p, _) in checklist.open.where(
+              (e) => e.$2 is InspectionCheck,
+            ))
               todo(
                 ValueKey('conditions-${p.code}'),
                 p,

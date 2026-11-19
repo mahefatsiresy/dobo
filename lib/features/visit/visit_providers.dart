@@ -58,3 +58,19 @@ final checklistProvider = Provider.family<VisitChecklist?, String>((
     config: ref.watch(domainConfigProvider),
   );
 });
+
+/// Before a visit: what one started now would cover; null while loading.
+final visitPreviewProvider = Provider<VisitChecklist?>((ref) {
+  final ponds = ref.watch(pondOverviewsProvider).value;
+  final last = ref.watch(_lastSampleOrStockingProvider).value;
+  if (ponds == null || last == null) return null;
+  return buildChecklist(
+    ponds: ponds,
+    readingsThisVisit: const [],
+    samplesThisVisit: const [],
+    observationsThisVisit: const [],
+    lastSampleOrStocking: last,
+    today: ref.watch(farmTodayProvider),
+    config: ref.watch(domainConfigProvider),
+  );
+});
