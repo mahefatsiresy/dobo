@@ -105,8 +105,8 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 
 | Step | Screen | Status |
 |---|---|---|
-| 0 + 1 | Foundation, ponds list | planned: `docs/superpowers/plans/2026-11-19-design-ponds-list.md` |
-| 2 | Pond detail | decided below; plan after step 1 merges |
+| 0 + 1 | Foundation, ponds list | merged 19/11 |
+| 2 | Pond detail | planned: `docs/superpowers/plans/2026-11-19-design-pond-detail.md` |
 | 3 | Worker home and daily log | own round of questions first |
 | 4 | Alerts | " |
 | 5 | Visit | " |
@@ -151,13 +151,49 @@ screenshots from seeded demo farms on the host and on the test phone.
   and the next prep step.
 - Admins add a pond from a plain last row, not a floating button.
 
-### Step 2: pond detail (decided, to fine-tune after step 1)
+### Step 2: pond detail (decided 19/11)
 
-- Top: tag, phase and status; the attention bands; today (ration as the
-  loud number, the daily log tick).
-- Middle: each batch with its figures and growth, the latest water
-  reading, the charts, the health history.
-- "Journal du jour" is a bar pinned to the bottom.
-- Stocking, water, sample, transfer, problem, treatment, prep and release
-  are a grid of icon tiles, 2 per row, showing only those that apply.
-- Edit and archive move to the app bar's ⋮ menu.
+```
+┌────────────────────────────────────────────┐
+│ ←  ■ E2                                  ⋮ │ ← code and swatch; ⋮: edit, archive
+├────────────────────────────────────────────┤
+│ ! Oxygène dissous trop bas : 2 mg/L      › │ ← every band, each opens its fix
+│ ⚠ Lot L-E2 : échantillonnage à faire     › │
+│ Grossissement                              │
+│                            Ration du jour  │
+│ ✓ Journal fait                 ≈ 7,4 kg    │ ← or the stop-feeding sign
+│ Donné : 7,0 kg                             │
+├────────────────────────────────────────────┤
+│ L-E2  ≈ 1 500 poissons, 60 g, ≈ 90 kg      │
+│ Pesé il y a 3 j, IC 1,6 ↑, survie 98 %     │
+│ [ ⚖ Peser ]          [ ⇄ Transférer ]      │ ← the batch's own actions
+├────────────────────────────────────────────┤
+│ Dernier relevé 15/03 : 28 °C  pH 7,2       │
+│ ! O₂ 2 mg/L                                │ ← out of range: icon and colour
+├────────────────────────────────────────────┤
+│ ▸ Poids moyen        150 g, +12 g en 14 j  │ ← folded; opens on a tap
+│ ▸ Morts par jour            4 morts en 30 j│
+│ ▸ IC par période                 1,6 ↑     │
+│ ▸ Santé       2 événements, dernier 12/03  │
+│ ▸ Étang      Grossissement, terre, 500 m²  │
+├────────────────────────────────────────────┤
+│ [ 💧 Relevé d'eau ]  [ ⚠ Signaler ]        │ ← grid: only what applies
+│ [ 💊 Traitement ]    [ + Empoissonner ]    │
+├────────────────────────────────────────────┤
+│ [        ✎ Journal du jour               ] │ ← pinned: follows the state
+└────────────────────────────────────────────┘
+```
+
+- The pinned bar holds the next thing to do with the pond: "Journal du
+  jour" while it holds fish, "Préparer l'étang" while empty or being
+  prepared, "Empoissonner" once ready. A pond without fish has no daily
+  log action. **[user, 19/11]**
+- Each batch keeps its own Peser and Transférer, side by side. **[user]**
+- Today shows what was given next to the suggestion once the day is
+  logged. **[user]**
+- Charts and health history start folded, as one line with a summary;
+  they open on a tap, with no animation. **[user]**
+- The app bar shows the code and swatch; edit (admins) and archive move to
+  the ⋮ menu. Isolation is a band at the top like the list's; only the
+  action bar is pinned. Every band shows, each opening the screen that
+  resolves it. **[Claude's call]**
