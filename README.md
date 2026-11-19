@@ -52,8 +52,35 @@ the local server in Chromium:
 flutter run -d chrome -t lib/main_web.dart --dart-define-from-file=env/host.json
 ```
 
-Building, hosting on Cloudflare Pages and the founding code are in
-`docs/deploy.md`.
+Building and hosting on Cloudflare Pages are in `docs/deploy.md`.
+
+### The founding code
+
+The association is founded once, in the console ("Fonder une
+association"), with a founding code. The code is a server secret, spent by
+the first founding that uses it. No phone can found an association.
+
+- **Locally** the code is `dobo-local-founding`
+  (`cp supabase/functions/.env.example supabase/functions/.env`, once).
+  To found again, make it usable again:
+
+  ```bash
+  psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -c 'truncate founding_codes_spent'
+  ```
+
+- **On the hosted project**, make one and set it before the founder opens
+  the console:
+
+  ```bash
+  CODE=$(openssl rand -hex 12); echo "Founding code: $CODE"
+  supabase secrets set FOUNDING_CODE="$CODE"
+  ```
+
+  Write it down: it can't be read back. Hand it to the founder privately,
+  with the console's address. A wrong, spent or unset code gets "Code de
+  fondation faux ou déjà utilisé". Lost or leaked before use: run the two
+  lines again. The rest (after founding, another association) is in
+  `docs/deploy.md`, "The founding code".
 
 ## Local server
 

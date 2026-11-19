@@ -89,10 +89,9 @@ tool/server_test.sh                # Dart tests tagged `server`
    (`sb_publishable_…`) is not a JWT, and the check would refuse founding,
    which has no session. Each function checks its caller itself.
 
-   Note the founding code it prints: the dashboard and `supabase secrets
-   list` show only a digest of it. Give it to the founder with the
-   console's address. It works for one founding only; to found another
-   association some day, set a new one the same way.
+   Write down the founding code it prints: the dashboard and
+   `supabase secrets list` show only a digest of it. What to do with it is
+   in [The founding code](#the-founding-code).
 
 4. Create `env/prod.json` (gitignored):
 
@@ -184,10 +183,54 @@ added later in the Cloudflare dashboard, with no change here). The pages
 use `#` addresses (`/#/membres`), so no rewrite rule is needed. Only
 active admins can stay signed in; 30 minutes without use signs out.
 
+## The founding code
+
+The association is founded once, in the console, by the person who will
+be its first admin. They have no account yet, so the founding code is
+what lets them in. It is a secret of the edge functions (`FOUNDING_CODE`),
+never part of the app or the console: don't put it in `env/*.json` or in
+the repository.
+
+- **Make and set it** (hosted project), before the founder opens the
+  console:
+
+  ```bash
+  CODE=$(openssl rand -hex 12); echo "Founding code: $CODE"
+  supabase secrets set FOUNDING_CODE="$CODE"
+  ```
+
+  The functions read it at once, with no redeploy. Setting it again
+  replaces the old one, which stops working.
+- **Hand it over** privately (in person or a private message), with the
+  console's address (`https://dobo-console.pages.dev`). The founder types
+  it on "Fonder une association". Spaces around it are ignored; letters
+  and digits must match exactly.
+- **It works once.** The first founding that succeeds spends it: the server
+  records its SHA-256 digest and the association in `founding_codes_spent`.
+  A spent code is refused even if it is set again.
+- **What the console says**: "Code de fondation faux ou déjà utilisé" for a
+  wrong code, a spent one, or no code set at all. The server gives the same
+  answer for all three, so the message never tells a stranger which.
+- **Lost before use**: set a new one (first command above). The old one
+  can't be read back, and needn't be.
+- **Leaked before use**: set a new one at once. If the console already
+  says it is used and the founder didn't found, someone else did: the
+  dashboard's Table Editor shows the association in
+  `founding_codes_spent`.
+- **After founding** the code is no longer useful. You can remove it:
+  `supabase secrets unset FOUNDING_CODE`.
+- **Another association some day**: set a new code the same way.
+
+Locally the code is `dobo-local-founding`, in `supabase/functions/.env`.
+`supabase functions serve` reads that file when it starts, so restart it
+after changing the code. See [Local development](#local-development-fedora-podman)
+to make a spent local code usable again.
+
 ## First use
 
 1. **Found the association** in the console: open its address, choose
-   "Fonder une association", and fill in the founding code, the
+   "Fonder une association", and fill in the founding code (previous
+   section), the
    association, the first branch, your name, email and password, and the
    site. You are its first admin, and the console opens the members page.
 
