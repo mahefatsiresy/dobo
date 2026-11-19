@@ -2,14 +2,19 @@ import 'dart:typed_data';
 
 import 'package:pdf/widgets.dart' as pw;
 
-/// The PDFs' fonts: Noto Sans, and a Noto Sans Math subset for the arrows
-/// and signs Noto Sans lacks (→, ≥, ≈).
+/// The PDFs' fonts: [regular] and [bold], then [fallback] fonts in order,
+/// then [symbols] (a Noto Sans Math subset for the arrows and signs the
+/// text fonts lack: →, ≥, ≈).
 pw.ThemeData pdfTheme({
   required pw.Font regular,
   required pw.Font bold,
+  List<pw.Font> fallback = const [],
   pw.Font? symbols,
-}) =>
-    pw.ThemeData.withFont(base: regular, bold: bold, fontFallback: [?symbols]);
+}) => pw.ThemeData.withFont(
+  base: regular,
+  bold: bold,
+  fontFallback: [...fallback, ?symbols],
+);
 
 /// The PDF fonts' files, which can be sent to a background isolate (a
 /// `pw.Font` can't).

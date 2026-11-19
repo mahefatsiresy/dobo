@@ -2200,20 +2200,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String reportReadingOn(String date) {
-    return 'Relevé du $date';
-  }
-
-  @override
   String reportGrowthLine(String batch, String weight, String date) {
     return '$batch $weight ($date)';
   }
-
-  @override
-  String get reportBiomass => 'Biomasse';
-
-  @override
-  String get reportFish => 'Poissons';
 
   @override
   String get reportFcrShared => 'bassin partagé';
@@ -2246,11 +2235,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String reportNextQuarantine(String batch) {
     return 'Fin de quarantaine de $batch';
-  }
-
-  @override
-  String reportAllOk(String items) {
-    return 'En ordre : $items';
   }
 
   @override

@@ -14,6 +14,7 @@ import '../../l10n/app_localizations.dart';
 import '../common/file_slug.dart';
 import '../common/pdf_theme.dart';
 import '../sync/backup_actions.dart' show backupDirProvider;
+import '../ponds/pond_overview.dart';
 import 'report_pdf.dart';
 
 /// Opens the share sheet for a written file.
@@ -52,15 +53,20 @@ Future<void> shareReport(
   final photoBytes = ref.read(reportPhotoBytesProvider);
   final sharer = ref.read(reportSharerProvider);
   final dirOf = ref.read(backupDirProvider);
+  final pondColours = ref.read(pondColoursProvider);
   final fonts = await pdfFonts();
+  // The app's typeface (docs/design.md §Step 6); Noto Sans and its symbols
+  // for the few glyphs Atkinson lacks.
   final bytes = await buildReportPdf(
     content,
     l10n,
     locale,
     photoBytes: photoBytes,
-    regular: fonts.regular,
-    bold: fonts.bold,
+    regular: await _font('assets/fonts/AtkinsonHyperlegibleNext-Regular.ttf'),
+    bold: await _font('assets/fonts/AtkinsonHyperlegibleNext-Bold.ttf'),
+    fallback: [fonts.regular],
     symbols: fonts.symbols,
+    pondColours: pondColours,
   );
   final file = File('${(await dirOf()).path}/${reportFileName(content)}');
   await file.writeAsBytes(bytes, flush: true);

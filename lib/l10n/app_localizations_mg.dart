@@ -2217,20 +2217,9 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String reportReadingOn(String date) {
-    return 'Fandrefesana tamin\'ny $date';
-  }
-
-  @override
   String reportGrowthLine(String batch, String weight, String date) {
     return '$batch $weight ($date)';
   }
-
-  @override
-  String get reportBiomass => 'Lanjan\'ny trondro rehetra';
-
-  @override
-  String get reportFish => 'Trondro';
 
   @override
   String get reportFcrShared => 'dobo iombonana';
@@ -2263,11 +2252,6 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String reportNextQuarantine(String batch) {
     return 'Fiafaran\'ny fitokanana ny $batch';
-  }
-
-  @override
-  String reportAllOk(String items) {
-    return 'Milamina : $items';
   }
 
   @override

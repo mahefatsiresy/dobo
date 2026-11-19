@@ -18,8 +18,12 @@ void main() {
   pw.Font font(String name) => pw.Font.ttf(
     ByteData.sublistView(File('assets/fonts/$name').readAsBytesSync()),
   );
-  final regular = font('NotoSans-Regular.ttf');
-  final bold = font('NotoSans-Bold.ttf');
+  final regular = font('AtkinsonHyperlegibleNext-Regular.ttf');
+  final bold = font('AtkinsonHyperlegibleNext-Bold.ttf');
+  final fallback = [
+    font('NotoSans-Regular.ttf'),
+    font('NotoSansMath-Symbols.ttf'),
+  ];
 
   ReportHeader header() => ReportHeader(
     siteName: 'Ambohidratrimo',
@@ -99,6 +103,7 @@ void main() {
       const Locale('fr'),
       regular: regular,
       bold: bold,
+      fallback: fallback,
     );
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
     expect(await pages(bytes), greaterThanOrEqualTo(1));
@@ -111,6 +116,7 @@ void main() {
       const Locale('fr'),
       regular: regular,
       bold: bold,
+      fallback: fallback,
     );
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
   });
@@ -123,6 +129,7 @@ void main() {
       const Locale('fr'),
       regular: regular,
       bold: bold,
+      fallback: fallback,
       photoBytes: (key) async {
         asked.add(key);
         if (key == 'broken') throw const FileSystemException('gone');
@@ -164,6 +171,7 @@ void main() {
       const Locale('fr'),
       regular: regular,
       bold: bold,
+      fallback: fallback,
     );
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
   });
@@ -175,7 +183,120 @@ void main() {
       const Locale('fr'),
       regular: regular,
       bold: bold,
+      fallback: fallback,
     );
     expect(await pages(bytes), greaterThan(1));
+  });
+
+  /// The PDF's text, page by page, as `pdftotext -layout` reads it; null
+  /// where poppler isn't installed.
+  Future<List<String>?> text(Uint8List bytes) async {
+    final which = await Process.run('which', ['pdftotext']);
+    if (which.exitCode != 0) return null;
+    final dir = await Directory.systemTemp.createTemp('report_pdf');
+    addTearDown(() => dir.delete(recursive: true));
+    final pdf = File('${dir.path}/r.pdf')..writeAsBytesSync(bytes);
+    final out = await Process.run('pdftotext', ['-layout', pdf.path, '-']);
+    return (out.stdout as String).split('\f')
+      ..removeWhere((p) => p.trim().isEmpty);
+  }
+
+  Future<Uint8List> build(
+    ReportContent c, {
+    Map<String, PondColour>? colours,
+  }) => buildReportPdf(
+    c,
+    l10n,
+    const Locale('fr'),
+    regular: regular,
+    bold: bold,
+    fallback: fallback,
+    pondColours: colours ?? const {},
+  );
+
+  test(
+    'sections in F8 order; the worst health first; estimates say so',
+    () async {
+      final c = full();
+      final pagesText = await text(
+        await build(
+          ReportContent(
+            header: c.header,
+            summary: c.summary,
+            pondCodes: const {'e2': 'E2', 'e5': 'E5'},
+            batchCodes: c.batchCodes,
+            health: [
+              const PondHealth(pondId: 'e5', deaths: 500),
+              PondHealth(
+                pondId: 'e2',
+                deaths: 1,
+                events: [
+                  HealthLine(at: d(15), actions: const {HealthAction.isolated}),
+                ],
+              ),
+            ],
+            water: c.water,
+            growth: [
+              BatchGrowth(
+                batchId: 'l1',
+                pondId: 'e2',
+                avgWeightG: 30,
+                weighedOn: d(15),
+                liveCount: 990,
+                biomassG: 29700,
+                fcr: 1.6,
+                survival: 0.99,
+              ),
+            ],
+            feed: c.feed,
+            feedTotalG: c.feedTotalG,
+            observations: c.observations,
+          ),
+          colours: const {'e2': PondColour.yellow},
+        ),
+      );
+      if (pagesText == null) return markTestSkipped('pdftotext not installed');
+      final all = pagesText.join('\n');
+      final at = [
+        for (final h in const [
+          'Résumé',
+          'Alertes',
+          'Santé',
+          'Eau',
+          'Croissance',
+          'Aliment',
+          'À venir',
+          'Observations et photos',
+        ])
+          all.indexOf(RegExp('^\\s*$h\\s*\$', multiLine: true)),
+      ];
+      expect(at.every((i) => i >= 0), isTrue, reason: '$at\n$all');
+      expect(at, [...at]..sort());
+      final health = all.substring(at[2], at[3]);
+      expect(health.indexOf('E2'), lessThan(health.indexOf('E5')));
+      expect(all, contains('29,7 kg (estimé)'));
+    },
+  );
+
+  test('every page ends with the footer', () async {
+    final pagesText = await text(await build(full(ponds: 40)));
+    if (pagesText == null) return markTestSkipped('pdftotext not installed');
+    expect(pagesText.length, greaterThan(1));
+    for (final (i, page) in pagesText.indexed) {
+      expect(
+        page.trim().split('\n').last.trim(),
+        'Dobo · Ambohidratrimo · 20/03/2026 · ${i + 1}/${pagesText.length}',
+      );
+    }
+  });
+
+  test('the report is set in Atkinson Hyperlegible Next', () async {
+    final bytes = await build(full());
+    expect(String.fromCharCodes(bytes), contains('AtkinsonHyperlegibleNext'));
+  });
+
+  test('a pond with no known colour builds', () async {
+    final bytes = await build(full(), colours: const {'e2': PondColour.red});
+    expect(String.fromCharCodes(bytes.take(4)), '%PDF');
   });
 }

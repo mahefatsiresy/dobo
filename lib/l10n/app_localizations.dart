@@ -3962,29 +3962,11 @@ abstract class AppLocalizations {
   /// **'{date} : {details}'**
   String reportHealthEventLine(String date, String details);
 
-  /// No description provided for @reportReadingOn.
-  ///
-  /// In fr, this message translates to:
-  /// **'Relevé du {date}'**
-  String reportReadingOn(String date);
-
   /// No description provided for @reportGrowthLine.
   ///
   /// In fr, this message translates to:
   /// **'{batch} {weight} ({date})'**
   String reportGrowthLine(String batch, String weight, String date);
-
-  /// No description provided for @reportBiomass.
-  ///
-  /// In fr, this message translates to:
-  /// **'Biomasse'**
-  String get reportBiomass;
-
-  /// No description provided for @reportFish.
-  ///
-  /// In fr, this message translates to:
-  /// **'Poissons'**
-  String get reportFish;
 
   /// No description provided for @reportFcrShared.
   ///
@@ -4039,12 +4021,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Fin de quarantaine de {batch}'**
   String reportNextQuarantine(String batch);
-
-  /// No description provided for @reportAllOk.
-  ///
-  /// In fr, this message translates to:
-  /// **'En ordre : {items}'**
-  String reportAllOk(String items);
 
   /// No description provided for @photoAdd.
   ///
