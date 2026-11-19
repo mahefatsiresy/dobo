@@ -271,17 +271,68 @@ void main() {
     expect(fix.supersedesId, first.id);
   });
 
-  _logTest('with the keyboard open, Save stays within reach', 'E3', (
+  _logTest('with the keyboard open, Save sits above it', 'E3', (
     tester,
     db,
     farm,
   ) async {
+    // 600 physical px = 300 dp of number pad on this 2× phone.
     tester.view.viewInsets = const FakeViewPadding(bottom: 600);
     addTearDown(tester.view.resetViewInsets);
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    expect(find.byKey(_save).hitTestable(), findsOneWidget);
+    expect(_bottom(tester, find.byKey(_save)), lessThanOrEqualTo(780 - 300));
   });
+
+  _logTest(
+    'a re-save keeps the signs, colour, feedings and dead fish look',
+    'E3',
+    (tester, db, farm) async {
+      await _enter(tester, _feed, '4');
+      await _enter(tester, _deaths, '2');
+      await tester.pumpAndSettle();
+      await _pick(tester, _look, [ValueKey(deathSigns.first)]);
+      await _pick(tester, _signs, const [ValueKey(WarningSign.rubbing)]);
+      await _pick(tester, _colour, const [ValueKey(WaterColour.darkGreen)]);
+      await _pick(tester, _feedings, const [ValueKey('feedings-4')]);
+      await tapAndSettle(tester, find.byKey(_save));
+      // Reopen, check the buttons, change only the feed, save again.
+      appContainer(tester).read(routerProvider).push('/log/${farm['E3']}');
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(of: find.byKey(_signs), matching: find.byType(Icon)),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: find.byKey(_feedings), matching: find.text('4')),
+        findsOneWidget,
+      );
+      expect(find.byKey(_look), findsOneWidget);
+      await _enter(tester, _feed, '5');
+      await tapAndSettle(tester, find.byKey(_save));
+      final log = await _saved(db, farm, 'E3');
+      expect(log.feedGivenG, 5000);
+      expect(log.supersedesId, isNotNull);
+      expect(log.warningSigns, {WarningSign.rubbing});
+      expect(log.waterColour, WaterColour.darkGreen);
+      expect(log.feedings, 4);
+      expect(log.deathSigns, {deathSigns.first});
+    },
+  );
+
+  _logTest(
+    'the leftover pictograms stay three across on a narrow phone',
+    'E3',
+    (tester, db, farm) async {
+      tester.view.physicalSize = const Size(640, 1560); // 320 dp wide
+      await tester.pumpAndSettle();
+      final y = [
+        for (final l in Leftover.values)
+          tester.getTopLeft(find.byKey(ValueKey(l))).dy,
+      ];
+      expect(y.toSet(), hasLength(1));
+    },
+  );
 
   for (final (code, locale) in [('E1', 'mg'), ('E1', 'fr'), ('E2', 'mg')]) {
     _logTest('daily log golden $code $locale', code, (tester, db, farm) async {

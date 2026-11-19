@@ -167,51 +167,59 @@ class _PondTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    pond.code,
-                    style: Theme.of(context).textTheme.displayMedium
-                        ?.copyWith(color: ink, fontWeight: FontWeight.bold),
-                  ),
-                  if (stopFeeding.isNotEmpty)
-                    StopFeedingSign(reasons: stopFeeding)
-                  else if (overview.rationG > 0)
-                    // The ration to aim for: an instruction, not an estimate
-                    // (docs/design.md §Step 3).
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(feedIcon, color: ink, size: 28),
-                        const SizedBox(width: 6),
-                        Text(
-                          formatKg(
-                            overview.rationG,
-                            Localizations.localeOf(context),
-                          ),
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(
-                                color: ink,
-                                fontWeight: FontWeight.bold,
+            // Code, ration and label shrink together rather than overflow
+            // a square tile under large system text.
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        pond.code,
+                        style: Theme.of(context).textTheme.displayMedium
+                            ?.copyWith(color: ink, fontWeight: FontWeight.bold),
+                      ),
+                      if (stopFeeding.isNotEmpty)
+                        StopFeedingSign(reasons: stopFeeding)
+                      else if (overview.rationG > 0)
+                        // The ration to aim for: an instruction, not an estimate
+                        // (docs/design.md §Step 3).
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(feedIcon, color: ink, size: 28),
+                            const SizedBox(width: 6),
+                            Text(
+                              formatKg(
+                                overview.rationG,
+                                Localizations.localeOf(context),
                               ),
+                              style: Theme.of(context).textTheme.headlineSmall
+                                  ?.copyWith(
+                                    color: ink,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  if (isolated)
-                    Container(
-                      color: context.dobo.danger,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context).pondIsolatedBanner,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                ],
+                      if (isolated)
+                        Container(
+                          color: context.dobo.danger,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context).pondIsolatedBanner,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
             if (logged)

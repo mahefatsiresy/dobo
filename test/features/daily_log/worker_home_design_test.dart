@@ -112,6 +112,16 @@ void main() {
     );
   });
 
+  _homeTest('at 130 % text the ration still fits its tile', (
+    tester,
+    farm,
+  ) async {
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
   appTest(
     'no pond holds fish: the home says so',
     role: MemberRole.worker,

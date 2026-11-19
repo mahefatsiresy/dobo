@@ -23,26 +23,44 @@ class LeftoverPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+    // Three across whatever the phone's width, the same height;
+    // "ate fast" under "all eaten" when that is picked.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final l in Leftover.values)
-          ChoiceTile(
-            key: ValueKey(l),
-            icon: leftoverIcon(l),
-            label: l10n.leftover(l),
-            selected: l == value,
-            onTap: () => onChanged(l == value ? null : l, false),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final (i, l) in Leftover.values.indexed) ...[
+                if (i > 0) const SizedBox(width: 8),
+                Expanded(
+                  child: ChoiceTile(
+                    key: ValueKey(l),
+                    icon: leftoverIcon(l),
+                    label: l10n.leftover(l),
+                    selected: l == value,
+                    width: double.infinity,
+                    onTap: () => onChanged(l == value ? null : l, false),
+                  ),
+                ),
+              ],
+            ],
           ),
-        if (value == Leftover.none)
-          ChoiceTile(
-            key: const ValueKey('ateFast'),
-            icon: Icons.bolt,
-            label: l10n.ateFast,
-            selected: ateFast,
-            onTap: () => onChanged(Leftover.none, !ateFast),
+        ),
+        if (value == Leftover.none) ...[
+          const SizedBox(height: 8),
+          LayoutBuilder(
+            builder: (context, box) => ChoiceTile(
+              key: const ValueKey('ateFast'),
+              icon: Icons.bolt,
+              label: l10n.ateFast,
+              selected: ateFast,
+              width: (box.maxWidth - 16) / 3,
+              onTap: () => onChanged(Leftover.none, !ateFast),
+            ),
           ),
+        ],
       ],
     );
   }

@@ -244,17 +244,24 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
       ),
       // A normal day fits one screen: feed, leftovers, deaths, save
       // (docs/design.md §Step 3). The rest opens on its own screen.
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: FilledButton.icon(
-            key: const ValueKey('saveLog'),
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
+      // Scaffold lifts the body above the number pad but not the bottom bar:
+      // lift Save with it, so a worker who just typed the feed can save.
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.viewInsetsOf(context).bottom,
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: FilledButton.icon(
+              key: const ValueKey('saveLog'),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+              ),
+              onPressed: saving ? null : () => saveOnce(_save),
+              icon: const Icon(Icons.check),
+              label: Text(l10n.save),
             ),
-            onPressed: saving ? null : () => saveOnce(_save),
-            icon: const Icon(Icons.check),
-            label: Text(l10n.save),
           ),
         ),
       ),
