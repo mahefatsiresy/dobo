@@ -112,7 +112,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 |---|---|---|
 | 0 + 1 | Foundation, ponds list | merged 19/11 |
 | 2 | Pond detail | merged 19/11 |
-| 3 | Worker home and daily log | own round of questions first |
+| 3 | Worker home and daily log | planned: `docs/superpowers/plans/2026-11-19-design-worker-log.md` |
 | 4 | Alerts | " |
 | 5 | Visit | " |
 | 6 | Reports | " |
@@ -202,3 +202,47 @@ screenshots from seeded demo farms on the host and on the test phone.
   the ⋮ menu. Isolation is a band at the top like the list's; only the
   action bar is pinned. Every band shows, each opening the screen that
   resolves it. **[Claude's call]**
+
+### Step 3: worker home and daily log (decided 19/11)
+
+Measure: a normal day (feed given, leftovers, no deaths, no signs) takes
+the fewest taps, with no scrolling and nothing to read. Built before the
+field test, so the worker tries these screens. **[user]**
+
+```
+Worker home                          Daily log
+┌──────────────────────────────┐     ┌──────────────────────────────┐
+│ Androany 15/03       ☁ sync  │     │ [E1] 15/03/2026              │
+│ 2 / 5 vita                   │     │ 🍚 7,4 kg   ← aim for this    │
+│ ┌──────────┐ ┌──────────┐    │     │ ┌──────────────────────────┐ │
+│ │   E1   ✓ │ │    E2    │    │     │ │ Sakafo nomena      kg    │ │
+│ │ 🍚 7,4 kg│ │  ⊘ ~~    │    │     │ └──────────────────────────┘ │
+│ └──────────┘ └──────────┘    │     │ ( ○ )  ( ◐ )  ( ● )   Sisa    │
+│ ┌──────────┐ ┌──────────┐    │     │ ┌───────────────┐ [Endrika]  │
+│ │   E3     │ │    E4    │    │     │ │ Maty        0 │  if > 0    │
+│ │ 🍚 4 kg  │ │ 🍚 1,4 kg│    │     │ └───────────────┘            │
+│ └──────────┘ └──────────┘    │     │ [Famantarana][Loko][Impiry]  │
+└──────────────────────────────┘     │ [        ✓ Tehirizina      ] │ ← pinned
+                                     └──────────────────────────────┘
+```
+
+- Worker home: tiles only for ponds holding fish (an inconsistent count
+  stays), full colour, code order, a large tick once logged, and a line
+  with the day's progress; one line with a tick when all are done.
+- The ration on worker screens (the home and the daily log) is an
+  instruction: plain kg beside a feed pictogram, no `≈`. The stop-feeding
+  sign replaces it. Members' screens keep `≈`. **[user]**
+- Daily log on one screen for a normal day: the ration to aim for, the
+  feed box (the phone's number pad, not opened by itself), the three
+  leftover pictograms, deaths (0), then three buttons that each open their
+  own screen of pictograms: signs (Famantarana), water colour (Loko ny
+  rano), feedings (Impiry, 1–6). "Endrika" (what the dead fish looked
+  like) appears beside deaths once deaths are above 0. Save is pinned.
+  **[user]**
+- Workers never meet a text field: the note is for members only, as is
+  the feed lot. **[user]**
+- Pictogram grids are two per row; a label is never cut, it wraps. **[user]**
+- The pictogram screens are pages with a back arrow and a large "Vita"
+  button; what is picked returns to the log and nothing is saved until
+  Save. Each button shows what was picked. **[Claude's call]**
+
