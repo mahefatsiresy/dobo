@@ -1598,6 +1598,18 @@ abstract class AppLocalizations {
   /// **'Problème'**
   String get conditionProblem;
 
+  /// No description provided for @conditionsAllOk.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout est en ordre'**
+  String get conditionsAllOk;
+
+  /// No description provided for @observationPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étang (facultatif)'**
+  String get observationPond;
+
   /// No description provided for @pastVisits.
   ///
   /// In fr, this message translates to:

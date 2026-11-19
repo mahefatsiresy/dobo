@@ -251,6 +251,8 @@
   "category": "Sokajy",
   "conditionOk": "Tsara",
   "conditionProblem": "Olana",
+  "conditionsAllOk": "Milamina avokoa",
+  "observationPond": "Dobo (tsy voatery)",
   "pastVisits": "Fitsidihana teo aloha",
   "noVisits": "Mbola tsy misy fitsidihana",
   "bioDisinfect": "Harato, siny ary harato kely voadio isaky ny dobo (klôro voaharoharo, avy eo sasana)",

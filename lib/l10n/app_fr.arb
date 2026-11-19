@@ -521,6 +521,8 @@
   "category": "Catégorie",
   "conditionOk": "OK",
   "conditionProblem": "Problème",
+  "conditionsAllOk": "Tout est en ordre",
+  "observationPond": "Étang (facultatif)",
   "pastVisits": "Visites précédentes",
   "noVisits": "Aucune visite pour l'instant",
   "bioDisinfect": "Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)",

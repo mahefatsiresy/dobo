@@ -830,6 +830,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get conditionProblem => 'Problème';
 
   @override
+  String get conditionsAllOk => 'Tout est en ordre';
+
+  @override
+  String get observationPond => 'Étang (facultatif)';
+
+  @override
   String get pastVisits => 'Visites précédentes';
 
   @override

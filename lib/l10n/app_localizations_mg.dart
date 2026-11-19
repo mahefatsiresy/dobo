@@ -835,6 +835,12 @@ class AppLocalizationsMg extends AppLocalizations {
   String get conditionProblem => 'Olana';
 
   @override
+  String get conditionsAllOk => 'Milamina avokoa';
+
+  @override
+  String get observationPond => 'Dobo (tsy voatery)';
+
+  @override
   String get pastVisits => 'Fitsidihana teo aloha';
 
   @override

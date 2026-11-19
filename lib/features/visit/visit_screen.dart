@@ -11,6 +11,7 @@ import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
 import '../common/save_once.dart';
 import '../photos/photo_strip.dart';
+import '../ponds/pond_overview.dart';
 import 'visit_checklist.dart';
 import 'visit_providers.dart';
 import '../../theme/tokens.dart';
@@ -85,14 +86,18 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
   }
 
   Future<void> _addObservation() async {
-    final result = await showDialog<(ObservationCategory, String)>(
+    final result = await showDialog<(String?, ObservationCategory, String)>(
       context: context,
       builder: (context) => const _ObservationDialog(),
     );
-    if (result == null || result.$2.isEmpty) return;
+    if (result == null || result.$3.isEmpty) return;
     await ref
         .read(observationRepositoryProvider)
-        .addObservation(category: result.$1, note: result.$2);
+        .addObservation(
+          pondId: result.$1,
+          category: result.$2,
+          note: result.$3,
+        );
   }
 
   @override
@@ -304,18 +309,20 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
   }
 }
 
-/// A free observation. The dialog owns its controller: the closing dialog
-/// is still rebuilt (the keyboard going away) after showDialog has returned.
-class _ObservationDialog extends StatefulWidget {
+/// A free observation, about one pond or none. The dialog owns its
+/// controller: the closing dialog is still rebuilt (the keyboard going
+/// away) after showDialog has returned.
+class _ObservationDialog extends ConsumerStatefulWidget {
   const _ObservationDialog();
 
   @override
-  State<_ObservationDialog> createState() => _ObservationDialogState();
+  ConsumerState<_ObservationDialog> createState() => _ObservationDialogState();
 }
 
-class _ObservationDialogState extends State<_ObservationDialog> {
+class _ObservationDialogState extends ConsumerState<_ObservationDialog> {
   final _text = TextEditingController();
   var _category = ObservationCategory.other;
+  String? _pondId;
 
   @override
   void dispose() {
@@ -326,29 +333,56 @@ class _ObservationDialogState extends State<_ObservationDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final ponds = [
+      for (final o
+          in ref.watch(pondOverviewsProvider).value ?? const <PondOverview>[])
+        o.pond,
+    ]..sort((a, b) => a.code.compareTo(b.code));
     return AlertDialog(
       title: Text(l10n.addObservation),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DropdownButtonFormField<ObservationCategory>(
-            initialValue: _category,
-            decoration: InputDecoration(labelText: l10n.category),
-            items: [
-              for (final c in ObservationCategory.values)
-                DropdownMenuItem(
-                  value: c,
-                  child: Text(l10n.observationCategory(c)),
-                ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (ponds.isNotEmpty) ...[
+              Text(l10n.observationPond),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final p in ponds)
+                    ChoiceChip(
+                      label: Text(p.code),
+                      selected: _pondId == p.id,
+                      onSelected: (_) => setState(
+                        () => _pondId = _pondId == p.id ? null : p.id,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16),
             ],
-            onChanged: (c) => setState(() => _category = c!),
-          ),
-          TextField(
-            controller: _text,
-            decoration: InputDecoration(labelText: l10n.observationText),
-            maxLines: 3,
-          ),
-        ],
+            DropdownButtonFormField<ObservationCategory>(
+              initialValue: _category,
+              decoration: InputDecoration(labelText: l10n.category),
+              items: [
+                for (final c in ObservationCategory.values)
+                  DropdownMenuItem(
+                    value: c,
+                    child: Text(l10n.observationCategory(c)),
+                  ),
+              ],
+              onChanged: (c) => setState(() => _category = c!),
+            ),
+            TextField(
+              controller: _text,
+              decoration: InputDecoration(labelText: l10n.observationText),
+              maxLines: 3,
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -357,7 +391,7 @@ class _ObservationDialogState extends State<_ObservationDialog> {
         ),
         FilledButton(
           onPressed: () =>
-              Navigator.pop(context, (_category, _text.text.trim())),
+              Navigator.pop(context, (_pondId, _category, _text.text.trim())),
           child: Text(l10n.save),
         ),
       ],

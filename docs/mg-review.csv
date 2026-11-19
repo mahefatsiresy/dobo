@@ -249,6 +249,8 @@ observationText;;Observation;Fanamarihana;
 category;;Catégorie;Sokajy;
 conditionOk;;OK;Tsara;
 conditionProblem;;Problème;Olana;
+conditionsAllOk;;Tout est en ordre;Milamina avokoa;
+observationPond;;Étang (facultatif);Dobo (tsy voatery);
 pastVisits;;Visites précédentes;Fitsidihana teo aloha;
 noVisits;;Aucune visite pour l'instant;Mbola tsy misy fitsidihana;
 bioDisinfect;;Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage);Harato, siny ary harato kely voadio isaky ny dobo (klôro voaharoharo, avy eo sasana);

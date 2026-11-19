@@ -14,8 +14,8 @@ import 'visit_checklist.dart';
 import 'visit_providers.dart';
 import '../../theme/tokens.dart';
 
-/// A pond's five condition checks for the open visit: each OK, or a
-/// problem with an optional note (SPEC F5).
+/// A pond's five condition checks for the open visit: all in order in one
+/// tap, or each OK or a problem with an optional note (SPEC F5).
 class ConditionCheckScreen extends ConsumerStatefulWidget {
   const ConditionCheckScreen({super.key, required this.pondId});
 
@@ -128,6 +128,25 @@ class _ConditionCheckScreenState extends ConsumerState<ConditionCheckScreen>
       appBar: AppBar(title: Text(l10n.conditionsOf(code))),
       body: FormBody(
         children: [
+          // The usual case, in one tap (docs/design.md §Step 5).
+          FilledButton.icon(
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: saving
+                ? null
+                : () => saveOnce(() {
+                    setState(() {
+                      for (final c in conditionCategories) {
+                        _ok[c] = true;
+                      }
+                    });
+                    return _save();
+                  }),
+            icon: const Icon(Icons.check),
+            label: Text(l10n.conditionsAllOk),
+          ),
+          const SizedBox(height: 24),
           for (final c in conditionCategories) ...[
             Text(
               l10n.observationCategory(c),

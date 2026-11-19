@@ -139,4 +139,68 @@ void main() {
       ),
     );
   });
+
+  appTest('all in order saves the five checks as OK in one tap', (
+    tester,
+    db,
+  ) async {
+    await farm(tester, db);
+    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.text('Tout est en ordre'));
+    // Back on the visit.
+    expect(find.text('Tout est en ordre'), findsNothing);
+    final rows = await db.select(db.observations).get();
+    expect(rows, hasLength(5));
+    expect(rows.every((o) => o.ok == true), isTrue);
+    expect(rows.map((o) => o.category).toSet(), hasLength(5));
+  });
+
+  appTest('all in order corrects a problem found earlier', (tester, db) async {
+    await farm(tester, db);
+    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.byKey(const ValueKey('problem-dike')));
+    await tapAndSettle(tester, find.text('Enregistrer'));
+
+    await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
+    await tapAndSettle(tester, find.text('Tout est en ordre'));
+    final rows = await db.select(db.observations).get();
+    final superseded = {for (final o in rows) ?o.supersedesId};
+    final current = rows.where((o) => !superseded.contains(o.id)).toList();
+    expect(current, hasLength(5));
+    expect(current.every((o) => o.ok == true), isTrue);
+    final dike = current.singleWhere(
+      (o) => o.category == ObservationCategory.dike,
+    );
+    expect(dike.supersedesId, isNotNull);
+  });
+
+  appTest('an observation can name its pond, or none', (tester, db) async {
+    await farm(tester, db);
+    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    Finder inDialog(Finder f) =>
+        find.descendant(of: find.byType(AlertDialog), matching: f);
+    Future<void> observe(String note, {List<String> chips = const []}) async {
+      await tapAndSettle(tester, find.text('Ajouter une observation'));
+      for (final c in chips) {
+        await tapAndSettle(
+          tester,
+          inDialog(find.widgetWithText(ChoiceChip, c)),
+        );
+      }
+      await tester.enterText(inDialog(find.byType(TextField)), note);
+      await tapAndSettle(tester, inDialog(find.text('Enregistrer')));
+    }
+
+    await observe('Fuite côté sortie', chips: ['E1']);
+    await observe('Clôture coupée');
+    await observe('Herbe haute', chips: ['E1', 'E1']); // picked, then unpicked
+    final rows = await db.select(db.observations).get();
+    final e1 = (await db.select(db.ponds).getSingle()).id;
+    expect(
+      {for (final o in rows) o.note: o.pondId},
+      {'Fuite côté sortie': e1, 'Clôture coupée': null, 'Herbe haute': null},
+    );
+  });
 }
