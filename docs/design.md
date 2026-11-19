@@ -113,7 +113,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 0 + 1 | Foundation, ponds list | merged 19/11 |
 | 2 | Pond detail | merged 19/11 |
 | 3 | Worker home and daily log | merged 19/11 |
-| 4 | Alerts | " |
+| 4 | Alerts | planned: `docs/superpowers/plans/2026-11-19-design-alerts.md` |
 | 5 | Visit | " |
 | 6 | Reports | " |
 | 7 | Batches, feed and the other "More" forms | " |
@@ -245,4 +245,37 @@ Worker home                          Daily log
 - The pictogram screens are pages with a back arrow and a large "Vita"
   button; what is picked returns to the log and nothing is saved until
   Save. Each button shows what was picked. **[Claude's call]**
+
+### Step 4: alerts (decided 19/11)
+
+The tab answers "what needs doing across the farm, most urgent first";
+every row opens the screen that fixes it. The per-pond view stays on the
+ponds list and the pond page. **[user]**
+
+```
+┌────────────────────────────────────────────┐
+│ Alertes                                    │
+│ Danger 3                                   │
+│ ■ E2 ! Oxygène dissous trop bas : 2 mg/L › │ ← the pond page's bands
+│ ■ E4 ! Étang isolé                       › │
+│ ■ E5 ! À vérifier                        › │
+│ ■ E5 ! 500 morts le 14/03/2026           › │
+│ À faire 6                                  │
+│ ■ E2 ⚠ Lot L-E2 : échantillonnage à faire › │
+│ ■ E3 ⚠ Lot L-E3 : échantillonnage à faire › │
+│ …                                          │
+└────────────────────────────────────────────┘
+```
+
+- Two sections, "Danger" then "À faire" (warnings and due tasks), each in
+  pond code order, farm-wide items last; a section with nothing in it
+  doesn't show. **[user; empty sections: Claude's call]**
+- Isolated ponds and fish counts to check are danger items here too, as on
+  the bands; they open the pond's page. **[user]**
+- Each row is the pond page's band with the pond's code and swatch at its
+  start and a chevron; the full-colour squares and the pond chips go.
+  **[user]**
+- The tab's badge counts ponds in danger plus farm-wide danger items, from
+  the same count as the list's "3 étangs en danger". **[user]**
+- Nothing open: one line with a large tick. **[Claude's call]**
 
