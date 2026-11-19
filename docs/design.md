@@ -111,7 +111,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | Step | Screen | Status |
 |---|---|---|
 | 0 + 1 | Foundation, ponds list | merged 19/11 |
-| 2 | Pond detail | planned: `docs/superpowers/plans/2026-11-19-design-pond-detail.md` |
+| 2 | Pond detail | merged 19/11 |
 | 3 | Worker home and daily log | own round of questions first |
 | 4 | Alerts | " |
 | 5 | Visit | " |
