@@ -1499,26 +1499,8 @@ abstract class AppLocalizations {
   /// No description provided for @startVisit.
   ///
   /// In fr, this message translates to:
-  /// **'Démarrer une visite'**
+  /// **'Commencer la visite'**
   String get startVisit;
-
-  /// No description provided for @sectionWater.
-  ///
-  /// In fr, this message translates to:
-  /// **'Eau'**
-  String get sectionWater;
-
-  /// No description provided for @sectionSamples.
-  ///
-  /// In fr, this message translates to:
-  /// **'Échantillons'**
-  String get sectionSamples;
-
-  /// No description provided for @sectionConditions.
-  ///
-  /// In fr, this message translates to:
-  /// **'État des étangs'**
-  String get sectionConditions;
 
   /// No description provided for @sectionBiosecurity.
   ///
@@ -1532,18 +1514,6 @@ abstract class AppLocalizations {
   /// **'Observations'**
   String get sectionObservations;
 
-  /// No description provided for @summary.
-  ///
-  /// In fr, this message translates to:
-  /// **'Résumé'**
-  String get summary;
-
-  /// No description provided for @allDone.
-  ///
-  /// In fr, this message translates to:
-  /// **'Tout est fait'**
-  String get allDone;
-
   /// No description provided for @endVisit.
   ///
   /// In fr, this message translates to:
@@ -1555,18 +1525,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.'**
   String get endVisitConfirm;
-
-  /// No description provided for @visitEnded.
-  ///
-  /// In fr, this message translates to:
-  /// **'terminée'**
-  String get visitEnded;
-
-  /// No description provided for @visitOngoing.
-  ///
-  /// In fr, this message translates to:
-  /// **'en cours'**
-  String get visitOngoing;
 
   /// No description provided for @addObservation.
   ///
@@ -1609,18 +1567,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Étang (facultatif)'**
   String get observationPond;
-
-  /// No description provided for @pastVisits.
-  ///
-  /// In fr, this message translates to:
-  /// **'Visites précédentes'**
-  String get pastVisits;
-
-  /// No description provided for @noVisits.
-  ///
-  /// In fr, this message translates to:
-  /// **'Aucune visite pour l\'instant'**
-  String get noVisits;
 
   /// No description provided for @bioDisinfect.
   ///
@@ -1670,23 +1616,11 @@ abstract class AppLocalizations {
   /// **'Visite en cours depuis {time}'**
   String visitOpenSince(String time);
 
-  /// No description provided for @sampleOfIn.
-  ///
-  /// In fr, this message translates to:
-  /// **'{batch} dans {pond}'**
-  String sampleOfIn(String batch, String pond);
-
   /// No description provided for @conditionsOf.
   ///
   /// In fr, this message translates to:
   /// **'État de {pond}'**
   String conditionsOf(String pond);
-
-  /// No description provided for @visitLine.
-  ///
-  /// In fr, this message translates to:
-  /// **'{date} · {state}'**
-  String visitLine(String date, String state);
 
   /// No description provided for @welcomeTitle.
   ///
@@ -4644,6 +4578,96 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'À faire'**
   String get alertsTodo;
+
+  /// Visit tab before a visit: heading over what a visit today would cover.
+  ///
+  /// In fr, this message translates to:
+  /// **'À faire aujourd\'hui'**
+  String get visitTodayHeading;
+
+  /// Before a visit: water readings a visit today would take.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 relevé d\'eau} other{{count} relevés d\'eau}}'**
+  String visitWaterCount(int count);
+
+  /// Before a visit: samples due.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 échantillonnage} other{{count} échantillonnages}}'**
+  String visitSampleCount(int count);
+
+  /// Before a visit: ponds to inspect (dikes, screens, nets, fence, grass).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 étang à inspecter} other{{count} étangs à inspecter}}'**
+  String visitInspectCount(int count);
+
+  /// Before a visit: date and member of the last ended visit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dernière visite : {date}, {member}'**
+  String visitLast(String date, String member);
+
+  /// During a visit: checks done out of all checks.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} / {total}'**
+  String visitProgress(int done, int total);
+
+  /// During a visit: a pond's inspection row (dikes, screens, nets, fence, grass).
+  ///
+  /// In fr, this message translates to:
+  /// **'État de l\'étang'**
+  String get visitInspection;
+
+  /// During a visit: a finished inspection with no problem.
+  ///
+  /// In fr, this message translates to:
+  /// **'tout en ordre'**
+  String get visitAllInOrder;
+
+  /// During a visit: a finished inspection's problems, named.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 problème : {list}} other{{count} problèmes : {list}}}'**
+  String visitProblems(int count, String list);
+
+  /// During a visit: a finished sample, its batch, average weight and fish weighed.
+  ///
+  /// In fr, this message translates to:
+  /// **'{batch} : {avg} ({count} poissons)'**
+  String visitSampleDone(String batch, String avg, int count);
+
+  /// Folded biosecurity section: how many reminders it holds.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} rappels'**
+  String bioReminders(int count);
+
+  /// End-of-visit confirmation when checks are left, naming them.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 contrôle pas fait : {items}.} other{{count} contrôles pas faits : {items}.}} Terminer quand même ?'**
+  String endVisitLeft(int count, String items);
+
+  /// A water reading left undone, in the end-of-visit confirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'relevé {pond}'**
+  String leftWater(String pond);
+
+  /// A sample left undone, in the end-of-visit confirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'échantillon {batch}'**
+  String leftSample(String batch);
+
+  /// An inspection left undone, in the end-of-visit confirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'état {pond}'**
+  String leftInspection(String pond);
 }
 
 class _AppLocalizationsDelegate

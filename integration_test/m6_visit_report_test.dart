@@ -216,10 +216,10 @@ void main() {
         );
     await tester.pumpAndSettle();
 
-    // 1. A visit: low oxygen, a sample, an observation with a photo, a
-    // summary.
+    // 1. A visit: low oxygen, a sample, an observation with a photo; the
+    // summary is written in the draft.
     await tapAndSettle(tester, tab('Visite'));
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.byKey(const ValueKey('water-E1')));
     await enterAndSettle(tester, field('Oxygène dissous'), '2');
     await tapAndSettle(tester, find.text('Enregistrer'));
@@ -242,11 +242,6 @@ void main() {
     );
     await tapAndSettle(tester, find.text('Ajouter une photo'));
     expect(await db.select(db.photos).get(), hasLength(1));
-    await enterAndSettle(
-      tester,
-      find.widgetWithText(TextField, 'Résumé'),
-      'Oxygène bas le matin, digue à reprendre.',
-    );
 
     // 2. Ending opens the draft: who saw the deaths, the alert, estimates.
     await tapAndSettle(tester, find.text('Terminer la visite'));
@@ -258,6 +253,11 @@ void main() {
       ),
     );
     expect(find.text('Rapport de visite'), findsOneWidget);
+    await enterAndSettle(
+      tester,
+      find.widgetWithText(TextField, 'Résumé'),
+      'Oxygène bas le matin, digue à reprendre.',
+    );
     for (final text in [
       'Rakoto 4 · Hery 2',
       'estimé',

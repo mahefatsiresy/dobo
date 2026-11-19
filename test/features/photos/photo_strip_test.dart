@@ -128,7 +128,7 @@ void main() {
 
   Future<void> openDraft(WidgetTester tester) async {
     await tapAndSettle(tester, find.text('Visite'));
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.text('Terminer la visite'));
     await tapAndSettle(
       tester,

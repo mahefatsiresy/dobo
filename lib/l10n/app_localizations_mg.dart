@@ -786,25 +786,10 @@ class AppLocalizationsMg extends AppLocalizations {
   String get startVisit => 'Hanomboka fitsidihana';
 
   @override
-  String get sectionWater => 'Rano';
-
-  @override
-  String get sectionSamples => 'Santionany';
-
-  @override
-  String get sectionConditions => 'Toetry ny dobo';
-
-  @override
   String get sectionBiosecurity => 'Fiarovana ara-pahasalamana';
 
   @override
   String get sectionObservations => 'Fanamarihana';
-
-  @override
-  String get summary => 'Famintinana';
-
-  @override
-  String get allDone => 'Vita daholo';
 
   @override
   String get endVisit => 'Hamarana ny fitsidihana';
@@ -812,12 +797,6 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String get endVisitConfirm =>
       'Hamarana ny fitsidihana ve ? Ny tatitra dia homanina avy amin\'izay voasoratra.';
-
-  @override
-  String get visitEnded => 'vita';
-
-  @override
-  String get visitOngoing => 'mbola mandeha';
 
   @override
   String get addObservation => 'Hanampy fanamarihana';
@@ -839,12 +818,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get observationPond => 'Dobo (tsy voatery)';
-
-  @override
-  String get pastVisits => 'Fitsidihana teo aloha';
-
-  @override
-  String get noVisits => 'Mbola tsy misy fitsidihana';
 
   @override
   String get bioDisinfect =>
@@ -878,18 +851,8 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String sampleOfIn(String batch, String pond) {
-    return '$batch ao amin\'ny $pond';
-  }
-
-  @override
   String conditionsOf(String pond) {
     return 'Toetry ny $pond';
-  }
-
-  @override
-  String visitLine(String date, String state) {
-    return '$date · $state';
   }
 
   @override
@@ -2614,4 +2577,103 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get alertsTodo => 'Atao';
+
+  @override
+  String get visitTodayHeading => 'Atao anio';
+
+  @override
+  String visitWaterCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'fandrefesana rano $count',
+      one: 'fandrefesana rano 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitSampleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'fandanjana $count',
+      one: 'fandanjana 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitInspectCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'dobo $count hojerena',
+      one: 'dobo 1 hojerena',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitLast(String date, String member) {
+    return 'Fitsidihana farany : $date, $member';
+  }
+
+  @override
+  String visitProgress(int done, int total) {
+    return '$done / $total';
+  }
+
+  @override
+  String get visitInspection => 'Toetry ny dobo';
+
+  @override
+  String get visitAllInOrder => 'milamina avokoa';
+
+  @override
+  String visitProblems(int count, String list) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'olana $count : $list',
+      one: 'olana 1 : $list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitSampleDone(String batch, String avg, int count) {
+    return '$batch : $avg (trondro $count)';
+  }
+
+  @override
+  String bioReminders(int count) {
+    return 'fampahatsiahivana $count';
+  }
+
+  @override
+  String endVisitLeft(int count, String items) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'fanaraha-maso $count tsy vita : $items.',
+      one: 'fanaraha-maso 1 tsy vita : $items.',
+    );
+    return '$_temp0 Hamarana ihany ve ?';
+  }
+
+  @override
+  String leftWater(String pond) {
+    return 'fandrefesana $pond';
+  }
+
+  @override
+  String leftSample(String batch) {
+    return 'fandanjana $batch';
+  }
+
+  @override
+  String leftInspection(String pond) {
+    return 'toetry $pond';
+  }
 }

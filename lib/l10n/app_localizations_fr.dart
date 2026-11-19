@@ -778,16 +778,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tabVisit => 'Visite';
 
   @override
-  String get startVisit => 'Démarrer une visite';
-
-  @override
-  String get sectionWater => 'Eau';
-
-  @override
-  String get sectionSamples => 'Échantillons';
-
-  @override
-  String get sectionConditions => 'État des étangs';
+  String get startVisit => 'Commencer la visite';
 
   @override
   String get sectionBiosecurity => 'Biosécurité';
@@ -796,23 +787,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sectionObservations => 'Observations';
 
   @override
-  String get summary => 'Résumé';
-
-  @override
-  String get allDone => 'Tout est fait';
-
-  @override
   String get endVisit => 'Terminer la visite';
 
   @override
   String get endVisitConfirm =>
       'Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.';
-
-  @override
-  String get visitEnded => 'terminée';
-
-  @override
-  String get visitOngoing => 'en cours';
 
   @override
   String get addObservation => 'Ajouter une observation';
@@ -834,12 +813,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get observationPond => 'Étang (facultatif)';
-
-  @override
-  String get pastVisits => 'Visites précédentes';
-
-  @override
-  String get noVisits => 'Aucune visite pour l\'instant';
 
   @override
   String get bioDisinfect =>
@@ -871,18 +844,8 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String sampleOfIn(String batch, String pond) {
-    return '$batch dans $pond';
-  }
-
-  @override
   String conditionsOf(String pond) {
     return 'État de $pond';
-  }
-
-  @override
-  String visitLine(String date, String state) {
-    return '$date · $state';
   }
 
   @override
@@ -2616,4 +2579,103 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get alertsTodo => 'À faire';
+
+  @override
+  String get visitTodayHeading => 'À faire aujourd\'hui';
+
+  @override
+  String visitWaterCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relevés d\'eau',
+      one: '1 relevé d\'eau',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitSampleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count échantillonnages',
+      one: '1 échantillonnage',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitInspectCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count étangs à inspecter',
+      one: '1 étang à inspecter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitLast(String date, String member) {
+    return 'Dernière visite : $date, $member';
+  }
+
+  @override
+  String visitProgress(int done, int total) {
+    return '$done / $total';
+  }
+
+  @override
+  String get visitInspection => 'État de l\'étang';
+
+  @override
+  String get visitAllInOrder => 'tout en ordre';
+
+  @override
+  String visitProblems(int count, String list) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count problèmes : $list',
+      one: '1 problème : $list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String visitSampleDone(String batch, String avg, int count) {
+    return '$batch : $avg ($count poissons)';
+  }
+
+  @override
+  String bioReminders(int count) {
+    return '$count rappels';
+  }
+
+  @override
+  String endVisitLeft(int count, String items) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count contrôles pas faits : $items.',
+      one: '1 contrôle pas fait : $items.',
+    );
+    return '$_temp0 Terminer quand même ?';
+  }
+
+  @override
+  String leftWater(String pond) {
+    return 'relevé $pond';
+  }
+
+  @override
+  String leftSample(String batch) {
+    return 'échantillon $batch';
+  }
+
+  @override
+  String leftInspection(String pond) {
+    return 'état $pond';
+  }
 }

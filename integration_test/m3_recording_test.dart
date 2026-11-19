@@ -91,14 +91,14 @@ void main() {
     expect(find.byIcon(Icons.task_alt), findsOneWidget);
     await tapAndSettle(tester, find.byTooltip('Hiala'));
 
-    // A visit: water, the sample now due, the five conditions, a summary.
+    // A visit: water, the sample now due, the five conditions; a summary.
     await tapAndSettle(tester, find.text('Visite'));
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.byKey(const ValueKey('water-E1')));
     await enterAndSettle(tester, field('pH'), '7,2');
     await enterAndSettle(tester, field('Oxygène dissous'), '4,5');
     await tapAndSettle(tester, find.text('Enregistrer'));
-    await tapAndSettle(tester, find.textContaining(' dans E1'));
+    await tapAndSettle(tester, find.text('Échantillonnage'));
     await enterAndSettle(tester, field('Poissons pesés'), '30');
     await enterAndSettle(tester, field('Poids total'), '0,6');
     await tapAndSettle(tester, find.text('Enregistrer'));
@@ -107,15 +107,16 @@ void main() {
       await tapAndSettle(tester, find.byKey(ValueKey('ok-$c')));
     }
     await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Terminer la visite'));
+    await confirm(tester, 'Terminer la visite');
+    // Since M6, ending a visit opens its draft report, where the summary
+    // is written (docs/design.md §Step 5).
+    expect(find.text('Rapport de visite'), findsOneWidget);
     await enterAndSettle(
       tester,
       find.widgetWithText(TextField, 'Résumé'),
       'Poissons actifs, eau verte',
     );
-    await tapAndSettle(tester, find.text('Terminer la visite'));
-    await confirm(tester, 'Terminer la visite');
-    // Since M6, ending a visit opens its draft report.
-    expect(find.text('Rapport de visite'), findsOneWidget);
 
     // Yesterday's paper sheet: 1 death, as Rakoto.
     final db = container.read(databaseProvider);

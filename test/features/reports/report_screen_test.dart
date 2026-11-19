@@ -155,12 +155,7 @@ void main() {
     db,
   ) async {
     await tapAndSettle(tester, find.text('Visite'));
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
-    await enterAndSettle(
-      tester,
-      find.widgetWithText(TextField, 'Résumé'),
-      'Eau verte',
-    );
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.text('Terminer la visite'));
     await tapAndSettle(
       tester,
@@ -169,12 +164,13 @@ void main() {
         matching: find.text('Terminer la visite'),
       ),
     );
-    // The draft, with the summary from the visit.
+    // The draft: the summary is written here (docs/design.md §Step 5).
     expect(find.text('Rapport de visite'), findsOneWidget);
-    final summary = tester.widget<TextField>(
+    await enterAndSettle(
+      tester,
       find.widgetWithText(TextField, 'Résumé'),
+      'Eau verte',
     );
-    expect(summary.controller!.text, 'Eau verte');
     expect(find.text('Rien à signaler'), findsWidgets);
 
     await tapAndSettle(tester, find.text('Publier'));

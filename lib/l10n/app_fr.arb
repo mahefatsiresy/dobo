@@ -504,18 +504,11 @@
     }
   },
   "tabVisit": "Visite",
-  "startVisit": "Démarrer une visite",
-  "sectionWater": "Eau",
-  "sectionSamples": "Échantillons",
-  "sectionConditions": "État des étangs",
+  "startVisit": "Commencer la visite",
   "sectionBiosecurity": "Biosécurité",
   "sectionObservations": "Observations",
-  "summary": "Résumé",
-  "allDone": "Tout est fait",
   "endVisit": "Terminer la visite",
   "endVisitConfirm": "Terminer la visite ? Le rapport sera préparé à partir de ce qui a été saisi.",
-  "visitEnded": "terminée",
-  "visitOngoing": "en cours",
   "addObservation": "Ajouter une observation",
   "observationText": "Observation",
   "category": "Catégorie",
@@ -523,8 +516,6 @@
   "conditionProblem": "Problème",
   "conditionsAllOk": "Tout est en ordre",
   "observationPond": "Étang (facultatif)",
-  "pastVisits": "Visites précédentes",
-  "noVisits": "Aucune visite pour l'instant",
   "bioDisinfect": "Filets, seaux et épuisettes désinfectés entre les étangs (chlore dilué, puis rinçage)",
   "bioToolsPerPond": "Un jeu d'outils par étang si possible",
   "bioFootbath": "Pédiluve ou bottes propres à l'entrée",
@@ -540,32 +531,10 @@
       }
     }
   },
-  "sampleOfIn": "{batch} dans {pond}",
-  "@sampleOfIn": {
-    "placeholders": {
-      "batch": {
-        "type": "String"
-      },
-      "pond": {
-        "type": "String"
-      }
-    }
-  },
   "conditionsOf": "État de {pond}",
   "@conditionsOf": {
     "placeholders": {
       "pond": {
-        "type": "String"
-      }
-    }
-  },
-  "visitLine": "{date} · {state}",
-  "@visitLine": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      },
-      "state": {
         "type": "String"
       }
     }
@@ -1667,5 +1636,143 @@
   "alertsTodo": "À faire",
   "@alertsTodo": {
     "description": "Alerts tab heading of the warnings and due tasks."
+  },
+  "visitTodayHeading": "À faire aujourd'hui",
+  "@visitTodayHeading": {
+    "description": "Visit tab before a visit: heading over what a visit today would cover."
+  },
+  "visitWaterCount": "{count, plural, =1{1 relevé d'eau} other{{count} relevés d'eau}}",
+  "@visitWaterCount": {
+    "description": "Before a visit: water readings a visit today would take.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "visitSampleCount": "{count, plural, =1{1 échantillonnage} other{{count} échantillonnages}}",
+  "@visitSampleCount": {
+    "description": "Before a visit: samples due.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "visitInspectCount": "{count, plural, =1{1 étang à inspecter} other{{count} étangs à inspecter}}",
+  "@visitInspectCount": {
+    "description": "Before a visit: ponds to inspect (dikes, screens, nets, fence, grass).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "visitLast": "Dernière visite : {date}, {member}",
+  "@visitLast": {
+    "description": "Before a visit: date and member of the last ended visit.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "member": {
+        "type": "String"
+      }
+    }
+  },
+  "visitProgress": "{done} / {total}",
+  "@visitProgress": {
+    "description": "During a visit: checks done out of all checks.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "visitInspection": "État de l'étang",
+  "@visitInspection": {
+    "description": "During a visit: a pond's inspection row (dikes, screens, nets, fence, grass)."
+  },
+  "visitAllInOrder": "tout en ordre",
+  "@visitAllInOrder": {
+    "description": "During a visit: a finished inspection with no problem."
+  },
+  "visitProblems": "{count, plural, =1{1 problème : {list}} other{{count} problèmes : {list}}}",
+  "@visitProblems": {
+    "description": "During a visit: a finished inspection's problems, named.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "visitSampleDone": "{batch} : {avg} ({count} poissons)",
+  "@visitSampleDone": {
+    "description": "During a visit: a finished sample, its batch, average weight and fish weighed.",
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      },
+      "avg": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bioReminders": "{count} rappels",
+  "@bioReminders": {
+    "description": "Folded biosecurity section: how many reminders it holds.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "endVisitLeft": "{count, plural, =1{1 contrôle pas fait : {items}.} other{{count} contrôles pas faits : {items}.}} Terminer quand même ?",
+  "@endVisitLeft": {
+    "description": "End-of-visit confirmation when checks are left, naming them.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "leftWater": "relevé {pond}",
+  "@leftWater": {
+    "description": "A water reading left undone, in the end-of-visit confirmation.",
+    "placeholders": {
+      "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "leftSample": "échantillon {batch}",
+  "@leftSample": {
+    "description": "A sample left undone, in the end-of-visit confirmation.",
+    "placeholders": {
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "leftInspection": "état {pond}",
+  "@leftInspection": {
+    "description": "An inspection left undone, in the end-of-visit confirmation.",
+    "placeholders": {
+      "pond": {
+        "type": "String"
+      }
+    }
   }
 }

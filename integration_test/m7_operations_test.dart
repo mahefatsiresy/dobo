@@ -192,7 +192,7 @@ void main() {
 
     // 7. A visit's report: feed stock 44 kg, no fish left in E2.
     await tapAndSettle(tester, tab('Visite'));
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.text('Terminer la visite'));
     await tapAndSettle(tester, inDialog('Terminer la visite'));
     await tapAndSettle(tester, find.text('Publier'));

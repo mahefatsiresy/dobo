@@ -31,9 +31,9 @@ void main() {
     await tapAndSettle(tester, find.text('Visite'));
   }
 
-  appTest('a visit: water, conditions, summary, end', (tester, db) async {
+  appTest('a visit: water, conditions, end', (tester, db) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     final visit = await db.select(db.visits).getSingle();
 
     // Water: E1 is due; a reading from the checklist ticks it off.
@@ -44,7 +44,14 @@ void main() {
       '7,2',
     );
     await tapAndSettle(tester, find.text('Enregistrer'));
-    expect(find.byKey(const ValueKey('water-E1')), findsNothing);
+    // Done, it stays in place with a tick.
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('water-E1')),
+        matching: find.byIcon(Icons.check_circle),
+      ),
+      findsOneWidget,
+    );
     expect((await db.select(db.waterReadings).getSingle()).visitId, visit.id);
 
     // The batch was stocked long ago: a sample is due.
@@ -62,13 +69,6 @@ void main() {
       await tapAndSettle(tester, find.byKey(ValueKey('ok-$key')));
     }
     await tapAndSettle(tester, find.text('Enregistrer'));
-    expect(find.byKey(const ValueKey('conditions-E1')), findsNothing);
-
-    await enterAndSettle(
-      tester,
-      find.widgetWithText(TextField, 'Résumé'),
-      'Eau verte, poissons actifs',
-    );
     await tapAndSettle(tester, find.text('Terminer la visite'));
     await tapAndSettle(
       tester,
@@ -81,12 +81,9 @@ void main() {
     // Ending opens the draft report; the Visit tab is ready for the next.
     expect(find.text('Rapport de visite'), findsOneWidget);
     await tapAndSettle(tester, find.text('Visite'));
-    expect(find.text('Démarrer une visite'), findsOneWidget);
+    expect(find.text('Commencer la visite'), findsOneWidget);
     final ended = await db.select(db.visits).getSingle();
-    expect(
-      (ended.summary, ended.endedAt != null),
-      ('Eau verte, poissons actifs', true),
-    );
+    expect(ended.endedAt, isNotNull);
     final checks = await db.select(db.observations).get();
     expect(
       checks.where((o) => o.ok == true && o.visitId == visit.id),
@@ -96,7 +93,7 @@ void main() {
 
   appTest('an observation saves while the keyboard closes', (tester, db) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.text('Ajouter une observation'));
     await tester.enterText(
       find.descendant(
@@ -115,7 +112,7 @@ void main() {
 
   appTest('re-answering a condition corrects it', (tester, db) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
     await tapAndSettle(tester, find.byKey(const ValueKey('ok-dike')));
     await tapAndSettle(tester, find.text('Enregistrer'));
@@ -145,7 +142,7 @@ void main() {
     db,
   ) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
     await tapAndSettle(tester, find.text('Tout est en ordre'));
     // Back on the visit.
@@ -158,7 +155,7 @@ void main() {
 
   appTest('all in order corrects a problem found earlier', (tester, db) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     await tapAndSettle(tester, find.byKey(const ValueKey('conditions-E1')));
     await tapAndSettle(tester, find.byKey(const ValueKey('problem-dike')));
     await tapAndSettle(tester, find.text('Enregistrer'));
@@ -178,7 +175,7 @@ void main() {
 
   appTest('an observation can name its pond, or none', (tester, db) async {
     await farm(tester, db);
-    await tapAndSettle(tester, find.text('Démarrer une visite'));
+    await tapAndSettle(tester, find.text('Commencer la visite'));
     Finder inDialog(Finder f) =>
         find.descendant(of: find.byType(AlertDialog), matching: f);
     Future<void> observe(String note, {List<String> chips = const []}) async {

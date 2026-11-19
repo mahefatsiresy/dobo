@@ -4,20 +4,24 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
+import '../../domain/dates.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
-import '../common/pond_colour.dart';
+import '../../theme/tokens.dart';
+import '../admin/members_screen.dart' show membersProvider;
+import '../common/folded_section.dart';
 import '../common/save_once.dart';
-import '../photos/photo_strip.dart';
 import '../ponds/pond_overview.dart';
 import 'visit_checklist.dart';
+import 'visit_pond_group.dart';
 import 'visit_providers.dart';
-import '../../theme/tokens.dart';
 
-/// The Visit tab (SPEC F5): start a visit, then walk its checklist; past
-/// visits below. The report itself comes in M6.
+/// The Visit tab (SPEC F5, docs/design.md §Step 5). Before a visit: what
+/// one today would cover. During it: the ponds in code order, each with
+/// its band and its checks, as the member walks the dike; "Terminer" is
+/// pinned, and the summary is written in the report draft.
 class VisitScreen extends ConsumerStatefulWidget {
   const VisitScreen({super.key});
 
@@ -26,41 +30,28 @@ class VisitScreen extends ConsumerStatefulWidget {
 }
 
 class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
-  final _summary = TextEditingController();
-  final _summaryFocus = FocusNode();
-  String? _summaryOf;
-  final _biosecurity = <int>{};
-
-  @override
-  void initState() {
-    super.initState();
-    _summaryFocus.addListener(() {
-      if (!_summaryFocus.hasFocus) _saveSummary();
-    });
-  }
-
-  @override
-  void dispose() {
-    _summary.dispose();
-    _summaryFocus.dispose();
-    super.dispose();
-  }
-
-  Future<void> _saveSummary() async {
-    final id = _summaryOf;
-    if (id == null) return;
-    final text = _summary.text.trim();
-    await ref
-        .read(visitRepositoryProvider)
-        .setSummary(id, text.isEmpty ? null : text);
-  }
-
-  Future<void> _end(Visit visit) async {
+  Future<void> _end(Visit visit, VisitChecklist? checklist) async {
     final l10n = AppLocalizations.of(context);
+    final left = checklist?.open ?? const [];
+    final items = [
+      for (final (pond, check) in left)
+        switch (check) {
+          WaterCheck() => l10n.leftWater(pond.code),
+          SampleCheck(:final batch) => l10n.leftSample(batch.code),
+          InspectionCheck() => l10n.leftInspection(pond.code),
+        },
+    ];
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        content: Text(l10n.endVisitConfirm),
+        content: Text(
+          items.isEmpty
+              ? l10n.endVisitConfirm
+              : l10n.endVisitLeft(
+                  items.length,
+                  items.join(l10n.reportListSeparator),
+                ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -74,13 +65,7 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
       ),
     );
     if (ok != true) return;
-    await _saveSummary();
     await ref.read(visitRepositoryProvider).end(visit.id);
-    setState(() {
-      _summaryOf = null;
-      _summary.clear();
-      _biosecurity.clear();
-    });
     // The report is reviewed and published straight away (SPEC F8).
     if (mounted) context.go('/reports/draft/${visit.id}');
   }
@@ -100,6 +85,22 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
         );
   }
 
+  /// The main action, pinned under the thumb.
+  Widget _pinned(IconData icon, String label, VoidCallback? onPressed) =>
+      SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: FilledButton.icon(
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: onPressed,
+            icon: Icon(icon),
+            label: Text(label),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -108,87 +109,93 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final visit = open.value;
+    if (visit == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.tabVisit)),
+        bottomNavigationBar: _pinned(
+          Icons.play_arrow,
+          l10n.startVisit,
+          saving
+              ? null
+              : () => saveOnce(() => ref.read(visitRepositoryProvider).start()),
+        ),
+        body: _start(l10n),
+      );
+    }
+    final checklist = ref.watch(checklistProvider(visit.id));
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabVisit)),
-      body: visit == null ? _start(l10n) : _checklist(l10n, visit),
+      bottomNavigationBar: _pinned(
+        Icons.flag,
+        l10n.endVisit,
+        () => _end(visit, checklist),
+      ),
+      body: _checklist(l10n, visit, checklist),
     );
   }
 
   Widget _start(AppLocalizations l10n) {
-    final visits = ref.watch(visitsProvider).value ?? const [];
+    final preview = ref.watch(visitPreviewProvider);
+    if (preview == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final text = Theme.of(context).textTheme;
+    int count<T extends VisitCheck>() =>
+        [for (final p in preview.ponds) ...p.checks.whereType<T>()].length;
+    final water = count<WaterCheck>(),
+        samples = count<SampleCheck>(),
+        inspections = count<InspectionCheck>();
+    final lines = [
+      if (water > 0) (Icons.water_drop, l10n.visitWaterCount(water)),
+      if (samples > 0) (Icons.scale, l10n.visitSampleCount(samples)),
+      if (inspections > 0)
+        (Icons.fact_check, l10n.visitInspectCount(inspections)),
+    ];
+    final last = (ref.watch(visitsProvider).value ?? const <Visit>[])
+        .where((v) => v.endedAt != null)
+        .firstOrNull;
+    final member = last == null
+        ? null
+        : (ref.watch(membersProvider).value ?? const <Member>[])
+              .where((m) => m.id == last.enteredBy)
+              .firstOrNull;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        FilledButton.icon(
-          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(64)),
-          onPressed: saving
-              ? null
-              : () => saveOnce(() => ref.read(visitRepositoryProvider).start()),
-          icon: const Icon(Icons.play_arrow),
-          label: Text(l10n.startVisit),
-        ),
-        const SizedBox(height: 24),
-        Text(l10n.pastVisits, style: Theme.of(context).textTheme.titleMedium),
-        if (visits.isEmpty) Text(l10n.noVisits),
-        for (final v in visits)
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.event),
-            title: Text(
-              l10n.visitLine(
-                formatDate(v.startedAt),
-                v.endedAt == null ? l10n.visitOngoing : l10n.visitEnded,
-              ),
+        Text(l10n.visitTodayHeading, style: text.titleMedium),
+        const SizedBox(height: 8),
+        for (final (icon, line) in lines)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                Icon(icon),
+                const SizedBox(width: 12),
+                Expanded(child: Text(line, style: text.bodyLarge)),
+              ],
             ),
-            subtitle: v.summary == null
-                ? null
-                : Text(
-                    v.summary!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
           ),
+        if (last != null && member != null) ...[
+          const SizedBox(height: 16),
+          Text(
+            l10n.visitLast(formatDate(last.startedAt), member.name),
+            style: text.bodySmall,
+          ),
+        ],
       ],
     );
   }
 
-  Widget _checklist(AppLocalizations l10n, Visit visit) {
-    if (_summaryOf != visit.id) {
-      _summaryOf = visit.id;
-      _summary.text = visit.summary ?? '';
-    }
-    final checklist = ref.watch(checklistProvider(visit.id));
-    final observations =
-        ref.watch(visitObservationsProvider(visit.id)).value ?? const [];
-    final theme = Theme.of(context);
-    final started = TimeOfDay.fromDateTime(visit.startedAt.toLocal());
-    Widget section(String title, List<Widget> items) => Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(title, style: theme.textTheme.titleMedium),
-          if (items.isEmpty)
-            ListTile(
-              minTileHeight: 56,
-              leading: Icon(Icons.check_circle, color: context.dobo.ok),
-              title: Text(l10n.allDone),
-            )
-          else
-            ...items,
-        ],
-      ),
-    );
-    Widget todo(Key key, Pond pond, String title, VoidCallback onTap) =>
-        ListTile(
-          key: key,
-          minTileHeight: 56,
-          leading: PondTag(code: pond.code, colour: pond.colour),
-          title: Text(title),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: onTap,
-        );
-
+  Widget _checklist(
+    AppLocalizations l10n,
+    Visit visit,
+    VisitChecklist? checklist,
+  ) {
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
+    // Farm time (CLAUDE.md §Time), whatever zone the phone is set to.
+    final farm = visit.startedAt.toUtc().add(farmUtcOffset);
+    final started = TimeOfDay(hour: farm.hour, minute: farm.minute);
     final bio = [
       l10n.bioDisinfect,
       l10n.bioToolsPerPond,
@@ -198,13 +205,29 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
       l10n.bioProtection,
       l10n.bioNotAlone,
     ];
-
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(bottom: 16),
       children: [
-        Text(
-          l10n.visitOpenSince(started.format(context)),
-          style: theme.textTheme.titleLarge,
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.visitOpenSince(started.format(context)),
+                  style: text.titleMedium,
+                ),
+              ),
+              if (checklist != null) ...[
+                Icon(Icons.check_circle, color: c.ok),
+                const SizedBox(width: 4),
+                Text(
+                  l10n.visitProgress(checklist.done, checklist.total),
+                  style: text.titleMedium,
+                ),
+              ],
+            ],
+          ),
         ),
         if (checklist == null)
           const Padding(
@@ -212,97 +235,53 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
             child: Center(child: CircularProgressIndicator()),
           )
         else ...[
-          section(l10n.sectionWater, [
-            for (final (p, _) in checklist.open.where(
-              (e) => e.$2 is WaterCheck,
-            ))
-              todo(
-                ValueKey('water-${p.code}'),
-                p,
-                l10n.waterReading,
-                () => context.push('/water/${p.id}'),
-              ),
-          ]),
-          section(l10n.sectionSamples, [
-            for (final (p, SampleCheck(batch: b))
-                in checklist.open
-                    .where((e) => e.$2 is SampleCheck)
-                    .map((e) => (e.$1, e.$2 as SampleCheck)))
-              todo(
-                ValueKey('sample-${b.code}-${p.code}'),
-                p,
-                l10n.sampleOfIn(b.code, p.code),
-                () => context.push('/sample/${p.id}?batchId=${b.id}'),
-              ),
-          ]),
-          section(l10n.sectionConditions, [
-            for (final (p, _) in checklist.open.where(
-              (e) => e.$2 is InspectionCheck,
-            ))
-              todo(
-                ValueKey('conditions-${p.code}'),
-                p,
-                l10n.conditionsOf(p.code),
-                () => context.push('/visit/conditions/${p.id}'),
-              ),
-          ]),
+          for (final p in checklist.ponds) ...[
+            const Divider(height: 1),
+            VisitPondGroup(visit: p),
+          ],
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Text(l10n.sectionObservations, style: text.titleMedium),
+          ),
+          for (final o in checklist.farmObservations)
+            ObservationLine(observation: o),
         ],
         Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Text(
-            l10n.sectionBiosecurity,
-            style: theme.textTheme.titleMedium,
-          ),
-        ),
-        for (final (i, item) in bio.indexed)
-          CheckboxListTile(
-            minTileHeight: 56,
-            contentPadding: EdgeInsets.zero,
-            title: Text(item),
-            value: _biosecurity.contains(i),
-            onChanged: (v) => setState(
-              () => v! ? _biosecurity.add(i) : _biosecurity.remove(i),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              style: TextButton.styleFrom(minimumSize: const Size(56, 56)),
+              onPressed: _addObservation,
+              icon: const Icon(Icons.add),
+              label: Text(l10n.addObservation),
             ),
           ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Text(
-            l10n.sectionObservations,
-            style: theme.textTheme.titleMedium,
+        ),
+        const Divider(height: 1),
+        FoldedSection(
+          title: l10n.sectionBiosecurity,
+          summary: l10n.bioReminders(bio.length),
+          builder: (context) => Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Column(
+              children: [
+                for (final item in bio)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.shield_outlined),
+                        const SizedBox(width: 12),
+                        Expanded(child: Text(item, style: text.bodyLarge)),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        for (final o in observations)
-          if (o.ok == null) ...[
-            ListTile(
-              minTileHeight: 56,
-              leading: const Icon(Icons.notes),
-              title: Text(l10n.observationCategory(o.category)),
-              subtitle: o.note == null ? null : Text(o.note!),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 56),
-              child: PhotoStrip(owner: PhotoOwner.observation, ownerId: o.id),
-            ),
-          ],
-        TextButton.icon(
-          style: TextButton.styleFrom(minimumSize: const Size(56, 56)),
-          onPressed: _addObservation,
-          icon: const Icon(Icons.add),
-          label: Text(l10n.addObservation),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _summary,
-          focusNode: _summaryFocus,
-          decoration: InputDecoration(labelText: l10n.summary),
-          maxLines: 4,
-        ),
-        const SizedBox(height: 24),
-        FilledButton.icon(
-          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-          onPressed: () => _end(visit),
-          icon: const Icon(Icons.flag),
-          label: Text(l10n.endVisit),
         ),
       ],
     );
