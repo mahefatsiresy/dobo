@@ -114,7 +114,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 2 | Pond detail | merged 19/11 |
 | 3 | Worker home and daily log | merged 19/11 |
 | 4 | Alerts | merged 19/11 |
-| 5 | Visit | " |
+| 5 | Visit | merged 19/11 |
 | 6 | Reports | " |
 | 7 | Batches, feed and the other "More" forms | " |
 | 8 | Web console (takes the colours and type) | " |
