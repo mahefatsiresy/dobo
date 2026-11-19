@@ -136,6 +136,9 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: _summary,
+                        // Typing before the saved summary is read would be
+                        // overwritten by it: wait.
+                        readOnly: !_summaryLoaded,
                         maxLines: null,
                         minLines: 3,
                         decoration: InputDecoration(

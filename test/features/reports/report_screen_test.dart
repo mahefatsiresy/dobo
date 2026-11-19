@@ -1,4 +1,6 @@
 import 'package:dobo/db/database.dart';
+import 'package:dobo/db/database_provider.dart';
+import 'package:dobo/db/repositories/providers.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/repositories/visit_repository.dart';
 import 'package:dobo/db/sync_state.dart';
@@ -14,6 +16,7 @@ import 'package:dobo/features/sync/backup_actions.dart';
 import 'package:dobo/router.dart';
 import 'package:drift/drift.dart' show Value;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -399,4 +402,70 @@ void main() {
     expect(find.byKey(const ValueKey('pondSwatch')), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  group('the draft while its summary loads', () {
+    final gate = Completer<void>();
+    appTest(
+      'the box is read-only and Publier waits, then both are ready',
+      overrides: [
+        visitRepositoryProvider.overrideWith(
+          (ref) => _HeldVisits(
+            ref.watch(databaseProvider),
+            ref.watch(sessionProvider).requireValue!,
+            gate.future,
+          ),
+        ),
+      ],
+      (tester, db) async {
+        final s = (await SetupRepository(db).currentSession())!;
+        final visits = VisitRepository(db, s);
+        final v = await visits.start();
+        await visits.setSummary(v, 'Eau verte');
+        await visits.end(v);
+        go(tester, '/reports/draft/$v');
+        await tester.pumpAndSettle();
+        FilledButton publish() => tester.widget<FilledButton>(
+          find.ancestor(
+            of: find.text('Publier'),
+            matching: find.byWidgetPredicate((w) => w is FilledButton),
+          ),
+        );
+        expect(
+          tester.widget<TextField>(find.byType(TextField)).readOnly,
+          isTrue,
+        );
+        expect(publish().onPressed, isNull);
+
+        gate.complete();
+        // The read then goes to the database, outside the fake clock.
+        for (var i = 0; i < 20; i++) {
+          await tester.runAsync(
+            () => Future<void>.delayed(const Duration(milliseconds: 20)),
+          );
+          await tester.pump();
+          if (!tester.widget<TextField>(find.byType(TextField)).readOnly) {
+            break;
+          }
+        }
+        await tester.pumpAndSettle();
+        final box = tester.widget<TextField>(find.byType(TextField));
+        expect(box.readOnly, isFalse);
+        expect(box.controller!.text, 'Eau verte');
+        expect(publish().onPressed, isNotNull);
+      },
+    );
+  });
+}
+
+/// Visits whose read waits for [gate]: the draft's summary still loading.
+class _HeldVisits extends VisitRepository {
+  _HeldVisits(super.db, super.session, this.gate);
+
+  final Future<void> gate;
+
+  @override
+  Future<Visit> get(String id) async {
+    await gate;
+    return super.get(id);
+  }
 }

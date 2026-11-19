@@ -299,4 +299,44 @@ void main() {
     final bytes = await build(full(), colours: const {'e2': PondColour.red});
     expect(String.fromCharCodes(bytes.take(4)), '%PDF');
   });
+
+  test('a long pond code never runs into its line', () async {
+    if ((await Process.run('which', ['pdftotext'])).exitCode != 0) {
+      return markTestSkipped('pdftotext not installed');
+    }
+    final bytes = await build(
+      ReportContent(
+        header: header(),
+        pondCodes: const {'b3': 'BASSIN-NORD-3'},
+        feed: const [PondFeed(pondId: 'b3', feedG: 37500)],
+        feedTotalG: 37500,
+      ),
+      colours: const {'b3': PondColour.green},
+    );
+    final dir = await Directory.systemTemp.createTemp('report_pdf');
+    addTearDown(() => dir.delete(recursive: true));
+    final pdf = File('${dir.path}/r.pdf')..writeAsBytesSync(bytes);
+    final html = File('${dir.path}/r.html');
+    await Process.run('pdftotext', ['-bbox', pdf.path, html.path]);
+    // Each word: <word xMin=".." yMin=".." xMax=".." yMax="..">text</word>
+    final words = [
+      for (final m in RegExp(
+        r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="[\d.]+">([^<]*)</word>',
+      ).allMatches(html.readAsStringSync()))
+        (
+          xMin: double.parse(m[1]!),
+          y: double.parse(m[2]!),
+          xMax: double.parse(m[3]!),
+          text: m[4]!,
+        ),
+    ];
+    final code = words.firstWhere((w) => w.text.contains('BASSIN'));
+    // The feed row's kilos: the "37,5" nearest the code's line.
+    final kg =
+        (words.where((w) => w.text == '37,5').toList()..sort(
+              (a, b) => (a.y - code.y).abs().compareTo((b.y - code.y).abs()),
+            ))
+            .first;
+    expect(code.xMax, lessThanOrEqualTo(kg.xMin));
+  });
 }

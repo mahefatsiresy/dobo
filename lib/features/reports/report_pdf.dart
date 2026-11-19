@@ -62,30 +62,44 @@ Future<Uint8List> buildReportPdf(
 
   /// The pond's code after a small square of its colour (none if unknown).
   pw.Widget pondCell(String? pondId, {PdfColor? textColour}) {
-    if (pondId == null) return pw.SizedBox(width: codeColumn);
     final colour = pondColours[pondId];
+    // Nothing to draw (no pond, or one the report has no code for): an
+    // empty cell; a zero-width code can't be scaled.
+    if (pondId == null || (code(pondId).isEmpty && colour == null)) {
+      return pw.SizedBox(width: codeColumn);
+    }
+    // A long code shrinks to its column, as on screen, rather than running
+    // into the line's text.
     return pw.SizedBox(
       width: codeColumn,
-      child: pw.Row(
-        children: [
-          if (colour != null) ...[
-            pw.Container(
-              width: 7,
-              height: 7,
-              decoration: pw.BoxDecoration(
-                color: pdf(pondColourValue(colour)),
-                border: textColour == null
-                    ? null
-                    : pw.Border.all(color: textColour, width: 0.5),
+      child: pw.Align(
+        alignment: pw.Alignment.centerLeft,
+        child: pw.FittedBox(
+          fit: pw.BoxFit.scaleDown,
+          alignment: pw.Alignment.centerLeft,
+          child: pw.Row(
+            mainAxisSize: pw.MainAxisSize.min,
+            children: [
+              if (colour != null) ...[
+                pw.Container(
+                  width: 7,
+                  height: 7,
+                  decoration: pw.BoxDecoration(
+                    color: pdf(pondColourValue(colour)),
+                    border: textColour == null
+                        ? null
+                        : pw.Border.all(color: textColour, width: 0.5),
+                  ),
+                ),
+                pw.SizedBox(width: 3),
+              ],
+              pw.Text(
+                code(pondId),
+                style: pw.TextStyle(font: bold, color: textColour ?? ink),
               ),
-            ),
-            pw.SizedBox(width: 3),
-          ],
-          pw.Text(
-            code(pondId),
-            style: pw.TextStyle(font: bold, color: textColour ?? ink),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
