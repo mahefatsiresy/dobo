@@ -83,10 +83,10 @@ class StockedPondRow extends StatelessWidget {
           ),
         if (density != null && density != DensityStatus.within)
           Text(
+            // The status names the density: "Densité trop forte : 7,2 /m²".
             l10n.labelValue(
-              l10n.pondDensity,
-              '${l10n.densityValue(formatDecimal(o.density!, locale))}, '
-              '${l10n.densityStatus(density)}',
+              l10n.densityStatus(density),
+              l10n.densityValue(formatDecimal(o.density!, locale)),
             ),
             // The density alert is a warning (DOMAIN §Alert rules).
             style: text.bodyMedium?.copyWith(color: c.warning),
@@ -191,7 +191,8 @@ class ShortPondRow extends StatelessWidget {
       attention: attention,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        // Top padding lines the status's first line up with the pond code.
+        padding: const EdgeInsets.fromLTRB(12, 17, 12, 12),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(

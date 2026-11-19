@@ -189,6 +189,26 @@ void main() {
     );
   });
 
+  _demoTest('a short row lines its status up with the pond code', (
+    tester,
+    farm,
+  ) async {
+    for (final (code, status) in [
+      ('P1', 'En préparation : Traitement (chaux vive ou chlore)'),
+      ('P2', 'Vide'),
+    ]) {
+      final codeBox = tester.getRect(_in(code, find.text(code)));
+      final statusBox = tester.getRect(_in(code, find.text(status)));
+      // First lines share a centre line, within 3 dp.
+      final statusFirstLine = statusBox.top + 11;
+      expect(
+        (codeBox.center.dy - statusFirstLine).abs(),
+        lessThan(3),
+        reason: code,
+      );
+    }
+  });
+
   _demoTest('admins add a pond from the last row, not a floating button', (
     tester,
     farm,
@@ -283,6 +303,8 @@ void main() {
     );
     final density = tester.widget<Text>(find.textContaining('Densité'));
     expect(density.style!.color, DoboColors.standard.warning);
+    // Says "Densité" once: the status names it.
+    expect(density.data, 'Densité trop forte : 7,2 /m²');
   });
 
   testWidgets('at 130 % text the ration stays on one line', (tester) async {
