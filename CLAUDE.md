@@ -43,10 +43,11 @@ lib/db/               Drift tables, DAOs, migrations
 lib/sync/             push/pull engine, sync status
 lib/features/<name>/  screens, widgets and providers for one feature
 lib/console/          the web console: its pages, layouts and server data layer
+lib/theme/            colours, type and the app theme (docs/design.md)
 lib/l10n/             app_fr.arb, app_mg.arb
 supabase/             SQL migrations, RLS policies
 test/                 mirrors lib/
-docs/                 SPEC.md, DOMAIN.md
+docs/                 SPEC.md, DOMAIN.md, design.md
 ```
 
 Code generation (Drift, Riverpod, l10n): `dart run build_runner build --delete-conflicting-outputs` after changing tables or annotated providers. After any table change, bump `schemaVersion`, write the migration, and run `dart run drift_dev make-migrations`; commit the new `drift_schemas/` snapshot and the generated migration tests in `test/db/` (generated from schema v2 on).
@@ -79,6 +80,7 @@ Use these words in code, translation keys and conversation. The French term is w
 - **Units:** store fish and feed weights as integer grams; display kg or g. Area in m², depth in m, temperature °C, oxygen mg/L.
 - **Time:** store UTC plus the device timezone; display `dd/mm/yyyy`, zone `Indian/Antananarivo`. Device clocks drift, so the server also stamps `server_received_at`; ordering and "since last visit" use the recorded date the user entered, not the clock.
 - **IDs:** UUIDv7 generated on the device.
+- **Look:** colours and type come from `lib/theme/` and `docs/design.md`; features never name a `Colors.*` hue except pond tags.
 - **Who:** every record stores `entered_by` (the account) and, when different, `observed_by` (the `Person` who saw it, e.g. the worker whose paper sheet is being transcribed).
 
 ## Working

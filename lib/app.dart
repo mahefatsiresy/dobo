@@ -10,6 +10,7 @@ import 'l10n/app_localizations.dart';
 import 'l10n/mg_fallback.dart';
 import 'locale_controller.dart';
 import 'router.dart';
+import 'theme/dobo_theme.dart';
 
 class DoboApp extends ConsumerStatefulWidget {
   const DoboApp({super.key});
@@ -74,9 +75,7 @@ class _DoboAppState extends ConsumerState<DoboApp> {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
+      theme: doboTheme(),
     );
   }
 }
