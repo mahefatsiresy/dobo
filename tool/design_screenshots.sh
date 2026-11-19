@@ -5,7 +5,8 @@
 #
 #   tool/design_screenshots.sh DEVICE [PAGE…]   # DEVICE from `adb devices`
 #
-# PAGE is `list` (the ponds list) or a demo pond code (E1, E2, P1…);
+# PAGE is `list` (the ponds list), a demo pond code (E1, E2, P1…),
+# `worker` (the worker home) or `log-E1` (a pond's daily log);
 # by default `list E1 E2 P1`.
 #
 # The demo build replaces the app on the device, signed with the same debug

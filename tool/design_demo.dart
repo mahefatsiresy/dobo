@@ -14,7 +14,8 @@ import '../test/demo_farm.dart';
 
 const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 
-/// `list` for the ponds list, or a pond code (E2) for that pond's page.
+/// `list` for the ponds list, a pond code (E2) for that pond's page,
+/// `worker` for the worker home, or `log-E1` for E1's daily log.
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -24,10 +25,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   WidgetsApp.debugAllowBannerOverride = false;
   final db = AppDatabase(NativeDatabase.memory());
+  // Worker pages are seen as the worker sees them.
+  final worker = _page == 'worker' || _page.startsWith('log-');
   await SetupRepository(db).completeSetup(
     siteName: 'Ambohidratrimo',
-    role: MemberRole.member,
-    isAdmin: true,
+    role: worker ? MemberRole.worker : MemberRole.member,
+    isAdmin: !worker,
   );
   final farm = await seedDemoFarm(db);
   final container = ProviderContainer(
@@ -42,9 +45,26 @@ Future<void> main() async {
   runApp(
     UncontrolledProviderScope(container: container, child: const DoboApp()),
   );
-  if (_page != 'list') {
-    // After the router's own start-up redirect to the ponds list.
-    await Future<void>.delayed(const Duration(seconds: 2));
-    container.read(routerProvider).go('/ponds/${farm[_page]}');
+  if (_page == 'list') return;
+  final path = switch (_page) {
+    'worker' => '/worker',
+    _ when _page.startsWith('log-') =>
+      '/log/${_pond(farm, _page.substring(4))}',
+    _ => '/ponds/${_pond(farm, _page)}',
+  };
+  // Open the page once the router has settled on its landing page (the
+  // ponds list, or the worker home) after its start-up redirect.
+  final router = container.read(routerProvider);
+  for (var i = 0; i < 100; i++) {
+    final at = router.routerDelegate.currentConfiguration.uri.path;
+    if (at == '/ponds' || at == '/worker') break;
+    await Future<void>.delayed(const Duration(milliseconds: 100));
   }
+  router.go(path);
 }
+
+/// The demo pond's id; a code the demo farm lacks is a mistake, not an
+/// empty page.
+String _pond(DemoFarm farm, String code) =>
+    farm[code] ??
+    (throw ArgumentError.value(code, 'DEMO_PAGE', 'no such pond'));
