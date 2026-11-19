@@ -2078,10 +2078,8 @@ class AppLocalizationsMg extends AppLocalizations {
   String get reportTitle => 'Tatitry ny fitsidihana';
 
   @override
-  String get reportsEmpty => 'Mbola tsy misy tatitra';
-
-  @override
-  String get reportDraft => 'Drafitra — mbola havoaka';
+  String get reportsEmpty =>
+      'Tsy misy tatitra. Vonona amin\'ny fiafaran\'ny fitsidihana ny tatitra.';
 
   @override
   String get reportPublish => 'Havoaka';
@@ -2091,7 +2089,7 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String reportCardTitle(String date, String member) {
-    return '$date · $member';
+    return '$date, $member';
   }
 
   @override
@@ -2709,5 +2707,21 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String reportDeathsBy(String deaths, String observers) {
     return '$deaths ($observers)';
+  }
+
+  @override
+  String reportDraftRow(String date) {
+    return 'Havoaka : $date';
+  }
+
+  @override
+  String reportDangerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count loza',
+      one: '1 loza',
+    );
+    return '$_temp0';
   }
 }

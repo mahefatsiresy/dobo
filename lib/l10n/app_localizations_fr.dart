@@ -2062,10 +2062,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reportTitle => 'Rapport de visite';
 
   @override
-  String get reportsEmpty => 'Aucun rapport pour l\'instant';
-
-  @override
-  String get reportDraft => 'Brouillon — à publier';
+  String get reportsEmpty =>
+      'Aucun rapport. Le rapport se prépare à la fin d\'une visite.';
 
   @override
   String get reportPublish => 'Publier';
@@ -2075,7 +2073,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String reportCardTitle(String date, String member) {
-    return '$date · $member';
+    return '$date, $member';
   }
 
   @override
@@ -2711,5 +2709,21 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String reportDeathsBy(String deaths, String observers) {
     return '$deaths ($observers)';
+  }
+
+  @override
+  String reportDraftRow(String date) {
+    return 'À publier : $date';
+  }
+
+  @override
+  String reportDangerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count en danger',
+      one: '1 en danger',
+    );
+    return '$_temp0';
   }
 }

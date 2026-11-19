@@ -1339,11 +1339,10 @@
   },
   "tabReports": "Rapports",
   "reportTitle": "Rapport de visite",
-  "reportsEmpty": "Aucun rapport pour l'instant",
-  "reportDraft": "Brouillon — à publier",
+  "reportsEmpty": "Aucun rapport. Le rapport se prépare à la fin d'une visite.",
   "reportPublish": "Publier",
   "reportShare": "Partager",
-  "reportCardTitle": "{date} · {member}",
+  "reportCardTitle": "{date}, {member}",
   "@reportCardTitle": {"placeholders": {"date": {"type": "String"}, "member": {"type": "String"}}},
   "reportPeriod": "Du {from} au {to}",
   "@reportPeriod": {"placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}},
@@ -1829,6 +1828,24 @@
       },
       "observers": {
         "type": "String"
+      }
+    }
+  },
+  "reportDraftRow": "À publier : {date}",
+  "@reportDraftRow": {
+    "description": "Reports list: my report not yet published, with its visit's date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reportDangerCount": "{count, plural, =1{1 en danger} other{{count} en danger}}",
+  "@reportDangerCount": {
+    "description": "Reports list row: how many danger alerts the report holds.",
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
     }
   }

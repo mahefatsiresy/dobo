@@ -609,11 +609,10 @@
   "labelColon": "{label} :",
   "tabReports": "Tatitra",
   "reportTitle": "Tatitry ny fitsidihana",
-  "reportsEmpty": "Mbola tsy misy tatitra",
-  "reportDraft": "Drafitra — mbola havoaka",
+  "reportsEmpty": "Tsy misy tatitra. Vonona amin'ny fiafaran'ny fitsidihana ny tatitra.",
   "reportPublish": "Havoaka",
   "reportShare": "Hizara",
-  "reportCardTitle": "{date} · {member}",
+  "reportCardTitle": "{date}, {member}",
   "reportPeriod": "Nanomboka ny {from} ka hatramin'ny {to}",
   "reportAuthor": "Nataon'i {member}",
   "reportAuthorGroup": "Nataon'i {member} ({group})",
@@ -769,5 +768,7 @@
   "reportHeaderTitle": "{site}, {date}",
   "reportDraftNote": "Drafitra : ianao irery no mahita azy mandra-pivoakany",
   "reportSummaryHint": "Izay hitanao, fohifohy",
-  "reportDeathsBy": "{deaths} ({observers})"
+  "reportDeathsBy": "{deaths} ({observers})",
+  "reportDraftRow": "Havoaka : {date}",
+  "reportDangerCount": "{count, plural, =1{1 loza} other{{count} loza}}"
 }

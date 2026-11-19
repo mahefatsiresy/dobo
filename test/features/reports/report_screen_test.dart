@@ -176,7 +176,7 @@ void main() {
     expect(find.text('Eau verte'), findsOneWidget);
 
     await tapAndSettle(tester, find.text('Rapports'));
-    expect(find.text('Brouillon — à publier'), findsNothing);
+    expect(find.textContaining('À publier : '), findsNothing);
   });
 
   appTest('an unread report is bold, opening it clears the badge', (
@@ -189,10 +189,10 @@ void main() {
         .isLabelVisible;
     expect(badgeShown(), isTrue);
     await tapAndSettle(tester, find.text('Rapports'));
-    final title = tester.widget<Text>(find.text('20/03/2026 · Hery'));
-    expect(title.style?.fontWeight, FontWeight.bold);
+    final title = tester.widget<Text>(find.text('20/03/2026, Hery'));
+    expect(title.style?.fontWeight, FontWeight.w700);
 
-    await tapAndSettle(tester, find.text('20/03/2026 · Hery'));
+    await tapAndSettle(tester, find.text('20/03/2026, Hery'));
     expect(find.text('Digue à reprendre.'), findsOneWidget);
     expect(badgeShown(), isFalse);
   });
@@ -356,7 +356,7 @@ void main() {
     await visits.end(await visits.start());
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('Rapports'));
-    await tapAndSettle(tester, find.text('Brouillon — à publier'));
+    await tapAndSettle(tester, find.textContaining('À publier : '));
     expect(find.text('Publier'), findsOneWidget);
   });
 

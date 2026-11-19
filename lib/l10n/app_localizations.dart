@@ -3755,14 +3755,8 @@ abstract class AppLocalizations {
   /// No description provided for @reportsEmpty.
   ///
   /// In fr, this message translates to:
-  /// **'Aucun rapport pour l\'instant'**
+  /// **'Aucun rapport. Le rapport se prépare à la fin d\'une visite.'**
   String get reportsEmpty;
-
-  /// No description provided for @reportDraft.
-  ///
-  /// In fr, this message translates to:
-  /// **'Brouillon — à publier'**
-  String get reportDraft;
 
   /// No description provided for @reportPublish.
   ///
@@ -3779,7 +3773,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportCardTitle.
   ///
   /// In fr, this message translates to:
-  /// **'{date} · {member}'**
+  /// **'{date}, {member}'**
   String reportCardTitle(String date, String member);
 
   /// No description provided for @reportPeriod.
@@ -4722,6 +4716,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{deaths} ({observers})'**
   String reportDeathsBy(String deaths, String observers);
+
+  /// Reports list: my report not yet published, with its visit's date.
+  ///
+  /// In fr, this message translates to:
+  /// **'À publier : {date}'**
+  String reportDraftRow(String date);
+
+  /// Reports list row: how many danger alerts the report holds.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 en danger} other{{count} en danger}}'**
+  String reportDangerCount(int count);
 }
 
 class _AppLocalizationsDelegate

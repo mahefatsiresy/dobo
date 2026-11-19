@@ -607,11 +607,10 @@ labelValue;"A label and its value on one line; French puts a space before the co
 labelColon;A label followed by a value shown in its own widget.;{label} :;{label} :;
 tabReports;;Rapports;Tatitra;
 reportTitle;;Rapport de visite;Tatitry ny fitsidihana;
-reportsEmpty;;Aucun rapport pour l'instant;Mbola tsy misy tatitra;
-reportDraft;;Brouillon — à publier;Drafitra — mbola havoaka;
+reportsEmpty;;Aucun rapport. Le rapport se prépare à la fin d'une visite.;Tsy misy tatitra. Vonona amin'ny fiafaran'ny fitsidihana ny tatitra.;
 reportPublish;;Publier;Havoaka;
 reportShare;;Partager;Hizara;
-reportCardTitle;;{date} · {member};{date} · {member};
+reportCardTitle;;{date}, {member};{date}, {member};
 reportPeriod;;Du {from} au {to};Nanomboka ny {from} ka hatramin'ny {to};
 reportAuthor;;Par {member};Nataon'i {member};
 reportAuthorGroup;;Par {member} ({group});Nataon'i {member} ({group});
@@ -768,3 +767,5 @@ reportHeaderTitle;Report title line: the site and the visit's date.;{site}, {dat
 reportDraftNote;Report draft header: nobody else sees it until it is published.;Brouillon : visible par vous seul jusqu'à la publication;Drafitra : ianao irery no mahita azy mandra-pivoakany;
 reportSummaryHint;Report draft: hint in the summary box.;Ce que vous avez vu, en quelques mots;Izay hitanao, fohifohy;
 reportDeathsBy;Report health line: deaths, then who saw them.;{deaths} ({observers});{deaths} ({observers});
+reportDraftRow;Reports list: my report not yet published, with its visit's date.;À publier : {date};Havoaka : {date};
+reportDangerCount;Reports list row: how many danger alerts the report holds.;{count, plural, =1{1 en danger} other{{count} en danger}};{count, plural, =1{1 loza} other{{count} loza}};
