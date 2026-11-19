@@ -282,3 +282,64 @@ ponds list and the pond page. **[user]**
   review]**
 - Nothing open: one line with a large tick. **[Claude's call]**
 
+### Step 5: visit (decided 19/11)
+
+A member walks the dike pond by pond, not the farm three times (water,
+then samples, then conditions). The visit follows the walk. **[user]**
+
+```
+Before a visit                         During a visit
+┌──────────────────────────────┐      ┌──────────────────────────────┐
+│ Visite                       │      │ Visite depuis 08:40   5 / 11 │
+│ À faire aujourd'hui          │      ├──────────────────────────────┤
+│ 💧 4 relevés d'eau           │      │ ■ E1  Grossissement        › │ ← the pond page
+│ ⚖ 2 échantillonnages         │      │   ✓ Relevé d'eau 28 °C pH 7,2│
+│ ▣ 6 étangs à inspecter       │      │   ⚖ Échantillonnage L-E1   › │
+│ Dernière visite : 12/03/2026,│      │   ✓ État : tout en ordre   › │
+│ Rado                         │      ├──────────────────────────────┤
+│ [ ▶ Commencer la visite    ] │      │ ■ E2  Grossissement        › │
+└──────────────────────────────┘      │ ! Oxygène bas : 2 mg/L     › │ ← opens its fix
+                                      │   💧 Relevé d'eau          › │
+                                      │   ▣ État de l'étang        › │
+                                      │   📝 Fuite côté sortie       │
+                                      ├──────────────────────────────┤
+                                      │ ■ E3  Vide                 › │
+                                      │   ▣ État de l'étang        › │
+                                      ├──────────────────────────────┤
+                                      │ Observations                 │
+                                      │ [ + Ajouter une observation ]│
+                                      │ ▸ Biosécurité     7 rappels  │
+                                      │ [   ⚑ Terminer la visite   ] │ ← pinned
+                                      └──────────────────────────────┘
+```
+
+- Before a visit: what a visit today would cover (water readings,
+  samples, ponds to inspect, by the same rules as the open visit's list),
+  the last visit's date and member, and "Commencer la visite". Past
+  visits live in Reports only. **[user]**
+- During a visit: every active pond in code order. Its header line (code,
+  swatch, phase or status) opens the pond page, where Signaler and
+  Traitement live. The pond's band (the ponds list's: most urgent item
+  and how many more) sits on its own line below and opens its fix. Then
+  the checks: water, one sample per batch (batch code order), the
+  inspection, then the pond's observations. A pond without fish has only
+  its inspection. **[user; order within a pond: Claude's call]**
+- A finished check stays in place with what it found: the reading's
+  values, the sample's average and fish count, "tout en ordre" or the
+  problems. Out of range or a problem shows in danger colour with its
+  icon. Tapping it opens the form filled in, and saving records a
+  correction. The top line counts finished checks (water, samples,
+  inspections; observations don't count). **[user; correction and what
+  counts: Claude's call]**
+- The inspection starts with "Tout est en ordre": one tap saves the five
+  checks as OK and goes back. OK / Problème per check stays below.
+  **[user]**
+- An observation may name a pond (a row of pond codes, none picked =
+  farm-wide). It shows under its pond; farm-wide ones in "Observations"
+  after the ponds. **[user]**
+- Biosecurity is a folded reminder of the rules, no checkboxes: ticks
+  that were never saved suggested a record that didn't exist. **[user]**
+- "Terminer la visite" is pinned. The summary is written once, in the
+  report draft. With checks left, the confirmation names them and the
+  visit still ends; the report is unchanged in this step. **[user]**
+
