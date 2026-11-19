@@ -2804,12 +2804,6 @@ abstract class AppLocalizations {
   /// **'Aucune alerte, rien à faire'**
   String get alertsEmpty;
 
-  /// No description provided for @alertsAll.
-  ///
-  /// In fr, this message translates to:
-  /// **'Tous'**
-  String get alertsAll;
-
   /// No description provided for @alertWaterLow.
   ///
   /// In fr, this message translates to:
@@ -4626,6 +4620,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aspect'**
   String get deathAppearanceButton;
+
+  /// Alerts tab heading of the danger section; count is the ponds in danger plus farm-wide danger items, as on the tab's badge.
+  ///
+  /// In fr, this message translates to:
+  /// **'Danger {count}'**
+  String alertsDanger(int count);
+
+  /// Alerts tab heading of the warnings and due tasks; count is the number of rows.
+  ///
+  /// In fr, this message translates to:
+  /// **'À faire {count}'**
+  String alertsTodo(int count);
 }
 
 class _AppLocalizationsDelegate

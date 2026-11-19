@@ -450,7 +450,6 @@ takeoverUnsent;;{count, plural, =1{1 enregistrement de l'ouvrier n'est pas encor
 errorNotAdmin;;Ce compte n'est pas administrateur.;Tsy mpitantana io kaonty io.;
 tabAlerts;;Alertes;Fanairana;
 alertsEmpty;;Aucune alerte, rien à faire;Tsy misy fampitandremana, tsy misy atao;
-alertsAll;;Tous;Rehetra;
 alertWaterLow;;{param} trop bas : {value};{param} ambany loatra : {value};
 alertWaterHigh;;{param} trop haut : {value};{param} ambony loatra : {value};
 alertWaterColour;;Eau trop verte ou trouble : renouveler l'eau;Maitso loatra na manjavozavo ny rano : ovay ny rano;
@@ -752,3 +751,5 @@ workerNoPonds;Worker home when no pond holds fish.;Aucun étang avec des poisson
 pickDone;Pinned button on a pictogram picker screen: keep what is picked and go back.;Terminé;Vita;
 feedingsButton;Daily log button opening the number of feedings (1 to 6).;Repas;Impiry;
 deathAppearanceButton;Daily log button beside deaths, opening what the dead fish looked like.;Aspect;Endrika;
+alertsDanger;"Alerts tab heading of the danger section; count is the ponds in danger plus farm-wide danger items, as on the tab's badge.";Danger {count};Loza {count};
+alertsTodo;"Alerts tab heading of the warnings and due tasks; count is the number of rows.";À faire {count};Atao {count};

@@ -76,19 +76,6 @@ void main() {
     expect(find.byIcon(Icons.error), findsOneWidget);
   }, overrides: [clock]);
 
-  appTest('pond chip filters the list', (tester, db) async {
-    await pond(db, 'E1');
-    await pond(db, 'E2');
-    await openAlerts(tester);
-    expect(find.textContaining('Lot LE1'), findsOneWidget);
-    expect(find.textContaining('Lot LE2'), findsOneWidget);
-    await tapAndSettle(tester, find.widgetWithText(ChoiceChip, 'E2'));
-    expect(find.textContaining('Lot LE1'), findsNothing);
-    expect(find.textContaining('Lot LE2'), findsOneWidget);
-    await tapAndSettle(tester, find.widgetWithText(ChoiceChip, 'Tous'));
-    expect(find.textContaining('Lot LE1'), findsOneWidget);
-  }, overrides: [clock]);
-
   appTest('tapping sample due opens the sample form, Back returns', (
     tester,
     db,

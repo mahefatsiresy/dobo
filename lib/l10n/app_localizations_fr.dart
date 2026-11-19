@@ -1493,9 +1493,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get alertsEmpty => 'Aucune alerte, rien à faire';
 
   @override
-  String get alertsAll => 'Tous';
-
-  @override
   String alertWaterLow(String param, String value) {
     return '$param trop bas : $value';
   }
@@ -2607,4 +2604,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get deathAppearanceButton => 'Aspect';
+
+  @override
+  String alertsDanger(int count) {
+    return 'Danger $count';
+  }
+
+  @override
+  String alertsTodo(int count) {
+    return 'À faire $count';
+  }
 }

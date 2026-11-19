@@ -452,7 +452,6 @@
   "errorNotAdmin": "Tsy mpitantana io kaonty io.",
   "tabAlerts": "Fanairana",
   "alertsEmpty": "Tsy misy fampitandremana, tsy misy atao",
-  "alertsAll": "Rehetra",
   "alertWaterLow": "{param} ambany loatra : {value}",
   "alertWaterHigh": "{param} ambony loatra : {value}",
   "alertWaterColour": "Maitso loatra na manjavozavo ny rano : ovay ny rano",
@@ -753,5 +752,7 @@
   "workerNoPonds": "Tsy misy dobo misy trondro",
   "pickDone": "Vita",
   "feedingsButton": "Impiry",
-  "deathAppearanceButton": "Endrika"
+  "deathAppearanceButton": "Endrika",
+  "alertsDanger": "Loza {count}",
+  "alertsTodo": "Atao {count}"
 }

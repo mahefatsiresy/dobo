@@ -1507,9 +1507,6 @@ class AppLocalizationsMg extends AppLocalizations {
   String get alertsEmpty => 'Tsy misy fampitandremana, tsy misy atao';
 
   @override
-  String get alertsAll => 'Rehetra';
-
-  @override
   String alertWaterLow(String param, String value) {
     return '$param ambany loatra : $value';
   }
@@ -2605,4 +2602,14 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get deathAppearanceButton => 'Endrika';
+
+  @override
+  String alertsDanger(int count) {
+    return 'Loza $count';
+  }
+
+  @override
+  String alertsTodo(int count) {
+    return 'Atao $count';
+  }
 }

@@ -12,6 +12,7 @@ class AttentionBand extends StatelessWidget {
     required this.severity,
     required this.text,
     this.onTap,
+    this.leading,
   });
 
   final BandSeverity severity;
@@ -19,6 +20,9 @@ class AttentionBand extends StatelessWidget {
 
   /// Opens what resolves it; the band then ends with a chevron.
   final VoidCallback? onTap;
+
+  /// Before the icon, such as the pond's code on the Alerts tab.
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,7 @@ class AttentionBand extends StatelessWidget {
       ),
       child: Row(
         children: [
+          if (leading != null) ...[leading!, const SizedBox(width: 8)],
           Icon(
             danger ? Icons.error : Icons.warning_amber,
             color: danger ? c.paper : c.warning,

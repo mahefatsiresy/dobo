@@ -850,7 +850,6 @@
   "errorNotAdmin": "Ce compte n'est pas administrateur.",
   "tabAlerts": "Alertes",
   "alertsEmpty": "Aucune alerte, rien à faire",
-  "alertsAll": "Tous",
   "alertWaterLow": "{param} trop bas : {value}",
   "@alertWaterLow": {
     "placeholders": {
@@ -1658,5 +1657,23 @@
   "deathAppearanceButton": "Aspect",
   "@deathAppearanceButton": {
     "description": "Daily log button beside deaths, opening what the dead fish looked like."
+  },
+  "alertsDanger": "Danger {count}",
+  "@alertsDanger": {
+    "description": "Alerts tab heading of the danger section; count is the ponds in danger plus farm-wide danger items, as on the tab's badge.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertsTodo": "À faire {count}",
+  "@alertsTodo": {
+    "description": "Alerts tab heading of the warnings and due tasks; count is the number of rows.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

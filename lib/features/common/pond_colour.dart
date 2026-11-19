@@ -55,10 +55,19 @@ class PondTag extends StatelessWidget {
 /// severity bands (docs/design.md). Worker screens and paper sheets keep
 /// the full colour.
 class PondCode extends StatelessWidget {
-  const PondCode({super.key, required this.code, required this.colour});
+  const PondCode({
+    super.key,
+    required this.code,
+    required this.colour,
+    this.ink,
+  });
 
   final String code;
   final PondColour colour;
+
+  /// The text colour when drawn on a coloured band; the swatch then gets
+  /// an outline in it, so a red pond's swatch still shows on a red band.
+  final Color? ink;
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +81,14 @@ class PondCode extends StatelessWidget {
           decoration: BoxDecoration(
             color: pondColourValue(colour),
             borderRadius: BorderRadius.circular(2),
+            border: ink == null ? null : Border.all(color: ink!),
           ),
         ),
         const SizedBox(width: 6),
         Text(
           code,
           style: Theme.of(context).textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.w700),
+              ?.copyWith(fontWeight: FontWeight.w700, color: ink),
         ),
       ],
     );

@@ -17,19 +17,24 @@ import 'pond_overview.dart';
 /// The ration on a stocked pond's row, for tests.
 const rationKey = ValueKey('pondRation');
 
+/// What one item says: isolated, a count to check, or the alert's text
+/// with its batch's code when [o] holds the batch.
+String leadText(AppLocalizations l10n, AttentionLead lead, PondOverview? o) =>
+    switch (lead) {
+      LeadIsolated() => l10n.pondIsolatedBanner,
+      LeadInconsistent() => l10n.inconsistent,
+      LeadAlert(:final alert) => l10n.alertText(
+        alert,
+        batchCode: [
+          for (final b in o?.batches ?? const <BatchInPond>[])
+            if (b.batch.id == alert.batchId) b.batch.code,
+        ].firstOrNull,
+      ),
+    };
+
 /// The words of a pond row's band.
 String bandText(AppLocalizations l10n, PondAttention a, PondOverview o) {
-  final lead = switch (a.lead) {
-    LeadIsolated() => l10n.pondIsolatedBanner,
-    LeadInconsistent() => l10n.inconsistent,
-    LeadAlert(:final alert) => l10n.alertText(
-      alert,
-      batchCode: [
-        for (final b in o.batches)
-          if (b.batch.id == alert.batchId) b.batch.code,
-      ].firstOrNull,
-    ),
-  };
+  final lead = leadText(l10n, a.lead, o);
   return a.more == 0 ? lead : l10n.bandMore(lead, a.more);
 }
 
