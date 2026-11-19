@@ -26,7 +26,8 @@ class AttentionBand extends StatelessWidget {
     final danger = severity == BandSeverity.danger;
     final ink = danger ? c.paper : c.ink;
     final band = Container(
-      constraints: const BoxConstraints(minHeight: 40),
+      // Something to tap is a full 56 dp target.
+      constraints: BoxConstraints(minHeight: onTap == null ? 40 : 56),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: danger ? c.danger : c.warningFill,

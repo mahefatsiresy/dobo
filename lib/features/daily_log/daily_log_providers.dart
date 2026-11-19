@@ -17,3 +17,12 @@ final loggedTodayProvider = StreamProvider<Set<String>>(
       .watch(dailyLogRepositoryProvider)
       .watchLoggedPondsOn(ref.watch(farmTodayProvider)),
 );
+
+/// Today's current log of a pond, the newest when two phones logged it;
+/// follows corrections, transcriptions and sync as they land.
+final todayLogProvider = StreamProvider.family<DailyLog?, String>(
+  (ref, pondId) => ref
+      .watch(dailyLogRepositoryProvider)
+      .watchCurrentForDay(pondId, ref.watch(farmTodayProvider))
+      .map((logs) => logs.firstOrNull),
+);

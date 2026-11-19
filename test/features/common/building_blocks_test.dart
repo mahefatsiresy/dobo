@@ -150,6 +150,11 @@ void main() {
     expect(find.byIcon(Icons.chevron_right), findsOneWidget);
     await t.tap(find.text('Pesée'));
     expect(taps, 1);
+    // Something to tap is a 56 dp target; a plain band may be lower.
+    expect(
+      t.getSize(find.byType(AttentionBand).first).height,
+      greaterThanOrEqualTo(56),
+    );
   });
 
   testWidgets('an action tile is 56 dp tall and wraps at 130 % text', (

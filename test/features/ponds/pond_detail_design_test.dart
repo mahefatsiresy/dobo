@@ -1,5 +1,6 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
@@ -168,6 +169,8 @@ void main() {
       final weigh = find.text('Peser');
       expect(weigh, findsNWidgets(2));
       expect(find.text('L-E3b'), findsOneWidget);
+      // The weight summary: one line per batch, each named.
+      expect(find.text('L-E3 : 90 g\nL-E3b : 20 g'), findsOneWidget);
       await tester.ensureVisible(weigh.last);
       await tapAndSettle(tester, weigh.last);
       final sample = tester.widget<SampleScreen>(find.byType(SampleScreen));
@@ -175,6 +178,49 @@ void main() {
       expect(sample.batchId, secondBatch);
     },
   );
+
+  appTest(
+    'what was given follows a later correction of the day',
+    overrides: [clockProvider.overrideWithValue(() => demoNow)],
+    (tester, db) async {
+      tester.view.physicalSize = const Size(720, 4800);
+      tester.view.devicePixelRatio = 2;
+      addTearDown(tester.view.reset);
+      final farm = await seedDemoFarm(db);
+      await tester.pumpAndSettle();
+      await _open(tester, farm, 'E1');
+      expect(find.text('Donné : 7,4 kg'), findsOneWidget);
+      // Another phone's log of the same day arrives (sync, transcription).
+      final session = (await SetupRepository(db).currentSession())!;
+      await DailyLogRepository(db, session).saveWeek([
+        DailyLogInput(
+          pondId: farm['E1']!,
+          date: DateTime(2026, 3, 15),
+          feedGivenG: 8000,
+        ),
+      ]);
+      await tester.pumpAndSettle();
+      expect(find.text('Donné : 8 kg'), findsOneWidget);
+    },
+  );
+
+  _pondTest('archiving an empty pond goes back to the list', 'P2', (
+    tester,
+    farm,
+  ) async {
+    await tapAndSettle(tester, find.byTooltip("Plus d'actions"));
+    await tapAndSettle(tester, find.text('Archiver'));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.text('Archiver'),
+      ),
+    );
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byKey(const ValueKey('pondRow-E1')), findsOneWidget);
+    expect(find.byKey(const ValueKey('pondRow-P2')), findsNothing);
+  });
 
   _pondTest('the ⋮ menu: edit for admins, archive for all', 'E1', (
     tester,

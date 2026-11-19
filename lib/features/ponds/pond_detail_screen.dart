@@ -22,7 +22,6 @@ import '../alerts/alert_route.dart';
 import '../common/action_tile.dart';
 import '../common/attention_band.dart';
 import '../common/estimated.dart';
-import '../common/farm_today.dart';
 import '../common/folded_section.dart';
 import '../common/pond_colour.dart';
 import '../daily_log/daily_log_providers.dart';
@@ -176,7 +175,9 @@ class PondDetailScreen extends ConsumerWidget {
           PopupMenuButton<void Function()>(
             tooltip: l10n.moreActions,
             onSelected: (action) => action(),
-            itemBuilder: (context) => [
+            // `_`: the actions use the page's context, which outlives the
+            // menu (archiving unmounts the menu before it navigates).
+            itemBuilder: (_) => [
               if (isAdmin)
                 PopupMenuItem(
                   value: () => context.go('/ponds/$id/edit'),
@@ -289,9 +290,12 @@ class PondDetailScreen extends ConsumerWidget {
       final lines = [
         for (final b in o.batches)
           if (growth.batches[b.batch.id] case final g?)
-            o.batches.length > 1 ? '${b.batch.code} : ${line(g)}' : line(g),
+            o.batches.length > 1
+                ? l10n.labelValue(b.batch.code, line(g))
+                : line(g),
       ];
-      return lines.join(', ');
+      // One line per batch: a batch's own summary may hold commas.
+      return lines.join('\n');
     }
 
     return switch (kind) {
@@ -385,11 +389,7 @@ class _Today extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final id = overview.pond.id;
     final logged = ref.watch(loggedTodayProvider).value?.contains(id) ?? false;
-    final log = logged
-        ? ref
-              .watch(dailyLogForDayProvider((id, ref.watch(farmTodayProvider))))
-              .value
-        : null;
+    final log = logged ? ref.watch(todayLogProvider(id)).value : null;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
       child: Row(
