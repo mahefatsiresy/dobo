@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../common/attention_band.dart';
+import '../ponds/pond_attention.dart';
+
 import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/alerts/alert.dart';
@@ -120,12 +123,25 @@ final pondAlertsProvider = Provider.family<List<Alert>, String>(
   ],
 );
 
-/// Danger alerts, counted on the Alerts tab.
-final dangerCountProvider = Provider<int>(
-  (ref) => (ref.watch(alertsProvider).value ?? const <Alert>[])
-      .where((a) => a.severity == Severity.danger)
-      .length,
-);
+/// Ponds whose band is danger, and farm-wide danger alerts: one count for
+/// the Alerts badge, its "Danger" heading and the ponds list's line
+/// (docs/design.md §Step 4).
+final dangerPondsProvider = Provider<({int ponds, int farmWide})>((ref) {
+  final alerts = ref.watch(alertsProvider).value ?? const <Alert>[];
+  final overviews = ref.watch(pondOverviewsProvider).value ?? const [];
+  var ponds = 0;
+  for (final o in overviews) {
+    final a = pondAttention(o, [
+      for (final x in alerts)
+        if (x.pondId == o.pond.id) x,
+    ]);
+    if (a?.severity == BandSeverity.danger) ponds++;
+  }
+  final farmWide = alerts
+      .where((a) => a.pondId == null && a.severity == Severity.danger)
+      .length;
+  return (ponds: ponds, farmWide: farmWide);
+});
 
 /// Why the worker should not feed a pond today (DOMAIN §Feeding).
 final stopFeedingProvider = Provider.family<Set<StopFeedingReason>, String>((

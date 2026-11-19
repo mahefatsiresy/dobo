@@ -18,7 +18,8 @@ class MemberShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final danger = ref.watch(dangerCountProvider);
+    final d = ref.watch(dangerPondsProvider);
+    final danger = d.ponds + d.farmWide;
     final unread = ref.watch(unreadCountProvider);
     ref.watch(lostPhotoRecoveryProvider);
     return Scaffold(
@@ -38,6 +39,7 @@ class MemberShell extends ConsumerWidget {
           ),
           NavigationDestination(
             icon: Badge(
+              key: const ValueKey('alertsBadge'),
               isLabelVisible: danger > 0,
               label: Text('$danger'),
               child: const Icon(Icons.notifications),

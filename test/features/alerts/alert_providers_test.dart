@@ -62,7 +62,10 @@ void main() {
         (a) => a.kind == AlertKind.waterOutOfRange,
       );
       expect((water.pondId, water.severity), (e1, Severity.danger));
-      expect(await settled(tester, dangerCountProvider), 1);
+      expect(await settled(tester, dangerPondsProvider), (
+        ponds: 1,
+        farmWide: 0,
+      ));
       expect(await settled(tester, pondAlertsProvider(e1)), contains(water));
       expect(await settled(tester, stopFeedingProvider(e1)), {
         StopFeedingReason.lowOxygen,
