@@ -113,7 +113,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 0 + 1 | Foundation, ponds list | merged 19/11 |
 | 2 | Pond detail | merged 19/11 |
 | 3 | Worker home and daily log | merged 19/11 |
-| 4 | Alerts | planned: `docs/superpowers/plans/2026-11-19-design-alerts.md` |
+| 4 | Alerts | merged 19/11 |
 | 5 | Visit | " |
 | 6 | Reports | " |
 | 7 | Batches, feed and the other "More" forms | " |
