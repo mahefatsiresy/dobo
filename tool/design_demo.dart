@@ -15,7 +15,8 @@ import '../test/demo_farm.dart';
 const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 
 /// `list` for the ponds list, a pond code (E2) for that pond's page,
-/// `worker` for the worker home, or `log-E1` for E1's daily log.
+/// `worker` for the worker home, `log-E1` for E1's daily log, or `alerts`
+/// for the Alerts tab.
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -48,6 +49,7 @@ Future<void> main() async {
   if (_page == 'list') return;
   final path = switch (_page) {
     'worker' => '/worker',
+    'alerts' => '/alerts',
     _ when _page.startsWith('log-') =>
       '/log/${_pond(farm, _page.substring(4))}',
     _ => '/ponds/${_pond(farm, _page)}',
