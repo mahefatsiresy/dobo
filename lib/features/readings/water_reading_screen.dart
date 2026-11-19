@@ -18,11 +18,15 @@ import '../common/save_once.dart';
 import 'water_targets.dart';
 
 /// Temperature, pH, oxygen and colour of a pond (DOMAIN §Water quality).
-/// Values out of their target show in red as they are typed.
+/// Values out of their target show in red as they are typed. Given
+/// [readingId], the form opens filled in and saves a correction.
 class WaterReadingScreen extends ConsumerStatefulWidget {
-  const WaterReadingScreen({super.key, required this.pondId});
+  const WaterReadingScreen({super.key, required this.pondId, this.readingId});
 
   final String pondId;
+
+  /// The reading to correct.
+  final String? readingId;
 
   @override
   ConsumerState<WaterReadingScreen> createState() => _WaterReadingScreenState();
@@ -39,12 +43,33 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
   late TimeOfDay _time;
   var _emptyRefused = false;
 
+  /// False until the reading to correct is in the form.
+  late bool _loaded = widget.readingId == null;
+
   @override
   void initState() {
     super.initState();
     final farmNow = DateTime.now().toUtc().add(farmUtcOffset);
     _date = DateTime(farmNow.year, farmNow.month, farmNow.day);
     _time = TimeOfDay(hour: farmNow.hour, minute: farmNow.minute);
+    if (widget.readingId case final id?) _load(id);
+  }
+
+  Future<void> _load(String id) async {
+    final r = await ref.read(readingRepositoryProvider).getWaterReading(id);
+    if (!mounted) return;
+    final farm = r.recordedAt.toUtc().add(farmUtcOffset);
+    String text(num? v) => v == null ? '' : formatForInput(v.toDouble());
+    setState(() {
+      _date = DateTime(farm.year, farm.month, farm.day);
+      _time = TimeOfDay(hour: farm.hour, minute: farm.minute);
+      _temperature.text = text(r.temperatureC);
+      _ph.text = text(r.ph);
+      _oxygen.text = text(r.oxygenMgL);
+      _renewed.text = text(r.renewedPct);
+      _colour = r.colour;
+      _loaded = true;
+    });
   }
 
   @override
@@ -71,7 +96,12 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
       setState(() => _emptyRefused = true);
       return;
     }
-    await ref.read(readingRepositoryProvider).addWaterReading(input);
+    final repo = ref.read(readingRepositoryProvider);
+    if (widget.readingId case final id?) {
+      await repo.correctWaterReading(id, input);
+    } else {
+      await repo.addWaterReading(input);
+    }
     if (mounted) context.pop();
   }
 
@@ -167,7 +197,7 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(56),
             ),
-            onPressed: saving ? null : () => saveOnce(_save),
+            onPressed: saving || !_loaded ? null : () => saveOnce(_save),
             child: Text(l10n.save),
           ),
         ],

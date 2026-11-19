@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../db/repositories/reading_repository.dart';
+import '../../domain/dates.dart';
 import '../../domain/stock.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
@@ -14,12 +15,21 @@ import '../common/number_field.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 
-/// Weighing a sample of a batch in a pond (DOMAIN §Sampling).
+/// Weighing a sample of a batch in a pond (DOMAIN §Sampling). Given
+/// [sampleId], the form opens filled in and saves a correction.
 class SampleScreen extends ConsumerStatefulWidget {
-  const SampleScreen({super.key, required this.pondId, required this.batchId});
+  const SampleScreen({
+    super.key,
+    required this.pondId,
+    required this.batchId,
+    this.sampleId,
+  });
 
   final String pondId;
   final String batchId;
+
+  /// The sample to correct.
+  final String? sampleId;
 
   @override
   ConsumerState<SampleScreen> createState() => _SampleScreenState();
@@ -30,6 +40,26 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
   final _count = TextEditingController();
   final _weight = TextEditingController();
   var _date = farmToday();
+
+  /// False until the sample to correct is in the form.
+  late bool _loaded = widget.sampleId == null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.sampleId case final id?) _load(id);
+  }
+
+  Future<void> _load(String id) async {
+    final s = await ref.read(readingRepositoryProvider).getSample(id);
+    if (!mounted) return;
+    setState(() {
+      _date = farmDate(s.recordedAt);
+      _count.text = '${s.fishCount}';
+      _weight.text = formatForInput(s.totalWeightG / 1000);
+      _loaded = true;
+    });
+  }
 
   @override
   void dispose() {
@@ -50,17 +80,19 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
 
   Future<void> _save() async {
     if (!_form.currentState!.validate()) return;
-    await ref
-        .read(readingRepositoryProvider)
-        .addSample(
-          SampleInput(
-            batchId: widget.batchId,
-            pondId: widget.pondId,
-            date: _date,
-            fishCount: _fish!,
-            totalWeightG: _grams!,
-          ),
-        );
+    final input = SampleInput(
+      batchId: widget.batchId,
+      pondId: widget.pondId,
+      date: _date,
+      fishCount: _fish!,
+      totalWeightG: _grams!,
+    );
+    final repo = ref.read(readingRepositoryProvider);
+    if (widget.sampleId case final id?) {
+      await repo.correctSample(id, input);
+    } else {
+      await repo.addSample(input);
+    }
     if (mounted) context.pop();
   }
 
@@ -121,7 +153,7 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
               ),
-              onPressed: saving ? null : () => saveOnce(_save),
+              onPressed: saving || !_loaded ? null : () => saveOnce(_save),
               child: Text(l10n.save),
             ),
           ],

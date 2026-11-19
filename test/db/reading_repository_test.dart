@@ -170,4 +170,21 @@ void main() {
         .first;
     expect(rows.map((r) => r.ph), [2, 4, 6]);
   });
+
+  test('a reading and a sample are read back by id', () async {
+    final r = await readings.addWaterReading(
+      WaterReadingInput(pondId: e1, at: DateTime.utc(2026, 3, 15, 6), ph: 7.1),
+    );
+    expect((await readings.getWaterReading(r)).ph, 7.1);
+    final s = await readings.addSample(
+      SampleInput(
+        batchId: l1,
+        pondId: e1,
+        date: DateTime(2026, 3, 15),
+        fishCount: 40,
+        totalWeightG: 1248,
+      ),
+    );
+    expect((await readings.getSample(s)).fishCount, 40);
+  });
 }

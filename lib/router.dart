@@ -123,14 +123,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/water/:pondId',
-        builder: (context, state) =>
-            WaterReadingScreen(pondId: state.pathParameters['pondId']!),
+        builder: (context, state) => WaterReadingScreen(
+          pondId: state.pathParameters['pondId']!,
+          readingId: state.uri.queryParameters['readingId'],
+        ),
       ),
       GoRoute(
         path: '/sample/:pondId',
         builder: (context, state) => SampleScreen(
           pondId: state.pathParameters['pondId']!,
           batchId: state.uri.queryParameters['batchId']!,
+          sampleId: state.uri.queryParameters['sampleId'],
         ),
       ),
       GoRoute(

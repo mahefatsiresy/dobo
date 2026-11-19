@@ -75,6 +75,9 @@ class ReadingRepository {
     return db.supersede(db.waterReadings, id, _reading(input));
   }
 
+  Future<WaterReading> getWaterReading(String id) =>
+      (db.select(db.waterReadings)..where((r) => r.id.equals(id))).getSingle();
+
   Future<void> deleteWaterReading(String id) =>
       db.tombstone(db.waterReadings, id, session);
 
@@ -126,6 +129,9 @@ class ReadingRepository {
     _checkSample(input);
     return db.supersede(db.samples, id, _sample(input));
   }
+
+  Future<Sample> getSample(String id) =>
+      (db.select(db.samples)..where((s) => s.id.equals(id))).getSingle();
 
   Future<void> deleteSample(String id) => db.tombstone(db.samples, id, session);
 

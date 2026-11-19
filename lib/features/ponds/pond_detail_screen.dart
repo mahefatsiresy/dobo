@@ -12,7 +12,6 @@ import '../../domain/growth.dart';
 import '../../domain/phase.dart';
 import '../../domain/stock.dart';
 import '../../domain/types.dart';
-import '../../domain/water.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
@@ -29,6 +28,7 @@ import '../health/health_providers.dart';
 import '../photos/photo_strip.dart';
 import '../prep/prep_providers.dart';
 import '../readings/reading_providers.dart';
+import '../readings/reading_values.dart';
 import 'pond_charts.dart';
 import 'pond_growth.dart';
 import 'pond_overview.dart';
@@ -562,59 +562,14 @@ class _LatestReading extends ConsumerWidget {
     final r = ref.watch(latestReadingProvider(pondId)).value;
     if (r == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
-    final c = context.dobo;
-    final issues = {
-      for (final i in waterIssues(
-        temperatureC: r.temperatureC,
-        ph: r.ph,
-        oxygenMgL: r.oxygenMgL,
-        colour: r.colour,
-        config: ref.watch(domainConfigProvider),
-      ))
-        i.param: i.severity,
-    };
-    String n(double v) => formatNumber(v, locale);
-    Widget part(String text, WaterParam param) {
-      final severity = issues[param];
-      if (severity == null) return Text(text);
-      final colour = severity == Severity.danger ? c.danger : c.warning;
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            severity == Severity.danger ? Icons.error : Icons.warning_amber,
-            size: 18,
-            color: colour,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(color: colour, fontWeight: FontWeight.w600),
-          ),
-        ],
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Wrap(
-            spacing: 12,
-            runSpacing: 4,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(l10n.lastReading(formatDate(r.recordedAt))),
-              if (r.temperatureC != null)
-                part('${n(r.temperatureC!)} °C', WaterParam.temperature),
-              if (r.ph != null) part('pH ${n(r.ph!)}', WaterParam.ph),
-              if (r.oxygenMgL != null)
-                part('O₂ ${n(r.oxygenMgL!)} mg/L', WaterParam.oxygen),
-              if (r.colour != null)
-                part(l10n.waterColour(r.colour!), WaterParam.colour),
-            ],
+          child: ReadingValues(
+            reading: r,
+            leading: Text(l10n.lastReading(formatDate(r.recordedAt))),
           ),
         ),
         const Divider(),
