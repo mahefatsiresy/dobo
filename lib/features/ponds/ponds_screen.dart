@@ -7,7 +7,6 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../theme/tokens.dart';
 import '../alerts/alert_providers.dart';
-import '../common/attention_band.dart';
 import '../common/estimated.dart';
 import '../daily_log/daily_log_providers.dart';
 import '../prep/prep_providers.dart';
@@ -64,12 +63,10 @@ class _PondList extends ConsumerWidget {
     final logged = ref.watch(loggedTodayProvider).value ?? const {};
     final prep = ref.watch(prepProgressAllProvider).value ?? const {};
     var totalG = 0;
-    var dangerPonds = 0;
     final rows = <Widget>[];
     for (final o in overviews) {
       final id = o.pond.id;
       final attention = pondAttention(o, ref.watch(pondAlertsProvider(id)));
-      if (attention?.severity == BandSeverity.danger) dangerPonds++;
       void open() => context.go('/ponds/$id');
       if (o.liveCount == 0 && !o.inconsistent) {
         rows.add(
@@ -96,7 +93,11 @@ class _PondList extends ConsumerWidget {
     }
     return ListView(
       children: [
-        _TopLines(totalG: totalG, dangerPonds: dangerPonds),
+        // The same count as the Alerts badge (docs/design.md §Step 4).
+        _TopLines(
+          totalG: totalG,
+          dangerPonds: ref.watch(dangerPondsProvider).ponds,
+        ),
         const Divider(),
         for (final row in rows) ...[row, const Divider()],
         ?add,
