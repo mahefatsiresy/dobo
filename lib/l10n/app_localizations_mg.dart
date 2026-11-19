@@ -780,7 +780,7 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get tabVisit => 'Fitsidihana';
+  String get tabVisit => 'Tsidika';
 
   @override
   String get startVisit => 'Hanomboka fitsidihana';
@@ -1501,7 +1501,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get errorNotAdmin => 'Tsy mpitantana io kaonty io.';
 
   @override
-  String get tabAlerts => 'Fampitandremana';
+  String get tabAlerts => 'Fanairana';
 
   @override
   String get alertsEmpty => 'Tsy misy fampitandremana, tsy misy atao';

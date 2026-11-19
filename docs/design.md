@@ -85,7 +85,7 @@ French uses in `1 000`.
 - Lists are full-width rows separated by a 1 dp `line` rule, not floating
   cards.
 - On a member list row the pond is `PondCode`: the code in Bold ink beside
-  a 12 dp square of its colour, in an 80 dp column down the left. Alert
+  a 12 dp square of its colour, in a 72 dp column down the left. Alert
   rows and page headers use `PondTag`, a 56 dp square of the colour with
   4 dp corners; worker screens keep their full-colour tiles.
 - Buttons, inputs and dialogs: 8 dp corners. Buttons are 56 dp tall:

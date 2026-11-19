@@ -155,7 +155,7 @@ class StockedPondRow extends StatelessWidget {
             Expanded(child: figures),
             const SizedBox(width: 12),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 120),
+              constraints: const BoxConstraints(maxWidth: 112),
               child: today,
             ),
           ],
@@ -234,7 +234,7 @@ class _RowFrame extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 80,
+              width: 72,
               padding: const EdgeInsets.fromLTRB(12, 14, 4, 0),
               alignment: Alignment.topLeft,
               child: FittedBox(
