@@ -2,11 +2,13 @@ import 'package:dobo/app.dart';
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/database_provider.dart';
 import 'package:dobo/db/repositories/reading_repository.dart';
+import 'package:dobo/db/repositories/report_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/db/repositories/visit_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/account/account_locale.dart';
 import 'package:dobo/features/common/farm_today.dart';
+import 'package:dobo/features/reports/report_providers.dart';
 import 'package:dobo/features/visit/visit_checklist.dart';
 import 'package:dobo/router.dart';
 import 'package:drift/drift.dart' show Value;
@@ -21,7 +23,9 @@ const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 /// `list` for the ponds list, a pond code (E2) for that pond's page,
 /// `worker` for the worker home, `log-E1` for E1's daily log, `alerts`
 /// for the Alerts tab, `visit-start` for the Visit tab before a visit, or
-/// `visit` for a visit under way (E1 read and inspected).
+/// `visit` for a visit under way (E1 read and inspected), `reports` for the
+/// Reports tab (one published report, one draft) or `report` for that
+/// published report.
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -53,10 +57,15 @@ Future<void> main() async {
     UncontrolledProviderScope(container: container, child: const DoboApp()),
   );
   if (_page == 'list') return;
+  final reportId = _page == 'reports' || _page == 'report'
+      ? await _publishedReport(db, farm, container)
+      : null;
   final path = switch (_page) {
     'worker' => '/worker',
     'alerts' => '/alerts',
     'visit' || 'visit-start' => '/visit',
+    'reports' => '/reports',
+    'report' => '/reports/$reportId',
     _ when _page.startsWith('log-') =>
       '/log/${_pond(farm, _page.substring(4))}',
     _ => '/ponds/${_pond(farm, _page)}',
@@ -103,4 +112,64 @@ Future<void> _visitUnderWay(AppDatabase db, DemoFarm farm) async {
       ok: true,
     );
   }
+}
+
+/// A visit at the demo's "now" (E1 read and in order, a dike problem on
+/// E3), published; then a second visit ended and left as a draft. Returns
+/// the published report's id.
+Future<String> _publishedReport(
+  AppDatabase db,
+  DemoFarm farm,
+  ProviderContainer container,
+) async {
+  final session = (await SetupRepository(db).currentSession())!;
+  final visits = VisitRepository(db, session);
+  Future<String> visit({required bool records}) async {
+    final id = await visits.start();
+    if (records) {
+      await ReadingRepository(db, session, visitId: id).addWaterReading(
+        WaterReadingInput(
+          pondId: farm['E1']!,
+          at: demoNow,
+          temperatureC: 28,
+          ph: 7.2,
+          oxygenMgL: 5,
+        ),
+      );
+      final obs = ObservationRepository(db, session, visitId: id);
+      for (final c in conditionCategories) {
+        await obs.addObservation(pondId: farm['E1'], category: c, ok: true);
+        await obs.addObservation(
+          pondId: farm['E3'],
+          category: c,
+          ok: c != ObservationCategory.dike,
+          note: c == ObservationCategory.dike ? 'Fuite côté sortie' : null,
+        );
+      }
+      await visits.setSummary(
+        id,
+        'Eau verte, poissons actifs. Digue de E3 à reprendre.',
+      );
+    }
+    await visits.end(id);
+    await (db.update(db.visits)..where((v) => v.id.equals(id))).write(
+      VisitsCompanion(startedAt: Value(demoNow), endedAt: Value(demoNow)),
+    );
+    return id;
+  }
+
+  final first = await visit(records: true);
+  final sub = container.listen(draftReportProvider(first), (_, _) {});
+  for (var i = 0; i < 100 && !sub.read().hasValue; i++) {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+  }
+  final draft = sub.read().requireValue;
+  sub.close();
+  final visit1 = await visits.get(first);
+  final id = await ReportRepository(db, session).publish(
+    visitId: first,
+    content: draft.publishedAs(summary: visit1.summary, builtAt: demoNow),
+  );
+  await visit(records: false);
+  return id;
 }
