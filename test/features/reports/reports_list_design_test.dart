@@ -124,6 +124,33 @@ void main() {
     expect(find.byType(Card), findsNothing);
   });
 
+  _listTest('a report with no author name shows its date alone', (
+    tester,
+    db,
+  ) async {
+    final s = (await SetupRepository(db).currentSession())!;
+    final c = _content(10, '');
+    await db
+        .into(db.visitReports)
+        .insert(
+          VisitReportsCompanion.insert(
+            associationId: s.associationId,
+            enteredBy: 'someone-else',
+            deviceId: 'other-phone',
+            recordedAt: c.header.visitDay,
+            visitId: 'v3',
+            siteId: s.siteId,
+            periodFrom: c.header.periodFrom,
+            periodTo: c.header.periodTo,
+            content: c.encode(),
+            syncState: const Value(SyncState.synced),
+          ),
+        );
+    await tester.pumpAndSettle();
+    expect(find.text('10/03/2026'), findsOneWidget);
+    expect(find.text('10/03/2026,'), findsNothing);
+  });
+
   _listTest('a row opens its report', (tester, db) async {
     await tapAndSettle(tester, find.text('01/03/2026, Hery'));
     expect(find.byType(ReportScreen), findsOneWidget);

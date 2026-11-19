@@ -93,9 +93,13 @@ class _ReportRow extends ConsumerWidget {
       onTap: () => context.go('/reports/$reportId'),
       children: [
         Text(
-          h == null
-              ? l10n.reportTitle
-              : l10n.reportCardTitle(formatDate(h.visitDay), h.memberName),
+          switch (h) {
+            null => l10n.reportTitle,
+            // No author name known (a report from before accounts): the
+            // date alone, not "date,".
+            _ when h.memberName.isEmpty => formatDate(h.visitDay),
+            _ => l10n.reportCardTitle(formatDate(h.visitDay), h.memberName),
+          },
           style: text.titleMedium?.copyWith(
             fontWeight: unread ? FontWeight.w700 : FontWeight.w400,
           ),
