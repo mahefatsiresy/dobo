@@ -37,3 +37,7 @@ Color waterColourValue(WaterColour c) => switch (c) {
   WaterColour.darkGreen => const Color(0xFF33691E),
   WaterColour.brownTurbid => const Color(0xFF8D6E63),
 };
+
+/// Feed: the ration to aim for, on worker screens. Screen only; the paper
+/// sheet has its own feed column.
+const IconData feedIcon = Icons.rice_bowl;

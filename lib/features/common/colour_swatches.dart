@@ -16,20 +16,23 @@ class ColourSwatches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final c in WaterColour.values)
-          ChoiceTile(
-            key: ValueKey(c),
-            swatch: waterColourValue(c),
-            label: l10n.waterColour(c),
-            selected: c == value,
-            width: 88,
-            onTap: () => onChanged(c == value ? null : c),
-          ),
-      ],
+    // Two per row, whatever the phone's width.
+    return LayoutBuilder(
+      builder: (context, box) => Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final c in WaterColour.values)
+            ChoiceTile(
+              key: ValueKey(c),
+              swatch: waterColourValue(c),
+              label: l10n.waterColour(c),
+              selected: c == value,
+              width: (box.maxWidth - 8) / 2,
+              onTap: () => onChanged(c == value ? null : c),
+            ),
+        ],
+      ),
     );
   }
 }

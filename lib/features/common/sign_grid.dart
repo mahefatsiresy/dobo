@@ -22,24 +22,28 @@ class SignGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final s in WarningSign.values)
-          if (options.contains(s))
-            ChoiceTile(
-              key: ValueKey(s),
-              icon: warningSignIcon(s),
-              label: l10n.warningSign(s),
-              selected: selected.contains(s),
-              onTap: () => onChanged(
-                selected.contains(s)
-                    ? ({...selected}..remove(s))
-                    : {...selected, s},
+    // Two per row, whatever the phone's width.
+    return LayoutBuilder(
+      builder: (context, box) => Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final s in WarningSign.values)
+            if (options.contains(s))
+              ChoiceTile(
+                key: ValueKey(s),
+                icon: warningSignIcon(s),
+                label: l10n.warningSign(s),
+                width: (box.maxWidth - 8) / 2,
+                selected: selected.contains(s),
+                onTap: () => onChanged(
+                  selected.contains(s)
+                      ? ({...selected}..remove(s))
+                      : {...selected, s},
+                ),
               ),
-            ),
-      ],
+        ],
+      ),
     );
   }
 }

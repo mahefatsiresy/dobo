@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/tokens.dart';
+
 /// A large tappable tile: pictogram above a short label, highlighted when
 /// selected. Worker screens are built from these.
 class ChoiceTile extends StatelessWidget {
@@ -24,7 +26,9 @@ class ChoiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final c = context.dobo;
+    // Picked: ink with paper text, unmistakable in sunlight.
+    final ink = selected ? c.paper : c.ink;
     return Semantics(
       selected: selected,
       button: true,
@@ -36,10 +40,10 @@ class ChoiceTile extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 88),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: selected ? scheme.primaryContainer : null,
+            color: selected ? c.ink : null,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: selected ? scheme.primary : scheme.outline,
+              color: selected ? c.ink : c.line,
               width: selected ? 3 : 1,
             ),
           ),
@@ -58,9 +62,15 @@ class ChoiceTile extends StatelessWidget {
                   child: selected ? const Icon(Icons.check) : null,
                 )
               else if (icon != null)
-                Icon(icon, size: 36),
+                Icon(icon, size: 36, color: ink),
               const SizedBox(height: 4),
-              Text(label, textAlign: TextAlign.center, maxLines: 2),
+              // Never cut: a label someone can't finish is worse than a
+              // long one (docs/design.md §Step 3).
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: ink),
+              ),
             ],
           ),
         ),
