@@ -115,7 +115,7 @@ from a demo farm in memory (the device's own records are untouched), in
 French and Malagasy, land in `build/screenshots/`:
 
 ```bash
-tool/design_screenshots.sh <device>   # keep the phone unlocked and awake
+tool/design_screenshots.sh <device> [list E1 E2 P1]   # phone unlocked, Stay awake on
 ```
 
 ## Malagasy review
