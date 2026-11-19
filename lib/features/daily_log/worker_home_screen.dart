@@ -16,6 +16,7 @@ import '../../domain/alerts/worker_advice.dart';
 import '../alerts/alert_providers.dart';
 import 'daily_log_providers.dart';
 import 'stop_feeding_sign.dart';
+import '../common/pictograms.dart';
 import '../../theme/tokens.dart';
 
 /// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
@@ -31,6 +32,12 @@ class WorkerHomeScreen extends ConsumerWidget {
     final overviews = ref.watch(pondOverviewsProvider).value;
     final logged = ref.watch(loggedTodayProvider).value ?? const {};
     final workerAccount = ref.watch(sessionProvider).value?.isWorker ?? false;
+    // Today's ponds are those holding fish (SPEC F3); a count that doesn't
+    // add up still has fish to feed.
+    final fish = [
+      for (final o in overviews ?? const <PondOverview>[])
+        if (o.liveCount > 0 || o.inconsistent) o,
+    ];
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -96,6 +103,7 @@ class WorkerHomeScreen extends ConsumerWidget {
                       onPressed: () => context.push('/welcome/login?worker=1'),
                     ),
                   ),
+                _Progress(fish: fish, logged: logged),
                 Expanded(
                   child: GridView.count(
                     padding: const EdgeInsets.all(16),
@@ -103,8 +111,9 @@ class WorkerHomeScreen extends ConsumerWidget {
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     children: [
-                      for (final o in overviews)
+                      for (final o in fish)
                         _PondTile(
+                          key: ValueKey('tile-${o.pond.code}'),
                           overview: o,
                           stopFeeding: ref.watch(
                             stopFeedingProvider(o.pond.id),
@@ -123,6 +132,7 @@ class WorkerHomeScreen extends ConsumerWidget {
 
 class _PondTile extends StatelessWidget {
   const _PondTile({
+    super.key,
     required this.overview,
     required this.stopFeeding,
     required this.logged,
@@ -169,13 +179,25 @@ class _PondTile extends StatelessWidget {
                   if (stopFeeding.isNotEmpty)
                     StopFeedingSign(reasons: stopFeeding)
                   else if (overview.rationG > 0)
-                    Text(
-                      formatKg(
-                        overview.rationG,
-                        Localizations.localeOf(context),
-                      ),
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(color: ink, fontWeight: FontWeight.bold),
+                    // The ration to aim for: an instruction, not an estimate
+                    // (docs/design.md §Step 3).
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(feedIcon, color: ink, size: 28),
+                        const SizedBox(width: 6),
+                        Text(
+                          formatKg(
+                            overview.rationG,
+                            Localizations.localeOf(context),
+                          ),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: ink,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
                     ),
                   if (isolated)
                     Container(
@@ -197,12 +219,53 @@ class _PondTile extends StatelessWidget {
                 top: 8,
                 right: 8,
                 child: CircleAvatar(
+                  radius: 26,
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.task_alt, color: context.dobo.ok, size: 36),
+                  child: Icon(Icons.task_alt, color: context.dobo.ok, size: 44),
                 ),
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// How many of today's ponds are logged; one line with a tick once all
+/// are, or a word when no pond holds fish.
+class _Progress extends StatelessWidget {
+  const _Progress({required this.fish, required this.logged});
+
+  final List<PondOverview> fish;
+  final Set<String> logged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme.titleMedium;
+    if (fish.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(l10n.workerNoPonds, style: text),
+      );
+    }
+    final done = fish.where((o) => logged.contains(o.pond.id)).length;
+    final all = done == fish.length;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: Row(
+        children: [
+          if (all) ...[
+            Icon(Icons.task_alt, color: context.dobo.ok, size: 32),
+            const SizedBox(width: 8),
+          ],
+          Expanded(
+            child: Text(
+              all ? l10n.workerAllDone : l10n.workerProgress(done, fish.length),
+              style: text,
+            ),
+          ),
+        ],
       ),
     );
   }

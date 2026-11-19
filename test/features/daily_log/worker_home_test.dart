@@ -15,23 +15,42 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers.dart';
 
 void main() {
-  Future<void> twoPonds(WidgetTester tester, AppDatabase db) async {
+  /// Ponds E1 and E2, both holding fish unless [fish] is false: the
+  /// worker home shows only ponds with fish (docs/design.md §Step 3).
+  Future<void> twoPonds(
+    WidgetTester tester,
+    AppDatabase db, {
+    bool fish = true,
+  }) async {
     final session = (await SetupRepository(db).currentSession())!;
     final ponds = PondRepository(db, session);
-    await ponds.create(
+    final e1 = await ponds.create(
       const PondInput(
         code: 'E1',
         colour: PondColour.blue,
         role: PondRole.growout,
       ),
     );
-    await ponds.create(
+    final e2 = await ponds.create(
       const PondInput(
         code: 'E2',
         colour: PondColour.green,
         role: PondRole.growout,
       ),
     );
+    if (fish) {
+      for (final (code, id) in [('LA', e1), ('LB', e2)]) {
+        await BatchRepository(db, session).stockBatch(
+          StockInput(
+            code: code,
+            pondId: id,
+            date: DateTime(2026, 3, 1),
+            count: 500,
+            avgWeightMg: 50000,
+          ),
+        );
+      }
+    }
     await tester.pumpAndSettle();
   }
 
@@ -155,7 +174,7 @@ void main() {
       AppDatabase db, {
       bool lowOxygen = false,
     }) async {
-      await twoPonds(tester, db);
+      await twoPonds(tester, db, fish: false);
       final session = (await SetupRepository(db).currentSession())!;
       final e1 = (await db.select(db.ponds).get())
           .singleWhere((p) => p.code == 'E1')
