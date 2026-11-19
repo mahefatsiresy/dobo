@@ -4621,17 +4621,17 @@ abstract class AppLocalizations {
   /// **'Aspect'**
   String get deathAppearanceButton;
 
-  /// Alerts tab heading of the danger section; count is the ponds in danger plus farm-wide danger items, as on the tab's badge.
+  /// Alerts tab heading of the danger section (the count is on the tab's badge).
   ///
   /// In fr, this message translates to:
-  /// **'Danger {count}'**
-  String alertsDanger(int count);
+  /// **'Danger'**
+  String get alertsDanger;
 
-  /// Alerts tab heading of the warnings and due tasks; count is the number of rows.
+  /// Alerts tab heading of the warnings and due tasks.
   ///
   /// In fr, this message translates to:
-  /// **'À faire {count}'**
-  String alertsTodo(int count);
+  /// **'À faire'**
+  String get alertsTodo;
 }
 
 class _AppLocalizationsDelegate

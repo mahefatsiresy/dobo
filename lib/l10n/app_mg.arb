@@ -753,6 +753,6 @@
   "pickDone": "Vita",
   "feedingsButton": "Impiry",
   "deathAppearanceButton": "Endrika",
-  "alertsDanger": "Loza {count}",
-  "alertsTodo": "Atao {count}"
+  "alertsDanger": "Loza",
+  "alertsTodo": "Atao"
 }

@@ -29,7 +29,6 @@ class AlertsScreen extends ConsumerWidget {
       body = const Center(child: CircularProgressIndicator());
     } else {
       final s = alertSections(overviews, alerts);
-      final d = ref.watch(dangerPondsProvider);
       final byPond = {for (final o in overviews) o.pond.id: o};
       Widget band(SectionItem item, BandSeverity severity) {
         final pond = item.pond;
@@ -72,11 +71,11 @@ class AlertsScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 16),
               children: [
                 if (s.danger.isNotEmpty) ...[
-                  _Heading(l10n.alertsDanger(d.ponds + d.farmWide)),
+                  _Heading(l10n.alertsDanger),
                   for (final i in s.danger) band(i, BandSeverity.danger),
                 ],
                 if (s.todo.isNotEmpty) ...[
-                  _Heading(l10n.alertsTodo(s.todo.length)),
+                  _Heading(l10n.alertsTodo),
                   for (final i in s.todo) band(i, BandSeverity.warning),
                 ],
               ],

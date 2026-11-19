@@ -255,12 +255,12 @@ ponds list and the pond page. **[user]**
 ```
 ┌────────────────────────────────────────────┐
 │ Alertes                                    │
-│ Danger 3                                   │
+│ Danger                                     │
 │ ■ E2 ! Oxygène dissous trop bas : 2 mg/L › │ ← the pond page's bands
 │ ■ E4 ! Étang isolé                       › │
 │ ■ E5 ! À vérifier                        › │
 │ ■ E5 ! 500 morts le 14/03/2026           › │
-│ À faire 6                                  │
+│ À faire                                    │
 │ ■ E2 ⚠ Lot L-E2 : échantillonnage à faire › │
 │ ■ E3 ⚠ Lot L-E3 : échantillonnage à faire › │
 │ …                                          │
@@ -277,5 +277,8 @@ ponds list and the pond page. **[user]**
   **[user]**
 - The tab's badge counts ponds in danger plus farm-wide danger items, from
   the same count as the list's "3 étangs en danger". **[user]**
+- The section headings carry no number; the count lives on the badge only,
+  so nothing on the tab seems to disagree with its rows. **[user, after
+  review]**
 - Nothing open: one line with a large tick. **[Claude's call]**
 

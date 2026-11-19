@@ -144,12 +144,13 @@ void main() {
     },
   );
 
-  _alertsTest('the Danger heading counts as the badge does', (
+  _alertsTest('headings name the sections; the count is on the badge only', (
     tester,
     db,
   ) async {
-    final d = appContainer(tester).read(dangerPondsProvider);
-    expect(find.text('Danger ${d.ponds + d.farmWide}'), findsOneWidget);
+    expect(find.text('Danger'), findsOneWidget);
+    expect(find.text('À faire'), findsOneWidget);
+    expect(find.textContaining(RegExp(r'^(Danger|À faire) \d')), findsNothing);
   });
 
   _alertsTest('each band opens its fix', (tester, db) async {

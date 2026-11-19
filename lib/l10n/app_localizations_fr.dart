@@ -2606,12 +2606,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get deathAppearanceButton => 'Aspect';
 
   @override
-  String alertsDanger(int count) {
-    return 'Danger $count';
-  }
+  String get alertsDanger => 'Danger';
 
   @override
-  String alertsTodo(int count) {
-    return 'À faire $count';
-  }
+  String get alertsTodo => 'À faire';
 }
