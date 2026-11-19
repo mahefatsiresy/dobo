@@ -6,6 +6,7 @@ import 'package:dobo/features/common/farm_today.dart';
 import 'package:dobo/features/ponds/pond_attention.dart';
 import 'package:dobo/features/ponds/pond_overview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../demo_farm.dart';
@@ -105,6 +106,23 @@ void main() {
         ),
         findsOneWidget,
       );
+    },
+  );
+
+  appTest(
+    'while alerts load the danger count is 0, not a partial count',
+    overrides: [
+      clockProvider.overrideWithValue(() => demoNow),
+      alertsProvider.overrideWithValue(const AsyncLoading()),
+    ],
+    settle: false,
+    (tester, db) async {
+      await seedDemoFarm(db); // E4 is isolated, E5 inconsistent
+      await tester.pump(const Duration(seconds: 1));
+      expect(appContainer(tester).read(dangerPondsProvider), (
+        ponds: 0,
+        farmWide: 0,
+      ));
     },
   );
 }

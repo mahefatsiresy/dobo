@@ -44,12 +44,22 @@ class AlertsScreen extends ConsumerWidget {
           child: AttentionBand(
             severity: severity,
             text: leadText(l10n, item.lead, byPond[pond?.id]),
+            // The ponds list's slot: every row's icon lines up, and a long
+            // code shrinks instead of squeezing the text.
             leading: pond == null
                 ? null
-                : PondCode(
-                    code: pond.code,
-                    colour: pond.colour,
-                    ink: severity == BandSeverity.danger ? c.paper : c.ink,
+                : SizedBox(
+                    key: const ValueKey('codeSlot'),
+                    width: 72,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: PondCode(
+                        code: pond.code,
+                        colour: pond.colour,
+                        ink: severity == BandSeverity.danger ? c.paper : c.ink,
+                      ),
+                    ),
                   ),
             onTap: route == null ? null : () => context.push(route),
           ),

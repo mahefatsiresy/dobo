@@ -127,8 +127,15 @@ final pondAlertsProvider = Provider.family<List<Alert>, String>(
 /// the Alerts badge, its "Danger" heading and the ponds list's line
 /// (docs/design.md §Step 4).
 final dangerPondsProvider = Provider<({int ponds, int farmWide})>((ref) {
-  final alerts = ref.watch(alertsProvider).value ?? const <Alert>[];
-  final overviews = ref.watch(pondOverviewsProvider).value ?? const [];
+  final alertsValue = ref.watch(alertsProvider);
+  final overviewsValue = ref.watch(pondOverviewsProvider);
+  // Nothing until both are known: isolated ponds arrive before the alerts,
+  // and a partial count would read as a smaller danger.
+  if (!alertsValue.hasValue || !overviewsValue.hasValue) {
+    return (ponds: 0, farmWide: 0);
+  }
+  final alerts = alertsValue.requireValue;
+  final overviews = overviewsValue.requireValue;
   var ponds = 0;
   for (final o in overviews) {
     final a = pondAttention(o, [

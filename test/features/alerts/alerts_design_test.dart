@@ -1,5 +1,7 @@
 import 'package:dobo/db/database.dart';
+import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/feed_repository.dart';
+import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/alerts/alert_providers.dart';
@@ -98,6 +100,49 @@ void main() {
       expect(rects[i].top - rects[i - 1].bottom, greaterThanOrEqualTo(2));
     }
   });
+
+  _alertsTest(
+    'a long pond code keeps its slot; nothing overflows at 130 %',
+    size: const Size(360, 3200),
+    before: (db) async {
+      final session = (await SetupRepository(db).currentSession())!;
+      final id = await PondRepository(db, session).create(
+        const PondInput(
+          code: 'BASSIN-NORD',
+          colour: PondColour.green,
+          role: PondRole.growout,
+        ),
+      );
+      await BatchRepository(db, session).stockBatch(
+        StockInput(
+          code: 'L-BN',
+          pondId: id,
+          date: DateTime(2026, 3, 1),
+          count: 500,
+          avgWeightMg: 50000,
+        ),
+      );
+    },
+    (tester, db) async {
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      final codes = find.byType(PondCode);
+      final widths = {
+        for (final e in codes.evaluate())
+          tester
+              .getSize(
+                find.ancestor(
+                  of: find.byWidget(e.widget),
+                  matching: find.byKey(const ValueKey('codeSlot')),
+                ),
+              )
+              .width,
+      };
+      expect(widths, {72});
+    },
+  );
 
   _alertsTest('the Danger heading counts as the badge does', (
     tester,
