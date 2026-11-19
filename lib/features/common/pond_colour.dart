@@ -50,30 +50,37 @@ class PondTag extends StatelessWidget {
   }
 }
 
-/// The pond code on its colour as a 64 dp strip down a list row's left
-/// edge. It fills its parent's height: give the row an [IntrinsicHeight] or
-/// a fixed height.
-class PondStake extends StatelessWidget {
-  const PondStake({super.key, required this.code, required this.colour});
+/// The pond code in ink beside a small swatch of its colour, for member
+/// lists: the colour recalls the stake without competing with the
+/// severity bands (docs/design.md). Worker screens and paper sheets keep
+/// the full colour.
+class PondCode extends StatelessWidget {
+  const PondCode({super.key, required this.code, required this.colour});
 
   final String code;
   final PondColour colour;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 64,
-      color: pondColourValue(colour),
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          key: const ValueKey('pondSwatch'),
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            color: pondColourValue(colour),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
           code,
           style: Theme.of(context).textTheme.titleLarge
-              ?.copyWith(color: pondInk(colour), fontWeight: FontWeight.w700),
+              ?.copyWith(fontWeight: FontWeight.w700),
         ),
-      ),
+      ],
     );
   }
 }

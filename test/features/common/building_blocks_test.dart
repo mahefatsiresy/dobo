@@ -94,15 +94,12 @@ void main() {
     expect(find.byIcon(Icons.warning_amber), findsOneWidget);
   });
 
-  testWidgets('stake and tag: black on yellow, white on blue', (t) async {
+  testWidgets('tag: black on yellow, white on blue', (t) async {
     await t.pumpWidget(
       _frame(
         const Column(
           children: [
-            SizedBox(
-              height: 80,
-              child: PondStake(code: 'E1', colour: PondColour.yellow),
-            ),
+            PondTag(code: 'E1', colour: PondColour.yellow),
             PondTag(code: 'E2', colour: PondColour.blue),
           ],
         ),
@@ -110,8 +107,26 @@ void main() {
     );
     expect(_textColour(t, find.text('E1')), Colors.black);
     expect(_textColour(t, find.text('E2')), Colors.white);
-    expect(t.getSize(find.byType(PondStake)), const Size(64, 80));
-    expect(t.getSize(find.byType(PondTag)).height, greaterThanOrEqualTo(56));
+    expect(
+      t.getSize(find.byType(PondTag).first).height,
+      greaterThanOrEqualTo(56),
+    );
+  });
+
+  testWidgets('pond code: ink code beside a 12 dp swatch of its colour', (
+    t,
+  ) async {
+    await t.pumpWidget(
+      _frame(const PondCode(code: 'E2', colour: PondColour.yellow)),
+    );
+    expect(_textColour(t, find.text('E2')), _c.ink);
+    final swatch = find.byKey(const ValueKey('pondSwatch'));
+    expect(t.getSize(swatch), const Size(12, 12));
+    final box = t.widget<Container>(swatch);
+    expect(
+      (box.decoration! as BoxDecoration).color,
+      pondColourValue(PondColour.yellow),
+    );
   });
 
   testWidgets('building blocks golden', (t) async {
@@ -141,17 +156,14 @@ void main() {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const SizedBox(
-                    height: 88,
-                    child: Row(
-                      children: [
-                        PondStake(code: 'E1', colour: PondColour.yellow),
-                        SizedBox(width: 8),
-                        PondStake(code: 'E2', colour: PondColour.blue),
-                        SizedBox(width: 8),
-                        PondStake(code: 'P1', colour: PondColour.black),
-                      ],
-                    ),
+                  const Row(
+                    children: [
+                      PondCode(code: 'E1', colour: PondColour.yellow),
+                      SizedBox(width: 16),
+                      PondCode(code: 'E2', colour: PondColour.blue),
+                      SizedBox(width: 16),
+                      PondCode(code: 'P1', colour: PondColour.black),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   const AttentionBand(

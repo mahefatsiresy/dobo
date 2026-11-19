@@ -3,6 +3,7 @@ import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/alerts/alert_providers.dart';
 import 'package:dobo/features/common/attention_band.dart';
 import 'package:dobo/features/common/farm_today.dart';
+import 'package:dobo/features/common/pond_colour.dart';
 import 'package:dobo/features/ponds/pond_detail_screen.dart';
 import 'package:dobo/features/ponds/pond_overview.dart';
 import 'package:dobo/features/ponds/pond_row.dart';
@@ -60,6 +61,26 @@ void main() {
     final codes = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'P1', 'P2'];
     final tops = [for (final c in codes) tester.getTopLeft(_row(c)).dy];
     expect(tops, [...tops]..sort());
+  });
+
+  _demoTest('rows show the pond code in ink with a swatch, not a strip', (
+    tester,
+    farm,
+  ) async {
+    expect(_in('E4', find.byType(PondCode)), findsOneWidget);
+    // The only large colour on a row is its band: no full-height paint.
+    final filled = find.descendant(
+      of: _row('E4'),
+      matching: find.byWidgetPredicate(
+        (w) =>
+            w is Container &&
+            w.decoration is BoxDecoration &&
+            (w.decoration! as BoxDecoration).color ==
+                pondColourValue(PondColour.red),
+      ),
+    );
+    expect(filled, findsOneWidget);
+    expect(tester.getSize(filled).width, 12);
   });
 
   _demoTest('a healthy pond: figures, ration first, logged, no band', (

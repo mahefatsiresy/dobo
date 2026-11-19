@@ -19,8 +19,12 @@ The app's own visual identity is built on top of that, never instead of it.
    as a band with an icon and words, never a bare coloured number, so a red
    or yellow pond tag never reads as an alarm and people who can't tell
    colours apart still get the message.
-3. **The pond tag is the anchor.** On every list a pond starts with its
-   code on its colour, like the stake on the dike.
+3. **The pond code is the anchor.** On every list a pond starts with its
+   code. Workers, who may read with difficulty, see it on its full colour,
+   like the stake on the dike (worker screens, paper sheets). Members see
+   the code in ink beside a small swatch of the colour, so the colour
+   recalls the stake without competing with the severity bands (user's
+   choice, 19/11).
 4. **One loud number per row.** The number someone acts on (today's ration
    on the ponds list) is the biggest thing in the row. Other figures are
    quieter.
@@ -80,10 +84,10 @@ French uses in `1 000`.
 - Spacing on a 4 dp grid: 4, 8, 12, 16, 24, 32.
 - Lists are full-width rows separated by a 1 dp `line` rule, not floating
   cards.
-- The pond tag on a list row is a **stake**: a 64 dp wide strip of the
-  pond's colour down the row's left edge, the code centred in Bold.
-  Elsewhere (alert rows, page headers) it is a 56 dp square with 4 dp
-  corners.
+- On a member list row the pond is `PondCode`: the code in Bold ink beside
+  a 12 dp square of its colour, in an 80 dp column down the left. Alert
+  rows and page headers use `PondTag`, a 56 dp square of the colour with
+  4 dp corners; worker screens keep their full-colour tiles.
 - Buttons, inputs and dialogs: 8 dp corners. Buttons are 56 dp tall:
   filled ink for the main action, outlined ink for the others.
 
@@ -91,7 +95,7 @@ French uses in `1 000`.
 
 In `lib/theme/` (look) and `lib/features/common/` (widgets):
 
-- `PondTag` (square) and `PondStake` (list strip).
+- `PondTag` (colour square) and `PondCode` (ink code and swatch).
 - `AttentionBand`: danger (filled `danger`, white text and icon) or warning
   (`warningFill`, 4 dp `warning` left edge, ink text, `warning` icon).
 - `EstimatedLabel`: `≈ value` on screen, the word kept for reports.
@@ -122,18 +126,18 @@ screenshots from seeded demo farms on the host and on the test phone.
 - A stocked pond's row:
 
   ```
-  ┌──────┬─────────────────────────────────────┐
-  │      │ ⚠ Oxygène bas, et 1 autre            │ ← band, only when needed,
-  │      ├─────────────────────────────────────┤   beside its own stake
-  │  E1  │ Grossissement         Ration du jour │
-  │      │ ≈ 1 240 poissons          ≈ 2,4 kg   │ ← ration: the loud number
-  │      │ ≈ 186 kg, 150 g                      │
-  │      │ ✓ Journal fait                       │
-  └──────┴─────────────────────────────────────┘
+  ┌────────────────────────────────────────────┐
+  │ ■ E1  ⚠ Oxygène bas, et 1 autre            │ ← band, only when needed,
+  │       ──────────────────────────────────── │   beside its own code
+  │       Grossissement         Ration du jour │
+  │       ≈ 1 240 poissons          ≈ 2,4 kg   │ ← ration: the loud number
+  │       ≈ 186 kg, 150 g                      │
+  │       ✓ Journal fait                       │
+  └────────────────────────────────────────────┘
   ```
 
-  - The stake runs down beside the band, so a band can't be read as the
-    row above's. **[Claude's call, after the first goldens]**
+  - The band sits beside the pond's code, so it can't be read as the row
+    above's. **[Claude's call, after the first goldens]**
   - The band names the most urgent item (isolated, inconsistent count, then
     alerts in alert order) and how many more.
   - The average weight follows the biomass only when the pond holds one
@@ -143,7 +147,7 @@ screenshots from seeded demo farms on the host and on the test phone.
     surface swimming), the ration's place shows the stop-feeding sign
     instead, and the pond adds nothing to the total. **[Claude's call]**
   - Tapping anywhere opens the pond.
-- Empty, preparing and ready ponds: one line with the stake, the status
+- Empty, preparing and ready ponds: one line with the code, the status
   and the next prep step.
 - Admins add a pond from a plain last row, not a floating button.
 

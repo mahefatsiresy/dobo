@@ -33,7 +33,7 @@ String bandText(AppLocalizations l10n, PondAttention a, PondOverview o) {
   return a.more == 0 ? lead : l10n.bandMore(lead, a.more);
 }
 
-/// A pond holding fish (docs/design.md §Step 1): the stake, the band when it
+/// A pond holding fish (docs/design.md §Step 1): the code, the band when it
 /// needs someone, what's in it and whether today is logged, and today's
 /// ration as the loudest number, or the stop-feeding sign.
 class StockedPondRow extends StatelessWidget {
@@ -159,7 +159,7 @@ class StockedPondRow extends StatelessWidget {
   }
 }
 
-/// A pond without fish: the stake and one line of status, with the next
+/// A pond without fish: the code and one line of status, with the next
 /// preparation step while it is being prepared.
 class ShortPondRow extends StatelessWidget {
   const ShortPondRow({
@@ -200,8 +200,8 @@ class ShortPondRow extends StatelessWidget {
   }
 }
 
-/// The stake down the left, beside the band and [child]: the band belongs
-/// to its pond. One tap target, at least 56 dp tall.
+/// The pond code down the left, beside the band and [child]: the band
+/// belongs to its pond. One tap target, at least 56 dp tall.
 class _RowFrame extends StatelessWidget {
   const _RowFrame({
     required this.overview,
@@ -224,30 +224,32 @@ class _RowFrame extends StatelessWidget {
       onTap: onTap,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 56),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              PondStake(code: pond.code, colour: pond.colour),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (a != null)
-                      AttentionBand(
-                        severity: a.severity,
-                        text: bandText(
-                          AppLocalizations.of(context),
-                          a,
-                          overview,
-                        ),
-                      ),
-                    child,
-                  ],
-                ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 80,
+              padding: const EdgeInsets.fromLTRB(12, 14, 4, 0),
+              alignment: Alignment.topLeft,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: PondCode(code: pond.code, colour: pond.colour),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (a != null)
+                    AttentionBand(
+                      severity: a.severity,
+                      text: bandText(AppLocalizations.of(context), a, overview),
+                    ),
+                  child,
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
