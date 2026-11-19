@@ -112,7 +112,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 |---|---|---|
 | 0 + 1 | Foundation, ponds list | merged 19/11 |
 | 2 | Pond detail | merged 19/11 |
-| 3 | Worker home and daily log | planned: `docs/superpowers/plans/2026-11-19-design-worker-log.md` |
+| 3 | Worker home and daily log | merged 19/11 |
 | 4 | Alerts | " |
 | 5 | Visit | " |
 | 6 | Reports | " |
