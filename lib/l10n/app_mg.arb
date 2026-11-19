@@ -747,5 +747,11 @@
   "deathsSummary": "Maty {count} tao anatin'ny {days} andro",
   "healthSummary": "Zava-nitranga {count}, ny farany {date}",
   "pondFacts": "Dobo",
-  "moreActions": "Asa hafa"
+  "moreActions": "Asa hafa",
+  "workerProgress": "{done} / {total} vita",
+  "workerAllDone": "Vita daholo ny dobo",
+  "workerNoPonds": "Tsy misy dobo misy trondro",
+  "pickDone": "Vita",
+  "feedingsButton": "Impiry",
+  "deathAppearanceButton": "Endrika"
 }

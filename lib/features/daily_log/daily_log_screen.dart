@@ -18,13 +18,15 @@ import '../../l10n/formatting.dart';
 import '../common/big_number_field.dart';
 import '../common/colour_swatches.dart';
 import '../common/leftover_picker.dart';
+import '../common/option_button.dart';
+import '../common/picker_screen.dart';
+import '../common/pictograms.dart';
 import '../common/notice.dart';
 import '../common/pond_colour.dart';
 import '../common/save_once.dart';
 import '../common/sign_grid.dart';
 import '../ponds/pond_overview.dart';
 import 'daily_log_providers.dart';
-import '../common/form_body.dart';
 import '../../theme/tokens.dart';
 
 /// One pond-day (SPEC F3): the worker's screen, also used by members.
@@ -157,10 +159,61 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     if (mounted) context.pop();
   }
 
+  /// Opens a pictogram screen; back keeps what was picked before.
+  Future<T?> _picker<T>(
+    String title,
+    T initial,
+    Widget Function(BuildContext, T, ValueChanged<T>) builder,
+  ) => Navigator.of(context).push<T>(
+    MaterialPageRoute(
+      builder: (context) => PickerScreen<T>(
+        title: title,
+        doneLabel: AppLocalizations.of(context).pickDone,
+        initial: initial,
+        builder: builder,
+      ),
+    ),
+  );
+
+  Future<void> _pickSigns(
+    String title,
+    Set<WarningSign> options,
+    bool death,
+  ) async {
+    final picked = await _picker<Set<WarningSign>>(
+      title,
+      death ? _deathSigns : _signs,
+      (context, value, onChanged) =>
+          SignGrid(options: options, selected: value, onChanged: onChanged),
+    );
+    if (picked == null) return;
+    setState(() => death ? _deathSigns = picked : _signs = picked);
+  }
+
+  Future<void> _pickColour(String title) async {
+    // A record, so "cleared" (null inside) differs from back (null).
+    final picked = await _picker<(WaterColour?,)>(
+      title,
+      (_colour,),
+      (context, value, onChanged) =>
+          ColourSwatches(value: value.$1, onChanged: (c) => onChanged((c,))),
+    );
+    if (picked != null) setState(() => _colour = picked.$1);
+  }
+
+  Future<void> _pickFeedings(String title) async {
+    final picked = await _picker<(int?,)>(
+      title,
+      (_feedings,),
+      (context, value, onChanged) =>
+          _FeedingsGrid(value: value.$1, onChanged: (n) => onChanged((n,))),
+    );
+    if (picked != null) setState(() => _feedings = picked.$1);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
     final overview = ref
         .watch(pondOverviewsProvider)
         .value
@@ -174,11 +227,9 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     }
     if (!_loaded) _load(existing.value);
     final pond = overview.pond;
-    const gap = SizedBox(height: 20);
-    Widget heading(String text) => Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(text, style: Theme.of(context).textTheme.titleMedium),
-    );
+    final isWorker = ref.watch(sessionProvider).value?.isWorker ?? false;
+    final stop = ref.watch(stopFeedingProvider(widget.pondId));
+    const gap = SizedBox(height: 12);
 
     return Scaffold(
       appBar: AppBar(
@@ -191,130 +242,241 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
         ),
         toolbarHeight: 72,
       ),
+      // A normal day fits one screen: feed, leftovers, deaths, save
+      // (docs/design.md §Step 3). The rest opens on its own screen.
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: FilledButton.icon(
+            key: const ValueKey('saveLog'),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: saving ? null : () => saveOnce(_save),
+            icon: const Icon(Icons.check),
+            label: Text(l10n.save),
+          ),
+        ),
+      ),
       body: Form(
         key: _form,
-        child: FormBody(
-          children: [
-            if (overview.status == PondStatus.isolated)
-              Notice(l10n.pondIsolatedBanner, danger: true),
-            if (ref.watch(stopFeedingProvider(widget.pondId)) case final reasons
-                when reasons.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: StopFeedingSign(reasons: reasons),
-              ),
-            BigNumberField(
-              label: l10n.feedGiven,
-              controller: _feed,
-              decimal: true,
-              suffix: 'kg',
-              hint: overview.rationG > 0
-                  ? l10n.rationHint(formatKg(overview.rationG, locale))
-                  : null,
-              validator: (_) => _feedKg == null ? l10n.fieldRequired : null,
-            ),
-            if (widget.showLot) ...[
+        child: SingleChildScrollView(
+          key: const ValueKey('logBody'),
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (overview.status == PondStatus.isolated)
+                Notice(l10n.pondIsolatedBanner, danger: true),
+              if (stop.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: StopFeedingSign(reasons: stop),
+                )
+              else if (overview.rationG > 0)
+                _AimFor(rationG: overview.rationG),
               gap,
-              _LotPicker(
-                day: widget.date,
-                value: _lotId,
-                onChanged: (id) => setState(() => _lotId = id),
+              BigNumberField(
+                key: const ValueKey('feedField'),
+                label: l10n.feedGiven,
+                controller: _feed,
+                decimal: true,
+                suffix: 'kg',
+                validator: (_) => _feedKg == null ? l10n.fieldRequired : null,
               ),
-            ],
-            gap,
-            heading(l10n.feedings),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (var n = 1; n <= 6; n++)
-                  SizedBox(
-                    width: 56,
-                    height: 56,
-                    child: n == _feedings
-                        ? FilledButton(
-                            style: FilledButton.styleFrom(
-                              padding: EdgeInsets.zero,
+              gap,
+              LeftoverPicker(
+                value: _leftover,
+                ateFast: _ateFast,
+                onChanged: (l, fast) => setState(() {
+                  _leftover = l;
+                  _ateFast = fast;
+                }),
+              ),
+              gap,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: BigNumberField(
+                      key: const ValueKey('deathsField'),
+                      label: l10n.deaths,
+                      controller: _deaths,
+                      onChanged: (_) => setState(() {}),
+                    ),
+                  ),
+                  if (_deathCount > 0) ...[
+                    const SizedBox(width: 8),
+                    SizedBox(
+                      width: 120,
+                      child: OptionButton(
+                        key: const ValueKey('optDeathLook'),
+                        title: l10n.deathAppearanceButton,
+                        picked: _signsPreview(_deathSigns),
+                        onTap: () =>
+                            _pickSigns(l10n.deathAppearance, deathSigns, true),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              gap,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: OptionButton(
+                      key: const ValueKey('optSigns'),
+                      title: l10n.signsSeen,
+                      picked: _signsPreview(_signs),
+                      onTap: () => _pickSigns(
+                        l10n.signsSeen,
+                        WarningSign.values.toSet(),
+                        false,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OptionButton(
+                      key: const ValueKey('optColour'),
+                      title: l10n.waterColourLabel,
+                      picked: _colour == null
+                          ? null
+                          : Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: waterColourValue(_colour!),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: context.dobo.line),
+                              ),
                             ),
-                            onPressed: () => setState(() => _feedings = null),
-                            child: Text('$n'),
-                          )
-                        : OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              padding: EdgeInsets.zero,
+                      onTap: () => _pickColour(l10n.waterColourLabel),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OptionButton(
+                      key: const ValueKey('optFeedings'),
+                      title: l10n.feedingsButton,
+                      picked: _feedings == null
+                          ? null
+                          : Text(
+                              '$_feedings',
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            onPressed: () => setState(() => _feedings = n),
-                            child: Text('$n'),
-                          ),
+                      onTap: () => _pickFeedings(l10n.feedings),
+                    ),
+                  ),
+                ],
+              ),
+              if (widget.showLot) ...[
+                gap,
+                _LotPicker(
+                  day: widget.date,
+                  value: _lotId,
+                  onChanged: (id) => setState(() => _lotId = id),
+                ),
+              ],
+              // Workers never meet a text field (CLAUDE.md, rule 3).
+              if (!isWorker) ...[
+                gap,
+                if (_showNote)
+                  TextFormField(
+                    controller: _note,
+                    decoration: InputDecoration(labelText: l10n.noteLabel),
+                    maxLines: 3,
+                  )
+                else
+                  TextButton.icon(
+                    onPressed: () => setState(() => _showNote = true),
+                    icon: const Icon(Icons.add),
+                    label: Text(l10n.addNote),
                   ),
               ],
-            ),
-            gap,
-            heading(l10n.leftovers),
-            LeftoverPicker(
-              value: _leftover,
-              ateFast: _ateFast,
-              onChanged: (l, fast) => setState(() {
-                _leftover = l;
-                _ateFast = fast;
-              }),
-            ),
-            gap,
-            BigNumberField(
-              label: l10n.deaths,
-              controller: _deaths,
-              onChanged: (_) => setState(() {}),
-            ),
-            if (_deathCount > 0) ...[
-              gap,
-              heading(l10n.deathAppearance),
-              SignGrid(
-                options: deathSigns,
-                selected: _deathSigns,
-                onChanged: (s) => setState(() => _deathSigns = s),
-              ),
             ],
-            gap,
-            heading(l10n.signsSeen),
-            SignGrid(
-              options: WarningSign.values.toSet(),
-              selected: _signs,
-              onChanged: (s) => setState(() => _signs = s),
-            ),
-            gap,
-            heading(l10n.waterColourLabel),
-            ColourSwatches(
-              value: _colour,
-              onChanged: (c) => setState(() => _colour = c),
-            ),
-            gap,
-            if (_showNote)
-              TextFormField(
-                controller: _note,
-                decoration: InputDecoration(labelText: l10n.noteLabel),
-                maxLines: 3,
-              )
-            else
-              TextButton.icon(
-                style: TextButton.styleFrom(minimumSize: const Size(56, 56)),
-                onPressed: () => setState(() => _showNote = true),
-                icon: const Icon(Icons.add),
-                label: Text(l10n.addNote),
-              ),
-            const SizedBox(height: 24),
-            FilledButton.icon(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(64),
-              ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              icon: const Icon(Icons.check),
-              label: Text(l10n.save),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+
+  /// Up to three of the picked signs, then how many more.
+  Widget? _signsPreview(Set<WarningSign> signs) {
+    if (signs.isEmpty) return null;
+    final shown = [
+      for (final s in WarningSign.values)
+        if (signs.contains(s)) s,
+    ];
+    return Wrap(
+      spacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        for (final s in shown.take(3)) Icon(warningSignIcon(s), size: 20),
+        if (shown.length > 3) Text('+${shown.length - 3}'),
+      ],
+    );
+  }
+}
+
+/// The ration to aim for on worker screens: the feed bowl and plain kg, an
+/// instruction rather than an estimate (docs/design.md §Step 3).
+class _AimFor extends StatelessWidget {
+  const _AimFor({required this.rationG});
+
+  final int rationG;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final kg = formatKg(rationG, Localizations.localeOf(context));
+    return Semantics(
+      label: l10n.labelValue(l10n.rationToday, kg),
+      excludeSemantics: true,
+      child: Row(
+        children: [
+          const Icon(feedIcon, size: 36),
+          const SizedBox(width: 12),
+          Text(kg, style: Theme.of(context).textTheme.headlineSmall),
+        ],
+      ),
+    );
+  }
+}
+
+/// How many times the fish were fed, 1 to 6; tapping the picked one clears
+/// it.
+class _FeedingsGrid extends StatelessWidget {
+  const _FeedingsGrid({required this.value, required this.onChanged});
+
+  final int? value;
+  final ValueChanged<int?> onChanged;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, box) => Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (var n = 1; n <= 6; n++)
+          SizedBox(
+            key: ValueKey('feedings-$n'),
+            width: (box.maxWidth - 16) / 3,
+            height: 72,
+            child: n == value
+                ? FilledButton(
+                    onPressed: () => onChanged(null),
+                    child: Text('$n', style: const TextStyle(fontSize: 28)),
+                  )
+                : OutlinedButton(
+                    onPressed: () => onChanged(n),
+                    child: Text('$n', style: const TextStyle(fontSize: 28)),
+                  ),
+          ),
+      ],
+    ),
+  );
 }
 
 /// The feed lot of a member's log: the oldest usable one unless picked.

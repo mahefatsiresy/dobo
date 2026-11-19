@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'features/common/farm_today.dart';
+
 import 'db/repositories/providers.dart';
 import 'features/sales/customers_screen.dart';
 import 'features/sales/harvest_screen.dart';
@@ -26,7 +28,6 @@ import 'features/people/people_screen.dart';
 import 'features/people/person_form_screen.dart';
 import 'features/ponds/pond_detail_screen.dart';
 import 'features/ponds/pond_form_screen.dart';
-import 'features/ponds/pond_overview.dart';
 import 'features/ponds/ponds_screen.dart';
 import 'features/readings/sample_screen.dart';
 import 'features/reports/report_screen.dart';
@@ -112,7 +113,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           final date = state.uri.queryParameters['date'];
           return DailyLogScreen(
             pondId: state.pathParameters['pondId']!,
-            date: date == null ? farmToday() : DateTime.parse(date),
+            // The app's clock, so a test or the demo farm logs its own day.
+            date: date == null
+                ? ref.read(farmTodayProvider)
+                : DateTime.parse(date),
             showLot: state.uri.queryParameters['lot'] == '1',
           );
         },

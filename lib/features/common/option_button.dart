@@ -24,7 +24,13 @@ class OptionButton extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(title, textAlign: TextAlign.center),
+        // 14 sp so a third of a phone's width holds one Malagasy word
+        // ("Famantarana") without breaking it.
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
         if (picked != null) ...[const SizedBox(height: 4), picked!],
       ],
     ),

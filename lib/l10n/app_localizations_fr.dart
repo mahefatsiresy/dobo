@@ -2587,4 +2587,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get moreActions => 'Plus d\'actions';
+
+  @override
+  String workerProgress(int done, int total) {
+    return '$done / $total faits';
+  }
+
+  @override
+  String get workerAllDone => 'Tous les étangs sont faits';
+
+  @override
+  String get workerNoPonds => 'Aucun étang avec des poissons';
+
+  @override
+  String get pickDone => 'Terminé';
+
+  @override
+  String get feedingsButton => 'Repas';
+
+  @override
+  String get deathAppearanceButton => 'Aspect';
 }

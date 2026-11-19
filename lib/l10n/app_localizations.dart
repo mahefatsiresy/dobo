@@ -4590,6 +4590,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Plus d\'actions'**
   String get moreActions;
+
+  /// Worker home: how many of today's ponds are logged.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} / {total} faits'**
+  String workerProgress(int done, int total);
+
+  /// Worker home once every pond with fish is logged today.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous les étangs sont faits'**
+  String get workerAllDone;
+
+  /// Worker home when no pond holds fish.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun étang avec des poissons'**
+  String get workerNoPonds;
+
+  /// Pinned button on a pictogram picker screen: keep what is picked and go back.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminé'**
+  String get pickDone;
+
+  /// Daily log button opening the number of feedings (1 to 6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Repas'**
+  String get feedingsButton;
+
+  /// Daily log button beside deaths, opening what the dead fish looked like.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aspect'**
+  String get deathAppearanceButton;
 }
 
 class _AppLocalizationsDelegate

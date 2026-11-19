@@ -2585,4 +2585,24 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get moreActions => 'Asa hafa';
+
+  @override
+  String workerProgress(int done, int total) {
+    return '$done / $total vita';
+  }
+
+  @override
+  String get workerAllDone => 'Vita daholo ny dobo';
+
+  @override
+  String get workerNoPonds => 'Tsy misy dobo misy trondro';
+
+  @override
+  String get pickDone => 'Vita';
+
+  @override
+  String get feedingsButton => 'Impiry';
+
+  @override
+  String get deathAppearanceButton => 'Endrika';
 }

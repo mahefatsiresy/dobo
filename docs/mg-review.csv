@@ -746,3 +746,9 @@ deathsSummary;Folded deaths chart: deaths over the chart's window of days.;{coun
 healthSummary;Folded health history: how many events and treatments, and the date of the latest.;{count, plural, =1{1 événement} other{{count} événements}}, dernier le {date};Zava-nitranga {count}, ny farany {date};
 pondFacts;Folded section on the pond page with its role, structure, surface, depths and density.;Étang;Dobo;
 moreActions;Tooltip of the ⋮ menu on the pond page (edit, archive).;Plus d'actions;Asa hafa;
+workerProgress;Worker home: how many of today's ponds are logged.;{done} / {total} faits;{done} / {total} vita;
+workerAllDone;Worker home once every pond with fish is logged today.;Tous les étangs sont faits;Vita daholo ny dobo;
+workerNoPonds;Worker home when no pond holds fish.;Aucun étang avec des poissons;Tsy misy dobo misy trondro;
+pickDone;Pinned button on a pictogram picker screen: keep what is picked and go back.;Terminé;Vita;
+feedingsButton;Daily log button opening the number of feedings (1 to 6).;Repas;Impiry;
+deathAppearanceButton;Daily log button beside deaths, opening what the dead fish looked like.;Aspect;Endrika;

@@ -55,7 +55,8 @@ void main() {
     await stocked(tester, db); // 1 000 fish at 100 g: growout, 4 % of 100 kg
     await tapAndSettle(tester, find.text('E1'));
     await tapAndSettle(tester, find.text('Journal du jour'));
-    expect(find.text('≈ 4 kg'), findsOneWidget);
+    // The ration to aim for: plain kg, no ≈ (docs/design.md §Step 3).
+    expect(find.text('4 kg'), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
 
     await DailyLogRepository(db, session).save(
@@ -68,7 +69,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text('Journal du jour'));
-    expect(find.text('≈ 3,4 kg'), findsOneWidget);
+    expect(find.text('3,4 kg'), findsOneWidget);
   });
 
   appTest('more deaths than fish: 0 and to check, no ration', (
@@ -104,13 +105,14 @@ void main() {
     await stocked(tester, db);
     await tapAndSettle(tester, find.text('E1'));
     await tapAndSettle(tester, find.text('Journal du jour'));
-    expect(find.text('Aspect des morts'), findsNothing);
+    // The appearance has its own screen, reached once there are deaths.
+    expect(find.text('Aspect'), findsNothing);
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, 'Morts'),
       '3',
     );
-    expect(find.text('Aspect des morts'), findsOneWidget);
+    expect(find.text('Aspect'), findsOneWidget);
   });
 
   appTest('an isolated pond says so on the log and the worker tile', (

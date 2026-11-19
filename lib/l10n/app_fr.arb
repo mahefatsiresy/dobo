@@ -1626,5 +1626,37 @@
   "moreActions": "Plus d'actions",
   "@moreActions": {
     "description": "Tooltip of the ⋮ menu on the pond page (edit, archive)."
+  },
+  "workerProgress": "{done} / {total} faits",
+  "@workerProgress": {
+    "description": "Worker home: how many of today's ponds are logged.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "workerAllDone": "Tous les étangs sont faits",
+  "@workerAllDone": {
+    "description": "Worker home once every pond with fish is logged today."
+  },
+  "workerNoPonds": "Aucun étang avec des poissons",
+  "@workerNoPonds": {
+    "description": "Worker home when no pond holds fish."
+  },
+  "pickDone": "Terminé",
+  "@pickDone": {
+    "description": "Pinned button on a pictogram picker screen: keep what is picked and go back."
+  },
+  "feedingsButton": "Repas",
+  "@feedingsButton": {
+    "description": "Daily log button opening the number of feedings (1 to 6)."
+  },
+  "deathAppearanceButton": "Aspect",
+  "@deathAppearanceButton": {
+    "description": "Daily log button beside deaths, opening what the dead fish looked like."
   }
 }
