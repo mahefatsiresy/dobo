@@ -1,11 +1,15 @@
 import 'package:dobo/app.dart';
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/database_provider.dart';
+import 'package:dobo/db/repositories/reading_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
+import 'package:dobo/db/repositories/visit_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/account/account_locale.dart';
 import 'package:dobo/features/common/farm_today.dart';
+import 'package:dobo/features/visit/visit_checklist.dart';
 import 'package:dobo/router.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,8 +19,9 @@ import '../test/demo_farm.dart';
 const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 
 /// `list` for the ponds list, a pond code (E2) for that pond's page,
-/// `worker` for the worker home, `log-E1` for E1's daily log, or `alerts`
-/// for the Alerts tab.
+/// `worker` for the worker home, `log-E1` for E1's daily log, `alerts`
+/// for the Alerts tab, `visit-start` for the Visit tab before a visit, or
+/// `visit` for a visit under way (E1 read and inspected).
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -34,6 +39,7 @@ Future<void> main() async {
     isAdmin: !worker,
   );
   final farm = await seedDemoFarm(db);
+  if (_page == 'visit') await _visitUnderWay(db, farm);
   final container = ProviderContainer(
     overrides: [
       databaseProvider.overrideWithValue(db),
@@ -50,6 +56,7 @@ Future<void> main() async {
   final path = switch (_page) {
     'worker' => '/worker',
     'alerts' => '/alerts',
+    'visit' || 'visit-start' => '/visit',
     _ when _page.startsWith('log-') =>
       '/log/${_pond(farm, _page.substring(4))}',
     _ => '/ponds/${_pond(farm, _page)}',
@@ -70,3 +77,30 @@ Future<void> main() async {
 String _pond(DemoFarm farm, String code) =>
     farm[code] ??
     (throw ArgumentError.value(code, 'DEMO_PAGE', 'no such pond'));
+
+/// A visit started at the demo's "now", with E1's water read and its
+/// inspection all in order.
+Future<void> _visitUnderWay(AppDatabase db, DemoFarm farm) async {
+  final session = (await SetupRepository(db).currentSession())!;
+  final id = await VisitRepository(db, session).start();
+  await (db.update(db.visits)..where((v) => v.id.equals(id))).write(
+    VisitsCompanion(startedAt: Value(demoNow)),
+  );
+  await ReadingRepository(db, session, visitId: id).addWaterReading(
+    WaterReadingInput(
+      pondId: farm['E1']!,
+      at: demoNow,
+      temperatureC: 28,
+      ph: 7.2,
+      oxygenMgL: 5,
+    ),
+  );
+  final observations = ObservationRepository(db, session, visitId: id);
+  for (final c in conditionCategories) {
+    await observations.addObservation(
+      pondId: farm['E1'],
+      category: c,
+      ok: true,
+    );
+  }
+}
