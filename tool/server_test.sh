@@ -7,7 +7,9 @@ eval "$(supabase status -o env 2>/dev/null | grep -E '^(API_URL|ANON_KEY|PUBLISH
 # The local founding code (supabase/functions/.env, from .env.example).
 FOUNDING_CODE="$(sed -n 's/^FOUNDING_CODE=//p' "$(dirname "$0")/../supabase/functions/.env")"
 export FOUNDING_CODE
+# One file at a time: the files share one server and one founding code, and
+# a file that spends the code while another is founding fails the other.
 SUPABASE_URL="$API_URL" SUPABASE_ANON_KEY="$ANON_KEY" \
   SUPABASE_PUBLISHABLE_KEY="$PUBLISHABLE_KEY" \
   SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" SUPABASE_DB_URL="$DB_URL" \
-  flutter test --tags server --run-skipped "$@"
+  flutter test --tags server --run-skipped --concurrency=1 "$@"
