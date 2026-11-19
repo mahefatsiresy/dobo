@@ -45,6 +45,35 @@ void main() {
     }
   });
 
+  testWidgets('a two-digit badge count fits inside its pill', (t) async {
+    await t.pumpWidget(
+      MaterialApp(
+        theme: doboTheme(),
+        home: const Scaffold(
+          body: Center(
+            child: Badge(label: Text('12'), child: Icon(Icons.notifications)),
+          ),
+        ),
+      ),
+    );
+    final pill = t.getRect(
+      find
+          .descendant(of: find.byType(Badge), matching: find.byType(Container))
+          .first,
+    );
+    // The pill lays its text out at the pill's height: measure the text's
+    // own height, which is what paints.
+    final style = DefaultTextStyle.of(t.element(find.text('12'))).style;
+    final painter = TextPainter(
+      text: TextSpan(text: '12', style: style),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    expect(pill.height, greaterThanOrEqualTo(painter.height));
+    expect(pill.width, greaterThanOrEqualTo(painter.width));
+    expect(style.fontSize, greaterThanOrEqualTo(14));
+    painter.dispose();
+  });
+
   appTest('the app uses the Dobo theme', (tester, db) async {
     final context = tester.element(find.byType(Scaffold).first);
     expect(Theme.of(context).colorScheme.primary, DoboColors.standard.ink);

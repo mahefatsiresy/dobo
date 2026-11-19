@@ -23,6 +23,9 @@ void appTest(
   bool isAdmin = true,
   bool? isSales,
   List<Override> overrides = const [],
+
+  /// False for a screen that never settles, such as one left loading.
+  bool settle = true,
 }) {
   testWidgets(description, (tester) async {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -41,7 +44,9 @@ void appTest(
         child: const DoboApp(),
       ),
     );
-    await tester.pumpAndSettle();
+    settle
+        ? await tester.pumpAndSettle()
+        : await tester.pump(const Duration(seconds: 1));
     await body(tester, db);
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 1));

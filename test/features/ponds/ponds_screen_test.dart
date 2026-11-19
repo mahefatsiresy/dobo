@@ -11,6 +11,8 @@ import 'package:dobo/l10n/app_localizations.dart';
 import 'package:dobo/l10n/formatting.dart';
 import 'package:dobo/locale_controller.dart';
 import 'package:dobo/theme/dobo_theme.dart';
+import 'package:dobo/theme/tokens.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -56,6 +58,20 @@ void main() {
     expect(find.text('Aucun étang : ajoutez le premier'), findsOneWidget);
     expect(find.text('Ajouter un étang'), findsOneWidget);
   });
+
+  appTest(
+    'while alerts load: no all-clear, no ration, no total',
+    overrides: [alertsProvider.overrideWithValue(const AsyncLoading())],
+    settle: false,
+    (tester, db) async {
+      await seedDemoFarm(db);
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.textContaining('en danger'), findsNothing);
+      expect(find.byKey(rationKey), findsNothing);
+      expect(find.textContaining('tous les étangs'), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    },
+  );
 
   _demoTest('rows come in code order', (tester, farm) async {
     final codes = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'P1', 'P2'];
@@ -236,44 +252,106 @@ void main() {
   testWidgets('a stocked pond with no known weight: fish, no ration', (
     tester,
   ) async {
-    final pond = pondRow('p1', code: 'E7');
-    final overview = PondOverview(
-      pond: pond,
-      status: PondStatus.stocked,
-      surfaceM2: 500,
-      batches: const [],
-      liveCount: 800,
-      inconsistent: false,
-      biomassG: null,
-      density: 1.6,
-      densityStatus: DensityStatus.within,
-      rationG: 0,
-    );
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: doboTheme(),
-        locale: _fr,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [_fr],
-        home: Scaffold(
-          body: StockedPondRow(
-            overview: overview,
-            attention: null,
-            loggedToday: false,
-            stopFeeding: const {},
-            onTap: () {},
+    // One batch whose weight is unknown: the real path through the row.
+    await _pumpRow(
+      tester,
+      _overview(
+        batches: [
+          BatchInPond(
+            batch: batchRow('b1', code: 'L7'),
+            placement: placementOf('b1', 'p1', 800, null),
+            phase: null,
+            biomassG: null,
           ),
-        ),
+        ],
+        rationG: 0,
+        biomassG: null,
       ),
     );
-    expect(find.text('≈ 800 poissons'), findsOneWidget);
+    expect(find.text('≈\u00a0800 poissons'), findsOneWidget);
     expect(find.byKey(rationKey), findsNothing);
     expect(find.text('Ne pas nourrir'), findsNothing);
     expect(find.textContaining('kg'), findsNothing);
   });
+
+  testWidgets('density out of range is a warning colour, not danger', (
+    tester,
+  ) async {
+    await _pumpRow(
+      tester,
+      _overview(density: 7.2, densityStatus: DensityStatus.above),
+    );
+    final density = tester.widget<Text>(find.textContaining('Densité'));
+    expect(density.style!.color, DoboColors.standard.warning);
+  });
+
+  testWidgets('at 130 % text the ration stays on one line', (tester) async {
+    await _pumpRow(tester, _overview(rationG: 12400), textScale: 1.3);
+    final ration = find.descendant(
+      of: find.byKey(rationKey),
+      matching: find.byType(Text),
+    );
+    final style = doboTheme().textTheme.headlineSmall!;
+    // One line of 28 sp at 1.3×, not two.
+    expect(
+      tester.getSize(ration).height,
+      lessThan(style.fontSize! * 1.3 * 1.6),
+    );
+  });
+}
+
+PondOverview _overview({
+  List<BatchInPond> batches = const [],
+  int rationG = 0,
+  int? biomassG,
+  double density = 1.6,
+  DensityStatus densityStatus = DensityStatus.within,
+}) => PondOverview(
+  pond: pondRow('p1', code: 'E7'),
+  status: PondStatus.stocked,
+  surfaceM2: 500,
+  batches: batches,
+  liveCount: 800,
+  inconsistent: false,
+  biomassG: biomassG,
+  density: density,
+  densityStatus: densityStatus,
+  rationG: rationG,
+);
+
+Future<void> _pumpRow(
+  WidgetTester tester,
+  PondOverview overview, {
+  double textScale = 1,
+}) async {
+  tester.view.physicalSize = const Size(720, 1560);
+  tester.view.devicePixelRatio = 2;
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: doboTheme(),
+      locale: _fr,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [_fr],
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(textScale)),
+        child: child!,
+      ),
+      home: Scaffold(
+        body: StockedPondRow(
+          overview: overview,
+          attention: null,
+          loggedToday: false,
+          stopFeeding: const {},
+          onTap: () {},
+        ),
+      ),
+    ),
+  );
 }

@@ -88,7 +88,8 @@ class StockedPondRow extends StatelessWidget {
               '${l10n.densityValue(formatDecimal(o.density!, locale))}, '
               '${l10n.densityStatus(density)}',
             ),
-            style: text.bodyMedium?.copyWith(color: c.danger),
+            // The density alert is a warning (DOMAIN §Alert rules).
+            style: text.bodyMedium?.copyWith(color: c.warning),
           ),
         const SizedBox(height: 4),
         Row(
@@ -128,10 +129,15 @@ class StockedPondRow extends StatelessWidget {
             textAlign: TextAlign.end,
             style: text.bodySmall,
           ),
-          EstimatedLabel(
-            key: rationKey,
-            value: formatKg(o.rationG, locale),
-            style: text.headlineSmall,
+          // The loud number never splits from its unit: it shrinks instead.
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerRight,
+            child: EstimatedLabel(
+              key: rationKey,
+              value: formatKg(o.rationG, locale),
+              style: text.headlineSmall,
+            ),
           ),
         ],
       ],

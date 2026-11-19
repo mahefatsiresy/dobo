@@ -23,7 +23,12 @@ class PondsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final overviews = ref.watch(pondOverviewsProvider).value;
+    // Alerts decide the bands, the stop-feeding signs and the danger line:
+    // until they are known the list would claim an all-clear and show
+    // rations for ponds that must not be fed.
+    final overviews = ref.watch(alertsProvider).hasValue
+        ? ref.watch(pondOverviewsProvider).value
+        : null;
     // Ponds are set up by admins (SPEC §3).
     final isAdmin = ref.watch(sessionProvider).value?.isAdmin ?? false;
     final add = isAdmin
