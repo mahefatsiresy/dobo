@@ -166,12 +166,8 @@ void main() {
     );
     // The draft: the summary is written here (docs/design.md §Step 5).
     expect(find.text('Rapport de visite'), findsOneWidget);
-    await enterAndSettle(
-      tester,
-      find.widgetWithText(TextField, 'Résumé'),
-      'Eau verte',
-    );
-    expect(find.text('Rien à signaler'), findsWidgets);
+    await enterAndSettle(tester, find.byType(TextField), 'Eau verte');
+    expect(find.text('Aucune alerte'), findsOneWidget);
 
     await tapAndSettle(tester, find.text('Publier'));
     final r = await db.select(db.visitReports).getSingle();
@@ -209,9 +205,11 @@ void main() {
     go(tester, '/reports/$id');
     await tester.pumpAndSettle();
     expect(find.text('Du 13/03/2026 au 20/03/2026'), findsOneWidget);
-    expect(find.text('Rakoto 4 · inconnu 2'), findsOneWidget);
+    expect(find.text('6 morts (Rakoto 4, inconnu 2)'), findsOneWidget);
     expect(find.textContaining('29,7 kg', findRichText: true), findsOneWidget);
-    expect(find.textContaining('estimé', findRichText: true), findsWidgets);
+    // On screen an estimate starts with ≈ (docs/design.md §Step 6).
+    expect(find.textContaining('≈'), findsWidgets);
+    expect(find.textContaining('estimé', findRichText: true), findsNothing);
     expect(find.textContaining('bassin partagé'), findsOneWidget);
     expect(find.text('Aucun relevé'), findsOneWidget);
     expect(find.textContaining('Fuite côté sud'), findsOneWidget);
@@ -297,7 +295,7 @@ void main() {
       );
       expect(inReport, findsOneWidget, reason: heading);
     }
-    expect(find.text('Rien à signaler'), findsWidgets);
+    expect(find.text('Aucun mort, aucun signe'), findsOneWidget);
     expect(find.text('NaN'), findsNothing);
   });
 
@@ -345,10 +343,7 @@ void main() {
     await visits.end(v);
     go(tester, '/reports/draft/$v');
     await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(TextField, 'Résumé'),
-      'Digue sud à reprendre',
-    );
+    await tester.enterText(find.byType(TextField), 'Digue sud à reprendre');
     await tester.pump(const Duration(milliseconds: 100));
     go(tester, '/reports');
     await tester.pumpAndSettle();
@@ -374,7 +369,7 @@ void main() {
       go(tester, '/reports/$id');
       await tester.pumpAndSettle();
       await tester.runAsync(() async {
-        await tester.tap(find.byTooltip('Partager'));
+        await tester.tap(find.text('Partager'));
         // Fonts and the PDF are built off the test clock.
         for (var i = 0; i < 50 && shared.isEmpty; i++) {
           await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -392,4 +387,16 @@ void main() {
       ),
     ],
   );
+
+  appTest('a pond this phone doesn\'t know shows its code alone', (
+    tester,
+    db,
+  ) async {
+    final id = await pulled(tester, db, full());
+    go(tester, '/reports/$id');
+    await tester.pumpAndSettle();
+    expect(find.text('E1'), findsWidgets);
+    expect(find.byKey(const ValueKey('pondSwatch')), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 }

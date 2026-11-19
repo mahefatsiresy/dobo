@@ -16,6 +16,7 @@ import '../photos/photo_strip.dart';
 import 'report_providers.dart';
 import 'report_sections.dart';
 import 'share_report.dart';
+import '../../theme/tokens.dart';
 
 /// A visit report: a draft to review and publish, or a published one to
 /// read and share (SPEC F8).
@@ -112,22 +113,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
         ? ref.watch(draftReportProvider(visitId))
         : ref.watch(reportContentProvider(widget.reportId!));
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.reportTitle),
-        actions: [
-          if (widget.reportId != null)
-            if (content case AsyncData(value: final c?))
-              IconButton(
-                tooltip: l10n.reportShare,
-                iconSize: 28,
-                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
-                onPressed: saving
-                    ? null
-                    : () => saveOnce(() => shareReport(context, ref, c)),
-                icon: const Icon(Icons.share),
-              ),
-        ],
-      ),
+      appBar: AppBar(title: Text(l10n.reportTitle)),
       body: switch (content) {
         AsyncData(value: null) => Center(
           child: Padding(
@@ -136,7 +122,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
           ),
         ),
         AsyncData(value: final c?) => ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(top: 16),
           children: [
             _Header(content: c, draft: visitId != null),
             ReportSections(
@@ -146,48 +132,62 @@ class _ReportScreenState extends ConsumerState<ReportScreen> with SaveOnce {
                   : PhotoStrip(owner: PhotoOwner.visit, ownerId: visitId),
               summary: visitId == null
                   ? null
-                  : TextField(
-                      controller: _summary,
-                      maxLines: null,
-                      minLines: 3,
-                      decoration: InputDecoration(
-                        labelText: l10n.reportSummary,
-                        border: const OutlineInputBorder(),
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        controller: _summary,
+                        maxLines: null,
+                        minLines: 3,
+                        decoration: InputDecoration(
+                          hintText: l10n.reportSummaryHint,
+                          border: const OutlineInputBorder(),
+                        ),
+                        onChanged: (_) {
+                          _debounce?.cancel();
+                          _debounce = Timer(
+                            const Duration(milliseconds: 600),
+                            _saveSummary,
+                          );
+                        },
                       ),
-                      onChanged: (_) {
-                        _debounce?.cancel();
-                        _debounce = Timer(
-                          const Duration(milliseconds: 600),
-                          _saveSummary,
-                        );
-                      },
                     ),
             ),
           ],
         ),
         _ => const Center(child: CircularProgressIndicator()),
       },
-      // Always in reach: the member reviews, then publishes.
+      // Always in reach: the member reviews, then publishes; a published
+      // report is shared (docs/design.md §Step 6).
       bottomNavigationBar: switch ((visitId, content)) {
-        (_?, AsyncData(value: final c?)) => SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: FilledButton.icon(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving || !_summaryLoaded
-                  ? null
-                  : () => saveOnce(() => _publish(c)),
-              icon: const Icon(Icons.send),
-              label: Text(l10n.reportPublish),
-            ),
-          ),
+        (_?, AsyncData(value: final c?)) => _pinned(
+          Icons.send,
+          l10n.reportPublish,
+          saving || !_summaryLoaded ? null : () => saveOnce(() => _publish(c)),
+        ),
+        (null, AsyncData(value: final c?)) => _pinned(
+          Icons.share,
+          l10n.reportShare,
+          saving ? null : () => saveOnce(() => shareReport(context, ref, c)),
         ),
         _ => null,
       },
     );
   }
+
+  Widget _pinned(IconData icon, String label, VoidCallback? onPressed) =>
+      SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: FilledButton.icon(
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(56),
+            ),
+            onPressed: onPressed,
+            icon: Icon(icon),
+            label: Text(label),
+          ),
+        ),
+      );
 }
 
 class _Header extends StatelessWidget {
@@ -201,28 +201,33 @@ class _Header extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final h = content.header;
     final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.labelValue(h.siteName, formatDate(h.visitDay)),
-          style: theme.textTheme.titleLarge,
-        ),
-        if (h.memberName.isNotEmpty)
+    final muted = theme.textTheme.bodySmall?.copyWith(
+      color: context.dobo.inkMuted,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
-            h.groupName == null
-                ? l10n.reportAuthor(h.memberName)
-                : l10n.reportAuthorGroup(h.memberName, h.groupName!),
+            l10n.reportHeaderTitle(h.siteName, formatDate(h.visitDay)),
+            style: theme.textTheme.titleLarge,
           ),
-        Text(
-          l10n.reportPeriod(formatDate(h.periodFrom), formatDate(h.periodTo)),
-        ),
-        if (!draft)
+          if (h.memberName.isNotEmpty)
+            Text(
+              h.groupName == null
+                  ? l10n.reportAuthor(h.memberName)
+                  : l10n.reportAuthorGroup(h.memberName, h.groupName!),
+            ),
           Text(
-            l10n.reportPublishedOn(formatDate(h.builtAt)),
-            style: theme.textTheme.bodySmall,
+            l10n.reportPeriod(formatDate(h.periodFrom), formatDate(h.periodTo)),
           ),
-      ],
+          if (draft)
+            Text(l10n.reportDraftNote, style: muted)
+          else
+            Text(l10n.reportPublishedOn(formatDate(h.builtAt)), style: muted),
+        ],
+      ),
     );
   }
 }

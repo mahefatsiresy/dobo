@@ -1392,7 +1392,7 @@
   "@reportHealthEventLine": {"placeholders": {"date": {"type": "String"}, "details": {"type": "String"}}},
   "reportReadingOn": "Relevé du {date}",
   "@reportReadingOn": {"placeholders": {"date": {"type": "String"}}},
-  "reportGrowthLine": "{batch} · {weight} (pesé le {date})",
+  "reportGrowthLine": "{batch} {weight} ({date})",
   "@reportGrowthLine": {"placeholders": {"batch": {"type": "String"}, "weight": {"type": "String"}, "date": {"type": "String"}}},
   "reportBiomass": "Biomasse",
   "reportFish": "Poissons",
@@ -1771,6 +1771,63 @@
     "description": "An inspection left undone, in the end-of-visit confirmation.",
     "placeholders": {
       "pond": {
+        "type": "String"
+      }
+    }
+  },
+  "reportAlertsNone": "Aucune alerte",
+  "@reportAlertsNone": {
+    "description": "Report, Alerts section with nothing open."
+  },
+  "reportHealthNone": "Aucun mort, aucun signe",
+  "@reportHealthNone": {
+    "description": "Report, Health section with no deaths, signs or events in the period."
+  },
+  "reportNextNone": "Rien de prévu",
+  "@reportNextNone": {
+    "description": "Report, Next section with nothing planned."
+  },
+  "reportObservationsNone": "Aucune observation",
+  "@reportObservationsNone": {
+    "description": "Report, Observations section with nothing noted."
+  },
+  "reportInOrder": "Tout en ordre : {ponds}",
+  "@reportInOrder": {
+    "description": "Report: the ponds inspected during the visit with every check OK.",
+    "placeholders": {
+      "ponds": {
+        "type": "String"
+      }
+    }
+  },
+  "reportHeaderTitle": "{site}, {date}",
+  "@reportHeaderTitle": {
+    "description": "Report title line: the site and the visit's date.",
+    "placeholders": {
+      "site": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reportDraftNote": "Brouillon : visible par vous seul jusqu'à la publication",
+  "@reportDraftNote": {
+    "description": "Report draft header: nobody else sees it until it is published."
+  },
+  "reportSummaryHint": "Ce que vous avez vu, en quelques mots",
+  "@reportSummaryHint": {
+    "description": "Report draft: hint in the summary box."
+  },
+  "reportDeathsBy": "{deaths} ({observers})",
+  "@reportDeathsBy": {
+    "description": "Report health line: deaths, then who saw them.",
+    "placeholders": {
+      "deaths": {
+        "type": "String"
+      },
+      "observers": {
         "type": "String"
       }
     }

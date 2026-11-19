@@ -2208,7 +2208,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String reportGrowthLine(String batch, String weight, String date) {
-    return '$batch · $weight (pesé le $date)';
+    return '$batch $weight ($date)';
   }
 
   @override
@@ -2677,5 +2677,39 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String leftInspection(String pond) {
     return 'état $pond';
+  }
+
+  @override
+  String get reportAlertsNone => 'Aucune alerte';
+
+  @override
+  String get reportHealthNone => 'Aucun mort, aucun signe';
+
+  @override
+  String get reportNextNone => 'Rien de prévu';
+
+  @override
+  String get reportObservationsNone => 'Aucune observation';
+
+  @override
+  String reportInOrder(String ponds) {
+    return 'Tout en ordre : $ponds';
+  }
+
+  @override
+  String reportHeaderTitle(String site, String date) {
+    return '$site, $date';
+  }
+
+  @override
+  String get reportDraftNote =>
+      'Brouillon : visible par vous seul jusqu\'à la publication';
+
+  @override
+  String get reportSummaryHint => 'Ce que vous avez vu, en quelques mots';
+
+  @override
+  String reportDeathsBy(String deaths, String observers) {
+    return '$deaths ($observers)';
   }
 }

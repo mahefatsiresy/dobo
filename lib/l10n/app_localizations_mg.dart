@@ -2225,7 +2225,7 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String reportGrowthLine(String batch, String weight, String date) {
-    return '$batch · $weight (nolanjaina tamin\'ny $date)';
+    return '$batch $weight ($date)';
   }
 
   @override
@@ -2675,5 +2675,39 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String leftInspection(String pond) {
     return 'toetry $pond';
+  }
+
+  @override
+  String get reportAlertsNone => 'Tsy misy fanairana';
+
+  @override
+  String get reportHealthNone => 'Tsy nisy maty, tsy nisy famantarana';
+
+  @override
+  String get reportNextNone => 'Tsy misy voalahatra';
+
+  @override
+  String get reportObservationsNone => 'Tsy misy fanamarihana';
+
+  @override
+  String reportInOrder(String ponds) {
+    return 'Milamina avokoa : $ponds';
+  }
+
+  @override
+  String reportHeaderTitle(String site, String date) {
+    return '$site, $date';
+  }
+
+  @override
+  String get reportDraftNote =>
+      'Drafitra : ianao irery no mahita azy mandra-pivoakany';
+
+  @override
+  String get reportSummaryHint => 'Izay hitanao, fohifohy';
+
+  @override
+  String reportDeathsBy(String deaths, String observers) {
+    return '$deaths ($observers)';
   }
 }

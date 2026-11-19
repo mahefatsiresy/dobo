@@ -3977,7 +3977,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportGrowthLine.
   ///
   /// In fr, this message translates to:
-  /// **'{batch} · {weight} (pesé le {date})'**
+  /// **'{batch} {weight} ({date})'**
   String reportGrowthLine(String batch, String weight, String date);
 
   /// No description provided for @reportBiomass.
@@ -4668,6 +4668,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'état {pond}'**
   String leftInspection(String pond);
+
+  /// Report, Alerts section with nothing open.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune alerte'**
+  String get reportAlertsNone;
+
+  /// Report, Health section with no deaths, signs or events in the period.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun mort, aucun signe'**
+  String get reportHealthNone;
+
+  /// Report, Next section with nothing planned.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien de prévu'**
+  String get reportNextNone;
+
+  /// Report, Observations section with nothing noted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune observation'**
+  String get reportObservationsNone;
+
+  /// Report: the ponds inspected during the visit with every check OK.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout en ordre : {ponds}'**
+  String reportInOrder(String ponds);
+
+  /// Report title line: the site and the visit's date.
+  ///
+  /// In fr, this message translates to:
+  /// **'{site}, {date}'**
+  String reportHeaderTitle(String site, String date);
+
+  /// Report draft header: nobody else sees it until it is published.
+  ///
+  /// In fr, this message translates to:
+  /// **'Brouillon : visible par vous seul jusqu\'à la publication'**
+  String get reportDraftNote;
+
+  /// Report draft: hint in the summary box.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce que vous avez vu, en quelques mots'**
+  String get reportSummaryHint;
+
+  /// Report health line: deaths, then who saw them.
+  ///
+  /// In fr, this message translates to:
+  /// **'{deaths} ({observers})'**
+  String reportDeathsBy(String deaths, String observers);
 }
 
 class _AppLocalizationsDelegate

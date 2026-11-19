@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/growth.dart';
 import '../../domain/report/report_content.dart';
+import '../../domain/report/report_order.dart';
 import '../../domain/types.dart';
-import '../../domain/water.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
-import '../photos/photo_strip.dart';
 import '../../theme/tokens.dart';
+import '../common/attention_band.dart';
+import '../common/coded_band.dart';
+import '../common/estimated.dart';
+import '../common/pond_colour.dart';
+import '../photos/photo_strip.dart';
+import '../ponds/pond_overview.dart';
+import '../readings/reading_values.dart';
 
-/// The nine sections of a visit report (SPEC F8), drawn from its frozen
-/// content. [summary] replaces the summary section (the draft's text field).
-class ReportSections extends StatelessWidget {
+/// The width of the pond code column; lines under a pond start after it.
+const _codeColumn = 72.0;
+
+/// The sections of a visit report (SPEC F8, docs/design.md §Step 6), by
+/// topic and in F8's order, drawn from its frozen content. [summary]
+/// replaces the summary text (the draft's box); [visitPhotos] the visit's
+/// photos (the draft's editable strip).
+class ReportSections extends ConsumerWidget {
   const ReportSections({
     super.key,
     required this.content,
@@ -22,14 +34,41 @@ class ReportSections extends StatelessWidget {
 
   final ReportContent content;
   final Widget? summary;
-
-  /// Replaces the visit's photos (the draft's editable strip).
   final Widget? visitPhotos;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
     final c = content;
+    final colours = ref.watch(pondColoursProvider);
+    Widget pond(String? pondId, Widget child, {IconData? icon, Color? ic}) =>
+        _PondLine(
+          code: c.pondCodes[pondId],
+          colour: colours[pondId],
+          icon: icon,
+          iconColour: ic,
+          child: child,
+        );
+    final split = splitObservations(c.observations, c.pondCodes);
+    final growth = [...c.growth]
+      ..sort((a, b) {
+        final byPond = (c.pondCodes[a.pondId] ?? '').compareTo(
+          c.pondCodes[b.pondId] ?? '',
+        );
+        return byPond != 0
+            ? byPond
+            : (c.batchCodes[a.batchId] ?? '').compareTo(
+                c.batchCodes[b.batchId] ?? '',
+              );
+      });
+    final water = [...c.water]
+      ..sort(
+        (a, b) => (c.pondCodes[a.pondId] ?? '').compareTo(
+          c.pondCodes[b.pondId] ?? '',
+        ),
+      );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -37,244 +76,248 @@ class ReportSections extends StatelessWidget {
         summary ??
             (c.summary == null
                 ? _Empty(l10n.reportNoSummary)
-                : Text(c.summary!)),
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      c.summary!,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  )),
+
         _Heading(l10n.reportAlerts),
-        if (c.alerts.isEmpty) _Empty(l10n.reportNothing),
+        if (c.alerts.isEmpty) _Empty(l10n.reportAlertsNone),
         for (final a in c.alerts)
-          _Line(
-            icon: a.severity == Severity.danger ? Icons.error : Icons.warning,
-            iconColor: a.severity == Severity.danger
-                ? context.dobo.danger
-                : context.dobo.warning,
-            pond: c.pondCodes[a.pondId],
-            text: l10n.alertText(a, batchCode: c.batchCodes[a.batchId]),
-          ),
-        _Heading(l10n.reportHealth),
-        if (c.health.isEmpty) _Empty(l10n.reportNothing),
-        for (final h in c.health) _PondHealthBlock(content: c, health: h),
-        _Heading(l10n.reportWater),
-        if (c.water.isEmpty) _Empty(l10n.reportNoFish),
-        for (final w in c.water) _WaterLine(content: c, water: w),
-        _Heading(l10n.reportGrowth),
-        if (c.growth.isEmpty) _Empty(l10n.reportNoFish),
-        for (final g in c.growth) _GrowthBlock(content: c, growth: g),
-        _Heading(l10n.reportFeed),
-        if (c.feed.isEmpty) _Empty(l10n.reportNoFeed),
-        for (final f in c.feed)
-          _Line(
-            pond: c.pondCodes[f.pondId],
-            text: formatKg(f.feedG, Localizations.localeOf(context)),
-          ),
-        if (c.feed.isNotEmpty)
-          _Line(
-            text: l10n.labelValue(
-              l10n.reportFeedTotal,
-              formatKg(c.feedTotalG, Localizations.localeOf(context)),
+          Padding(
+            // A 2 dp gap, as on the Alerts tab.
+            padding: const EdgeInsets.only(bottom: 2),
+            child: CodedBand(
+              severity: a.severity == Severity.danger
+                  ? BandSeverity.danger
+                  : BandSeverity.warning,
+              text: l10n.alertText(a, batchCode: c.batchCodes[a.batchId]),
+              code: c.pondCodes[a.pondId],
+              colour: colours[a.pondId],
             ),
           ),
-        for (final text in l10n.reportFeedStockLines(
-          c.feedStock,
-          Localizations.localeOf(context),
-        ))
-          c.feedStock == null ? _Empty(text) : _Line(text: text),
-        _Heading(l10n.reportNext),
-        if (c.next.isEmpty) _Empty(l10n.reportNothing),
-        for (final n in c.next)
-          _Line(
-            pond: c.pondCodes[n.pondId],
-            text: l10n.labelValue(
-              formatDate(n.date),
-              l10n.reportNextText(
-                n,
-                pond: c.pondCodes[n.pondId] ?? '?',
-                batch: c.batchCodes[n.batchId] ?? '?',
+
+        _Heading(l10n.reportHealth),
+        if (c.health.isEmpty) _Empty(l10n.reportHealthNone),
+        for (final h in orderHealth(c.health, c.pondCodes)) ...[
+          pond(h.pondId, Text(_deathsText(l10n, h, locale))),
+          for (final e in healthEntries(h)) ..._healthEntry(context, e),
+        ],
+
+        _Heading(l10n.reportWater),
+        if (water.isEmpty) _Empty(l10n.reportNoFish),
+        for (final w in water)
+          pond(
+            w.pondId,
+            w.at == null
+                ? Text(l10n.reportNoReading)
+                : WaterValues(
+                    temperatureC: w.temperatureC,
+                    ph: w.ph,
+                    oxygenMgL: w.oxygenMgL,
+                    colour: w.colour,
+                    issues: {for (final i in w.issues) i.param: i.severity},
+                    leading: Text(formatDate(w.at!)),
+                  ),
+          ),
+
+        _Heading(l10n.reportGrowth),
+        if (growth.isEmpty) _Empty(l10n.reportNoFish),
+        for (final g in growth) ...[
+          pond(
+            g.pondId,
+            Text(
+              [
+                l10n.reportGrowthLine(
+                  c.batchCodes[g.batchId] ?? '?',
+                  formatGrams(g.avgWeightG, locale),
+                  formatDate(g.weighedOn),
+                ),
+                approx(formatKg(g.biomassG, locale)),
+                approx(l10n.pondFishCount(formatCount(g.liveCount, locale))),
+              ].join(', '),
+            ),
+          ),
+          _Sub(child: _GrowthFigures(growth: g)),
+        ],
+
+        _Heading(l10n.reportFeed),
+        if (c.feed.isEmpty) _Empty(l10n.reportNoFeed),
+        for (final f
+            in [...c.feed]..sort(
+              (a, b) => (c.pondCodes[a.pondId] ?? '').compareTo(
+                c.pondCodes[b.pondId] ?? '',
+              ),
+            ))
+          pond(
+            f.pondId,
+            Text(
+              formatKg(f.feedG, locale),
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                fontFeatures: [FontFeature.tabularFigures()],
               ),
             ),
           ),
+        if (c.feed.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            child: Row(
+              children: [
+                Expanded(child: Text(l10n.reportFeedTotal, style: _bold)),
+                Text(
+                  formatKg(c.feedTotalG, locale),
+                  style: _bold.copyWith(
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        for (final text in l10n.reportFeedStockLines(c.feedStock, locale))
+          c.feedStock == null ? _Empty(text) : _Plain(text),
+
+        _Heading(l10n.reportNext),
+        if (c.next.isEmpty) _Empty(l10n.reportNextNone),
+        for (final n in c.next)
+          pond(
+            n.pondId,
+            Text(
+              l10n.labelValue(
+                formatDate(n.date),
+                l10n.reportNextText(
+                  n,
+                  pond: c.pondCodes[n.pondId] ?? '?',
+                  batch: c.batchCodes[n.batchId] ?? '?',
+                ),
+              ),
+            ),
+          ),
+
         _Heading(l10n.reportObservations),
-        ..._observations(context, c),
-        visitPhotos ?? ReportPhotos(keys: c.visitPhotoKeys),
+        if (split.problems.isEmpty &&
+            split.notes.isEmpty &&
+            split.inOrder.isEmpty &&
+            c.visitPhotoKeys.isEmpty &&
+            visitPhotos == null)
+          _Empty(l10n.reportObservationsNone),
+        for (final o in [...split.problems, ...split.notes]) ...[
+          pond(
+            o.pondId,
+            Text(
+              o.note == null
+                  ? l10n.observationCategory(o.category)
+                  : l10n.labelValue(
+                      l10n.observationCategory(o.category),
+                      o.note!,
+                    ),
+            ),
+            icon: o.ok == false ? Icons.report_problem : Icons.notes,
+            ic: o.ok == false ? context.dobo.warning : null,
+          ),
+          if (o.photoKeys.isNotEmpty)
+            _Sub(child: ReportPhotos(keys: o.photoKeys)),
+        ],
+        if (split.inOrder.isNotEmpty)
+          _PondLine(
+            icon: Icons.check_circle,
+            iconColour: context.dobo.ok,
+            child: Text(l10n.reportInOrder(split.inOrder.join(', '))),
+          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: visitPhotos ?? ReportPhotos(keys: c.visitPhotoKeys),
+        ),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  static List<Widget> _observations(BuildContext context, ReportContent c) {
-    final l10n = AppLocalizations.of(context);
-    final problems = [
-      for (final o in c.observations)
-        if (o.ok != true) o,
-    ];
-    final ok = [
-      for (final o in c.observations)
-        if (o.ok == true) o,
-    ];
-    return [
-      if (problems.isEmpty && ok.isEmpty && c.visitPhotoKeys.isEmpty)
-        _Empty(l10n.reportNothing),
-      for (final o in problems) ...[
-        _Line(
-          icon: o.ok == false ? Icons.report_problem : Icons.visibility,
-          iconColor: o.ok == false ? context.dobo.warning : null,
-          pond: c.pondCodes[o.pondId],
-          text: o.note == null
-              ? l10n.observationCategory(o.category)
-              : l10n.labelValue(l10n.observationCategory(o.category), o.note!),
-        ),
-        ReportPhotos(keys: o.photoKeys),
-      ],
-      if (ok.isNotEmpty)
-        _Line(
-          icon: Icons.check_circle,
-          iconColor: context.dobo.ok,
-          text: l10n.reportAllOk(
-            {for (final o in ok) l10n.observationCategory(o.category)}
-                .join(', '),
+  static const _bold = TextStyle(fontWeight: FontWeight.w700);
+
+  String _deathsText(AppLocalizations l10n, PondHealth h, Locale locale) {
+    final deaths = l10n.reportDeaths(formatCount(h.deaths, locale));
+    if (h.byObserver.isEmpty) return deaths;
+    return l10n.reportDeathsBy(
+      deaths,
+      [
+        for (final o in h.byObserver)
+          l10n.reportObserverDeaths(
+            o.name ?? l10n.reportUnknownPerson,
+            formatCount(o.deaths, locale),
           ),
-        ),
-    ];
+      ].join(', '),
+    );
   }
-}
 
-class _PondHealthBlock extends StatelessWidget {
-  const _PondHealthBlock({required this.content, required this.health});
-
-  final ReportContent content;
-  final PondHealth health;
-
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> _healthEntry(BuildContext context, HealthEntry e) {
     final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
-    final h = health;
+    final danger = context.dobo.danger;
     String actions(Set<HealthAction> a) =>
         [for (final x in a) l10n.healthAction(x)].join(', ');
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _Line(
-          pond: content.pondCodes[h.pondId],
-          text: l10n.reportDeaths(formatCount(h.deaths, locale)),
-        ),
-        if (h.byObserver.isNotEmpty)
-          _Indented(
-            [
-              for (final o in h.byObserver)
-                l10n.reportObserverDeaths(
-                  o.name ?? l10n.reportUnknownPerson,
-                  formatCount(o.deaths, locale),
-                ),
-            ].join(l10n.reportListSeparator),
-          ),
-        for (final s in h.signs)
-          _Indented(
+    return switch (e) {
+      SignsEntry(:final signs) => [
+        _Sub(
+          icon: Icons.error,
+          iconColour: danger,
+          child: Text(
             l10n.reportSigns(
-              formatDate(s.date),
-              s.signs.map(l10n.warningSign).join(', '),
+              formatDate(signs.date),
+              signs.signs.map(l10n.warningSign).join(', '),
             ),
           ),
-        for (final e in h.events)
-          _Indented(
+        ),
+      ],
+      EventEntry(:final event) => [
+        _Sub(
+          icon: Icons.error,
+          iconColour: danger,
+          child: Text(
             l10n.reportHealthEventLine(
-              formatDate(e.at),
+              formatDate(event.at),
               [
-                if (e.signs.isNotEmpty)
-                  e.signs.map(l10n.warningSign).join(', '),
-                ?e.suspectedIssue,
-                if (e.actions.isNotEmpty) actions(e.actions),
-              ].join(' — '),
+                if (event.signs.isNotEmpty)
+                  event.signs.map(l10n.warningSign).join(', '),
+                ?event.suspectedIssue,
+                if (event.actions.isNotEmpty) actions(event.actions),
+              ].join(', '),
             ),
           ),
-        for (final e in h.events) ReportPhotos(keys: e.photoKeys),
-        for (final t in h.treatments)
-          _Indented(
-            l10n.reportTreatmentLine(formatDate(t.at), t.product, t.dose),
-          ),
+        ),
+        if (event.photoKeys.isNotEmpty)
+          _Sub(child: ReportPhotos(keys: event.photoKeys)),
       ],
-    );
+      TreatmentEntry(:final treatment) => [
+        _Sub(
+          icon: Icons.medication,
+          child: Text(
+            l10n.reportTreatmentLine(
+              formatDate(treatment.at),
+              treatment.product,
+              treatment.dose,
+            ),
+          ),
+        ),
+      ],
+    };
   }
 }
 
-class _WaterLine extends StatelessWidget {
-  const _WaterLine({required this.content, required this.water});
+/// A batch's FCR with its trend arrow (worse in danger, as on the pond
+/// page) and its survival.
+class _GrowthFigures extends StatelessWidget {
+  const _GrowthFigures({required this.growth});
 
-  final ReportContent content;
-  final PondWater water;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
-    final w = water;
-    final at = w.at;
-    if (at == null) {
-      return _Line(
-        pond: content.pondCodes[w.pondId],
-        text: l10n.reportNoReading,
-      );
-    }
-    bool flagged(WaterParam p) => w.issues.any((i) => i.param == p);
-    final danger = w.issues.any((i) => i.severity == Severity.danger);
-    final values = [
-      if (w.temperatureC != null)
-        (
-          WaterParam.temperature,
-          l10n.labelValue(
-            l10n.temperature,
-            '${formatNumber(w.temperatureC!, locale)} °C',
-          ),
-        ),
-      if (w.ph != null)
-        (WaterParam.ph, l10n.labelValue(l10n.ph, formatNumber(w.ph!, locale))),
-      if (w.oxygenMgL != null)
-        (
-          WaterParam.oxygen,
-          l10n.labelValue(
-            l10n.oxygen,
-            '${formatNumber(w.oxygenMgL!, locale)} mg/L',
-          ),
-        ),
-      if (w.colour != null) (WaterParam.colour, l10n.waterColour(w.colour!)),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _Line(
-          icon: w.issues.isEmpty
-              ? null
-              : (danger ? Icons.error : Icons.warning),
-          iconColor: danger ? context.dobo.danger : context.dobo.warning,
-          pond: content.pondCodes[w.pondId],
-          text: l10n.reportReadingOn(formatDate(at)),
-        ),
-        for (final (param, text) in values)
-          Padding(
-            padding: const EdgeInsets.only(left: 48),
-            child: Text(
-              text,
-              style: flagged(param)
-                  ? TextStyle(
-                      color: context.dobo.danger,
-                      fontWeight: FontWeight.bold,
-                    )
-                  : null,
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _GrowthBlock extends StatelessWidget {
-  const _GrowthBlock({required this.content, required this.growth});
-
-  final ReportContent content;
   final BatchGrowth growth;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+    final c = context.dobo;
     final g = growth;
     final fcr = switch (g.fcrNote) {
       FcrNote.shared => '— (${l10n.reportFcrShared})',
@@ -282,37 +325,27 @@ class _GrowthBlock extends StatelessWidget {
       FcrNote.stalled => l10n.fcrStalled,
       null => formatDecimal(g.fcr!, locale, decimals: 2),
     };
-    final trend = switch (g.trend) {
-      FcrTrend.worse => ' (${l10n.reportTrendWorse})',
-      FcrTrend.better => ' (${l10n.reportTrendBetter})',
-      FcrTrend.same => ' (${l10n.reportTrendSame})',
-      null => '',
+    final (arrow, colour) = switch (g.trend) {
+      FcrTrend.worse => (' ↑', c.danger),
+      FcrTrend.better => (' ↓', c.ok),
+      FcrTrend.same => (' →', null),
+      null => ('', null),
     };
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _Line(
-          pond: content.pondCodes[g.pondId],
-          text: l10n.reportGrowthLine(
-            content.batchCodes[g.batchId] ?? '?',
-            formatGrams(g.avgWeightG, locale),
-            formatDate(g.weighedOn),
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: l10n.fcrValue(fcr)),
+          TextSpan(
+            text: arrow,
+            style: TextStyle(color: colour, fontWeight: FontWeight.w700),
           ),
-        ),
-        _Estimated(
-          l10n.labelValue(l10n.reportBiomass, formatKg(g.biomassG, locale)),
-        ),
-        _Estimated(
-          l10n.labelValue(l10n.reportFish, formatCount(g.liveCount, locale)),
-        ),
-        _Indented(l10n.fcrValue('$fcr$trend')),
-        if (g.survival != null)
-          _Indented(
-            l10n.survivalValue(
-              formatDecimal(g.survival! * 100, locale, decimals: 0),
+          if (g.survival != null)
+            TextSpan(
+              text:
+                  ', ${l10n.survivalValue(formatDecimal(g.survival! * 100, locale, decimals: 0))}',
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -324,11 +357,12 @@ class _Heading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 6),
+    padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
     child: Text(text, style: Theme.of(context).textTheme.titleMedium),
   );
 }
 
+/// What "nothing" means in a section, quietly.
 class _Empty extends StatelessWidget {
   const _Empty(this.text);
 
@@ -336,78 +370,93 @@ class _Empty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Text(text, style: TextStyle(color: Theme.of(context).hintColor)),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    child: Text(
+      text,
+      style: Theme.of(context).textTheme.bodyMedium
+          ?.copyWith(color: context.dobo.inkMuted),
+    ),
   );
 }
 
-/// One report line: an optional icon, the pond's code, the text.
-class _Line extends StatelessWidget {
-  const _Line({required this.text, this.pond, this.icon, this.iconColor});
+class _Plain extends StatelessWidget {
+  const _Plain(this.text);
 
   final String text;
-  final String? pond;
-  final IconData? icon;
-  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    child: Text(text),
+  );
+}
+
+/// A report line about a pond: its code (and swatch) in the 72 dp column,
+/// then an optional icon and [child]. No code: the column stays empty.
+class _PondLine extends StatelessWidget {
+  const _PondLine({
+    required this.child,
+    this.code,
+    this.colour,
+    this.icon,
+    this.iconColour,
+  });
+
+  final Widget child;
+  final String? code;
+  final PondColour? colour;
+  final IconData? icon;
+  final Color? iconColour;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 40,
-          child: pond == null
+          width: _codeColumn - 16,
+          child: code == null
               ? null
-              : Text(
-                  pond!,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              : Align(
+                  alignment: Alignment.centerLeft,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: PondCode(code: code!, colour: colour),
+                  ),
                 ),
         ),
         if (icon != null) ...[
-          Icon(icon, size: 20, color: iconColor),
+          Icon(icon, size: 20, color: iconColour),
           const SizedBox(width: 6),
         ],
-        Expanded(child: Text(text)),
+        Expanded(child: child),
       ],
     ),
   );
 }
 
-/// An estimated figure, marked "estimé", wrapping on a narrow screen
-/// (SPEC anti-goals: estimates never look exact).
-class _Estimated extends StatelessWidget {
-  const _Estimated(this.text);
+/// A line under a pond's line, starting after the code column.
+class _Sub extends StatelessWidget {
+  const _Sub({required this.child, this.icon, this.iconColour});
 
-  final String text;
+  final Widget child;
+  final IconData? icon;
+  final Color? iconColour;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(left: 48, bottom: 2),
-    child: Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(text: '$text '),
-          TextSpan(
-            text: AppLocalizations.of(context).estimated,
-            style: const TextStyle(fontStyle: FontStyle.italic),
-          ),
+    padding: const EdgeInsets.fromLTRB(_codeColumn, 2, 16, 4),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (icon != null) ...[
+          Icon(icon, size: 20, color: iconColour),
+          const SizedBox(width: 6),
         ],
-      ),
+        Expanded(child: child),
+      ],
     ),
-  );
-}
-
-class _Indented extends StatelessWidget {
-  const _Indented(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(left: 48, bottom: 2),
-    child: Text(text),
   );
 }
 
@@ -422,7 +471,7 @@ class ReportPhotos extends StatelessWidget {
   Widget build(BuildContext context) {
     if (keys.isEmpty) return const SizedBox.shrink();
     return Padding(
-      padding: const EdgeInsets.only(left: 48, top: 4, bottom: 4),
+      padding: const EdgeInsets.only(top: 4, bottom: 4),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,

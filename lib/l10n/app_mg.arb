@@ -646,7 +646,7 @@
   "reportTreatmentLine": "{date} : {product}, {dose}",
   "reportHealthEventLine": "{date} : {details}",
   "reportReadingOn": "Fandrefesana tamin'ny {date}",
-  "reportGrowthLine": "{batch} · {weight} (nolanjaina tamin'ny {date})",
+  "reportGrowthLine": "{batch} {weight} ({date})",
   "reportBiomass": "Lanjan'ny trondro rehetra",
   "reportFish": "Trondro",
   "reportFcrShared": "dobo iombonana",
@@ -760,5 +760,14 @@
   "endVisitLeft": "{count, plural, =1{fanaraha-maso 1 tsy vita : {items}.} other{fanaraha-maso {count} tsy vita : {items}.}} Hamarana ihany ve ?",
   "leftWater": "fandrefesana {pond}",
   "leftSample": "fandanjana {batch}",
-  "leftInspection": "toetry {pond}"
+  "leftInspection": "toetry {pond}",
+  "reportAlertsNone": "Tsy misy fanairana",
+  "reportHealthNone": "Tsy nisy maty, tsy nisy famantarana",
+  "reportNextNone": "Tsy misy voalahatra",
+  "reportObservationsNone": "Tsy misy fanamarihana",
+  "reportInOrder": "Milamina avokoa : {ponds}",
+  "reportHeaderTitle": "{site}, {date}",
+  "reportDraftNote": "Drafitra : ianao irery no mahita azy mandra-pivoakany",
+  "reportSummaryHint": "Izay hitanao, fohifohy",
+  "reportDeathsBy": "{deaths} ({observers})"
 }
