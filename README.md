@@ -107,6 +107,17 @@ tool/server_test.sh          # against the local Supabase stack
 flutter test integration_test/m5_guidance_test.dart -d <device>  # on a device
 ```
 
+The look (`docs/design.md`) is pinned by golden images under
+`test/**/goldens/`. A deliberate change of look regenerates them:
+`flutter test --update-goldens <test file>`; look at the new PNGs before
+committing. Screenshots of the redesigned screens on a phone or emulator,
+from a demo farm in memory (the device's own records are untouched), in
+French and Malagasy, land in `build/screenshots/`:
+
+```bash
+tool/design_screenshots.sh <device>   # keep the phone unlocked and awake
+```
+
 ## Malagasy review
 
 Every string has a Malagasy text in `lib/l10n/app_mg.arb`. The texts are
