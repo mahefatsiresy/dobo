@@ -343,3 +343,68 @@ Before a visit                         During a visit
   report draft. With checks left, the confirmation names them and the
   visit still ends; the report is unchanged in this step. **[user]**
 
+### Step 6: reports (decided 19/11)
+
+The family's first question after a visit is "what did you see?". The
+report answers it by topic, the same on screen and on paper; most of the
+family reads the PDF on WhatsApp. **[user]**
+
+```
+Reports list                          A published report
+┌──────────────────────────────┐     ┌──────────────────────────────┐
+│ Rapports                     │     │ ← Rapport de visite          │
+│ ✎ À publier : 15/03/2026   › │     │ Ambohidratrimo, 15/03/2026   │
+├──────────────────────────────┤     │ Par Rado (Rabe)              │
+│ • 15/03/2026, Rado         › │     │ Du 01/03 au 15/03            │
+│   Du 01/03 au 15/03          │     │ Résumé                       │
+│   ! 2 en danger              │     │ Eau verte, poissons actifs…  │
+├──────────────────────────────┤     │ Alertes                      │
+│   01/03/2026, Hery         › │     │ ■ E2 ! Oxygène bas : 2 mg/L  │
+│   Du 14/02 au 01/03          │     │ ■ E3 ⚠ L-E3 : échantillonnage│
+└──────────────────────────────┘     │ Santé                        │
+                                     │ ■ E5 500 morts (Rakoto 4…)   │
+                                     │      ! 14/03 : nage en surf. │
+                                     │ Eau                          │
+                                     │ ■ E1 15/03 28 °C pH 7,2 O₂ 5 │
+                                     │ ■ E2 15/03 ! O₂ 2 mg/L       │
+                                     │ Croissance                   │
+                                     │ ■ E1 L-E1 150 g (15/03),     │
+                                     │      ≈ 186 kg, ≈ 1 240 poiss.│
+                                     │      IC 1,6 ↑, survie 98 %   │
+                                     │ Aliment   (table, total)     │
+                                     │ À venir · Observations       │
+                                     │ [        ⇪ Partager        ] │ ← pinned
+                                     └──────────────────────────────┘
+```
+
+- Sections stay by topic, in SPEC F8's order, on screen and in the PDF.
+  **[user]**
+- Alerts are the Alerts tab's bands, danger first, not tappable: a
+  published report is a snapshot. **[user]**
+- An empty section keeps its heading and one quiet line that says what
+  "nothing" means there ("Aucun mort, aucun signe"). **[user]**
+- Water: one line per pond, the visit's reading line, out-of-range values
+  marked. Growth: two lines per batch. **[user]**
+- Health: one block per pond, worst first (signs or events, then deaths);
+  signs and events with the danger icon, treatments with a medicine icon.
+  **[user; order: Claude's call]**
+- Feed: a table of kilos per pond with a bold total, then the stock lines.
+  **[user]**
+- Observations: problems first, with their pond, then free observations,
+  then one line "✓ Tout en ordre : E1, E3…" for the ponds inspected and
+  fine. **[user]**
+- On screen an estimate starts with `≈`; the PDF keeps the word *estimé*.
+  **[user]**
+- A published report pins "Partager"; the draft pins "Publier", puts the
+  summary box right under the header with a hint, and says only its
+  author sees it until it's published. **[user]**
+- List rows: an ink dot and bold while unread, "! N en danger" in words,
+  the draft as the first row with a pencil, in ink. **[user]**
+- The PDF takes the same look: Atkinson Hyperlegible Next (Noto Sans as
+  fallback), ink, bands, compact lines, a small square of each pond's
+  colour, A4 with the page number at the foot. **[user; details: Claude's
+  call]**
+- The report format is unchanged (no "not done during the visit" section
+  yet). Pond colours come from the phone's pond records, since a report
+  stores only codes. **[user; colours: Claude's call]**
+
