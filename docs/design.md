@@ -99,7 +99,12 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 - `AttentionBand`: danger (filled `danger`, white text and icon) or warning
   (`warningFill`, 4 dp `warning` left edge, ink text, `warning` icon).
 - `EstimatedLabel`: `≈ value` on screen, the word kept for reports.
-- Added when step 2 first needs them: section header, action tile.
+- `AttentionBand` with `onTap`: ends with a chevron and opens what resolves
+  it.
+- `ActionTile`: an icon above its label, at least 56 dp, outlined ink; for
+  action grids and the two actions of a batch.
+- `FoldedSection`: one line (title and summary) that opens on a tap with
+  no animation and builds its content only once opened.
 
 ## Steps
 

@@ -1,5 +1,7 @@
 import 'package:dobo/domain/types.dart';
+import 'package:dobo/features/common/action_tile.dart';
 import 'package:dobo/features/common/attention_band.dart';
+import 'package:dobo/features/common/folded_section.dart';
 import 'package:dobo/features/common/estimated.dart';
 import 'package:dobo/features/common/pond_colour.dart';
 import 'package:dobo/l10n/app_localizations.dart';
@@ -129,6 +131,81 @@ void main() {
     );
   });
 
+  testWidgets('a band with a tap shows a chevron and calls back', (t) async {
+    var taps = 0;
+    await t.pumpWidget(
+      _frame(
+        Column(
+          children: [
+            AttentionBand(
+              severity: BandSeverity.warning,
+              text: 'Pesée',
+              onTap: () => taps++,
+            ),
+            const AttentionBand(severity: BandSeverity.danger, text: 'Isolé'),
+          ],
+        ),
+      ),
+    );
+    expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+    await t.tap(find.text('Pesée'));
+    expect(taps, 1);
+  });
+
+  testWidgets('an action tile is 56 dp tall and wraps at 130 % text', (
+    t,
+  ) async {
+    var taps = 0;
+    await t.pumpWidget(
+      _frame(
+        MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.3)),
+          child: Center(
+            child: SizedBox(
+              width: 150,
+              child: ActionTile(
+                icon: Icons.lock_open,
+                label: "Lever l'isolement",
+                onTap: () => taps++,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    expect(t.takeException(), isNull);
+    expect(t.getSize(find.byType(ActionTile)).height, greaterThanOrEqualTo(56));
+    await t.tap(find.byType(ActionTile));
+    expect(taps, 1);
+  });
+
+  testWidgets('a folded section builds its child only once opened', (t) async {
+    var builds = 0;
+    await t.pumpWidget(
+      _frame(
+        FoldedSection(
+          title: 'Poids moyen',
+          summary: '150 g, +12 g en 14 j',
+          builder: (context) {
+            builds++;
+            return const Text('chart');
+          },
+        ),
+      ),
+    );
+    expect(builds, 0);
+    expect(find.text('150 g, +12 g en 14 j'), findsOneWidget);
+    await t.tap(find.text('Poids moyen'));
+    await t.pump();
+    // Open at once, no growing animation: the height after one frame is
+    // the final height (the tap's ink ripple may still be fading).
+    final firstFrame = t.getSize(find.byType(FoldedSection)).height;
+    await t.pumpAndSettle();
+    expect(t.getSize(find.byType(FoldedSection)).height, firstFrame);
+    expect(builds, greaterThanOrEqualTo(1));
+    expect(find.text('chart'), findsOneWidget);
+  });
+
   testWidgets('building blocks golden', (t) async {
     await loadAppFonts();
     t.view.physicalSize = const Size(720, 1560);
@@ -181,6 +258,37 @@ void main() {
                   EstimatedLabel(value: '2,4 kg', style: text.headlineSmall),
                   const EstimatedLabel(value: '1 240'),
                   EstimatedLabel(value: '186 kg', style: text.bodySmall),
+                  const SizedBox(height: 16),
+                  AttentionBand(
+                    severity: BandSeverity.warning,
+                    text: 'Andiany L-E3 : tokony handanjana',
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ActionTile(
+                          icon: Icons.scale,
+                          label: 'Lanjaina',
+                          onTap: () {},
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ActionTile(
+                          icon: Icons.swap_horiz,
+                          label: 'Afindra',
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                  FoldedSection(
+                    title: 'Lanja antonony',
+                    summary: '150 g, +12 g tao anatin\'ny 14 andro',
+                    builder: (context) => const SizedBox(),
+                  ),
                 ],
               ),
             );
