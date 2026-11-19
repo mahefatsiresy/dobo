@@ -12,6 +12,7 @@ import '../../l10n/labels.dart';
 import '../common/farm_today.dart';
 import '../common/notice.dart';
 import 'feed_providers.dart';
+import '../../theme/tokens.dart';
 
 /// Feed on hand, days left and each lot's age (SPEC F11).
 class FeedStockScreen extends ConsumerWidget {
@@ -104,8 +105,8 @@ class _LotCard extends ConsumerWidget {
     final l = lot.lot;
     final badge = switch (lot.age) {
       FeedAge.ok => null,
-      FeedAge.old => (l10n.feedLotOld, Colors.orange.shade800),
-      FeedAge.expired => (l10n.feedLotExpired, Colors.red.shade800),
+      FeedAge.old => (l10n.feedLotOld, context.dobo.warning),
+      FeedAge.expired => (l10n.feedLotExpired, context.dobo.danger),
     };
     return Card(
       child: Padding(

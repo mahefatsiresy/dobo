@@ -14,6 +14,7 @@ import '../../domain/alerts/alert.dart';
 import '../../l10n/formatting.dart';
 import '../alerts/alert_providers.dart';
 import '../common/estimated.dart';
+import '../../theme/tokens.dart';
 
 class PondsScreen extends ConsumerWidget {
   const PondsScreen({super.key});
@@ -127,8 +128,8 @@ class _AlertCounts extends StatelessWidget {
     );
     return Row(
       children: [
-        if (danger > 0) chip(Icons.error, Colors.red.shade800, danger),
-        if (warning > 0) chip(Icons.warning, Colors.amber.shade800, warning),
+        if (danger > 0) chip(Icons.error, context.dobo.danger, danger),
+        if (warning > 0) chip(Icons.warning, context.dobo.warning, warning),
       ],
     );
   }

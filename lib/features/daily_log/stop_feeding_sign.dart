@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../domain/alerts/worker_advice.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme/tokens.dart';
 
 /// "Don't feed" for the worker: a crossed-out fork and knife (not the "no appetite" pictogram's bowl) on a white disc, and one
 /// pictogram per reason (DOMAIN §Feeding). It advises, never blocks.
@@ -13,7 +14,7 @@ class StopFeedingSign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final red = Colors.red.shade800;
+    final red = context.dobo.danger;
     Widget reason(IconData icon, String label) => Semantics(
       label: label,
       child: ExcludeSemantics(

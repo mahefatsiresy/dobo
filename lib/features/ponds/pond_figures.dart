@@ -6,6 +6,7 @@ import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../common/estimated.dart';
 import 'pond_overview.dart';
+import '../../theme/tokens.dart';
 
 /// Fish, biomass and density of a pond, each marked as estimated.
 class PondFigures extends StatelessWidget {
@@ -33,7 +34,7 @@ class PondFigures extends StatelessWidget {
           Text(
             l10n.inconsistent,
             style: TextStyle(
-              color: Colors.red.shade800,
+              color: context.dobo.danger,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -50,7 +51,7 @@ class PondFigures extends StatelessWidget {
             Text(
               '${l10n.densityValue(formatDecimal(o.density!, locale))}'
               '${status == null ? '' : ' · ${l10n.densityStatus(status)}'}',
-              style: outOfRange ? TextStyle(color: Colors.red.shade800) : null,
+              style: outOfRange ? TextStyle(color: context.dobo.danger) : null,
             ),
           ),
       ],

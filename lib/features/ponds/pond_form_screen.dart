@@ -17,6 +17,7 @@ import '../common/pond_colour.dart';
 import 'pond_overview.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
+import '../../theme/tokens.dart';
 
 /// Statuses a member sets by hand on a pond without fish. Fish decide
 /// `stocked`; health events set and lift `isolated` (SPEC F9).
@@ -194,7 +195,7 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
                             width: c == colour ? 4 : 1,
                             color: c == colour
                                 ? Theme.of(context).colorScheme.primary
-                                : Colors.grey,
+                                : context.dobo.inkMuted,
                           ),
                         ),
                         child: c == colour

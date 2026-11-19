@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../domain/dates.dart';
+import '../../theme/tokens.dart';
 
 /// A value on a farm day. A null [y] is skipped; [flagged] draws a red mark
 /// on the axis (a stalled FCR has no value to plot).
@@ -78,7 +79,7 @@ class MiniChart extends StatelessWidget {
     final span = x(last);
     final minX = span == 0 ? -1.0 : 0.0;
     final maxX = span == 0 ? 1.0 : span;
-    const flag = Colors.red;
+    final flag = context.dobo.danger;
 
     final grid = FlGridData(show: false);
     final titles = const FlTitlesData(show: false);

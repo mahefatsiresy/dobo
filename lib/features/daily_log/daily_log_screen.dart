@@ -25,6 +25,7 @@ import '../common/sign_grid.dart';
 import '../ponds/pond_overview.dart';
 import 'daily_log_providers.dart';
 import '../common/form_body.dart';
+import '../../theme/tokens.dart';
 
 /// One pond-day (SPEC F3): the worker's screen, also used by members.
 /// Opening a day already logged edits it.
@@ -118,6 +119,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     if (!_form.currentState!.validate()) return;
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final saved = context.dobo.ok;
     final deaths = _deathCount;
     final note = _note.text.trim();
     await ref
@@ -142,7 +144,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
     ref.invalidate(dailyLogForDayProvider((widget.pondId, widget.date)));
     messenger.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: saved,
         content: Row(
           children: [
             const Icon(Icons.check_circle, color: Colors.white),

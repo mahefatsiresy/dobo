@@ -6,6 +6,7 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/labels.dart';
 import '../common/pond_colour.dart';
+import '../../theme/tokens.dart';
 
 /// One alert: severity icon, the pond's badge and one line of text.
 class AlertTile extends StatelessWidget {
@@ -36,7 +37,7 @@ class AlertTile extends StatelessWidget {
             children: [
               Icon(
                 danger ? Icons.error : Icons.warning,
-                color: danger ? Colors.red.shade800 : Colors.amber.shade800,
+                color: danger ? context.dobo.danger : context.dobo.warning,
                 size: 32,
               ),
               const SizedBox(width: 8),
@@ -50,7 +51,7 @@ class AlertTile extends StatelessWidget {
                       .alertText(alert, batchCode: batchCode),
                   style: danger
                       ? TextStyle(
-                          color: Colors.red.shade900,
+                          color: context.dobo.danger,
                           fontWeight: FontWeight.bold,
                         )
                       : null,

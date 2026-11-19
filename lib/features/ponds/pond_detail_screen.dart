@@ -26,6 +26,7 @@ import '../alerts/alert_route.dart';
 import '../alerts/alert_tile.dart';
 import 'pond_charts.dart';
 import 'pond_growth.dart';
+import '../../theme/tokens.dart';
 
 class PondDetailScreen extends ConsumerWidget {
   const PondDetailScreen({super.key, required this.pondId});
@@ -115,7 +116,7 @@ class PondDetailScreen extends ConsumerWidget {
       // The isolation banner stays in view however far the page scrolls.
       bottomNavigationBar: o.status == PondStatus.isolated
           ? Material(
-              color: Colors.red.shade50,
+              color: context.dobo.dangerFill,
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -208,7 +209,7 @@ class PondDetailScreen extends ConsumerWidget {
                         ],
                       ),
                     if (growth?.batches[b.batch.id] case final g?)
-                      ..._growthLines(l10n, g, locale),
+                      ..._growthLines(l10n, g, locale, context.dobo),
                     if (b.phase != null)
                       Text(
                         _feedingGuide(
@@ -341,11 +342,12 @@ class PondDetailScreen extends ConsumerWidget {
     AppLocalizations l10n,
     BatchGrowth g,
     Locale locale,
+    DoboColors colours,
   ) {
     final latest = g.periods.isEmpty ? null : g.periods.last.fcr;
     final (arrow, colour) = switch (g.trend) {
-      FcrTrend.worse => (' ↑', Colors.red.shade800),
-      FcrTrend.better => (' ↓', Colors.green.shade800),
+      FcrTrend.worse => (' ↑', colours.danger),
+      FcrTrend.better => (' ↓', colours.ok),
       FcrTrend.same => (' →', null),
       null => ('', null),
     };
@@ -417,7 +419,7 @@ class _LatestReading extends ConsumerWidget {
       ))
         i.param,
     };
-    final red = TextStyle(color: Colors.red.shade800);
+    final red = TextStyle(color: context.dobo.danger);
     String n(double v) => formatNumber(v, locale);
     Widget part(String text, WaterParam param) =>
         Text(text, style: issues.contains(param) ? red : null);

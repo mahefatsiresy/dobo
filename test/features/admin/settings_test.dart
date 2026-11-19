@@ -3,6 +3,7 @@ import 'package:dobo/domain/types.dart';
 import 'package:dobo/router.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
+import 'package:dobo/theme/tokens.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
@@ -61,7 +62,7 @@ void main() {
     appContainer(tester).read(routerProvider).go('/ponds/p1');
     await tester.pumpAndSettle();
     final oxygen = tester.widget<Text>(find.textContaining('3,5'));
-    expect(oxygen.style?.color, Colors.red.shade800);
+    expect(oxygen.style?.color, DoboColors.standard.danger);
   });
 
   appTest('an admin sets the photo cap to 500', (tester, db) async {

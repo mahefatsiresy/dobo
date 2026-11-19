@@ -3,6 +3,7 @@ import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:flutter/material.dart';
+import 'package:dobo/theme/tokens.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
@@ -48,7 +49,7 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     await reveal(tester, find.text('O₂ 2 mg/L'));
     final o2 = tester.widget<Text>(find.text('O₂ 2 mg/L'));
-    expect(o2.style?.color, Colors.red.shade800);
+    expect(o2.style?.color, DoboColors.standard.danger);
     final reading = await db.select(db.waterReadings).getSingle();
     expect(reading.oxygenMgL, 2.0);
   });

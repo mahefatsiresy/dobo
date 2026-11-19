@@ -12,6 +12,7 @@ import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 import 'visit_checklist.dart';
 import 'visit_providers.dart';
+import '../../theme/tokens.dart';
 
 /// A pond's five condition checks for the open visit: each OK, or a
 /// problem with an optional note (SPEC F5).
@@ -111,7 +112,7 @@ class _ConditionCheckScreenState extends ConsumerState<ConditionCheckScreen>
         minimumSize: const WidgetStatePropertyAll(Size(96, 56)),
         backgroundColor: selected
             ? WidgetStatePropertyAll(
-                ok ? Colors.green.shade100 : Colors.red.shade100,
+                ok ? context.dobo.okFill : context.dobo.dangerFill,
               )
             : null,
       );

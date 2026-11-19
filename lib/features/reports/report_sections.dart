@@ -8,6 +8,7 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../photos/photo_strip.dart';
+import '../../theme/tokens.dart';
 
 /// The nine sections of a visit report (SPEC F8), drawn from its frozen
 /// content. [summary] replaces the summary section (the draft's text field).
@@ -43,8 +44,8 @@ class ReportSections extends StatelessWidget {
           _Line(
             icon: a.severity == Severity.danger ? Icons.error : Icons.warning,
             iconColor: a.severity == Severity.danger
-                ? Colors.red.shade800
-                : Colors.amber.shade800,
+                ? context.dobo.danger
+                : context.dobo.warning,
             pond: c.pondCodes[a.pondId],
             text: l10n.alertText(a, batchCode: c.batchCodes[a.batchId]),
           ),
@@ -114,7 +115,7 @@ class ReportSections extends StatelessWidget {
       for (final o in problems) ...[
         _Line(
           icon: o.ok == false ? Icons.report_problem : Icons.visibility,
-          iconColor: o.ok == false ? Colors.amber.shade800 : null,
+          iconColor: o.ok == false ? context.dobo.warning : null,
           pond: c.pondCodes[o.pondId],
           text: o.note == null
               ? l10n.observationCategory(o.category)
@@ -125,7 +126,7 @@ class ReportSections extends StatelessWidget {
       if (ok.isNotEmpty)
         _Line(
           icon: Icons.check_circle,
-          iconColor: Colors.green.shade800,
+          iconColor: context.dobo.ok,
           text: l10n.reportAllOk(
             {for (final o in ok) l10n.observationCategory(o.category)}
                 .join(', '),
@@ -242,7 +243,7 @@ class _WaterLine extends StatelessWidget {
           icon: w.issues.isEmpty
               ? null
               : (danger ? Icons.error : Icons.warning),
-          iconColor: danger ? Colors.red.shade800 : Colors.amber.shade800,
+          iconColor: danger ? context.dobo.danger : context.dobo.warning,
           pond: content.pondCodes[w.pondId],
           text: l10n.reportReadingOn(formatDate(at)),
         ),
@@ -253,7 +254,7 @@ class _WaterLine extends StatelessWidget {
               text,
               style: flagged(param)
                   ? TextStyle(
-                      color: Colors.red.shade800,
+                      color: context.dobo.danger,
                       fontWeight: FontWeight.bold,
                     )
                   : null,

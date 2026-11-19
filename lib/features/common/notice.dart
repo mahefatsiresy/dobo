@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/tokens.dart';
+
 /// A soft warning (amber) or a blocking problem (red), shown under a form.
 class Notice extends StatelessWidget {
   const Notice(this.text, {super.key, this.danger = false});
@@ -9,7 +11,7 @@ class Notice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colour = danger ? Colors.red.shade800 : Colors.amber.shade900;
+    final colour = danger ? context.dobo.danger : context.dobo.warning;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(

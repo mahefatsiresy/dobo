@@ -6,6 +6,7 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import 'report_providers.dart';
+import '../../theme/tokens.dart';
 
 /// Published reports, newest first, with my draft on top (SPEC F8).
 class ReportsScreen extends ConsumerWidget {
@@ -79,7 +80,7 @@ class _ReportCard extends ConsumerWidget {
       trailing: danger == 0
           ? null
           : Chip(
-              avatar: Icon(Icons.error, color: Colors.red.shade800, size: 18),
+              avatar: Icon(Icons.error, color: context.dobo.danger, size: 18),
               label: Text('$danger'),
             ),
       onTap: () => context.go('/reports/$reportId'),

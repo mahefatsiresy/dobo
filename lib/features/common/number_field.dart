@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../theme/tokens.dart';
+
 /// A number entered on the numeric keypad; read it with `parseDecimal`.
 class NumberField extends StatelessWidget {
   const NumberField({
@@ -39,7 +41,7 @@ class NumberField extends StatelessWidget {
         labelText: label,
         suffixText: suffix,
         helperText: alert,
-        helperStyle: TextStyle(color: Colors.red.shade800),
+        helperStyle: TextStyle(color: context.dobo.danger),
         helperMaxLines: 2,
       ),
       validator: validator,

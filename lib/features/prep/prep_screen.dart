@@ -16,6 +16,7 @@ import '../common/number_field.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 import 'prep_providers.dart';
+import '../../theme/tokens.dart';
 
 /// The steps a member ticks; `rest` ends with "ready to stock".
 const _ticked = [
@@ -199,7 +200,7 @@ class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
                                 ? Icons.check_circle
                                 : Icons.radio_button_unchecked,
                             color: progress.done.containsKey(step)
-                                ? Colors.green.shade700
+                                ? context.dobo.ok
                                 : null,
                           ),
                           const SizedBox(width: 12),

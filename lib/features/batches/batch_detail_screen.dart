@@ -19,6 +19,7 @@ import '../sales/sales_screen.dart';
 import '../sales/share_trace.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
+import '../../theme/tokens.dart';
 
 class BatchDetailScreen extends ConsumerWidget {
   const BatchDetailScreen({super.key, required this.batchId});
@@ -196,7 +197,7 @@ class BatchDetailScreen extends ConsumerWidget {
                     Text(
                       l10n.inconsistent,
                       style: TextStyle(
-                        color: Colors.red.shade800,
+                        color: context.dobo.danger,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

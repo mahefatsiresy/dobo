@@ -12,6 +12,7 @@ import '../common/pond_colour.dart';
 import '../common/save_once.dart';
 import '../photos/photo_strip.dart';
 import 'visit_providers.dart';
+import '../../theme/tokens.dart';
 
 /// The Visit tab (SPEC F5): start a visit, then walk its checklist; past
 /// visits below. The report itself comes in M6.
@@ -164,7 +165,7 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
           if (items.isEmpty)
             ListTile(
               minTileHeight: 56,
-              leading: const Icon(Icons.check_circle, color: Colors.green),
+              leading: Icon(Icons.check_circle, color: context.dobo.ok),
               title: Text(l10n.allDone),
             )
           else

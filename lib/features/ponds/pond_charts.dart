@@ -5,8 +5,7 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../common/mini_chart.dart';
 import 'pond_growth.dart';
-
-const _batchColours = [Colors.blue, Colors.orange, Colors.purple, Colors.teal];
+import '../../theme/tokens.dart';
 
 /// Average weight, deaths per day and FCR per period of a pond (SPEC F6).
 class PondCharts extends StatelessWidget {
@@ -20,7 +19,8 @@ class PondCharts extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final batches = growth.batches.values.toList();
-    Color colour(int i) => _batchColours[i % _batchColours.length];
+    final series = context.dobo.series;
+    Color colour(int i) => series[i % series.length];
     String n(double v) => formatNumber(v, locale);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class PondCharts extends StatelessWidget {
           emptyText: l10n.chartEmpty,
           series: [
             ChartSeries(
-              color: Colors.red.shade700,
+              color: context.dobo.danger,
               points: [
                 for (final (i, deaths) in growth.deathsPerDay.indexed)
                   ChartPoint(

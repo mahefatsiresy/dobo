@@ -16,6 +16,7 @@ import '../../domain/alerts/worker_advice.dart';
 import '../alerts/alert_providers.dart';
 import 'daily_log_providers.dart';
 import 'stop_feeding_sign.dart';
+import '../../theme/tokens.dart';
 
 /// The worker's whole app (SPEC §6): today's ponds as big tiles, a tick on
 /// those already logged. A worker account lands here and stays (a long
@@ -148,7 +149,7 @@ class _PondTile extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: isolated
-            ? BorderSide(color: Colors.red.shade700, width: 6)
+            ? BorderSide(color: context.dobo.danger, width: 6)
             : BorderSide.none,
       ),
       child: InkWell(
@@ -178,7 +179,7 @@ class _PondTile extends StatelessWidget {
                     ),
                   if (isolated)
                     Container(
-                      color: Colors.red.shade700,
+                      color: context.dobo.danger,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 2,
@@ -192,12 +193,12 @@ class _PondTile extends StatelessWidget {
               ),
             ),
             if (logged)
-              const Positioned(
+              Positioned(
                 top: 8,
                 right: 8,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.task_alt, color: Colors.green, size: 36),
+                  child: Icon(Icons.task_alt, color: context.dobo.ok, size: 36),
                 ),
               ),
           ],

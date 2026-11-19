@@ -11,6 +11,7 @@ import '../../sync/sync_controller.dart';
 import '../../sync/sync_status_repository.dart';
 import '../../l10n/formatting.dart';
 import 'backup_actions.dart';
+import '../../theme/tokens.dart';
 
 /// This phone's photos marked to send and not sent yet.
 final _pendingPhotosProvider = StreamProvider<List<(String, String?)>>(
@@ -81,7 +82,7 @@ class SyncScreen extends ConsumerWidget {
             if (photos.any((p) => p.$2 == 'cap'))
               Text(
                 l10n.syncPhotoCap,
-                style: TextStyle(color: Colors.red.shade800),
+                style: TextStyle(color: context.dobo.danger),
               ),
           ],
           if (status != null) ...[
