@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/tokens.dart';
 import '../common/attention_band.dart';
-import '../common/pond_colour.dart';
+import '../common/coded_band.dart';
 import '../ponds/pond_attention.dart';
 import '../ponds/pond_overview.dart';
 import '../ponds/pond_row.dart';
@@ -36,30 +36,14 @@ class AlertsScreen extends ConsumerWidget {
           LeadAlert(:final alert) => alertRoute(alert),
           _ => '/ponds/${pond!.id}',
         };
-        final c = context.dobo;
         // A 2 dp gap: each band is its own row to tap.
         return Padding(
           padding: const EdgeInsets.only(bottom: 2),
-          child: AttentionBand(
+          child: CodedBand(
             severity: severity,
             text: leadText(l10n, item.lead, byPond[pond?.id]),
-            // The ponds list's slot: every row's icon lines up, and a long
-            // code shrinks instead of squeezing the text.
-            leading: pond == null
-                ? null
-                : SizedBox(
-                    key: const ValueKey('codeSlot'),
-                    width: 72,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: PondCode(
-                        code: pond.code,
-                        colour: pond.colour,
-                        ink: severity == BandSeverity.danger ? c.paper : c.ink,
-                      ),
-                    ),
-                  ),
+            code: pond?.code,
+            colour: pond?.colour,
             onTap: route == null ? null : () => context.push(route),
           ),
         );

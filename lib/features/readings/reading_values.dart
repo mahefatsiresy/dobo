@@ -22,20 +22,52 @@ class ReadingValues extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final r = reading;
+    return WaterValues(
+      temperatureC: r.temperatureC,
+      ph: r.ph,
+      oxygenMgL: r.oxygenMgL,
+      colour: r.colour,
+      issues: {
+        for (final i in waterIssues(
+          temperatureC: r.temperatureC,
+          ph: r.ph,
+          oxygenMgL: r.oxygenMgL,
+          colour: r.colour,
+          config: ref.watch(domainConfigProvider),
+        ))
+          i.param: i.severity,
+      },
+      leading: leading,
+    );
+  }
+}
+
+/// Water values whose issues are already known, such as a report's frozen
+/// reading: the same line as [ReadingValues].
+class WaterValues extends StatelessWidget {
+  const WaterValues({
+    super.key,
+    this.temperatureC,
+    this.ph,
+    this.oxygenMgL,
+    this.colour,
+    this.issues = const {},
+    this.leading,
+  });
+
+  final double? temperatureC;
+  final double? ph;
+  final double? oxygenMgL;
+  final WaterColour? colour;
+  final Map<WaterParam, Severity> issues;
+  final Widget? leading;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final c = context.dobo;
-    final r = reading;
-    final issues = {
-      for (final i in waterIssues(
-        temperatureC: r.temperatureC,
-        ph: r.ph,
-        oxygenMgL: r.oxygenMgL,
-        colour: r.colour,
-        config: ref.watch(domainConfigProvider),
-      ))
-        i.param: i.severity,
-    };
     String n(double v) => formatNumber(v, locale);
     Widget part(String text, WaterParam param) {
       final severity = issues[param];
@@ -64,13 +96,12 @@ class ReadingValues extends ConsumerWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         ?leading,
-        if (r.temperatureC != null)
-          part('${n(r.temperatureC!)} °C', WaterParam.temperature),
-        if (r.ph != null) part('pH ${n(r.ph!)}', WaterParam.ph),
-        if (r.oxygenMgL != null)
-          part('O₂ ${n(r.oxygenMgL!)} mg/L', WaterParam.oxygen),
-        if (r.colour != null)
-          part(l10n.waterColour(r.colour!), WaterParam.colour),
+        if (temperatureC != null)
+          part('${n(temperatureC!)} °C', WaterParam.temperature),
+        if (ph != null) part('pH ${n(ph!)}', WaterParam.ph),
+        if (oxygenMgL != null)
+          part('O₂ ${n(oxygenMgL!)} mg/L', WaterParam.oxygen),
+        if (colour != null) part(l10n.waterColour(colour!), WaterParam.colour),
       ],
     );
   }

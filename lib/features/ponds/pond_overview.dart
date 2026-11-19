@@ -139,6 +139,19 @@ final pondsProvider = StreamProvider<List<Pond>>(
   (ref) => ref.watch(pondRepositoryProvider).watchActive(),
 );
 
+/// Every pond's colour, archived ponds included: reports name ponds that
+/// may have been archived since (docs/design.md §Step 6).
+final pondColoursProvider = Provider<Map<String, PondColour>>(
+  (ref) => {
+    for (final p in ref.watch(_allPondsProvider).value ?? const <Pond>[])
+      p.id: p.colour,
+  },
+);
+
+final _allPondsProvider = StreamProvider<List<Pond>>(
+  (ref) => ref.watch(pondRepositoryProvider).watchAll(),
+);
+
 /// Fish per (batch, pond), from [farmFactsProvider].
 final placementsProvider = Provider<AsyncValue<List<Placement>>>(
   (ref) => ref.watch(farmFactsProvider).whenData(placementsOf),

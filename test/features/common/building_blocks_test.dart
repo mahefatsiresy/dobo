@@ -1,6 +1,7 @@
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/common/action_tile.dart';
 import 'package:dobo/features/common/attention_band.dart';
+import 'package:dobo/features/common/coded_band.dart';
 import 'package:dobo/features/common/folded_section.dart';
 import 'package:dobo/features/common/estimated.dart';
 import 'package:dobo/features/common/pond_colour.dart';
@@ -305,5 +306,50 @@ void main() {
       find.byKey(const Key('blocks')),
       matchesGoldenFile('goldens/building_blocks.png'),
     );
+  });
+
+  group('CodedBand', () {
+    testWidgets('the code and swatch sit in a 72 dp slot', (t) async {
+      await t.pumpWidget(
+        _frame(
+          const CodedBand(
+            severity: BandSeverity.danger,
+            text: 'Oxygène bas',
+            code: 'E2',
+            colour: PondColour.yellow,
+          ),
+        ),
+      );
+      final slot = find.byKey(const ValueKey('codeSlot'));
+      expect(t.getSize(slot).width, 72);
+      expect(
+        find.descendant(of: slot, matching: find.byType(PondCode)),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('pondSwatch')), findsOneWidget);
+    });
+
+    testWidgets('a pond whose colour is unknown shows its code alone', (
+      t,
+    ) async {
+      await t.pumpWidget(
+        _frame(
+          const CodedBand(
+            severity: BandSeverity.warning,
+            text: 'Échantillonnage à faire',
+            code: 'E9',
+          ),
+        ),
+      );
+      expect(find.text('E9'), findsOneWidget);
+      expect(find.byKey(const ValueKey('pondSwatch')), findsNothing);
+    });
+
+    testWidgets('farm-wide: no slot', (t) async {
+      await t.pumpWidget(
+        _frame(const CodedBand(severity: BandSeverity.danger, text: 'Aliment')),
+      );
+      expect(find.byKey(const ValueKey('codeSlot')), findsNothing);
+    });
   });
 }

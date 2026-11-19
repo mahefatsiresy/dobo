@@ -63,7 +63,9 @@ class PondCode extends StatelessWidget {
   });
 
   final String code;
-  final PondColour colour;
+
+  /// Null when the pond isn't known on this phone: the code shows alone.
+  final PondColour? colour;
 
   /// The text colour when drawn on a coloured band; the swatch then gets
   /// an outline in it, so a red pond's swatch still shows on a red band.
@@ -74,17 +76,19 @@ class PondCode extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          key: const ValueKey('pondSwatch'),
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: pondColourValue(colour),
-            borderRadius: BorderRadius.circular(2),
-            border: ink == null ? null : Border.all(color: ink!),
+        if (colour case final colour?) ...[
+          Container(
+            key: const ValueKey('pondSwatch'),
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: pondColourValue(colour),
+              borderRadius: BorderRadius.circular(2),
+              border: ink == null ? null : Border.all(color: ink!),
+            ),
           ),
-        ),
-        const SizedBox(width: 6),
+          const SizedBox(width: 6),
+        ],
         Text(
           code,
           style: Theme.of(context).textTheme.titleLarge
