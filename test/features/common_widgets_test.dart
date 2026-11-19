@@ -68,13 +68,12 @@ void main() {
 
   testWidgets('estimated values say so', (tester) async {
     await tester.pumpWidget(_frame(const EstimatedLabel(value: '1 000')));
-    expect(find.text('1 000'), findsOneWidget);
-    expect(find.text('estimé'), findsOneWidget);
+    expect(find.text('≈\u00a01 000'), findsOneWidget);
   });
 
   testWidgets('pond badge shows the code', (tester) async {
     await tester.pumpWidget(
-      _frame(const PondBadge(code: 'E1', colour: PondColour.yellow)),
+      _frame(const PondTag(code: 'E1', colour: PondColour.yellow)),
     );
     expect(find.text('E1'), findsOneWidget);
   });

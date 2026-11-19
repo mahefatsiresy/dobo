@@ -213,7 +213,7 @@ void main() {
       await tapAndSettle(tester, find.text('E1'));
       // 1 000 × 30 g × 4 % = 1,2 kg.
       expect(find.text('Ration du jour'), findsOneWidget);
-      expect(find.text('1,2 kg'), findsWidgets);
+      expect(find.text('≈\u00a01,2 kg'), findsWidgets);
       expect(find.text('IC : 1,6 ↑'), findsOneWidget);
       expect(find.text('Survie : 100 %'), findsOneWidget);
       expect(find.text('Dernière pesée : il y a 5 j'), findsOneWidget);

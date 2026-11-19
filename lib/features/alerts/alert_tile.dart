@@ -42,7 +42,7 @@ class AlertTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               if (p != null) ...[
-                PondBadge(code: p.code, colour: p.colour),
+                PondTag(code: p.code, colour: p.colour),
                 const SizedBox(width: 12),
               ],
               Expanded(

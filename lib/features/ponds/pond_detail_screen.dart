@@ -130,7 +130,7 @@ class PondDetailScreen extends ConsumerWidget {
         children: [
           Row(
             children: [
-              PondBadge(code: pond.code, colour: pond.colour),
+              PondTag(code: pond.code, colour: pond.colour),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

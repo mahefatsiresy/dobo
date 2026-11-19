@@ -120,7 +120,7 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
               for (final p in ponds)
                 FilterChip(
                   key: ValueKey('paperPond-${p.code}'),
-                  label: PondBadge(code: p.code, colour: p.colour),
+                  label: PondTag(code: p.code, colour: p.colour),
                   selected: !_left.contains(p.id),
                   onSelected: (on) =>
                       setState(() => on ? _left.remove(p.id) : _left.add(p.id)),

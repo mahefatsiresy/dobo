@@ -184,7 +184,7 @@ class _DailyLogScreenState extends ConsumerState<DailyLogScreen> with SaveOnce {
       appBar: AppBar(
         title: Row(
           children: [
-            PondBadge(code: pond.code, colour: pond.colour),
+            PondTag(code: pond.code, colour: pond.colour),
             const SizedBox(width: 12),
             Text(formatDate(widget.date)),
           ],

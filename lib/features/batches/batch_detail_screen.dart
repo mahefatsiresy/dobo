@@ -139,7 +139,7 @@ class BatchDetailScreen extends ConsumerWidget {
       final pond = ponds[pondId];
       return pond == null
           ? const SizedBox(width: 56)
-          : PondBadge(code: pond.code, colour: pond.colour);
+          : PondTag(code: pond.code, colour: pond.colour);
     }
 
     final identity = [

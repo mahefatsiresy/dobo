@@ -50,7 +50,7 @@ class PondsScreen extends ConsumerWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            PondBadge(code: o.pond.code, colour: o.pond.colour),
+                            PondTag(code: o.pond.code, colour: o.pond.colour),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(

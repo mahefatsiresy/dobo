@@ -366,10 +366,7 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
                         width: cellWidth + 8,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: PondBadge(
-                            code: pond.code,
-                            colour: pond.colour,
-                          ),
+                          child: PondTag(code: pond.code, colour: pond.colour),
                         ),
                       ),
                   ],

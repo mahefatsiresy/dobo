@@ -47,8 +47,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('E1'), findsOneWidget);
     expect(find.text('E2'), findsOneWidget);
-    expect(find.text('1 000'), findsOneWidget);
-    expect(find.text('estimé'), findsWidgets);
+    expect(find.text('≈\u00a01\u202f000'), findsOneWidget);
     expect(find.text('Empoissonné'), findsOneWidget);
 
     await tapAndSettle(tester, find.text('E1'));

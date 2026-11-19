@@ -177,7 +177,7 @@ class _VisitScreenState extends ConsumerState<VisitScreen> with SaveOnce {
         ListTile(
           key: key,
           minTileHeight: 56,
-          leading: PondBadge(code: pond.code, colour: pond.colour),
+          leading: PondTag(code: pond.code, colour: pond.colour),
           title: Text(title),
           trailing: const Icon(Icons.chevron_right),
           onTap: onTap,

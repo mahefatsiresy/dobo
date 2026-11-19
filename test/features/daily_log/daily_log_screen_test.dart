@@ -91,7 +91,7 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer'));
     await tapAndSettle(tester, find.text('Étangs')); // back to the pond list
     expect(find.text('À vérifier'), findsOneWidget);
-    expect(find.text('0'), findsOneWidget);
+    expect(find.text('≈\u00a00'), findsOneWidget);
     await tapAndSettle(tester, find.text('E1'));
     await tapAndSettle(tester, find.text('Journal du jour'));
     expect(find.textContaining('≈'), findsNothing);

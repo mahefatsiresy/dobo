@@ -14,23 +14,26 @@ Color pondColourValue(PondColour c) => switch (c) {
   PondColour.black => const Color(0xFF212121),
 };
 
-/// The pond code on its colour, as painted on the stake.
-class PondBadge extends StatelessWidget {
-  const PondBadge({super.key, required this.code, required this.colour});
+/// Black or white, whichever reads on the pond's colour.
+Color pondInk(PondColour c) =>
+    pondColourValue(c).computeLuminance() > 0.4 ? Colors.black : Colors.white;
+
+/// The pond code on its colour, as painted on the stake: a 56 dp square for
+/// alert rows and page headers.
+class PondTag extends StatelessWidget {
+  const PondTag({super.key, required this.code, required this.colour});
 
   final String code;
   final PondColour colour;
 
   @override
   Widget build(BuildContext context) {
-    final background = pondColourValue(colour);
-    final light = background.computeLuminance() > 0.4;
     return Container(
       constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(8),
+        color: pondColourValue(colour),
+        borderRadius: BorderRadius.circular(4),
       ),
       // Sized to the code (at least 56 dp), not to the space offered: as a
       // list row's leading widget it must not take the whole row.
@@ -39,10 +42,36 @@ class PondBadge extends StatelessWidget {
         heightFactor: 1,
         child: Text(
           code,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: light ? Colors.black : Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.titleLarge
+              ?.copyWith(color: pondInk(colour), fontWeight: FontWeight.w700),
+        ),
+      ),
+    );
+  }
+}
+
+/// The pond code on its colour as a 64 dp strip down a list row's left
+/// edge. It fills its parent's height: give the row an [IntrinsicHeight] or
+/// a fixed height.
+class PondStake extends StatelessWidget {
+  const PondStake({super.key, required this.code, required this.colour});
+
+  final String code;
+  final PondColour colour;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 64,
+      color: pondColourValue(colour),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          code,
+          style: Theme.of(context).textTheme.titleLarge
+              ?.copyWith(color: pondInk(colour), fontWeight: FontWeight.w700),
         ),
       ),
     );
