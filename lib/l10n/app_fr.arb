@@ -203,8 +203,6 @@
   "eventTransfer": "Transfert",
   "correct": "Corriger",
   "delete": "Supprimer",
-  "deleteConfirm": "Supprimer cet enregistrement ?",
-  "fishPerPond": "Poissons par étang",
   "batchEdit": "Modifier le lot",
   "correctionTitle": "Corriger",
   "acclimatised": "Acclimatés {min} à {max} min",
@@ -302,17 +300,6 @@
   "@transferTitle": {
     "placeholders": {
       "code": {
-        "type": "String"
-      },
-      "pond": {
-        "type": "String"
-      }
-    }
-  },
-  "estimateIn": "≈ {count} dans {pond}",
-  "@estimateIn": {
-    "placeholders": {
-      "count": {
         "type": "String"
       },
       "pond": {
@@ -948,7 +935,6 @@
   "@harvestHasSales": {"placeholders": {"count": {"type": "int"}}},
   "harvestEditTitle": "Corriger la récolte {batch}",
   "@harvestEditTitle": {"placeholders": {"batch": {"type": "String"}}},
-  "feedDeleteDelivery": "Supprimer la livraison",
   "sellAction": "Vendre",
   "harvestTitle": "Récolte {batch}",
   "@harvestTitle": {
@@ -964,14 +950,6 @@
   "harvestWeight": "Poids total",
   "harvestPartial": "Partielle",
   "harvestFinal": "Finale (l'étang est vidé)",
-  "harvestEstimate": "Estimé dans l'étang : {count} poissons",
-  "@harvestEstimate": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
   "harvestMissing": "{count} poissons non retrouvés (prédateurs, vol ou erreur de comptage)",
   "@harvestMissing": {
     "placeholders": {
@@ -1027,22 +1005,7 @@
     }
   },
   "saleHarvest": "Récolte",
-  "saleHarvestOption": "{date} · {pond} · {kg}",
-  "@saleHarvestOption": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      },
-      "pond": {
-        "type": "String"
-      },
-      "kg": {
-        "type": "String"
-      }
-    }
-  },
   "saleCustomer": "Client",
-  "saleNewCustomer": "Nouveau client",
   "saleWeight": "Poids vendu",
   "saleForm": "Forme",
   "saleDate": "Date de vente",
@@ -1097,14 +1060,6 @@
   "custIndividual": "Particulier",
   "feedTitle": "Stock d'aliment",
   "feedOnHand": "En stock",
-  "feedDaysLeft": "{days} jours de stock",
-  "@feedDaysLeft": {
-    "placeholders": {
-      "days": {
-        "type": "String"
-      }
-    }
-  },
   "feedNoUsage": "Pas de consommation ces derniers jours",
   "feedOverdrawn": "Plus d'aliment donné que livré : {kg}",
   "@feedOverdrawn": {
@@ -1114,26 +1069,7 @@
       }
     }
   },
-  "feedExpiredStock": "À ne pas utiliser : {kg}",
-  "@feedExpiredStock": {
-    "placeholders": {
-      "kg": {
-        "type": "String"
-      }
-    }
-  },
-  "feedNoLots": "Aucune livraison enregistrée",
-  "feedLotMade": "Fabriqué le {date} · {days} jours",
-  "@feedLotMade": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      },
-      "days": {
-        "type": "String"
-      }
-    }
-  },
+  "feedNoLots": "Aucun aliment en stock. Enregistrez une livraison.",
   "feedLotOld": "À utiliser en priorité",
   "feedLotExpired": "À ne pas utiliser",
   "feedDeliver": "Livraison",
@@ -1146,7 +1082,6 @@
   "feedProtein": "Protéines",
   "feedSupplier": "Fournisseur",
   "feedLabel": "Marque sur les sacs",
-  "feedDiscard": "Jeter",
   "feedDiscardTitle": "Aliment jeté",
   "feedDiscardWeight": "Poids jeté",
   "feedDiscardReason": "Pourquoi",
@@ -1928,5 +1863,9 @@
   "historyFish": "{count} poissons",
   "@historyFish": {"placeholders": {"count": {"type": "String"}}},
   "historyFishWeight": "{count} poissons, {weight}",
-  "@historyFishWeight": {"placeholders": {"count": {"type": "String"}, "weight": {"type": "String"}}}
+  "@historyFishWeight": {"placeholders": {"count": {"type": "String"}, "weight": {"type": "String"}}},
+  "feedExpiredBand": "{kg} périmés, à jeter",
+  "@feedExpiredBand": {"placeholders": {"kg": {"type": "String"}}},
+  "customersCount": "{count, plural, =0{Aucun} =1{1 client} other{{count} clients}}",
+  "@customersCount": {"placeholders": {"count": {"type": "int"}}}
 }

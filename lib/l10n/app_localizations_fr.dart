@@ -385,12 +385,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get delete => 'Supprimer';
 
   @override
-  String get deleteConfirm => 'Supprimer cet enregistrement ?';
-
-  @override
-  String get fishPerPond => 'Poissons par étang';
-
-  @override
   String get batchEdit => 'Modifier le lot';
 
   @override
@@ -457,11 +451,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String transferTitle(String code, String pond) {
     return 'Transférer $code depuis $pond';
-  }
-
-  @override
-  String estimateIn(String count, String pond) {
-    return '≈ $count dans $pond';
   }
 
   @override
@@ -1560,9 +1549,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get feedDeleteDelivery => 'Supprimer la livraison';
-
-  @override
   String get sellAction => 'Vendre';
 
   @override
@@ -1587,11 +1573,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get harvestFinal => 'Finale (l\'étang est vidé)';
-
-  @override
-  String harvestEstimate(String count) {
-    return 'Estimé dans l\'étang : $count poissons';
-  }
 
   @override
   String harvestMissing(String count) {
@@ -1636,15 +1617,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get saleHarvest => 'Récolte';
 
   @override
-  String saleHarvestOption(String date, String pond, String kg) {
-    return '$date · $pond · $kg';
-  }
-
-  @override
   String get saleCustomer => 'Client';
-
-  @override
-  String get saleNewCustomer => 'Nouveau client';
 
   @override
   String get saleWeight => 'Poids vendu';
@@ -1788,11 +1761,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get feedOnHand => 'En stock';
 
   @override
-  String feedDaysLeft(String days) {
-    return '$days jours de stock';
-  }
-
-  @override
   String get feedNoUsage => 'Pas de consommation ces derniers jours';
 
   @override
@@ -1801,17 +1769,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String feedExpiredStock(String kg) {
-    return 'À ne pas utiliser : $kg';
-  }
-
-  @override
-  String get feedNoLots => 'Aucune livraison enregistrée';
-
-  @override
-  String feedLotMade(String date, String days) {
-    return 'Fabriqué le $date · $days jours';
-  }
+  String get feedNoLots => 'Aucun aliment en stock. Enregistrez une livraison.';
 
   @override
   String get feedLotOld => 'À utiliser en priorité';
@@ -1848,9 +1806,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get feedLabel => 'Marque sur les sacs';
-
-  @override
-  String get feedDiscard => 'Jeter';
 
   @override
   String get feedDiscardTitle => 'Aliment jeté';
@@ -2966,5 +2921,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String historyFishWeight(String count, String weight) {
     return '$count poissons, $weight';
+  }
+
+  @override
+  String feedExpiredBand(String kg) {
+    return '$kg périmés, à jeter';
+  }
+
+  @override
+  String customersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count clients',
+      one: '1 client',
+      zero: 'Aucun',
+    );
+    return '$_temp0';
   }
 }

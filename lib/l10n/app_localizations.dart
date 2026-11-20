@@ -800,18 +800,6 @@ abstract class AppLocalizations {
   /// **'Supprimer'**
   String get delete;
 
-  /// No description provided for @deleteConfirm.
-  ///
-  /// In fr, this message translates to:
-  /// **'Supprimer cet enregistrement ?'**
-  String get deleteConfirm;
-
-  /// No description provided for @fishPerPond.
-  ///
-  /// In fr, this message translates to:
-  /// **'Poissons par étang'**
-  String get fishPerPond;
-
   /// No description provided for @batchEdit.
   ///
   /// In fr, this message translates to:
@@ -913,12 +901,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Transférer {code} depuis {pond}'**
   String transferTitle(String code, String pond);
-
-  /// No description provided for @estimateIn.
-  ///
-  /// In fr, this message translates to:
-  /// **'≈ {count} dans {pond}'**
-  String estimateIn(String count, String pond);
 
   /// No description provided for @warnAboveEstimate.
   ///
@@ -2870,12 +2852,6 @@ abstract class AppLocalizations {
   /// **'Corriger la récolte {batch}'**
   String harvestEditTitle(String batch);
 
-  /// No description provided for @feedDeleteDelivery.
-  ///
-  /// In fr, this message translates to:
-  /// **'Supprimer la livraison'**
-  String get feedDeleteDelivery;
-
   /// No description provided for @sellAction.
   ///
   /// In fr, this message translates to:
@@ -2923,12 +2899,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Finale (l\'étang est vidé)'**
   String get harvestFinal;
-
-  /// No description provided for @harvestEstimate.
-  ///
-  /// In fr, this message translates to:
-  /// **'Estimé dans l\'étang : {count} poissons'**
-  String harvestEstimate(String count);
 
   /// No description provided for @harvestMissing.
   ///
@@ -2990,23 +2960,11 @@ abstract class AppLocalizations {
   /// **'Récolte'**
   String get saleHarvest;
 
-  /// No description provided for @saleHarvestOption.
-  ///
-  /// In fr, this message translates to:
-  /// **'{date} · {pond} · {kg}'**
-  String saleHarvestOption(String date, String pond, String kg);
-
   /// No description provided for @saleCustomer.
   ///
   /// In fr, this message translates to:
   /// **'Client'**
   String get saleCustomer;
-
-  /// No description provided for @saleNewCustomer.
-  ///
-  /// In fr, this message translates to:
-  /// **'Nouveau client'**
-  String get saleNewCustomer;
 
   /// No description provided for @saleWeight.
   ///
@@ -3278,12 +3236,6 @@ abstract class AppLocalizations {
   /// **'En stock'**
   String get feedOnHand;
 
-  /// No description provided for @feedDaysLeft.
-  ///
-  /// In fr, this message translates to:
-  /// **'{days} jours de stock'**
-  String feedDaysLeft(String days);
-
   /// No description provided for @feedNoUsage.
   ///
   /// In fr, this message translates to:
@@ -3296,23 +3248,11 @@ abstract class AppLocalizations {
   /// **'Plus d\'aliment donné que livré : {kg}'**
   String feedOverdrawn(String kg);
 
-  /// No description provided for @feedExpiredStock.
-  ///
-  /// In fr, this message translates to:
-  /// **'À ne pas utiliser : {kg}'**
-  String feedExpiredStock(String kg);
-
   /// No description provided for @feedNoLots.
   ///
   /// In fr, this message translates to:
-  /// **'Aucune livraison enregistrée'**
+  /// **'Aucun aliment en stock. Enregistrez une livraison.'**
   String get feedNoLots;
-
-  /// No description provided for @feedLotMade.
-  ///
-  /// In fr, this message translates to:
-  /// **'Fabriqué le {date} · {days} jours'**
-  String feedLotMade(String date, String days);
 
   /// No description provided for @feedLotOld.
   ///
@@ -3385,12 +3325,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Marque sur les sacs'**
   String get feedLabel;
-
-  /// No description provided for @feedDiscard.
-  ///
-  /// In fr, this message translates to:
-  /// **'Jeter'**
-  String get feedDiscard;
 
   /// No description provided for @feedDiscardTitle.
   ///
@@ -5075,6 +5009,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count} poissons, {weight}'**
   String historyFishWeight(String count, String weight);
+
+  /// No description provided for @feedExpiredBand.
+  ///
+  /// In fr, this message translates to:
+  /// **'{kg} périmés, à jeter'**
+  String feedExpiredBand(String kg);
+
+  /// No description provided for @customersCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun} =1{1 client} other{{count} clients}}'**
+  String customersCount(int count);
 }
 
 class _AppLocalizationsDelegate

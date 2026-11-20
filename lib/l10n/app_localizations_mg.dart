@@ -387,12 +387,6 @@ class AppLocalizationsMg extends AppLocalizations {
   String get delete => 'Fafana';
 
   @override
-  String get deleteConfirm => 'Hofafana ve ity firaketana ity ?';
-
-  @override
-  String get fishPerPond => 'Trondro isaky ny dobo';
-
-  @override
   String get batchEdit => 'Hanova ny andiany';
 
   @override
@@ -460,11 +454,6 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String transferTitle(String code, String pond) {
     return 'Hamindra $code avy amin\'ny $pond';
-  }
-
-  @override
-  String estimateIn(String count, String pond) {
-    return '≈ $count ao amin\'ny $pond';
   }
 
   @override
@@ -1573,9 +1562,6 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String get feedDeleteDelivery => 'Hamafa ny fanaterana';
-
-  @override
   String get sellAction => 'Hivarotra';
 
   @override
@@ -1600,11 +1586,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get harvestFinal => 'Farany (foana ny dobo)';
-
-  @override
-  String harvestEstimate(String count) {
-    return 'Tombana ao amin\'ny dobo : trondro $count';
-  }
 
   @override
   String harvestMissing(String count) {
@@ -1649,15 +1630,7 @@ class AppLocalizationsMg extends AppLocalizations {
   String get saleHarvest => 'Fijonoana';
 
   @override
-  String saleHarvestOption(String date, String pond, String kg) {
-    return '$date · $pond · $kg';
-  }
-
-  @override
   String get saleCustomer => 'Mpanjifa';
-
-  @override
-  String get saleNewCustomer => 'Mpanjifa vaovao';
 
   @override
   String get saleWeight => 'Lanja namidy';
@@ -1801,11 +1774,6 @@ class AppLocalizationsMg extends AppLocalizations {
   String get feedOnHand => 'Ao amin\'ny tahiry';
 
   @override
-  String feedDaysLeft(String days) {
-    return 'Tahiry ho an\'ny andro $days';
-  }
-
-  @override
   String get feedNoUsage => 'Tsy nisy fanjifana tato ho ato';
 
   @override
@@ -1814,17 +1782,7 @@ class AppLocalizationsMg extends AppLocalizations {
   }
 
   @override
-  String feedExpiredStock(String kg) {
-    return 'Tsy azo ampiasaina : $kg';
-  }
-
-  @override
-  String get feedNoLots => 'Tsy misy fanaterana voasoratra';
-
-  @override
-  String feedLotMade(String date, String days) {
-    return 'Natao tamin\'ny $date · $days andro';
-  }
+  String get feedNoLots => 'Tsy misy sakafo voatahiry. Raketo ny sakafo tonga.';
 
   @override
   String get feedLotOld => 'Ampiasao aloha';
@@ -1861,9 +1819,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get feedLabel => 'Marika eo amin\'ny gony';
-
-  @override
-  String get feedDiscard => 'Hanary';
 
   @override
   String get feedDiscardTitle => 'Sakafo nariana';
@@ -2963,5 +2918,22 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String historyFishWeight(String count, String weight) {
     return 'trondro $count, $weight';
+  }
+
+  @override
+  String feedExpiredBand(String kg) {
+    return '$kg lany daty, ariana';
+  }
+
+  @override
+  String customersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'mpividy $count',
+      one: 'mpividy 1',
+      zero: 'Tsy misy',
+    );
+    return '$_temp0';
   }
 }

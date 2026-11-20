@@ -12,6 +12,7 @@ import '../common/details_fold.dart';
 import '../common/form_body.dart';
 import '../common/form_menu.dart';
 import '../common/pinned_action.dart';
+import '../../theme/tokens.dart';
 import '../common/save_once.dart';
 import 'sales_providers.dart';
 
@@ -23,36 +24,42 @@ class CustomersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final customers = ref.watch(activeCustomersProvider).value;
+    final sorted = [...?customers]
+      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    final c = context.dobo;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.customersTitle)),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'customer-new',
-        onPressed: () => context.push('/more/sales/customers/new'),
-        icon: const Icon(Icons.person_add),
-        label: Text(l10n.customerNew),
-      ),
       body: customers == null
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.only(bottom: 96),
               children: [
                 if (customers.isEmpty)
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(l10n.customersNone),
                   ),
-                for (final c in customers)
+                for (final customer in sorted) ...[
                   ListTile(
                     minTileHeight: 56,
-                    title: Text(c.name),
+                    title: Text(customer.name),
                     subtitle: Text(
                       [
-                        l10n.customerTypeLabel(c.type),
-                        if (c.contact != null) c.contact!,
-                      ].join(' · '),
+                        l10n.customerTypeLabel(customer.type),
+                        ?customer.contact,
+                      ].join(', '),
                     ),
-                    onTap: () => context.push('/more/sales/customers/${c.id}'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () =>
+                        context.push('/more/sales/customers/${customer.id}'),
                   ),
+                  Divider(height: 1, thickness: 1, color: c.line),
+                ],
+                ListTile(
+                  minTileHeight: 56,
+                  leading: const Icon(Icons.person_add),
+                  title: Text(l10n.customerNew),
+                  onTap: () => context.push('/more/sales/customers/new'),
+                ),
               ],
             ),
     );

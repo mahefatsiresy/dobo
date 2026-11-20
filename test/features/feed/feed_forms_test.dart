@@ -52,7 +52,13 @@ void main() {
     expect(_field('Marque sur les sacs'), findsNothing);
     await tapAndSettle(tester, find.text('Grossissement'));
     await enterAndSettle(tester, _field('Poids livré'), '25');
-    await tapAndSettle(tester, find.text('Date de fabrication'));
+    await tapAndSettle(
+      tester,
+      find.ancestor(
+        of: find.text('Date de fabrication'),
+        matching: find.byType(InkWell),
+      ),
+    );
     await tapAndSettle(tester, find.text('OK'));
     await tapAndSettle(tester, _pinned('Enregistrer la livraison'));
     expect(_snack('Livraison enregistrée'), findsOneWidget);

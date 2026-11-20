@@ -39,11 +39,20 @@ void main() {
 
   appTest('a 25 kg delivery shows 25 kg on hand', (tester, db) async {
     await openStock(tester);
-    expect(find.text('Aucune livraison enregistrée'), findsOneWidget);
+    expect(
+      find.text('Aucun aliment en stock. Enregistrez une livraison.'),
+      findsOneWidget,
+    );
     await tapAndSettle(tester, find.text('Livraison'));
     await tapAndSettle(tester, find.text('Grossissement'));
     await enterAndSettle(tester, field('Poids livré'), '25');
-    await tapAndSettle(tester, find.text('Date de fabrication'));
+    await tapAndSettle(
+      tester,
+      find.ancestor(
+        of: find.text('Date de fabrication'),
+        matching: find.byType(InkWell),
+      ),
+    );
     await tapAndSettle(tester, find.text('OK'));
     await tapAndSettle(tester, find.text('Enregistrer la livraison'));
     expect(find.text('25 kg'), findsWidgets);
@@ -64,17 +73,20 @@ void main() {
   appTest('a 61-day lot shows the old badge', (tester, db) async {
     await lot(db, made: DateTime(2026, 1, 18));
     await openStock(tester);
-    expect(find.text('Fabriqué le 18/01/2026 · 61 jours'), findsOneWidget);
+    expect(find.text('Sacs bleus fait le 18/01/2026, 61 j'), findsOneWidget);
     expect(find.text('À utiliser en priorité'), findsOneWidget);
   }, overrides: [clock]);
 
   appTest('discarding 5 kg leaves 20 kg', (tester, db) async {
     final id = await lot(db);
     await openStock(tester);
-    await tapAndSettle(tester, find.byKey(ValueKey('discard-$id')));
+    await tapAndSettle(tester, find.byKey(ValueKey('lot-$id')));
+    await tapAndSettle(tester, find.text('Jeter une partie'));
     await enterAndSettle(tester, field('Poids jeté'), '5');
     await tapAndSettle(tester, find.text('Moisi'));
     await tapAndSettle(tester, find.text('Jeter').last);
+    // Back on the lot's delivery, then on the stock.
+    await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text('20 kg'), findsWidgets);
     final d = await db.select(db.feedDiscards).getSingle();
     expect((d.lotId, d.weightG, d.reason), (id, 5000, DiscardReason.mould));
@@ -116,7 +128,9 @@ void main() {
   appTest('a delivery entered by mistake can be deleted', (tester, db) async {
     final id = await lot(db);
     await openStock(tester);
-    await tapAndSettle(tester, find.byKey(ValueKey('lot-delete-$id')));
+    await tapAndSettle(tester, find.byKey(ValueKey('lot-$id')));
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.text('Supprimer'));
     await tapAndSettle(
       tester,
       find.descendant(
@@ -124,6 +138,9 @@ void main() {
         matching: find.text('Supprimer'),
       ),
     );
-    expect(find.text('Aucune livraison enregistrée'), findsOneWidget);
+    expect(
+      find.text('Aucun aliment en stock. Enregistrez une livraison.'),
+      findsOneWidget,
+    );
   }, overrides: [clock]);
 }
