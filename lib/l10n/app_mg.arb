@@ -768,5 +768,22 @@
   "reportDraftRow": "Havoaka : {date}",
   "reportDangerCount": "{count, plural, =1{1 loza} other{{count} loza}}",
   "detailsFold": "Antsipiriany hafa",
-  "doneDeleted": "Voafafa"
+  "doneDeleted": "Voafafa",
+  "actionSaveCorrection": "Raketo ny fanitsiana",
+  "actionSaveBatch": "Raketo ny andiany",
+  "actionSaveDelivery": "Raketo ny sakafo tonga",
+  "actionDiscard": "Ariana",
+  "doneStocked": "Voafafy trondro",
+  "doneTransferred": "Voafindra",
+  "doneDelivered": "Voaraketa ny sakafo tonga",
+  "doneDiscarded": "Voaria",
+  "doneCorrected": "Voaraketa ny fanitsiana",
+  "doneSaved": "Voaraketa",
+  "transferFrom": "Avy any",
+  "feedDiscardPart": "Ario ny ampahany",
+  "feedLotLine": "{label} vita ny {date}, {days} andro",
+  "feedLotUnnamed": "Andiany",
+  "deleteStockingConfirm": "Hofafana ve ny famafazana trondro tamin'ny {date} ({count} trondro, {pond}) ? Hihena ireo trondro ireo ny andiany.",
+  "deleteTransferConfirm": "Hofafana ve ny famindrana tamin'ny {date} ({count} trondro, {from} → {to}) ? Isaina ao amin'ny {from} indray ireo trondro.",
+  "deleteDeliveryConfirm": "Hofafana ve ny sakafo tonga tamin'ny {date} ({kg}) ? Hihena {kg} ny tahiry."
 }

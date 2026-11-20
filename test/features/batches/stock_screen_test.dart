@@ -34,7 +34,10 @@ void main() {
     expect(find.textContaining('Densité'), findsWidgets);
     expect(find.textContaining('au-dessus'), findsNothing);
 
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Empoissonner'),
+    );
     expect(find.text('L26-01'), findsWidgets);
     expect(find.textContaining('1 500'), findsWidgets);
     expect(find.textContaining('15 g'), findsWidgets);
@@ -57,7 +60,10 @@ void main() {
       find.textContaining("L'étang n'est pas marqué prêt"),
       findsOneWidget,
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Empoissonner'),
+    );
     expect(find.text('Obligatoire'), findsWidgets);
     expect(await db.select(db.batches).get(), isEmpty);
   });

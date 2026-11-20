@@ -340,6 +340,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                         builder: (context, state) => const FeedDeliveryScreen(),
                       ),
                       GoRoute(
+                        path: ':lotId',
+                        builder: (context, state) => FeedDeliveryScreen(
+                          lotId: state.pathParameters['lotId']!,
+                        ),
+                      ),
+                      GoRoute(
                         path: ':lotId/discard',
                         builder: (context, state) => FeedDiscardScreen(
                           lotId: state.pathParameters['lotId']!,

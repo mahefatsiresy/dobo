@@ -12,7 +12,13 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../common/date_field.dart';
-import '../common/notice.dart';
+import '../common/farm_today.dart';
+import '../common/attention_band.dart';
+import '../common/details_fold.dart';
+import '../common/estimated.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
+import '../common/pond_choice.dart';
 import '../common/number_field.dart';
 import '../ponds/pond_overview.dart';
 import 'batch_providers.dart';
@@ -44,7 +50,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
   final _weight = TextEditingController();
   String? _fromPondId;
   String? _toPondId;
-  var _date = farmDate(DateTime.now().toUtc());
+  late var _date = ref.read(farmTodayProvider);
   var _loaded = false;
   var _refusedIsolated = false;
 
@@ -108,7 +114,13 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
       } else {
         await repo.transfer(input);
       }
-      if (mounted) context.go('/more/batches/${widget.batchId}');
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      showDone(
+        context,
+        _correcting ? l10n.doneCorrected : l10n.doneTransferred,
+      );
+      context.go('/more/batches/${widget.batchId}');
     } on PondIsolatedException {
       setState(() => _refusedIsolated = true);
     }
@@ -155,44 +167,78 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
         : config.densityPerM2[target.pond.structure]!;
     void refresh([Object? _]) => setState(() {});
     const gap = SizedBox(height: 16);
+    Widget band(String text, {bool danger = false}) => Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: AttentionBand(
+        severity: danger ? BandSeverity.danger : BandSeverity.warning,
+        text: text,
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           l10n.transferTitle(summary.batch.code, source?.pond.code ?? '?'),
         ),
+        actions: [
+          if (_correcting)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.delete,
+                  icon: Icons.delete_outline,
+                  onTap: () => _delete(
+                    source?.pond.code ?? '?',
+                    target?.pond.code ?? '?',
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
+      bottomNavigationBar: blocked
+          ? null
+          : PinnedAction(
+              icon: _correcting ? Icons.check : Icons.swap_horiz,
+              label: _correcting
+                  ? l10n.actionSaveCorrection
+                  : l10n.pondTransfer,
+              onPressed: saving ? null : () => saveOnce(_save),
+            ),
       body: Form(
         key: _form,
         child: FormBody(
           children: [
-            if (blocked) Notice(l10n.isolatedSource, danger: true),
+            if (blocked) band(l10n.isolatedSource, danger: true),
             if (source != null)
-              Text(
-                l10n.estimateIn(
-                  formatCount(estimate, locale),
-                  source.pond.code,
+              PondHeader(
+                label: l10n.transferFrom,
+                pond: source.pond,
+                trailing: EstimatedLabel(
+                  value: l10n.pondFishCount(formatCount(estimate, locale)),
                 ),
               ),
             gap,
-            DropdownButtonFormField<String>(
-              initialValue: _toPondId,
-              decoration: InputDecoration(labelText: l10n.toPond),
-              items: [
-                for (final o in overviews)
+            PondChoiceField(
+              label: l10n.toPond,
+              requiredText: l10n.fieldRequired,
+              options: [
+                for (final o in [
+                  ...overviews,
+                ]..sort((a, b) => a.pond.code.compareTo(b.pond.code)))
                   if (o.pond.id != _fromPondId)
-                    DropdownMenuItem(
-                      value: o.pond.id,
-                      child: Text(
-                        '${o.pond.code} · ${l10n.pondStatus(o.status)}',
-                      ),
+                    PondOption(
+                      pond: o.pond,
+                      caption: l10n.pondStatus(o.status),
                     ),
               ],
-              validator: (v) => v == null ? l10n.fieldRequired : null,
-              onChanged: blocked ? null : (v) => setState(() => _toPondId = v),
+              value: _toPondId,
+              onChanged: (v) {
+                if (!blocked) setState(() => _toPondId = v);
+              },
             ),
             if (target?.status == PondStatus.isolated)
-              Notice(l10n.warnDestIsolated),
+              band(l10n.warnDestIsolated),
             gap,
             DateField(
               label: l10n.transferDate,
@@ -207,17 +253,9 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
               onChanged: refresh,
             ),
             if (!_correcting && count != null && count > estimate)
-              Notice(l10n.warnAboveEstimate(formatCount(estimate, locale))),
-            gap,
-            NumberField(
-              label: l10n.avgWeightOptional,
-              controller: _weight,
-              decimal: true,
-              suffix: 'g',
-              onChanged: refresh,
-            ),
+              band(l10n.warnAboveEstimate(formatCount(estimate, locale))),
             if (destDensity != null && range != null) ...[
-              gap,
+              const SizedBox(height: 8),
               Text(
                 l10n.destDensity(
                   target!.pond.code,
@@ -227,22 +265,44 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
                 ),
               ),
               if (destStatus == DensityStatus.below)
-                Notice(l10n.warnDensityBelow)
+                band(l10n.warnDensityBelow)
               else if (destStatus == DensityStatus.above)
-                Notice(l10n.warnDensityAbove),
+                band(l10n.warnDensityAbove),
             ],
-            const SizedBox(height: 24),
-            if (!blocked)
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(56),
+            DetailsFold(
+              initiallyOpen: _weight.text.isNotEmpty,
+              children: [
+                gap,
+                NumberField(
+                  label: l10n.avgWeightOptional,
+                  controller: _weight,
+                  decimal: true,
+                  suffix: 'g',
+                  onChanged: refresh,
                 ),
-                onPressed: saving ? null : () => saveOnce(_save),
-                child: Text(l10n.save),
-              ),
+              ],
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _delete(String from, String to) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await confirmDelete(
+      context,
+      l10n.deleteTransferConfirm(
+        formatDate(_date),
+        formatCount(_countValue ?? 0, Localizations.localeOf(context)),
+        from,
+        to,
+      ),
+    );
+    if (!ok || !mounted) return;
+    await ref.read(batchRepositoryProvider).deleteTransfer(widget.transferId!);
+    if (!mounted) return;
+    showDone(context, l10n.doneDeleted);
+    context.go('/more/batches/${widget.batchId}');
   }
 }

@@ -19,6 +19,9 @@ import '../sales/sales_screen.dart';
 import '../sales/share_trace.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
+import '../common/details_fold.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../../theme/tokens.dart';
 
 class BatchDetailScreen extends ConsumerWidget {
@@ -347,7 +350,9 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen>
       await ref
           .read(batchRepositoryProvider)
           .updateBatch(widget.batchId, _identity.input());
-      if (mounted) context.go('/more/batches/${widget.batchId}');
+      if (!mounted) return;
+      showDone(context, AppLocalizations.of(context).doneSaved);
+      context.go('/more/batches/${widget.batchId}');
     } on DuplicateCodeException {
       if (mounted) {
         setState(
@@ -361,7 +366,8 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    if (_batch == null) {
+    // A new batch id (the same page shown for another batch) loads anew.
+    if (_batch?.id != widget.batchId) {
       final b = ref
           .watch(batchSummariesProvider)
           .value
@@ -376,22 +382,30 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen>
     }
     return Scaffold(
       appBar: AppBar(title: Text(l10n.batchEdit)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.check,
+        label: l10n.actionSaveBatch,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
           children: [
-            ...batchIdentityFields(
+            batchCodeField(context, _identity),
+            const SizedBox(height: 16),
+            plannedHarvestField(
               context,
               _identity,
               onChanged: () => setState(() {}),
             ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
+            DetailsFold(
+              key: ValueKey(widget.batchId),
+              initiallyOpen: _identity.hasDetails,
+              children: batchDetailFields(
+                context,
+                _identity,
+                onChanged: () => setState(() {}),
               ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
             ),
           ],
         ),

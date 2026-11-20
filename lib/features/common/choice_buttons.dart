@@ -53,3 +53,54 @@ class ChoiceButtons<T> extends StatelessWidget {
     ],
   );
 }
+
+/// [ChoiceButtons] under a title, as a form field: with [requiredText] it
+/// fails validation while nothing is picked and shows that text.
+class ChoiceField<T> extends StatelessWidget {
+  const ChoiceField({
+    super.key,
+    required this.label,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+    this.requiredText,
+    this.leading,
+  });
+
+  final String label;
+  final List<(T, String)> options;
+  final T? value;
+  final ValueChanged<T> onChanged;
+  final String? requiredText;
+  final Widget Function(T value)? leading;
+
+  @override
+  Widget build(BuildContext context) => FormField<T>(
+    validator: (_) =>
+        requiredText != null && value == null ? requiredText : null,
+    builder: (state) => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 8),
+        ChoiceButtons<T>(
+          options: options,
+          value: value,
+          leading: leading,
+          onChanged: (v) {
+            onChanged(v);
+            state.didChange(v);
+          },
+        ),
+        if (state.hasError)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              state.errorText!,
+              style: TextStyle(color: context.dobo.danger),
+            ),
+          ),
+      ],
+    ),
+  );
+}

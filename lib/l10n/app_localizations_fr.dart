@@ -2716,4 +2716,68 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get doneDeleted => 'Supprimé';
+
+  @override
+  String get actionSaveCorrection => 'Enregistrer la correction';
+
+  @override
+  String get actionSaveBatch => 'Enregistrer le lot';
+
+  @override
+  String get actionSaveDelivery => 'Enregistrer la livraison';
+
+  @override
+  String get actionDiscard => 'Jeter';
+
+  @override
+  String get doneStocked => 'Empoissonné';
+
+  @override
+  String get doneTransferred => 'Transféré';
+
+  @override
+  String get doneDelivered => 'Livraison enregistrée';
+
+  @override
+  String get doneDiscarded => 'Jeté';
+
+  @override
+  String get doneCorrected => 'Correction enregistrée';
+
+  @override
+  String get doneSaved => 'Enregistré';
+
+  @override
+  String get transferFrom => 'De';
+
+  @override
+  String get feedDiscardPart => 'Jeter une partie';
+
+  @override
+  String feedLotLine(String label, String date, String days) {
+    return '$label fait le $date, $days j';
+  }
+
+  @override
+  String get feedLotUnnamed => 'Lot';
+
+  @override
+  String deleteStockingConfirm(String date, String count, String pond) {
+    return 'Supprimer l\'empoissonnement du $date ($count poissons, $pond) ? Le lot perd ces poissons.';
+  }
+
+  @override
+  String deleteTransferConfirm(
+    String date,
+    String count,
+    String from,
+    String to,
+  ) {
+    return 'Supprimer le transfert du $date ($count poissons, $from → $to) ? Les poissons comptent de nouveau dans $from.';
+  }
+
+  @override
+  String deleteDeliveryConfirm(String date, String kg) {
+    return 'Supprimer la livraison du $date ($kg) ? Le stock baisse de $kg.';
+  }
 }

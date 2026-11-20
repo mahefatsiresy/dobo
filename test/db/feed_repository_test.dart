@@ -58,4 +58,13 @@ void main() {
     expect(s.lots.single.lot.id, lot);
     expect(s.onHandG, 30000);
   });
+
+  test('a lot reads as its latest correction', () async {
+    final lot = await feed.deliver(delivery());
+    expect((await feed.delivery(lot))!.weightG, 25000);
+    await feed.correctDelivery(lot, delivery(kg: 30));
+    expect((await feed.delivery(lot))!.weightG, 30000);
+    await feed.deleteDelivery(lot);
+    expect(await feed.delivery(lot), isNull);
+  });
 }

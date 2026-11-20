@@ -309,6 +309,12 @@ void main() {
       await t.pump();
       expect(find.text('Transféré'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      // Clear of a pinned action (80 dp) at the foot of the next page.
+      final screen = t.getSize(find.byType(Scaffold).first).height;
+      expect(
+        screen - t.getRect(find.text('Transféré')).bottom,
+        greaterThanOrEqualTo(80),
+      );
     });
 
     testWidgets('FormMenu lists its entries behind ⋮', (t) async {

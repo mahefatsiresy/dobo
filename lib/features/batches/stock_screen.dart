@@ -12,7 +12,12 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../common/date_field.dart';
-import '../common/notice.dart';
+import '../common/farm_today.dart';
+import '../common/attention_band.dart';
+import '../common/details_fold.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
+import '../common/pond_choice.dart';
 import '../common/number_field.dart';
 import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
@@ -37,11 +42,12 @@ class StockScreen extends ConsumerStatefulWidget {
 class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
   final _form = GlobalKey<FormState>();
   final _scroll = ScrollController();
+  final _codeKey = GlobalKey();
   final _identity = BatchIdentity();
   final _count = TextEditingController();
   final _weight = TextEditingController();
   String? _pondId;
-  var _date = farmDate(DateTime.now().toUtc());
+  late var _date = ref.read(farmTodayProvider);
   bool? _acclimatised;
   var _loaded = false;
 
@@ -114,7 +120,9 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
           acclimatised: _acclimatised,
         ),
       );
-      if (mounted) context.go('/more/batches/${widget.batchId}');
+      if (!mounted) return;
+      showDone(context, AppLocalizations.of(context).doneCorrected);
+      context.go('/more/batches/${widget.batchId}');
       return;
     }
     final identity = _identity.input();
@@ -134,18 +142,36 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
           acclimatised: _acclimatised,
         ),
       );
-      if (mounted) context.go('/more/batches/$id');
+      if (!mounted) return;
+      showDone(context, AppLocalizations.of(context).doneStocked);
+      context.go('/more/batches/$id');
     } on DuplicateCodeException {
       if (!mounted) return;
       setState(
         () => _identity.codeError = AppLocalizations.of(context).duplicateCode,
       );
-      await _scroll.animateTo(
-        0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      final code = _codeKey.currentContext;
+      if (code != null && code.mounted) {
+        await Scrollable.ensureVisible(code, alignment: 0.2);
+      }
     }
+  }
+
+  Future<void> _delete(String pondCode) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await confirmDelete(
+      context,
+      l10n.deleteStockingConfirm(
+        formatDate(_date),
+        formatCount(_countValue ?? 0, Localizations.localeOf(context)),
+        pondCode,
+      ),
+    );
+    if (!ok || !mounted) return;
+    await ref.read(batchRepositoryProvider).deleteStocking(widget.stockingId!);
+    if (!mounted) return;
+    showDone(context, l10n.doneDeleted);
+    context.go('/more/batches/${widget.batchId}');
   }
 
   @override
@@ -186,59 +212,63 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
     String? requiredValue(String? _, Object? value) =>
         value == null ? l10n.fieldRequired : null;
     const gap = SizedBox(height: 16);
+    List<Widget> bands(bool Function(StockingWarning) which) => [
+      for (final w in warnings.where(which))
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: AttentionBand(
+            severity: BandSeverity.warning,
+            text: _warningText(l10n, w, target!, config, n),
+          ),
+        ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_correcting ? l10n.correctionTitle : l10n.stockTitle),
+        actions: [
+          if (_correcting)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.delete,
+                  icon: Icons.delete_outline,
+                  onTap: () => _delete(target?.pond.code ?? '?'),
+                ),
+              ],
+            ),
+        ],
+      ),
+      bottomNavigationBar: PinnedAction(
+        icon: _correcting ? Icons.check : Icons.add,
+        label: _correcting ? l10n.actionSaveCorrection : l10n.pondStock,
+        onPressed: saving ? null : () => saveOnce(_save),
       ),
       body: Form(
         key: _form,
         child: FormBody(
           controller: _scroll,
           children: [
-            Card(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    const Icon(Icons.timer),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l10n.acclimatiseReminder(
-                          n(config.acclimatisationMinutes.min),
-                          n(config.acclimatisationMinutes.max),
-                        ),
-                      ),
+            if (widget.pondId != null && target != null)
+              PondHeader(label: l10n.pickPond, pond: target.pond)
+            else
+              PondChoiceField(
+                label: l10n.pickPond,
+                requiredText: l10n.fieldRequired,
+                options: [
+                  for (final o in ponds)
+                    PondOption(
+                      pond: o.pond,
+                      caption: o.status == PondStatus.ready
+                          ? null
+                          : l10n.pondStatus(o.status),
                     ),
-                  ],
-                ),
+                ],
+                value: _pondId,
+                onChanged: (v) => setState(() => _pondId = v),
               ),
-            ),
+            ...bands(_pondWarnings.contains),
             gap,
-            DropdownButtonFormField<String>(
-              initialValue: _pondId,
-              decoration: InputDecoration(labelText: l10n.pickPond),
-              items: [
-                for (final o in ponds)
-                  DropdownMenuItem(
-                    value: o.pond.id,
-                    child: Text(
-                      '${o.pond.code} · ${l10n.pondStatus(o.status)}',
-                    ),
-                  ),
-              ],
-              validator: (v) => v == null ? l10n.fieldRequired : null,
-              onChanged: (v) => setState(() => _pondId = v),
-            ),
-            for (final w in warnings.where(_pondWarnings.contains))
-              Notice(_warningText(l10n, w, target!, config, n)),
-            gap,
-            if (!_correcting) ...[
-              ...batchIdentityFields(context, _identity, onChanged: refresh),
-              gap,
-            ],
             DateField(
               label: l10n.stockDate,
               value: _date,
@@ -261,7 +291,7 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
               onChanged: refresh,
             ),
             if (density != null && range != null) ...[
-              gap,
+              const SizedBox(height: 8),
               Text(
                 l10n.densityResult(
                   formatDecimal(density, locale),
@@ -270,8 +300,23 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
                 ),
               ),
             ],
-            for (final w in warnings.where((w) => !_pondWarnings.contains(w)))
-              Notice(_warningText(l10n, w, target!, config, n)),
+            ...bands((w) => !_pondWarnings.contains(w)),
+            gap,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.thermostat),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    l10n.acclimatiseReminder(
+                      n(config.acclimatisationMinutes.min),
+                      n(config.acclimatisationMinutes.max),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             CheckboxListTile(
               minTileHeight: 56,
               contentPadding: EdgeInsets.zero,
@@ -284,14 +329,21 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
               value: _acclimatised ?? false,
               onChanged: (v) => setState(() => _acclimatised = v),
             ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
+            if (!_correcting) ...[
+              gap,
+              KeyedSubtree(
+                key: _codeKey,
+                child: batchCodeField(context, _identity),
               ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
-            ),
+              DetailsFold(
+                children: batchDetailFields(
+                  context,
+                  _identity,
+                  onChanged: refresh,
+                  withPlannedHarvest: true,
+                ),
+              ),
+            ],
           ],
         ),
       ),

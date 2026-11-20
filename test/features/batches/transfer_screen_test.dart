@@ -50,9 +50,14 @@ void main() {
   }
 
   Future<void> pickDestination(WidgetTester tester) async {
-    await tapAndSettle(tester, find.text("Vers l'étang"));
-    await tapAndSettle(tester, find.textContaining('E1 ·').last);
+    await tapAndSettle(tester, find.byKey(ValueKey('pond-$e1')));
   }
+
+  /// The pinned action, named for what it does.
+  Finder save([String label = 'Transférer']) => find.descendant(
+    of: find.byType(SafeArea),
+    matching: find.widgetWithText(FilledButton, label),
+  );
 
   Finder countField() =>
       find.widgetWithText(TextFormField, 'Nombre de poissons');
@@ -63,10 +68,10 @@ void main() {
   ) async {
     await farm(tester, db);
     await openTransfer(tester);
-    expect(find.textContaining('1 000 dans Q1'), findsOneWidget);
+    expect(find.textContaining('1 000 poissons'), findsOneWidget);
     await pickDestination(tester);
     await enterAndSettle(tester, countField(), '1000');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, save());
 
     expect(find.text('Actif'), findsOneWidget);
     expect(find.textContaining('1 000'), findsWidgets);
@@ -80,7 +85,7 @@ void main() {
     await pickDestination(tester);
     await enterAndSettle(tester, countField(), '1200');
     expect(find.text("Plus que l'estimation (1 000)"), findsOneWidget);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, save());
     expect((await db.select(db.transfers).getSingle()).count, 1200);
   });
 
@@ -93,7 +98,7 @@ void main() {
       find.text('Étang isolé : aucun poisson ne doit en sortir'),
       findsOneWidget,
     );
-    expect(find.text('Enregistrer'), findsNothing);
+    expect(save(), findsNothing);
   });
 
   appTest('correct a move from the batch history', (tester, db) async {
@@ -101,10 +106,10 @@ void main() {
     await openTransfer(tester);
     await pickDestination(tester);
     await enterAndSettle(tester, countField(), '1000');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, save());
     await tapAndSettle(tester, find.text('Corriger').first);
     await enterAndSettle(tester, countField(), '600');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, save('Enregistrer la correction'));
     expect(find.textContaining('400'), findsWidgets);
     expect(find.textContaining('600'), findsWidgets);
     expect(await db.select(db.transfers).get(), hasLength(2));
@@ -124,10 +129,8 @@ void main() {
     await openTransfer(tester);
     await pickDestination(tester);
     await enterAndSettle(tester, countField(), '1000');
-    final save = find.text('Enregistrer');
-    await tester.ensureVisible(save);
-    await tester.tap(save);
-    await tester.tap(save, warnIfMissed: false);
+    await tester.tap(save());
+    await tester.tap(save(), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(await db.select(db.transfers).get(), hasLength(1));
   });

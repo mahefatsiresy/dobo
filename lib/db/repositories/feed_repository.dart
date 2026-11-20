@@ -61,6 +61,16 @@ class FeedRepository {
     });
   }
 
+  /// The lot's delivery as last corrected; null once deleted.
+  Future<FeedDelivery?> delivery(String lotId) async {
+    for (final d in await currentEvents(db, db.feedDeliveries).get()) {
+      if ((await db.chainIds(db.feedDeliveries, d.id)).contains(lotId)) {
+        return d;
+      }
+    }
+    return null;
+  }
+
   Future<void> deleteDelivery(String lotId) => db.transaction(() async {
     await db.tombstone(
       db.feedDeliveries,

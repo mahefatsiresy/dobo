@@ -65,7 +65,7 @@ void main() {
       find.widgetWithText(TextFormField, "Nombre d'alevins"),
       '500',
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la correction'));
 
     expect(tester.takeException(), isNull);
     expect(find.text('À vérifier'), findsOneWidget);
@@ -132,13 +132,14 @@ void main() {
     await tapAndSettle(tester, find.text('Lots'));
     await tapAndSettle(tester, find.text('L26-01'));
     await tapAndSettle(tester, find.byTooltip('Modifier le lot'));
+    await tapAndSettle(tester, find.text('Plus de détails'));
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, 'Souche (ex. GIFT)'),
       'GIFT',
     );
     await tapAndSettle(tester, find.text('Oui'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le lot'));
     expect(find.text('GIFT'), findsOneWidget);
     final b = await db.select(db.batches).getSingle();
     expect((b.strain, b.monosex, b.code), ('GIFT', true, 'L26-01'));
@@ -172,7 +173,7 @@ void main() {
       find.widgetWithText(TextFormField, "Nombre d'alevins"),
       '900',
     );
-    final save = find.text('Enregistrer');
+    final save = find.text('Enregistrer la correction');
     await tester.ensureVisible(save);
     await tester.tap(save);
     await tester.tap(save, warnIfMissed: false);

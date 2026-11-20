@@ -2714,4 +2714,68 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get doneDeleted => 'Voafafa';
+
+  @override
+  String get actionSaveCorrection => 'Raketo ny fanitsiana';
+
+  @override
+  String get actionSaveBatch => 'Raketo ny andiany';
+
+  @override
+  String get actionSaveDelivery => 'Raketo ny sakafo tonga';
+
+  @override
+  String get actionDiscard => 'Ariana';
+
+  @override
+  String get doneStocked => 'Voafafy trondro';
+
+  @override
+  String get doneTransferred => 'Voafindra';
+
+  @override
+  String get doneDelivered => 'Voaraketa ny sakafo tonga';
+
+  @override
+  String get doneDiscarded => 'Voaria';
+
+  @override
+  String get doneCorrected => 'Voaraketa ny fanitsiana';
+
+  @override
+  String get doneSaved => 'Voaraketa';
+
+  @override
+  String get transferFrom => 'Avy any';
+
+  @override
+  String get feedDiscardPart => 'Ario ny ampahany';
+
+  @override
+  String feedLotLine(String label, String date, String days) {
+    return '$label vita ny $date, $days andro';
+  }
+
+  @override
+  String get feedLotUnnamed => 'Andiany';
+
+  @override
+  String deleteStockingConfirm(String date, String count, String pond) {
+    return 'Hofafana ve ny famafazana trondro tamin\'ny $date ($count trondro, $pond) ? Hihena ireo trondro ireo ny andiany.';
+  }
+
+  @override
+  String deleteTransferConfirm(
+    String date,
+    String count,
+    String from,
+    String to,
+  ) {
+    return 'Hofafana ve ny famindrana tamin\'ny $date ($count trondro, $from → $to) ? Isaina ao amin\'ny $from indray ireo trondro.';
+  }
+
+  @override
+  String deleteDeliveryConfirm(String date, String kg) {
+    return 'Hofafana ve ny sakafo tonga tamin\'ny $date ($kg) ? Hihena $kg ny tahiry.';
+  }
 }

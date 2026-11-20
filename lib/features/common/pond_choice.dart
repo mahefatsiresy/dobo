@@ -90,3 +90,80 @@ class _PondChoiceState extends State<PondChoice> {
     );
   }
 }
+
+/// A pond a form is about and can't change: its label, the code and swatch,
+/// then what it holds.
+class PondHeader extends StatelessWidget {
+  const PondHeader({
+    super.key,
+    required this.label,
+    required this.pond,
+    this.trailing,
+  });
+
+  final String label;
+  final Pond pond;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) => ConstrainedBox(
+    constraints: const BoxConstraints(minHeight: 56),
+    child: Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 12,
+      runSpacing: 4,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.titleMedium),
+        PondCode(code: pond.code, colour: pond.colour),
+        ?trailing,
+      ],
+    ),
+  );
+}
+
+/// A form field around [PondChoice]: fails with [requiredText] while no
+/// pond is picked.
+class PondChoiceField extends StatelessWidget {
+  const PondChoiceField({
+    super.key,
+    required this.label,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+    required this.requiredText,
+  });
+
+  final String label;
+  final List<PondOption> options;
+  final String? value;
+  final ValueChanged<String?> onChanged;
+  final String requiredText;
+
+  @override
+  Widget build(BuildContext context) => FormField<String>(
+    validator: (_) => value == null ? requiredText : null,
+    builder: (state) => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 8),
+        PondChoice(
+          options: options,
+          value: value,
+          onChanged: (v) {
+            onChanged(v);
+            state.didChange(v);
+          },
+        ),
+        if (state.hasError)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              state.errorText!,
+              style: TextStyle(color: context.dobo.danger),
+            ),
+          ),
+      ],
+    ),
+  );
+}

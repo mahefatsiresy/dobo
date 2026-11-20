@@ -45,7 +45,7 @@ void main() {
     await enterAndSettle(tester, field('Poids livré'), '25');
     await tapAndSettle(tester, find.text('Date de fabrication'));
     await tapAndSettle(tester, find.text('OK'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la livraison'));
     expect(find.text('25 kg'), findsWidgets);
     final d = await db.select(db.feedDeliveries).getSingle();
     expect((d.phase, d.weightG), (Phase.growout, 25000));
@@ -56,7 +56,7 @@ void main() {
     await tapAndSettle(tester, find.text('Livraison'));
     await tapAndSettle(tester, find.text('Grossissement'));
     await enterAndSettle(tester, field('Poids livré'), '25');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la livraison'));
     expect(find.text('Obligatoire'), findsOneWidget);
     expect(await db.select(db.feedDeliveries).get(), isEmpty);
   }, overrides: [clock]);
@@ -74,7 +74,7 @@ void main() {
     await tapAndSettle(tester, find.byKey(ValueKey('discard-$id')));
     await enterAndSettle(tester, field('Poids jeté'), '5');
     await tapAndSettle(tester, find.text('Moisi'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Jeter').last);
     expect(find.text('20 kg'), findsWidgets);
     final d = await db.select(db.feedDiscards).getSingle();
     expect((d.lotId, d.weightG, d.reason), (id, 5000, DiscardReason.mould));

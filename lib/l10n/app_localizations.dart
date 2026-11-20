@@ -4716,6 +4716,113 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimé'**
   String get doneDeleted;
+
+  /// No description provided for @actionSaveCorrection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer la correction'**
+  String get actionSaveCorrection;
+
+  /// No description provided for @actionSaveBatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer le lot'**
+  String get actionSaveBatch;
+
+  /// No description provided for @actionSaveDelivery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer la livraison'**
+  String get actionSaveDelivery;
+
+  /// No description provided for @actionDiscard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeter'**
+  String get actionDiscard;
+
+  /// No description provided for @doneStocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonné'**
+  String get doneStocked;
+
+  /// No description provided for @doneTransferred.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transféré'**
+  String get doneTransferred;
+
+  /// No description provided for @doneDelivered.
+  ///
+  /// In fr, this message translates to:
+  /// **'Livraison enregistrée'**
+  String get doneDelivered;
+
+  /// No description provided for @doneDiscarded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeté'**
+  String get doneDiscarded;
+
+  /// No description provided for @doneCorrected.
+  ///
+  /// In fr, this message translates to:
+  /// **'Correction enregistrée'**
+  String get doneCorrected;
+
+  /// No description provided for @doneSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistré'**
+  String get doneSaved;
+
+  /// No description provided for @transferFrom.
+  ///
+  /// In fr, this message translates to:
+  /// **'De'**
+  String get transferFrom;
+
+  /// No description provided for @feedDiscardPart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeter une partie'**
+  String get feedDiscardPart;
+
+  /// No description provided for @feedLotLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label} fait le {date}, {days} j'**
+  String feedLotLine(String label, String date, String days);
+
+  /// No description provided for @feedLotUnnamed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lot'**
+  String get feedLotUnnamed;
+
+  /// No description provided for @deleteStockingConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer l\'empoissonnement du {date} ({count} poissons, {pond}) ? Le lot perd ces poissons.'**
+  String deleteStockingConfirm(String date, String count, String pond);
+
+  /// No description provided for @deleteTransferConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le transfert du {date} ({count} poissons, {from} → {to}) ? Les poissons comptent de nouveau dans {from}.'**
+  String deleteTransferConfirm(
+    String date,
+    String count,
+    String from,
+    String to,
+  );
+
+  /// No description provided for @deleteDeliveryConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la livraison du {date} ({kg}) ? Le stock baisse de {kg}.'**
+  String deleteDeliveryConfirm(String date, String kg);
 }
 
 class _AppLocalizationsDelegate

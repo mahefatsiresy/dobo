@@ -12,6 +12,11 @@ import '../common/farm_today.dart';
 import '../common/form_body.dart';
 import '../common/number_field.dart';
 import '../common/save_once.dart';
+import '../common/choice_buttons.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
+import '../../domain/dates.dart';
+import 'feed_providers.dart';
 
 /// Feed thrown away from a lot (DOMAIN §Feed stock).
 class FeedDiscardScreen extends ConsumerStatefulWidget {
@@ -45,19 +50,53 @@ class _FeedDiscardState extends ConsumerState<FeedDiscardScreen> with SaveOnce {
           reason: _reason!,
           on: _date,
         );
-    if (mounted) context.pop();
+    if (!mounted) return;
+    showDone(context, AppLocalizations.of(context).doneDiscarded);
+    context.canPop() ? context.pop() : context.go('/more/feed');
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final today = ref.watch(farmTodayProvider);
+    final lot = ref
+        .watch(feedStockProvider)
+        .value
+        ?.lots
+        .where((b) => b.lot.id == widget.lotId)
+        .firstOrNull
+        ?.lot;
     const gap = SizedBox(height: 16);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.feedDiscardTitle)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.delete_sweep_outlined,
+        label: l10n.actionDiscard,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
           children: [
+            if (lot != null)
+              Text(
+                [
+                  l10n.feedLotLine(
+                    lot.label ?? l10n.feedLotUnnamed,
+                    formatDate(lot.manufacturedOn),
+                    '${daysBetween(lot.manufacturedOn, today)}',
+                  ),
+                  l10n.phase(lot.phase),
+                ].join(', '),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            gap,
+            DateField(
+              label: l10n.doneDate,
+              value: _date,
+              onChanged: (d) => setState(() => _date = d),
+            ),
+            gap,
             NumberField(
               label: l10n.feedDiscardWeight,
               controller: _weight,
@@ -67,49 +106,15 @@ class _FeedDiscardState extends ConsumerState<FeedDiscardScreen> with SaveOnce {
                   (parseDecimal(v ?? '') ?? 0) <= 0 ? l10n.fieldRequired : null,
             ),
             gap,
-            Text(
-              l10n.feedDiscardReason,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            FormField<DiscardReason>(
-              validator: (_) => _reason == null ? l10n.fieldRequired : null,
-              builder: (state) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      for (final r in DiscardReason.values)
-                        ChoiceChip(
-                          label: Text(l10n.discardReason(r)),
-                          selected: _reason == r,
-                          onSelected: (_) => setState(() => _reason = r),
-                        ),
-                    ],
-                  ),
-                  if (state.hasError)
-                    Text(
-                      state.errorText!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            gap,
-            DateField(
-              label: l10n.doneDate,
-              value: _date,
-              onChanged: (d) => setState(() => _date = d),
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
+            ChoiceField<DiscardReason>(
+              label: l10n.feedDiscardReason,
+              options: [
+                for (final r in DiscardReason.values)
+                  (r, l10n.discardReason(r)),
+              ],
+              value: _reason,
+              requiredText: l10n.fieldRequired,
+              onChanged: (r) => setState(() => _reason = r),
             ),
           ],
         ),

@@ -72,10 +72,16 @@ Future<bool> confirmDelete(BuildContext context, String message) async {
 
 /// Says a form's action was done, in the action's own verb ("Transféré").
 /// Call it with the context of a screen that stays, or before popping.
+/// The member shell shows snackbars in its outer Scaffold, under which the
+/// next page's [PinnedAction] sits: it floats clear of that bar (80 dp) so
+/// it never covers the next thing to tap.
 void showDone(BuildContext context, String text) {
   final c = context.dobo;
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 88),
+      duration: const Duration(seconds: 3),
       content: Row(
         children: [
           Icon(Icons.check_circle, color: c.okFill),

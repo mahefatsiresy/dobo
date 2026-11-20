@@ -1844,5 +1844,26 @@
     }
   },
   "detailsFold": "Plus de détails",
-  "doneDeleted": "Supprimé"
+  "doneDeleted": "Supprimé",
+  "actionSaveCorrection": "Enregistrer la correction",
+  "actionSaveBatch": "Enregistrer le lot",
+  "actionSaveDelivery": "Enregistrer la livraison",
+  "actionDiscard": "Jeter",
+  "doneStocked": "Empoissonné",
+  "doneTransferred": "Transféré",
+  "doneDelivered": "Livraison enregistrée",
+  "doneDiscarded": "Jeté",
+  "doneCorrected": "Correction enregistrée",
+  "doneSaved": "Enregistré",
+  "transferFrom": "De",
+  "feedDiscardPart": "Jeter une partie",
+  "feedLotLine": "{label} fait le {date}, {days} j",
+  "@feedLotLine": {"placeholders": {"label": {"type": "String"}, "date": {"type": "String"}, "days": {"type": "String"}}},
+  "feedLotUnnamed": "Lot",
+  "deleteStockingConfirm": "Supprimer l'empoissonnement du {date} ({count} poissons, {pond}) ? Le lot perd ces poissons.",
+  "@deleteStockingConfirm": {"placeholders": {"date": {"type": "String"}, "count": {"type": "String"}, "pond": {"type": "String"}}},
+  "deleteTransferConfirm": "Supprimer le transfert du {date} ({count} poissons, {from} → {to}) ? Les poissons comptent de nouveau dans {from}.",
+  "@deleteTransferConfirm": {"placeholders": {"date": {"type": "String"}, "count": {"type": "String"}, "from": {"type": "String"}, "to": {"type": "String"}}},
+  "deleteDeliveryConfirm": "Supprimer la livraison du {date} ({kg}) ? Le stock baisse de {kg}.",
+  "@deleteDeliveryConfirm": {"placeholders": {"date": {"type": "String"}, "kg": {"type": "String"}}}
 }
