@@ -11,7 +11,10 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/choice_buttons.dart';
+import '../common/details_fold.dart';
+import '../common/pinned_action.dart';
 import '../common/number_field.dart';
 import '../common/pond_colour.dart';
 import 'pond_overview.dart';
@@ -153,8 +156,22 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
     void refresh(String _) => setState(() {});
     const gap = SizedBox(height: 16);
 
+    final editing = _editing;
+    final hasDetails =
+        editing != null &&
+        (editing.depthInletM != null ||
+            editing.depthOutletM != null ||
+            editing.waterSupply != null ||
+            editing.surfaceM2Override != null);
+    final c = context.dobo;
+
     return Scaffold(
       appBar: AppBar(title: Text(id == null ? l10n.pondAdd : _code.text)),
+      bottomNavigationBar: PinnedAction(
+        icon: id == null ? Icons.add : Icons.check,
+        label: id == null ? l10n.pondAdd : l10n.actionSavePond,
+        onPressed: saving ? null : () => saveOnce(() => _save(colour)),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
@@ -171,41 +188,36 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
                   (v ?? '').trim().isEmpty ? l10n.fieldRequired : null,
             ),
             gap,
-            Text(l10n.pondColourLabel),
+            Text(
+              l10n.pondColourLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (final c in PondColour.values)
+                for (final p in PondColour.values)
                   Semantics(
-                    label: l10n.pondColour(c),
-                    selected: c == colour,
+                    label: l10n.pondColour(p),
+                    selected: p == colour,
                     button: true,
                     child: InkWell(
-                      onTap: () => setState(() => _colour = c),
+                      onTap: () => setState(() => _colour = p),
                       customBorder: const CircleBorder(),
                       child: Container(
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          color: pondColourValue(c),
+                          color: pondColourValue(p),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            width: c == colour ? 4 : 1,
-                            color: c == colour
-                                ? Theme.of(context).colorScheme.primary
-                                : context.dobo.inkMuted,
+                            width: p == colour ? 4 : 1,
+                            color: p == colour ? c.ink : c.inkMuted,
                           ),
                         ),
-                        child: c == colour
-                            ? Icon(
-                                Icons.check,
-                                color:
-                                    pondColourValue(c).computeLuminance() > 0.4
-                                    ? Colors.black
-                                    : Colors.white,
-                              )
+                        child: p == colour
+                            ? Icon(Icons.check, color: pondInk(p))
                             : null,
                       ),
                     ),
@@ -213,35 +225,20 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
               ],
             ),
             gap,
-            DropdownButtonFormField<StructureType>(
-              initialValue: _structure,
-              decoration: InputDecoration(labelText: l10n.pondStructure),
-              items: [
-                for (final s in StructureType.values)
-                  DropdownMenuItem(value: s, child: Text(l10n.structure(s))),
-              ],
-              onChanged: (v) => setState(() => _structure = v!),
+            ChoiceField<PondRole>(
+              label: l10n.pondRoleLabel,
+              options: [for (final r in PondRole.values) (r, l10n.pondRole(r))],
+              value: _role,
+              onChanged: (v) => setState(() => _role = v),
             ),
             gap,
-            DropdownButtonFormField<PondRole>(
-              initialValue: _role,
-              decoration: InputDecoration(labelText: l10n.pondRoleLabel),
-              items: [
-                for (final r in PondRole.values)
-                  DropdownMenuItem(value: r, child: Text(l10n.pondRole(r))),
+            ChoiceField<StructureType>(
+              label: l10n.pondStructure,
+              options: [
+                for (final s in StructureType.values) (s, l10n.structure(s)),
               ],
-              onChanged: (v) => setState(() => _role = v!),
-            ),
-            gap,
-            DropdownButtonFormField<WaterSupply?>(
-              initialValue: _supply,
-              decoration: InputDecoration(labelText: l10n.pondWaterSupply),
-              items: [
-                DropdownMenuItem(child: Text(l10n.notSpecified)),
-                for (final w in WaterSupply.values)
-                  DropdownMenuItem(value: w, child: Text(l10n.waterSupply(w))),
-              ],
-              onChanged: (v) => setState(() => _supply = v),
+              value: _structure,
+              onChanged: (v) => setState(() => _structure = v),
             ),
             gap,
             NumberField(
@@ -268,52 +265,69 @@ class _PondFormScreenState extends ConsumerState<PondFormScreen> with SaveOnce {
                   ),
                 ),
               ),
-            gap,
-            NumberField(
-              label: l10n.pondSurfaceOverride,
-              controller: _surface,
-              decimal: true,
-              suffix: 'm²',
-            ),
-            gap,
-            NumberField(
-              label: l10n.pondDepthInlet,
-              controller: _depthIn,
-              decimal: true,
-              suffix: 'm',
-              onChanged: refresh,
-            ),
-            gap,
-            NumberField(
-              label: l10n.pondDepthOutlet,
-              controller: _depthOut,
-              decimal: true,
-              suffix: 'm',
-              onChanged: refresh,
-            ),
-            for (final w in warnings) Notice(l10n.pondDesignWarning(w, config)),
-            gap,
-            if (_manualStatuses.contains(_status))
-              DropdownButtonFormField<PondStatus>(
-                initialValue: _status,
-                decoration: InputDecoration(labelText: l10n.pondStatusLabel),
-                items: [
-                  for (final s in _manualStatuses)
-                    DropdownMenuItem(value: s, child: Text(l10n.pondStatus(s))),
-                ],
-                onChanged: (v) => setState(() => _status = v!),
-              )
-            else
-              Text(
-                l10n.labelValue(l10n.pondStatusLabel, l10n.pondStatus(_status)),
+            for (final w in warnings)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: AttentionBand(
+                  severity: BandSeverity.warning,
+                  text: l10n.pondDesignWarning(w, config),
+                ),
               ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving ? null : () => saveOnce(() => _save(colour)),
-              child: Text(l10n.save),
+            DetailsFold(
+              initiallyOpen: hasDetails,
+              children: [
+                gap,
+                NumberField(
+                  label: l10n.pondDepthInlet,
+                  controller: _depthIn,
+                  decimal: true,
+                  suffix: 'm',
+                  onChanged: refresh,
+                ),
+                gap,
+                NumberField(
+                  label: l10n.pondDepthOutlet,
+                  controller: _depthOut,
+                  decimal: true,
+                  suffix: 'm',
+                  onChanged: refresh,
+                ),
+                gap,
+                ChoiceField<WaterSupply?>(
+                  label: l10n.pondWaterSupply,
+                  options: [
+                    (null, l10n.notSpecified),
+                    for (final w in WaterSupply.values)
+                      (w, l10n.waterSupply(w)),
+                  ],
+                  value: _supply,
+                  onChanged: (v) => setState(() => _supply = v),
+                ),
+                gap,
+                NumberField(
+                  label: l10n.pondSurfaceOverride,
+                  controller: _surface,
+                  decimal: true,
+                  suffix: 'm²',
+                ),
+                gap,
+                if (_manualStatuses.contains(_status))
+                  ChoiceField<PondStatus>(
+                    label: l10n.pondStatusLabel,
+                    options: [
+                      for (final s in _manualStatuses) (s, l10n.pondStatus(s)),
+                    ],
+                    value: _status,
+                    onChanged: (v) => setState(() => _status = v),
+                  )
+                else
+                  Text(
+                    l10n.labelValue(
+                      l10n.pondStatusLabel,
+                      l10n.pondStatus(_status),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),

@@ -233,7 +233,7 @@ void main() {
         find.widgetWithText(TextFormField, 'pH'),
         '7,2',
       );
-      await tapAndSettle(tester, find.text('Enregistrer'));
+      await tapAndSettle(tester, find.text('Enregistrer le relevé'));
       expect(_in('water-E1', find.text('pH 7,2')), findsOneWidget);
       expect(_in('water-E1', find.byIcon(Icons.check_circle)), findsOneWidget);
       expect(find.text('1 / $total'), findsOneWidget);

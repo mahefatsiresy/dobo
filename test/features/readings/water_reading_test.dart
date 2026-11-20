@@ -29,7 +29,7 @@ void main() {
 
   appTest('an empty reading is refused', (tester, db) async {
     await openForm(tester, db);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le relevé'));
     expect(find.text('Obligatoire'), findsOneWidget);
     expect(await db.select(db.waterReadings).get(), isEmpty);
   });
@@ -37,7 +37,7 @@ void main() {
   appTest('a pH with a decimal comma is read as a decimal', (tester, db) async {
     await openForm(tester, db);
     await enterAndSettle(tester, field('pH'), '7,5');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le relevé'));
     expect((await db.select(db.waterReadings).getSingle()).ph, 7.5);
   });
 
@@ -48,7 +48,7 @@ void main() {
     await openForm(tester, db);
     await enterAndSettle(tester, field('Oxygène dissous'), '2');
     expect(find.text('cible 3 mg/L ou plus'), findsOneWidget);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le relevé'));
     await reveal(tester, find.text('O₂ 2 mg/L'));
     final o2 = tester.widget<Text>(find.text('O₂ 2 mg/L'));
     expect(o2.style?.color, DoboColors.standard.danger);
@@ -87,7 +87,7 @@ void main() {
     expect(find.text('15/03/2026'), findsOneWidget);
     expect(find.text('08:30'), findsOneWidget);
     await enterAndSettle(tester, field('Oxygène dissous'), '4');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la correction'));
     final current = await (db.select(
       db.waterReadings,
     )..where((r) => r.supersedesId.isNotNull())).getSingle();

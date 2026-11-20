@@ -6,7 +6,11 @@ import '../../db/repositories/health_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/date_field.dart';
+import '../common/choice_buttons.dart';
+import '../common/details_fold.dart';
 import '../common/form_body.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 
@@ -53,7 +57,9 @@ class _TreatmentScreenState extends ConsumerState<TreatmentScreen>
             advisedBy: advisedBy.isEmpty ? null : advisedBy,
           ),
         );
-    if (mounted) context.pop();
+    if (!mounted) return;
+    showDone(context, AppLocalizations.of(context).doneSaved);
+    context.canPop() ? context.pop() : context.go('/ponds/${widget.pondId}');
   }
 
   @override
@@ -72,24 +78,15 @@ class _TreatmentScreenState extends ConsumerState<TreatmentScreen>
     const gap = SizedBox(height: 16);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.treatment)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.medication,
+        label: l10n.actionSaveTreatment,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
           children: [
-            DropdownButtonFormField<String?>(
-              initialValue: _batchId,
-              decoration: InputDecoration(labelText: l10n.batchOptional),
-              items: [
-                DropdownMenuItem(child: Text(l10n.notSpecified)),
-                for (final b in batches)
-                  DropdownMenuItem(
-                    value: b.batch.id,
-                    child: Text(b.batch.code),
-                  ),
-              ],
-              onChanged: (v) => setState(() => _batchId = v),
-            ),
-            gap,
             TextFormField(
               controller: _product,
               decoration: InputDecoration(labelText: l10n.product),
@@ -107,19 +104,25 @@ class _TreatmentScreenState extends ConsumerState<TreatmentScreen>
               value: _date,
               onChanged: (d) => setState(() => _date = d),
             ),
-            gap,
-            TextFormField(
-              controller: _advisedBy,
-              decoration: InputDecoration(labelText: l10n.advisedBy),
-              textCapitalization: TextCapitalization.words,
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
+            DetailsFold(
+              children: [
+                gap,
+                ChoiceField<String?>(
+                  label: l10n.batchOptional,
+                  options: [
+                    (null, l10n.notSpecified),
+                    for (final b in batches) (b.batch.id, b.batch.code),
+                  ],
+                  value: _batchId,
+                  onChanged: (v) => setState(() => _batchId = v),
+                ),
+                gap,
+                TextFormField(
+                  controller: _advisedBy,
+                  decoration: InputDecoration(labelText: l10n.advisedBy),
+                  textCapitalization: TextCapitalization.words,
+                ),
+              ],
             ),
           ],
         ),

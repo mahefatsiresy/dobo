@@ -117,9 +117,9 @@ void main() {
     await tapAndSettle(tester, find.text('E1'));
     await tapAndSettle(tester, find.byTooltip("Plus d'actions"));
     await tapAndSettle(tester, find.text('Modifier'));
-    await tapAndSettle(tester, find.text('Vide'));
-    await tapAndSettle(tester, find.text('Prêt').last);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Plus de détails'));
+    await tapAndSettle(tester, find.text('Prêt'));
+    await tapAndSettle(tester, find.text("Enregistrer l'étang"));
     expect((await ponds.get(e1)).status, PondStatus.ready);
     await tapAndSettle(tester, find.text('Étangs'));
     expect(find.text('Prêt'), findsOneWidget); // E1's card

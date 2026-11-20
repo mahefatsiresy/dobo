@@ -38,10 +38,10 @@ void main() {
 
   appTest('a sample needs fish and a weight', (tester, db) async {
     await openForm(tester, db);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la pesée'));
     expect(find.text('Obligatoire'), findsNWidgets(2));
     await enterAndSettle(tester, field('Poissons pesés'), '0');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la pesée'));
     expect(await db.select(db.samples).get(), isEmpty);
   });
 
@@ -51,7 +51,7 @@ void main() {
     await enterAndSettle(tester, field('Poids total'), '0,62');
     expect(find.text('Poids moyen : 31 g'), findsOneWidget);
     expect(find.textContaining('Petit échantillon'), findsOneWidget);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la pesée'));
     final s = await db.select(db.samples).getSingle();
     expect((s.fishCount, s.totalWeightG), (20, 620));
     // The pond page's batch line: estimated fish, then the weighed 31 g.
@@ -97,7 +97,7 @@ void main() {
     expect(find.widgetWithText(TextFormField, '6,08'), findsOneWidget);
     expect(find.text('15/03/2026'), findsOneWidget);
     await enterAndSettle(tester, field('Poissons pesés'), '38');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la correction'));
     final current = await (db.select(
       db.samples,
     )..where((s) => s.supersedesId.isNotNull())).getSingle();

@@ -2825,4 +2825,32 @@ class AppLocalizationsMg extends AppLocalizations {
   String deleteSaleConfirm(String date, String kg, String customer) {
     return 'Hofafana ve ny varotra tamin\'ny $date ($kg, $customer) ? Mbola hamidy ireo kilao ireo.';
   }
+
+  @override
+  String get actionSaveReading => 'Raketo ny fandrefesana';
+
+  @override
+  String get actionSaveSample => 'Raketo ny fandanjana';
+
+  @override
+  String get actionSaveTreatment => 'Raketo ny fitsaboana';
+
+  @override
+  String get actionReport => 'Ampahafantaro';
+
+  @override
+  String get actionSavePond => 'Raketo ny dobo';
+
+  @override
+  String get actionAddPerson => 'Ampidiro ny olona';
+
+  @override
+  String deleteReadingConfirm(String date) {
+    return 'Hofafana ve ny fandrefesana rano tamin\'ny $date ?';
+  }
+
+  @override
+  String deleteSampleConfirm(String date, String batch) {
+    return 'Hofafana ve ny fandanjana tamin\'ny $date ($batch) ?';
+  }
 }

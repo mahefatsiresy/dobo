@@ -11,7 +11,7 @@ void main() {
     tester,
     db,
   ) async {
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'E1');
     await enterAndSettle(tester, field('Longueur'), '10');
     await enterAndSettle(tester, field('Largeur'), '10');
@@ -19,7 +19,10 @@ void main() {
     expect(find.textContaining('100 m²'), findsWidgets);
     expect(find.textContaining('Surface sous 200 m²'), findsOneWidget);
     expect(find.textContaining('Étang peu allongé'), findsOneWidget);
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
     final pond = await db.select(db.ponds).getSingle();
     expect(
       (pond.code, pond.lengthM, pond.widthM, pond.colour),
@@ -29,31 +32,46 @@ void main() {
   });
 
   appTest('a decimal comma is read as a decimal', (tester, db) async {
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'E1');
     await enterAndSettle(tester, field('Longueur'), '30,5');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
     expect((await db.select(db.ponds).getSingle()).lengthM, 30.5);
   });
 
   appTest('a code already used is refused', (tester, db) async {
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'E1');
-    await tapAndSettle(tester, find.text('Enregistrer'));
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'e1');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
     expect(find.text('Ce code existe déjà'), findsOneWidget);
     expect(await db.select(db.ponds).get(), hasLength(1));
   });
 
   appTest('the second pond gets the next colour', (tester, db) async {
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'E1');
-    await tapAndSettle(tester, find.text('Enregistrer'));
-    await tapAndSettle(tester, find.text('Ajouter un étang'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
+    await tapAndSettle(tester, find.text('Ajouter un étang').first);
     await enterAndSettle(tester, field('Code'), 'E2');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(
+      tester,
+      find.widgetWithText(FilledButton, 'Ajouter un étang'),
+    );
     final colours = {
       for (final p in await db.select(db.ponds).get()) p.code: p.colour,
     };

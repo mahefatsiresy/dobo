@@ -795,5 +795,13 @@
   "saleHarvestLeft": "{date}, {kind}, sisa {kg}",
   "saleHarvestChoice": "{date} {pond}, sisa {kg}",
   "deleteHarvestConfirm": "Hofafana ve ny fijonoana tamin'ny {date} ({kg}, {pond}) ? Isaina ao amin'ny {pond} indray ireo trondro.",
-  "deleteSaleConfirm": "Hofafana ve ny varotra tamin'ny {date} ({kg}, {customer}) ? Mbola hamidy ireo kilao ireo."
+  "deleteSaleConfirm": "Hofafana ve ny varotra tamin'ny {date} ({kg}, {customer}) ? Mbola hamidy ireo kilao ireo.",
+  "actionSaveReading": "Raketo ny fandrefesana",
+  "actionSaveSample": "Raketo ny fandanjana",
+  "actionSaveTreatment": "Raketo ny fitsaboana",
+  "actionReport": "Ampahafantaro",
+  "actionSavePond": "Raketo ny dobo",
+  "actionAddPerson": "Ampidiro ny olona",
+  "deleteReadingConfirm": "Hofafana ve ny fandrefesana rano tamin'ny {date} ?",
+  "deleteSampleConfirm": "Hofafana ve ny fandanjana tamin'ny {date} ({batch}) ?"
 }

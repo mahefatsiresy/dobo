@@ -12,7 +12,9 @@ import '../../l10n/formatting.dart';
 import '../common/colour_swatches.dart';
 import '../common/date_field.dart';
 import '../common/form_body.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/number_field.dart';
 import '../common/save_once.dart';
 import 'water_targets.dart';
@@ -102,7 +104,25 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
     } else {
       await repo.addWaterReading(input);
     }
-    if (mounted) context.pop();
+    if (mounted) _leave();
+  }
+
+  void _leave() =>
+      context.canPop() ? context.pop() : context.go('/ponds/${widget.pondId}');
+
+  Future<void> _delete() async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await confirmDelete(
+      context,
+      l10n.deleteReadingConfirm(formatDate(_date)),
+    );
+    if (!ok || !mounted) return;
+    await ref
+        .read(readingRepositoryProvider)
+        .deleteWaterReading(widget.readingId!);
+    if (!mounted) return;
+    showDone(context, l10n.doneDeleted);
+    _leave();
   }
 
   @override
@@ -119,13 +139,45 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
         colour: input.colour,
         config: config,
       ))
-        i.param: waterTarget(l10n, i.param, config, locale).trim(),
+        i.param: (
+          i.severity == Severity.danger
+              ? BandSeverity.danger
+              : BandSeverity.warning,
+          waterTarget(l10n, i.param, config, locale).trim(),
+        ),
     };
+    List<Widget> band(WaterParam p) => [
+      if (issues[p] case (final severity, final text))
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: AttentionBand(severity: severity, text: text),
+        ),
+    ];
     void refresh(String _) => setState(() => _emptyRefused = false);
     const gap = SizedBox(height: 16);
 
+    final correcting = widget.readingId != null;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.waterReading)),
+      appBar: AppBar(
+        title: Text(correcting ? l10n.correctionTitle : l10n.waterReading),
+        actions: [
+          if (correcting)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.delete,
+                  icon: Icons.delete_outline,
+                  onTap: _delete,
+                ),
+              ],
+            ),
+        ],
+      ),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.check,
+        label: correcting ? l10n.actionSaveCorrection : l10n.actionSaveReading,
+        onPressed: saving || !_loaded ? null : () => saveOnce(_save),
+      ),
       body: FormBody(
         children: [
           DateField(
@@ -154,26 +206,26 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
             controller: _temperature,
             decimal: true,
             suffix: '°C',
-            alert: issues[WaterParam.temperature],
             onChanged: refresh,
           ),
+          ...band(WaterParam.temperature),
           gap,
           NumberField(
             label: l10n.ph,
             controller: _ph,
             decimal: true,
-            alert: issues[WaterParam.ph],
             onChanged: refresh,
           ),
+          ...band(WaterParam.ph),
           gap,
           NumberField(
             label: l10n.oxygen,
             controller: _oxygen,
             decimal: true,
             suffix: 'mg/L',
-            alert: issues[WaterParam.oxygen],
             onChanged: refresh,
           ),
+          ...band(WaterParam.oxygen),
           gap,
           ColourSwatches(
             value: _colour,
@@ -182,8 +234,7 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
               _emptyRefused = false;
             }),
           ),
-          if (issues[WaterParam.colour] != null)
-            Notice(issues[WaterParam.colour]!),
+          ...band(WaterParam.colour),
           gap,
           NumberField(
             label: l10n.renewedPct,
@@ -191,15 +242,14 @@ class _WaterReadingScreenState extends ConsumerState<WaterReadingScreen>
             suffix: '%',
             onChanged: refresh,
           ),
-          if (_emptyRefused) Notice(l10n.fieldRequired, danger: true),
-          const SizedBox(height: 24),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
+          if (_emptyRefused)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: AttentionBand(
+                severity: BandSeverity.danger,
+                text: l10n.fieldRequired,
+              ),
             ),
-            onPressed: saving || !_loaded ? null : () => saveOnce(_save),
-            child: Text(l10n.save),
-          ),
         ],
       ),
     );

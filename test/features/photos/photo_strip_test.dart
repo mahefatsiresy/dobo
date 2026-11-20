@@ -229,7 +229,7 @@ void main() {
       // The form never opens the camera: nothing unsaved can be lost.
       expect(find.text('Ajouter une photo'), findsNothing);
       await tapAndSettle(tester, find.text('Se frotte'));
-      await tapAndSettle(tester, find.text('Enregistrer'));
+      await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Signaler'));
       final event = await db.select(db.healthEvents).getSingle();
 
       appContainer(tester).read(routerProvider).go('/ponds/$e1');

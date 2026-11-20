@@ -2827,4 +2827,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String deleteSaleConfirm(String date, String kg, String customer) {
     return 'Supprimer la vente du $date ($kg, $customer) ? Ces kilos restent à vendre.';
   }
+
+  @override
+  String get actionSaveReading => 'Enregistrer le relevé';
+
+  @override
+  String get actionSaveSample => 'Enregistrer la pesée';
+
+  @override
+  String get actionSaveTreatment => 'Enregistrer le traitement';
+
+  @override
+  String get actionReport => 'Signaler';
+
+  @override
+  String get actionSavePond => 'Enregistrer l\'étang';
+
+  @override
+  String get actionAddPerson => 'Ajouter la personne';
+
+  @override
+  String deleteReadingConfirm(String date) {
+    return 'Supprimer le relevé d\'eau du $date ?';
+  }
+
+  @override
+  String deleteSampleConfirm(String date, String batch) {
+    return 'Supprimer la pesée du $date ($batch) ?';
+  }
 }

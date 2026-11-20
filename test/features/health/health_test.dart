@@ -43,7 +43,7 @@ void main() {
     await tapAndSettle(tester, find.text('Signaler un problème'));
     await tapAndSettle(tester, find.text('Se frotte'));
     await tapAndSettle(tester, find.text("Isoler l'étang"));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Signaler'));
   }
 
   appTest('isolating shows everywhere and stops fish leaving', (
@@ -65,7 +65,7 @@ void main() {
       find.text('Étang isolé : aucun poisson ne doit en sortir'),
       findsOneWidget,
     );
-    expect(find.text('Enregistrer'), findsNothing);
+    expect(find.widgetWithText(FilledButton, 'Transférer'), findsNothing);
     await tapAndSettle(tester, find.byType(BackButton));
     await tapAndSettle(tester, find.text('Étangs'));
     // E1's band only.
@@ -102,12 +102,13 @@ void main() {
       find.widgetWithText(TextFormField, 'Dose'),
       '3 kg',
     );
+    await tapAndSettle(tester, find.text('Plus de détails'));
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, 'Conseillé par'),
       'Dr Rabe',
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le traitement'));
     // The health history is folded to one line; open it.
     await tapAndSettle(tester, find.text('Santé'));
     expect(find.textContaining('Sel'), findsOneWidget);
@@ -118,7 +119,7 @@ void main() {
   appTest('a treatment needs a product and a dose', (tester, db) async {
     await stockedPond(tester, db);
     await tapAndSettle(tester, find.text('Traitement'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le traitement'));
     expect(find.text('Obligatoire'), findsNWidgets(2));
     expect(await db.select(db.treatments).get(), isEmpty);
   });

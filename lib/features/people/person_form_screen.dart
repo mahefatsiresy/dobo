@@ -7,7 +7,9 @@ import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import 'people_providers.dart';
 import '../common/save_once.dart';
+import '../common/details_fold.dart';
 import '../common/form_body.dart';
+import '../common/pinned_action.dart';
 
 /// Adds a person, or edits the one with [personId].
 class PersonFormScreen extends ConsumerStatefulWidget {
@@ -88,6 +90,11 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
     final linked = id != null && ref.watch(personRolesProvider)[id] != null;
     return Scaffold(
       appBar: AppBar(title: Text(id == null ? l10n.add : _name.text)),
+      bottomNavigationBar: PinnedAction(
+        icon: id == null ? Icons.person_add : Icons.check,
+        label: id == null ? l10n.actionAddPerson : l10n.save,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
@@ -103,31 +110,29 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen>
               validator: (v) =>
                   (v ?? '').trim().isEmpty ? l10n.fieldRequired : null,
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _phone,
-              decoration: InputDecoration(labelText: l10n.personPhone),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _note,
-              decoration: InputDecoration(labelText: l10n.personNote),
-            ),
             if (id != null)
               SwitchListTile(
                 minTileHeight: 56,
+                contentPadding: EdgeInsets.zero,
                 title: Text(l10n.personActive),
                 value: _active,
                 onChanged: (v) => setState(() => _active = v),
               ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
+            DetailsFold(
+              initiallyOpen: _phone.text.isNotEmpty || _note.text.isNotEmpty,
+              children: [
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _phone,
+                  decoration: InputDecoration(labelText: l10n.personPhone),
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _note,
+                  decoration: InputDecoration(labelText: l10n.personNote),
+                ),
+              ],
             ),
           ],
         ),

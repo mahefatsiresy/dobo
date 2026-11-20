@@ -1881,5 +1881,15 @@
   "deleteHarvestConfirm": "Supprimer la récolte du {date} ({kg}, {pond}) ? Les poissons comptent de nouveau dans {pond}.",
   "@deleteHarvestConfirm": {"placeholders": {"date": {"type": "String"}, "kg": {"type": "String"}, "pond": {"type": "String"}}},
   "deleteSaleConfirm": "Supprimer la vente du {date} ({kg}, {customer}) ? Ces kilos restent à vendre.",
-  "@deleteSaleConfirm": {"placeholders": {"date": {"type": "String"}, "kg": {"type": "String"}, "customer": {"type": "String"}}}
+  "@deleteSaleConfirm": {"placeholders": {"date": {"type": "String"}, "kg": {"type": "String"}, "customer": {"type": "String"}}},
+  "actionSaveReading": "Enregistrer le relevé",
+  "actionSaveSample": "Enregistrer la pesée",
+  "actionSaveTreatment": "Enregistrer le traitement",
+  "actionReport": "Signaler",
+  "actionSavePond": "Enregistrer l'étang",
+  "actionAddPerson": "Ajouter la personne",
+  "deleteReadingConfirm": "Supprimer le relevé d'eau du {date} ?",
+  "@deleteReadingConfirm": {"placeholders": {"date": {"type": "String"}}},
+  "deleteSampleConfirm": "Supprimer la pesée du {date} ({batch}) ?",
+  "@deleteSampleConfirm": {"placeholders": {"date": {"type": "String"}, "batch": {"type": "String"}}}
 }

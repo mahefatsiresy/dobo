@@ -11,6 +11,8 @@ import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
 import '../../theme/tokens.dart';
 import '../admin/members_screen.dart' show membersProvider;
+import '../common/choice_buttons.dart';
+import '../common/pond_choice.dart';
 import '../common/folded_section.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
@@ -330,36 +332,29 @@ class _ObservationDialogState extends ConsumerState<_ObservationDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (ponds.isNotEmpty) ...[
-              Text(l10n.observationPond),
+              Text(
+                l10n.observationPond,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final p in ponds)
-                    ChoiceChip(
-                      label: Text(p.code),
-                      selected: _pondId == p.id,
-                      onSelected: (_) => setState(
-                        () => _pondId = _pondId == p.id ? null : p.id,
-                      ),
-                    ),
-                ],
+              PondChoice(
+                options: [for (final p in ponds) PondOption(pond: p)],
+                value: _pondId,
+                allowNone: true,
+                onChanged: (v) => setState(() => _pondId = v),
               ),
               const SizedBox(height: 16),
             ],
-            DropdownButtonFormField<ObservationCategory>(
-              initialValue: _category,
-              decoration: InputDecoration(labelText: l10n.category),
-              items: [
+            ChoiceField<ObservationCategory>(
+              label: l10n.category,
+              options: [
                 for (final c in ObservationCategory.values)
-                  DropdownMenuItem(
-                    value: c,
-                    child: Text(l10n.observationCategory(c)),
-                  ),
+                  (c, l10n.observationCategory(c)),
               ],
-              onChanged: (c) => setState(() => _category = c!),
+              value: _category,
+              onChanged: (c) => setState(() => _category = c),
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: _text,
               decoration: InputDecoration(labelText: l10n.observationText),

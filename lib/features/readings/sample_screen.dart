@@ -10,7 +10,9 @@ import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../common/date_field.dart';
 import '../common/form_body.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/number_field.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
@@ -93,7 +95,23 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
     } else {
       await repo.addSample(input);
     }
-    if (mounted) context.pop();
+    if (mounted) _leave();
+  }
+
+  void _leave() =>
+      context.canPop() ? context.pop() : context.go('/ponds/${widget.pondId}');
+
+  Future<void> _delete(String batchCode) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await confirmDelete(
+      context,
+      l10n.deleteSampleConfirm(formatDate(_date), batchCode),
+    );
+    if (!ok || !mounted) return;
+    await ref.read(readingRepositoryProvider).deleteSample(widget.sampleId!);
+    if (!mounted) return;
+    showDone(context, l10n.doneDeleted);
+    _leave();
   }
 
   @override
@@ -108,8 +126,37 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
     void refresh(String _) => setState(() {});
     const gap = SizedBox(height: 16);
 
+    final correcting = widget.sampleId != null;
+    final batchCode =
+        ref
+            .watch(batchSummariesProvider)
+            .value
+            ?.where((b) => b.batch.id == widget.batchId)
+            .firstOrNull
+            ?.batch
+            .code ??
+        '';
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.sampling)),
+      appBar: AppBar(
+        title: Text(correcting ? l10n.correctionTitle : l10n.sampling),
+        actions: [
+          if (correcting)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.delete,
+                  icon: Icons.delete_outline,
+                  onTap: () => _delete(batchCode),
+                ),
+              ],
+            ),
+        ],
+      ),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.scale,
+        label: correcting ? l10n.actionSaveCorrection : l10n.actionSaveSample,
+        onPressed: saving || !_loaded ? null : () => saveOnce(_save),
+      ),
       body: Form(
         key: _form,
         child: FormBody(
@@ -142,20 +189,16 @@ class _SampleScreenState extends ConsumerState<SampleScreen> with SaveOnce {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               if (result.smallSample)
-                Notice(
-                  l10n.smallSample(
-                    formatNumber(config.sampleMinFish.toDouble(), locale),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: AttentionBand(
+                    severity: BandSeverity.warning,
+                    text: l10n.smallSample(
+                      formatNumber(config.sampleMinFish.toDouble(), locale),
+                    ),
                   ),
                 ),
             ],
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving || !_loaded ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
-            ),
           ],
         ),
       ),

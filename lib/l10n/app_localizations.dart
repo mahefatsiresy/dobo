@@ -4883,6 +4883,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimer la vente du {date} ({kg}, {customer}) ? Ces kilos restent à vendre.'**
   String deleteSaleConfirm(String date, String kg, String customer);
+
+  /// No description provided for @actionSaveReading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer le relevé'**
+  String get actionSaveReading;
+
+  /// No description provided for @actionSaveSample.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer la pesée'**
+  String get actionSaveSample;
+
+  /// No description provided for @actionSaveTreatment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer le traitement'**
+  String get actionSaveTreatment;
+
+  /// No description provided for @actionReport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signaler'**
+  String get actionReport;
+
+  /// No description provided for @actionSavePond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer l\'étang'**
+  String get actionSavePond;
+
+  /// No description provided for @actionAddPerson.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter la personne'**
+  String get actionAddPerson;
+
+  /// No description provided for @deleteReadingConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le relevé d\'eau du {date} ?'**
+  String deleteReadingConfirm(String date);
+
+  /// No description provided for @deleteSampleConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la pesée du {date} ({batch}) ?'**
+  String deleteSampleConfirm(String date, String batch);
 }
 
 class _AppLocalizationsDelegate

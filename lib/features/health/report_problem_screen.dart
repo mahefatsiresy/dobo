@@ -6,7 +6,9 @@ import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/form_body.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/save_once.dart';
 import '../common/sign_grid.dart';
 import 'health_info.dart';
@@ -47,7 +49,9 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
           isolate: _isolate,
           technicianCalled: _technician,
         );
-    if (mounted) context.pop();
+    if (!mounted) return;
+    showDone(context, AppLocalizations.of(context).doneSaved);
+    context.canPop() ? context.pop() : context.go('/ponds/${widget.pondId}');
   }
 
   @override
@@ -56,9 +60,17 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
     const gap = SizedBox(height: 16);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.reportProblem)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.report_problem_outlined,
+        label: l10n.actionReport,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
       body: FormBody(
         children: [
-          Notice(l10n.healthResponse),
+          AttentionBand(
+            severity: BandSeverity.warning,
+            text: l10n.healthResponse,
+          ),
           gap,
           SignGrid(
             options: WarningSign.values.toSet(),
@@ -71,30 +83,22 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen>
             decoration: InputDecoration(labelText: l10n.suspectedIssue),
           ),
           gap,
-          CheckboxListTile(
+          SwitchListTile(
             minTileHeight: 56,
             contentPadding: EdgeInsets.zero,
             title: Text(l10n.isolatePond),
             value: _isolate,
-            onChanged: (v) => setState(() => _isolate = v!),
+            onChanged: (v) => setState(() => _isolate = v),
           ),
-          CheckboxListTile(
+          SwitchListTile(
             minTileHeight: 56,
             contentPadding: EdgeInsets.zero,
             title: Text(l10n.technicianCalled),
             value: _technician,
-            onChanged: (v) => setState(() => _technician = v!),
+            onChanged: (v) => setState(() => _technician = v),
           ),
           gap,
           const HealthInfoCard(),
-          const SizedBox(height: 24),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
-            ),
-            onPressed: saving ? null : () => saveOnce(_save),
-            child: Text(l10n.save),
-          ),
         ],
       ),
     );

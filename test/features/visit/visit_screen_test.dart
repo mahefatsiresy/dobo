@@ -43,7 +43,7 @@ void main() {
       find.widgetWithText(TextFormField, 'pH'),
       '7,2',
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer le relevé'));
     // Done, it stays in place with a tick.
     expect(
       find.descendant(
@@ -181,10 +181,7 @@ void main() {
     Future<void> observe(String note, {List<String> chips = const []}) async {
       await tapAndSettle(tester, find.text('Ajouter une observation'));
       for (final c in chips) {
-        await tapAndSettle(
-          tester,
-          inDialog(find.widgetWithText(ChoiceChip, c)),
-        );
+        await tapAndSettle(tester, inDialog(find.text(c)));
       }
       await tester.enterText(inDialog(find.byType(TextField)), note);
       await tapAndSettle(tester, inDialog(find.text('Enregistrer')));
