@@ -2708,4 +2708,10 @@ class AppLocalizationsMg extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get detailsFold => 'Antsipiriany hafa';
+
+  @override
+  String get doneDeleted => 'Voafafa';
 }

@@ -2710,4 +2710,10 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get detailsFold => 'Plus de détails';
+
+  @override
+  String get doneDeleted => 'Supprimé';
 }

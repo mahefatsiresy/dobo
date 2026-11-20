@@ -766,5 +766,7 @@
   "reportSummaryHint": "Izay hitanao, fohifohy",
   "reportDeathsBy": "{deaths} ({observers})",
   "reportDraftRow": "Havoaka : {date}",
-  "reportDangerCount": "{count, plural, =1{1 loza} other{{count} loza}}"
+  "reportDangerCount": "{count, plural, =1{1 loza} other{{count} loza}}",
+  "detailsFold": "Antsipiriany hafa",
+  "doneDeleted": "Voafafa"
 }

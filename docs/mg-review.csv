@@ -765,3 +765,5 @@ reportSummaryHint;Report draft: hint in the summary box.;Ce que vous avez vu, en
 reportDeathsBy;Report health line: deaths, then who saw them.;{deaths} ({observers});{deaths} ({observers});
 reportDraftRow;Reports list: my report not yet published, with its visit's date.;À publier : {date};Havoaka : {date};
 reportDangerCount;Reports list row: how many danger alerts the report holds.;{count, plural, =1{1 en danger} other{{count} en danger}};{count, plural, =1{1 loza} other{{count} loza}};
+detailsFold;;Plus de détails;Antsipiriany hafa;
+doneDeleted;;Supprimé;Voafafa;

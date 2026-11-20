@@ -4704,6 +4704,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count, plural, =1{1 en danger} other{{count} en danger}}'**
   String reportDangerCount(int count);
+
+  /// No description provided for @detailsFold.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus de détails'**
+  String get detailsFold;
+
+  /// No description provided for @doneDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimé'**
+  String get doneDeleted;
 }
 
 class _AppLocalizationsDelegate

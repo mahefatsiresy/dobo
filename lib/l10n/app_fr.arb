@@ -1842,5 +1842,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "detailsFold": "Plus de détails",
+  "doneDeleted": "Supprimé"
 }
