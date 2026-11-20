@@ -116,7 +116,8 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 4 | Alerts | merged 19/11 |
 | 5 | Visit | merged 19/11 |
 | 6 | Reports | merged 19/11 |
-| 7 | Batches, feed and the other "More" forms | " |
+| 7 | More menu, batches, feed, sales; the form standard for every form | " |
+| 7b | Transcription, paper sheets, exports, sync, account, admin, people, prep | " |
 | 8 | Web console (takes the colours and type) | " |
 
 Each step is one branch, merged locally after the user has seen
@@ -408,3 +409,114 @@ Reports list                          A published report
   yet). Pond colours come from the phone's pond records, since a report
   stores only codes. **[user; colours: Claude's call]**
 
+
+### Step 7: batches, feed, sales and the form standard (decided 20/11)
+
+The farm's records outside the daily round: where each batch is and how
+it's doing, what feed is left, what was harvested and sold. And one way
+for every member form to look and behave. **[user]**
+
+```
+More                                   Batch page
+┌──────────────────────────────┐      ┌──────────────────────────────┐
+│ Plus                         │      │ ←  L-E2  Grossissement     ⋮ │ ← ⋮: edit, trace sheet
+│ La ferme                     │      │ ■ E4 ! Étang isolé         › │ ← the batch's bands
+│ 🐟 Lots          4 en cours › │      ├──────────────────────────────┤
+│ 📦 Aliment ≈ 12 jours, 240 kg›│      │ ■ E2  ≈ 900 poissons       › │ ← opens the pond page
+│ 🏪 Ventes                   › │      │       60 g, ≈ 54 kg          │
+│ Fiches                       │      │ ■ E4  ≈ 600 poissons       › │
+│ ✎ Saisie des fiches         › │      │ Survie 98 %                  │
+│ 🖨 Fiches papier             › │      ├──────────────────────────────┤
+│ ⬇ Exports                   › │      │ Récoltes et ventes           │
+│ Ce téléphone                 │      │ 14/03 ■ E2 Partielle 45 kg › │ ← opens its correction
+│ ☁ Synchronisation   À jour  › │      │   Marché Anosy, frais 40 kg ›│
+│ 🧑‍🌾 Mode ouvrier             › │      │   Reste à vendre : 5 kg      │
+│ 👤 Compte            Rado   › │      │                 [ Vendre ]   │
+│ 文 Langue        Français   › │      │ Historique                   │
+│ Administration               │      │ 15/03 ⇄ E2 → E4  600 poiss.› │
+│ ⚙ Administration            › │      │ 01/02 + E2  1 520, 2 g     › │
+│ 👥 Personnes                 › │      │ ▸ Origine  Écloserie Ivato   │
+└──────────────────────────────┘      │ [       🐟 Récolter        ] │ ← pinned
+                                      └──────────────────────────────┘
+Feed                                   A form
+┌──────────────────────────────┐      ┌──────────────────────────────┐
+│ ← Aliment                    │      │ ← Transférer L-E2            │
+│ En stock          ≈ 12 jours │      │ De  ■ E2  ≈ 1 500 poissons   │
+│ 240 kg                       │      │ Vers [■ E1][■ E3][■ E4]      │
+│ ! 25 kg périmés, à jeter   › │      │ Date  15/03/2026             │
+├──────────────────────────────┤      │ Nombre de poissons [   600 ] │
+│ Croissance            180 kg │      │ ⚠ Densité de E4 trop haute   │
+│  Lot A 02/02, 41 j ⚠  60 kg ›│      │ Poids moyen (facultatif) [g] │
+│  Lot B 01/03, 14 j   120 kg ›│      │ ▸ Plus de détails            │
+│ Alevinage              60 kg │      │ [       ⇄ Transférer       ] │ ← pinned
+│ [       + Livraison        ] │      └──────────────────────────────┘
+└──────────────────────────────┘
+```
+
+- **Scope:** the More menu, batches, feed and sales screens. The form
+  standard applies to every member form: stock, transfer, batch edit,
+  delivery, discard, harvest, sale, customer, the pond page's water
+  reading, sample, treatment and Signaler, the pond form, the person
+  form, and the visit's observation dialog. The rest of More is step 7b.
+  **[user]**
+- **More:** four groups (La ferme, Fiches, Ce téléphone,
+  Administration), farm pages first. Lots, Aliment, Synchronisation,
+  Compte and Langue carry a one-line summary in ink; severity stays on
+  the Alerts tab. **[user]**
+- **Batches list:** active batches in code order. A row has the batch
+  code, its status (the phase instead while active in one pond), its
+  ponds as `PondCode`, the average weight when it's in one pond, `≈`
+  biomass, and the `≈` fish count on the right. A batch in danger (an
+  isolated pond, a count to check) gets the list's band. Closed batches
+  fold into one line at the foot. The last row, "+ Empoissonner un
+  étang", opens the stock form with ready ponds first. **[user; the
+  row's lines: Claude's call]**
+- **Batch page:** its bands (isolated ponds, counts to check, the
+  batch's own alerts), each opening its fix. Then each pond with its
+  `≈` count, average weight and `≈` biomass, opening the pond page. Then
+  survival, and the totals when it's in more than one pond. Then
+  harvests and sales, history as one-line rows, origin folded. Edit and
+  the traceability sheet in ⋮. The FCR stays on the pond page, where
+  it's measured. **[user; FCR: Claude's call]**
+- **Pinned on the batch page:** "Récolter" while fish remain (sales
+  flag), "Fiche de traçabilité" once closed, otherwise nothing. A
+  closed batch shows the cycle's outcome (harvested, cycle FCR,
+  survival, the first stocking) in place of its ponds. **[user]**
+- **The pond page's batch line opens the batch page.** **[user]**
+- **Rows open their correction:** history, harvest, sale and feed-lot
+  rows open their form filled in; Supprimer is in the form's ⋮. The
+  confirmation names the record and what changes ("Supprimer la
+  livraison du 01/03 (120 kg) ? Le stock baisse de 120 kg."). **[user]**
+- **Feed:** the total on hand as the loud number, `≈` days left beside
+  it, then bands (expired stock opens its discard; feed overdrawn).
+  Lots are grouped by phase with a kilo subtotal, oldest first, the
+  order the logs draw from. A lot opens its delivery with "Jeter une
+  partie". "+ Livraison" is pinned. **[user]**
+- **Ventes:** Clients as the first row with its count, then harvests
+  grouped by batch, newest first; each batch heading opens the batch
+  page, and the rows are the batch page's. A harvest with kilos unsold
+  shows "Reste à vendre" and a Vendre button that presets it. **[user]**
+- **The form standard:** **[user]**
+  1. A pond is picked from a row of `PondCode` buttons showing only
+     the ponds that apply; a preset pond is a header line.
+  2. Fixed choices are 56 dp option buttons that wrap; long lists
+     (customers) open a picker page.
+  3. Warnings are bands right under the field they're about.
+  4. The number being recorded comes first, after the pond and date.
+  5. The action is pinned above the keyboard and named for what it
+     does (Empoissonner, Transférer, Récolter, Vendre, Jeter,
+     Enregistrer la livraison); a correction says "Enregistrer la
+     correction" and has Supprimer in ⋮. The confirmation uses the same
+     verb.
+  6. Optional identity fields fold under "Plus de détails", open by
+     themselves when a record being corrected has any.
+- **Sale:** harvest, date, kilos, then the customer on a picker page
+  (recent buyers first, "+ Nouveau client" at its foot), the product
+  form as option buttons, the note folded. **Harvest:** weight first,
+  count with "≈ N poissons dans E2" above it, missing fish as a band.
+  **Customers:** rows in name order, "+ Nouveau client" as the last row.
+  **[user]**
+- The acclimatisation reminder and the resulting density are ink lines;
+  only an out-of-range density is a band. History rows start with `+`
+  (stocking) or `⇄` (transfer). Empty pages say what to do. The date is
+  a row defaulting to today. **[Claude's call]**
