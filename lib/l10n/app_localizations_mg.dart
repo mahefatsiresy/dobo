@@ -369,7 +369,7 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get batchesEmpty =>
-      'Tsy misy andiany : mametraha trondro amin\'ny pejin\'ny dobo iray';
+      'Tsy misy andiany. Asio trondro ny dobo iray avy amin\'ny pejiny na eto ambany.';
 
   @override
   String get history => 'Tantara';
@@ -2898,4 +2898,29 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get syncSummaryNever => 'Tsy mbola nampifandraisina';
+
+  @override
+  String get batchesClosed => 'Andiany vita';
+
+  @override
+  String batchesClosedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'andiany $count',
+      one: 'andiany 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get batchesStockRow => 'Asio trondro ny dobo iray';
+
+  @override
+  String batchClosedOn(String date) {
+    return 'Vita ny $date';
+  }
+
+  @override
+  String get fishUnit => 'trondro';
 }

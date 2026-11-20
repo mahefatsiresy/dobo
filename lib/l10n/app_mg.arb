@@ -112,7 +112,7 @@
   "warnPondIsolated": "Dobo natokana : aleo halaviriana",
   "warnDensityBelow": "Ambany noho ny farany ambany soso-kevitra ny hakitroky",
   "warnDensityAbove": "Ambony noho ny farany ambony soso-kevitra ny hakitroky",
-  "batchesEmpty": "Tsy misy andiany : mametraha trondro amin'ny pejin'ny dobo iray",
+  "batchesEmpty": "Tsy misy andiany. Asio trondro ny dobo iray avy amin'ny pejiny na eto ambany.",
   "history": "Tantara",
   "eventStocking": "Fametrahana trondro",
   "eventTransfer": "Famindrana",
@@ -813,5 +813,10 @@
   "syncSummaryUpToDate": "Vaovao",
   "syncSummaryPending": "{count} miandry",
   "syncSummaryRejected": "{count} nolavina",
-  "syncSummaryNever": "Tsy mbola nampifandraisina"
+  "syncSummaryNever": "Tsy mbola nampifandraisina",
+  "batchesClosed": "Andiany vita",
+  "batchesClosedCount": "{count, plural, =1{andiany 1} other{andiany {count}}}",
+  "batchesStockRow": "Asio trondro ny dobo iray",
+  "batchClosedOn": "Vita ny {date}",
+  "fishUnit": "trondro"
 }

@@ -197,7 +197,7 @@
   "warnPondIsolated": "Étang isolé : à éviter",
   "warnDensityBelow": "Densité sous le minimum conseillé",
   "warnDensityAbove": "Densité au-dessus du maximum conseillé",
-  "batchesEmpty": "Aucun lot : empoissonnez un étang depuis sa page",
+  "batchesEmpty": "Aucun lot. Empoissonnez un étang depuis sa page ou ci-dessous.",
   "history": "Historique",
   "eventStocking": "Empoissonnement",
   "eventTransfer": "Transfert",
@@ -1905,5 +1905,12 @@
   "@syncSummaryPending": {"placeholders": {"count": {"type": "String"}}},
   "syncSummaryRejected": "{count} refusés",
   "@syncSummaryRejected": {"placeholders": {"count": {"type": "String"}}},
-  "syncSummaryNever": "Jamais synchronisé"
+  "syncSummaryNever": "Jamais synchronisé",
+  "batchesClosed": "Lots terminés",
+  "batchesClosedCount": "{count, plural, =1{1 lot} other{{count} lots}}",
+  "@batchesClosedCount": {"placeholders": {"count": {"type": "int"}}},
+  "batchesStockRow": "Empoissonner un étang",
+  "batchClosedOn": "Terminé le {date}",
+  "@batchClosedOn": {"placeholders": {"date": {"type": "String"}}},
+  "fishUnit": "poissons"
 }

@@ -366,7 +366,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get warnDensityAbove => 'Densité au-dessus du maximum conseillé';
 
   @override
-  String get batchesEmpty => 'Aucun lot : empoissonnez un étang depuis sa page';
+  String get batchesEmpty =>
+      'Aucun lot. Empoissonnez un étang depuis sa page ou ci-dessous.';
 
   @override
   String get history => 'Historique';
@@ -2900,4 +2901,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncSummaryNever => 'Jamais synchronisé';
+
+  @override
+  String get batchesClosed => 'Lots terminés';
+
+  @override
+  String batchesClosedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lots',
+      one: '1 lot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get batchesStockRow => 'Empoissonner un étang';
+
+  @override
+  String batchClosedOn(String date) {
+    return 'Terminé le $date';
+  }
+
+  @override
+  String get fishUnit => 'poissons';
 }

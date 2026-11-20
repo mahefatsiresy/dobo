@@ -767,7 +767,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchesEmpty.
   ///
   /// In fr, this message translates to:
-  /// **'Aucun lot : empoissonnez un étang depuis sa page'**
+  /// **'Aucun lot. Empoissonnez un étang depuis sa page ou ci-dessous.'**
   String get batchesEmpty;
 
   /// No description provided for @history.
@@ -4991,6 +4991,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Jamais synchronisé'**
   String get syncSummaryNever;
+
+  /// No description provided for @batchesClosed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lots terminés'**
+  String get batchesClosed;
+
+  /// No description provided for @batchesClosedCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 lot} other{{count} lots}}'**
+  String batchesClosedCount(int count);
+
+  /// No description provided for @batchesStockRow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Empoissonner un étang'**
+  String get batchesStockRow;
+
+  /// No description provided for @batchClosedOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminé le {date}'**
+  String batchClosedOn(String date);
+
+  /// No description provided for @fishUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'poissons'**
+  String get fishUnit;
 }
 
 class _AppLocalizationsDelegate
