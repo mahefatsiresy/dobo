@@ -93,7 +93,8 @@ class BatchDetailScreen extends ConsumerWidget {
     try {
       await ref.read(harvestRepositoryProvider).delete(harvestId);
     } on HarvestHasSalesException {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.harvestHasSales)));
+      // This page is redrawn in step 7 Task 7; the count is not at hand.
+      messenger.showSnackBar(SnackBar(content: Text(l10n.harvestHasSales(1))));
     }
   }
 

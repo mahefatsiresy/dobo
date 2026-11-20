@@ -5,6 +5,7 @@ import '../database.dart';
 import '../ids.dart';
 import '../session.dart';
 import '../sync_state.dart';
+import 'facts_repository.dart';
 
 class CustomerInput {
   const CustomerInput({required this.name, required this.type, this.contact});
@@ -54,6 +55,39 @@ class CustomerRepository {
             ..where((c) => c.archived.equals(false))
             ..orderBy([(c) => OrderingTerm.asc(c.name)]))
           .watch();
+
+  /// Customers not archived, those who bought most recently first (their
+  /// latest current sale), then the rest by name: the sale form's picker.
+  Stream<List<Customer>> watchByRecentSale() async* {
+    yield await _byRecentSale();
+    await for (final _ in db.tableUpdates(
+      TableUpdateQuery.onAllTables([db.customers, db.sales]),
+    )) {
+      yield await _byRecentSale();
+    }
+  }
+
+  Future<List<Customer>> _byRecentSale() async {
+    final latest = <String, DateTime>{};
+    for (final s in await currentEvents(db, db.sales).get()) {
+      final at = latest[s.customerId];
+      if (at == null || s.recordedAt.isAfter(at)) {
+        latest[s.customerId] = s.recordedAt;
+      }
+    }
+    final active = await (db.select(
+      db.customers,
+    )..where((c) => c.archived.equals(false))).get();
+    int byName(Customer a, Customer b) =>
+        a.name.toLowerCase().compareTo(b.name.toLowerCase());
+    return active..sort((a, b) {
+      final (x, y) = (latest[a.id], latest[b.id]);
+      if (x != null && y != null) return y.compareTo(x);
+      if (x != null) return -1;
+      if (y != null) return 1;
+      return byName(a, b);
+    });
+  }
 
   Future<void> _write(String id, CustomersCompanion fields) =>
       (db.update(db.customers)..where((c) => c.id.equals(id))).write(

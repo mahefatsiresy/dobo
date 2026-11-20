@@ -10,6 +10,7 @@ void main() {
     final farm = await SalesFarm.create(db);
     await farm.harvest();
     await farm.open(tester, '/more/batches/${farm.l1}/sell');
+    await tapAndSettle(tester, find.byKey(const ValueKey('sale-customer')));
     await tapAndSettle(tester, find.text('Nouveau client'));
     await enterAndSettle(
       tester,
@@ -17,7 +18,7 @@ void main() {
       'Hôtel Soa',
     );
     await tapAndSettle(tester, find.text('Restaurant'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Ajouter le client'));
     expect(find.text('Vente L26-01'), findsOneWidget);
     expect(
       find.descendant(

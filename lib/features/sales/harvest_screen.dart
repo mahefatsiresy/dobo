@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/database.dart';
+import '../../db/repositories/errors.dart';
 import '../../db/repositories/harvest_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
@@ -12,7 +14,11 @@ import '../common/date_field.dart';
 import '../common/estimated.dart';
 import '../common/farm_today.dart';
 import '../common/form_body.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/choice_buttons.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
+import '../common/pond_choice.dart';
 import '../common/number_field.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
@@ -65,7 +71,40 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
     final repo = ref.read(harvestRepositoryProvider);
     final id = widget.harvestId;
     await (id == null ? repo.harvest(input) : repo.correct(id, input));
-    if (mounted) context.pop();
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    showDone(context, id == null ? l10n.doneHarvested : l10n.doneCorrected);
+    _leave();
+  }
+
+  void _leave() => context.canPop()
+      ? context.pop()
+      : context.go('/more/batches/${widget.batchId}');
+
+  Future<void> _delete(Harvest old, int sales, String pond) async {
+    final l10n = AppLocalizations.of(context);
+    if (sales > 0) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.harvestHasSales(sales))));
+      return;
+    }
+    final ok = await confirmDelete(
+      context,
+      l10n.deleteHarvestConfirm(
+        formatDate(old.recordedAt),
+        formatKg(old.weightG, Localizations.localeOf(context)),
+        pond,
+      ),
+    );
+    if (!ok || !mounted) return;
+    try {
+      await ref.read(harvestRepositoryProvider).delete(old.id);
+    } on HarvestHasSalesException {
+      return;
+    }
+    if (!mounted) return;
+    showDone(context, l10n.doneDeleted);
+    _leave();
   }
 
   @override
@@ -81,14 +120,14 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
         .firstOrNull
         ?.batch;
     final editing = widget.harvestId != null;
-    final old = editing
+    final oldEntry = editing
         ? ref
               .watch(batchHarvestsProvider(widget.batchId))
               .value
               ?.where((h) => h.harvest.id == widget.harvestId)
               .firstOrNull
-              ?.harvest
         : null;
+    final old = oldEntry?.harvest;
     if (placements == null ||
         ponds == null ||
         batch == null ||
@@ -120,9 +159,7 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
           ))
         old.pondId,
     ];
-    if (_pondId == null || !here.contains(_pondId)) {
-      _pondId = here.firstOrNull;
-    }
+    if (_pondId != null && !here.contains(_pondId)) _pondId = null;
     final live = placements
         .where((p) => p.batchId == widget.batchId && p.pondId == _pondId)
         .fold(0, (n, p) => n + p.live.count);
@@ -132,6 +169,12 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
         : 0;
     const gap = SizedBox(height: 16);
 
+    Widget band(String text) => Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: AttentionBand(severity: BandSeverity.warning, text: text),
+    );
+    final pond = ponds[_pondId];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -139,48 +182,57 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
               ? l10n.harvestEditTitle(batch.code)
               : l10n.harvestTitle(batch.code),
         ),
+        actions: [
+          if (old != null)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.delete,
+                  icon: Icons.delete_outline,
+                  onTap: () => _delete(
+                    old,
+                    oldEntry!.sales.length,
+                    ponds[old.pondId]?.code ?? '?',
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
+      bottomNavigationBar: here.isEmpty
+          ? null
+          : PinnedAction(
+              icon: editing ? Icons.check : Icons.set_meal,
+              label: editing ? l10n.actionSaveCorrection : l10n.harvestAction,
+              onPressed: saving ? null : () => saveOnce(_save),
+            ),
       body: here.isEmpty
           ? Padding(
               padding: const EdgeInsets.all(16),
-              child: Notice(l10n.harvestNoPond),
+              child: AttentionBand(
+                severity: BandSeverity.warning,
+                text: l10n.harvestNoPond,
+              ),
             )
           : Form(
               key: _form,
               child: FormBody(
                 children: [
-                  DropdownButtonFormField<String>(
-                    key: const ValueKey('harvest-pond'),
-                    initialValue: _pondId,
-                    decoration: InputDecoration(labelText: l10n.harvestPond),
-                    items: [
+                  PondChoiceField(
+                    label: l10n.harvestPond,
+                    requiredText: l10n.fieldRequired,
+                    options: [
                       for (final id in here)
-                        DropdownMenuItem(
-                          value: id,
-                          child: Text(ponds[id]?.code ?? '?'),
-                        ),
+                        if (ponds[id] != null) PondOption(pond: ponds[id]!),
                     ],
+                    value: _pondId,
                     onChanged: (v) => setState(() => _pondId = v),
                   ),
-                  if (!editing) ...[
-                    const SizedBox(height: 8),
-                    EstimatedLabel(
-                      value: l10n.harvestEstimate(formatCount(live, locale)),
-                    ),
-                  ],
                   gap,
                   DateField(
                     label: l10n.harvestDate,
                     value: _date,
                     onChanged: (d) => setState(() => _date = d),
-                  ),
-                  gap,
-                  NumberField(
-                    label: l10n.harvestCount,
-                    controller: _count,
-                    onChanged: (_) => setState(() {}),
-                    validator: (_) =>
-                        _countValue == null ? l10n.fieldRequired : null,
                   ),
                   gap,
                   NumberField(
@@ -193,34 +245,33 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
                         : null,
                   ),
                   gap,
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      ChoiceChip(
-                        label: Text(l10n.harvestPartial),
-                        selected: !_isFinal,
-                        onSelected: (_) => setState(() => _isFinal = false),
+                  if (!editing && pond != null) ...[
+                    EstimatedLabel(
+                      value: l10n.harvestAim(
+                        formatCount(live, locale),
+                        pond.code,
                       ),
-                      ChoiceChip(
-                        label: Text(l10n.harvestFinal),
-                        selected: _isFinal,
-                        onSelected: (_) => setState(() => _isFinal = true),
-                      ),
-                    ],
-                  ),
-                  if (missing > 0) ...[
-                    gap,
-                    Notice(l10n.harvestMissing(formatCount(missing, locale))),
-                  ],
-                  const SizedBox(height: 24),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.fromHeight(56),
                     ),
-                    onPressed: saving ? null : () => saveOnce(_save),
-                    child: Text(l10n.save),
+                    const SizedBox(height: 8),
+                  ],
+                  NumberField(
+                    label: l10n.harvestCount,
+                    controller: _count,
+                    onChanged: (_) => setState(() {}),
+                    validator: (_) =>
+                        _countValue == null ? l10n.fieldRequired : null,
                   ),
+                  gap,
+                  ChoiceButtons<bool>(
+                    options: [
+                      (false, l10n.harvestPartial),
+                      (true, l10n.harvestFinal),
+                    ],
+                    value: _isFinal,
+                    onChanged: (v) => setState(() => _isFinal = v),
+                  ),
+                  if (missing > 0)
+                    band(l10n.harvestMissing(formatCount(missing, locale))),
                 ],
               ),
             ),

@@ -461,7 +461,7 @@
   "alertFeedExpired": "Antitra loatra ny andiana sakafo iray : aza ampiasaina",
   "moreFeed": "Sakafo",
   "harvestAction": "Hanjono",
-  "harvestHasSales": "Fafao aloha ny fivarotana tamin'ity fijonoana ity",
+  "harvestHasSales": "{count, plural, =1{Fafao aloha ny varotra.} other{Fafao aloha ireo varotra {count}.}}",
   "harvestEditTitle": "Hanitsy ny fijonoana {batch}",
   "feedDeleteDelivery": "Hamafa ny fanaterana",
   "sellAction": "Hivarotra",
@@ -785,5 +785,15 @@
   "feedLotUnnamed": "Andiany",
   "deleteStockingConfirm": "Hofafana ve ny famafazana trondro tamin'ny {date} ({count} trondro, {pond}) ? Hihena ireo trondro ireo ny andiany.",
   "deleteTransferConfirm": "Hofafana ve ny famindrana tamin'ny {date} ({count} trondro, {from} → {to}) ? Isaina ao amin'ny {from} indray ireo trondro.",
-  "deleteDeliveryConfirm": "Hofafana ve ny sakafo tonga tamin'ny {date} ({kg}) ? Hihena {kg} ny tahiry."
+  "deleteDeliveryConfirm": "Hofafana ve ny sakafo tonga tamin'ny {date} ({kg}) ? Hihena {kg} ny tahiry.",
+  "harvestAim": "trondro {count} ao amin'ny {pond}",
+  "customerPickTitle": "Mpividy",
+  "doneHarvested": "Voajono",
+  "doneSold": "Voavarotra",
+  "actionAddCustomer": "Ampidiro ny mpividy",
+  "actionSaveCustomer": "Raketo ny mpividy",
+  "saleHarvestLeft": "{date}, {kind}, sisa {kg}",
+  "saleHarvestChoice": "{date} {pond}, sisa {kg}",
+  "deleteHarvestConfirm": "Hofafana ve ny fijonoana tamin'ny {date} ({kg}, {pond}) ? Isaina ao amin'ny {pond} indray ireo trondro.",
+  "deleteSaleConfirm": "Hofafana ve ny varotra tamin'ny {date} ({kg}, {customer}) ? Mbola hamidy ireo kilao ireo."
 }

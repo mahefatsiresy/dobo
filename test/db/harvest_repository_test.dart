@@ -236,6 +236,33 @@ void main() {
     expect(list.expand((h) => h.sales), hasLength(20));
     expect(counter.chains, lessThanOrEqualTo(5));
   });
+
+  test('customers who bought most recently come first', () async {
+    final customers = CustomerRepository(db, session);
+    final ando = await customers.create(
+      const CustomerInput(name: 'Ando', type: CustomerType.individual),
+    );
+    final zo = await customers.create(
+      const CustomerInput(name: 'Zo', type: CustomerType.market),
+    );
+    await customers.create(
+      const CustomerInput(name: 'Bema', type: CustomerType.market),
+    );
+    final h = await harvests.harvest(input(e1, 300));
+    Future<void> sell(String c, int day) => harvests.sell(
+      SaleInput(
+        harvestId: h,
+        customerId: c,
+        date: DateTime(2026, 6, day),
+        weightG: 1000,
+        form: ProductForm.fresh,
+      ),
+    );
+    await sell(ando, 1);
+    await sell(zo, 3);
+    final order = await customers.watchByRecentSale().first;
+    expect(order.map((c) => c.name), ['Zo', 'Ando', 'Bema']);
+  });
 }
 
 /// Counts the recursive supersede-chain queries.

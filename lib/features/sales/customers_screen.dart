@@ -7,7 +7,11 @@ import '../../db/repositories/providers.dart';
 import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/labels.dart';
+import '../common/choice_buttons.dart';
+import '../common/details_fold.dart';
 import '../common/form_body.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/save_once.dart';
 import 'sales_providers.dart';
 
@@ -87,18 +91,17 @@ class _CustomerFormState extends ConsumerState<CustomerFormScreen>
     if (!_form.currentState!.validate()) return;
     final repo = ref.read(customerRepositoryProvider);
     final id = widget.customerId;
-    if (id == null) {
-      final created = await repo.create(_input);
-      if (mounted) context.pop(created);
-    } else {
-      await repo.update(id, _input);
-      if (mounted) context.pop(id);
-    }
+    final saved = id ?? await repo.create(_input);
+    if (id != null) await repo.update(id, _input);
+    if (!mounted) return;
+    showDone(context, AppLocalizations.of(context).doneSaved);
+    context.canPop() ? context.pop(saved) : context.go('/more/sales/customers');
   }
 
   Future<void> _archive() async {
     await ref.read(customerRepositoryProvider).archive(widget.customerId!);
-    if (mounted) context.pop();
+    if (!mounted) return;
+    context.canPop() ? context.pop() : context.go('/more/sales/customers');
   }
 
   @override
@@ -115,11 +118,27 @@ class _CustomerFormState extends ConsumerState<CustomerFormScreen>
       _type = c.type;
     }
     const gap = SizedBox(height: 16);
+    final editing = widget.customerId != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.customerId == null ? l10n.customerNew : l10n.customerEdit,
-        ),
+        title: Text(editing ? l10n.customerEdit : l10n.customerNew),
+        actions: [
+          if (editing)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: l10n.customerArchive,
+                  icon: Icons.person_remove_outlined,
+                  onTap: () => saveOnce(_archive),
+                ),
+              ],
+            ),
+        ],
+      ),
+      bottomNavigationBar: PinnedAction(
+        icon: editing ? Icons.check : Icons.person_add,
+        label: editing ? l10n.actionSaveCustomer : l10n.actionAddCustomer,
+        onPressed: saving ? null : () => saveOnce(_save),
       ),
       body: Form(
         key: _form,
@@ -133,61 +152,27 @@ class _CustomerFormState extends ConsumerState<CustomerFormScreen>
                   (v ?? '').trim().isEmpty ? l10n.fieldRequired : null,
             ),
             gap,
-            Text(
-              l10n.customerType,
-              style: Theme.of(context).textTheme.titleMedium,
+            ChoiceField<CustomerType>(
+              label: l10n.customerType,
+              requiredText: l10n.fieldRequired,
+              options: [
+                for (final t in CustomerType.values)
+                  (t, l10n.customerTypeLabel(t)),
+              ],
+              value: _type,
+              onChanged: (t) => setState(() => _type = t),
             ),
-            FormField<CustomerType>(
-              validator: (_) => _type == null ? l10n.fieldRequired : null,
-              builder: (state) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      for (final t in CustomerType.values)
-                        ChoiceChip(
-                          label: Text(l10n.customerTypeLabel(t)),
-                          selected: _type == t,
-                          onSelected: (_) => setState(() => _type = t),
-                        ),
-                    ],
-                  ),
-                  if (state.hasError)
-                    Text(
-                      state.errorText!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            gap,
-            TextFormField(
-              controller: _contact,
-              decoration: InputDecoration(labelText: l10n.customerContact),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: saving ? null : () => saveOnce(_save),
-              child: Text(l10n.save),
-            ),
-            if (widget.customerId != null) ...[
-              const SizedBox(height: 8),
-              TextButton(
-                style: TextButton.styleFrom(
-                  minimumSize: const Size.fromHeight(56),
+            DetailsFold(
+              initiallyOpen: _contact.text.isNotEmpty,
+              children: [
+                gap,
+                TextFormField(
+                  controller: _contact,
+                  decoration: InputDecoration(labelText: l10n.customerContact),
+                  keyboardType: TextInputType.phone,
                 ),
-                onPressed: saving ? null : () => saveOnce(_archive),
-                child: Text(l10n.customerArchive),
-              ),
-            ],
+              ],
+            ),
           ],
         ),
       ),

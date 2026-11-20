@@ -1557,8 +1557,15 @@ class AppLocalizationsMg extends AppLocalizations {
   String get harvestAction => 'Hanjono';
 
   @override
-  String get harvestHasSales =>
-      'Fafao aloha ny fivarotana tamin\'ity fijonoana ity';
+  String harvestHasSales(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Fafao aloha ireo varotra $count.',
+      one: 'Fafao aloha ny varotra.',
+    );
+    return '$_temp0';
+  }
 
   @override
   String harvestEditTitle(String batch) {
@@ -2777,5 +2784,45 @@ class AppLocalizationsMg extends AppLocalizations {
   @override
   String deleteDeliveryConfirm(String date, String kg) {
     return 'Hofafana ve ny sakafo tonga tamin\'ny $date ($kg) ? Hihena $kg ny tahiry.';
+  }
+
+  @override
+  String harvestAim(String count, String pond) {
+    return 'trondro $count ao amin\'ny $pond';
+  }
+
+  @override
+  String get customerPickTitle => 'Mpividy';
+
+  @override
+  String get doneHarvested => 'Voajono';
+
+  @override
+  String get doneSold => 'Voavarotra';
+
+  @override
+  String get actionAddCustomer => 'Ampidiro ny mpividy';
+
+  @override
+  String get actionSaveCustomer => 'Raketo ny mpividy';
+
+  @override
+  String saleHarvestLeft(String date, String kind, String kg) {
+    return '$date, $kind, sisa $kg';
+  }
+
+  @override
+  String saleHarvestChoice(String date, String pond, String kg) {
+    return '$date $pond, sisa $kg';
+  }
+
+  @override
+  String deleteHarvestConfirm(String date, String kg, String pond) {
+    return 'Hofafana ve ny fijonoana tamin\'ny $date ($kg, $pond) ? Isaina ao amin\'ny $pond indray ireo trondro.';
+  }
+
+  @override
+  String deleteSaleConfirm(String date, String kg, String customer) {
+    return 'Hofafana ve ny varotra tamin\'ny $date ($kg, $customer) ? Mbola hamidy ireo kilao ireo.';
   }
 }

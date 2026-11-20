@@ -17,11 +17,12 @@ void main() {
     final c = await farm.customer('Marché Antsirabe');
     await farm.open(tester, '/more/batches/${farm.l1}');
     await tapAndSettle(tester, find.text('Vendre'));
+    await tapAndSettle(tester, find.textContaining('reste 240 kg'));
     await tapAndSettle(tester, find.byKey(const ValueKey('sale-customer')));
-    await tapAndSettle(tester, find.text('Marché Antsirabe').last);
+    await tapAndSettle(tester, find.text('Marché Antsirabe'));
     await enterAndSettle(tester, field('Poids vendu'), '200');
     await tapAndSettle(tester, find.text('Frais'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Vendre'));
     expect(
       find.textContaining('Marché Antsirabe · Frais · 200 kg'),
       findsOneWidget,
@@ -38,15 +39,16 @@ void main() {
     await farm.harvest(kg: 240);
     await farm.customer('Marché Antsirabe');
     await farm.open(tester, '/more/batches/${farm.l1}/sell');
+    await tapAndSettle(tester, find.textContaining('reste 240 kg'));
     await tapAndSettle(tester, find.byKey(const ValueKey('sale-customer')));
-    await tapAndSettle(tester, find.text('Marché Antsirabe').last);
+    await tapAndSettle(tester, find.text('Marché Antsirabe'));
     await enterAndSettle(tester, field('Poids vendu'), '300');
     await tapAndSettle(tester, find.text('Vivant'));
     expect(
       find.text('Plus que le poids récolté pas encore vendu (240 kg)'),
       findsOneWidget,
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Vendre'));
     expect((await db.select(db.sales).getSingle()).weightG, 300000);
   });
 }

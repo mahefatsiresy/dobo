@@ -2861,8 +2861,8 @@ abstract class AppLocalizations {
   /// No description provided for @harvestHasSales.
   ///
   /// In fr, this message translates to:
-  /// **'Supprimez d\'abord les ventes de cette récolte'**
-  String get harvestHasSales;
+  /// **'{count, plural, =1{Supprimez d\'abord sa vente.} other{Supprimez d\'abord ses {count} ventes.}}'**
+  String harvestHasSales(int count);
 
   /// No description provided for @harvestEditTitle.
   ///
@@ -4823,6 +4823,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimer la livraison du {date} ({kg}) ? Le stock baisse de {kg}.'**
   String deleteDeliveryConfirm(String date, String kg);
+
+  /// No description provided for @harvestAim.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons dans {pond}'**
+  String harvestAim(String count, String pond);
+
+  /// No description provided for @customerPickTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Client'**
+  String get customerPickTitle;
+
+  /// No description provided for @doneHarvested.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolté'**
+  String get doneHarvested;
+
+  /// No description provided for @doneSold.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vendu'**
+  String get doneSold;
+
+  /// No description provided for @actionAddCustomer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter le client'**
+  String get actionAddCustomer;
+
+  /// No description provided for @actionSaveCustomer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer le client'**
+  String get actionSaveCustomer;
+
+  /// No description provided for @saleHarvestLeft.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date}, {kind}, reste {kg}'**
+  String saleHarvestLeft(String date, String kind, String kg);
+
+  /// No description provided for @saleHarvestChoice.
+  ///
+  /// In fr, this message translates to:
+  /// **'{date} {pond}, reste {kg}'**
+  String saleHarvestChoice(String date, String pond, String kg);
+
+  /// No description provided for @deleteHarvestConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la récolte du {date} ({kg}, {pond}) ? Les poissons comptent de nouveau dans {pond}.'**
+  String deleteHarvestConfirm(String date, String kg, String pond);
+
+  /// No description provided for @deleteSaleConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la vente du {date} ({kg}, {customer}) ? Ces kilos restent à vendre.'**
+  String deleteSaleConfirm(String date, String kg, String customer);
 }
 
 class _AppLocalizationsDelegate

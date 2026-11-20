@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'features/common/farm_today.dart';
 
 import 'db/repositories/providers.dart';
+import 'features/sales/customer_picker.dart';
 import 'features/sales/customers_screen.dart';
 import 'features/sales/harvest_screen.dart';
 import 'features/sales/sale_screen.dart';
@@ -295,6 +296,14 @@ final routerProvider = Provider<GoRouter>((ref) {
                             path: 'sell',
                             builder: (context, state) => SaleScreen(
                               batchId: state.pathParameters['id']!,
+                              harvestId: state.uri.queryParameters['harvestId'],
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'sales/:saleId/edit',
+                            builder: (context, state) => SaleScreen(
+                              batchId: state.pathParameters['id']!,
+                              saleId: state.pathParameters['saleId'],
                             ),
                           ),
                           GoRoute(
@@ -320,6 +329,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                             path: 'new',
                             builder: (context, state) =>
                                 const CustomerFormScreen(),
+                          ),
+                          GoRoute(
+                            path: 'pick',
+                            builder: (context, state) => CustomerPickerScreen(
+                              current: state.uri.queryParameters['current'],
+                            ),
                           ),
                           GoRoute(
                             path: ':customerId',

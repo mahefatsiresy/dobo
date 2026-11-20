@@ -25,7 +25,7 @@ void main() {
     final farm = await SalesFarm.create(db);
     await farm.open(tester, '/more/batches/${farm.l1}');
     await tapAndSettle(tester, find.text('Récolter'));
-    expect(find.textContaining("Estimé dans l'étang"), findsOneWidget);
+    expect(find.textContaining('poissons dans E1'), findsOneWidget);
     await fill(tester, count: '950');
     expect(find.textContaining('50 poissons non retrouvés'), findsOneWidget);
   });
@@ -37,7 +37,7 @@ void main() {
     final farm = await SalesFarm.create(db);
     await farm.open(tester, '/more/batches/${farm.l1}/harvest');
     await fill(tester, count: '950');
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Récolter'));
     expect(find.text('Clôturé'), findsOneWidget);
     final h = await db.select(db.harvests).getSingle();
     expect(
@@ -63,15 +63,8 @@ void main() {
       technicianCalled: false,
     );
     await farm.open(tester, '/more/batches/${farm.l1}/harvest');
-    final picker = find.byKey(const ValueKey('harvest-pond'));
-    expect(
-      find.descendant(of: picker, matching: find.text('E2')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: picker, matching: find.text('E1')),
-      findsNothing,
-    );
+    expect(find.byKey(ValueKey('pond-${farm.e2}')), findsOneWidget);
+    expect(find.byKey(ValueKey('pond-${farm.e1}')), findsNothing);
   });
 
   appTest('correcting a final harvest to partial reopens the batch', (
@@ -86,7 +79,7 @@ void main() {
     expect(field('Nombre de poissons'), findsOneWidget);
     expect(find.text('950'), findsOneWidget);
     await tapAndSettle(tester, find.text('Partielle'));
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text('Enregistrer la correction'));
     await reveal(tester, find.text('En récolte'));
     expect(find.text('En récolte'), findsOneWidget);
     final current = await db.select(db.harvests).get();
@@ -122,10 +115,7 @@ void main() {
     }
 
     await confirmDelete(ValueKey('harvest-delete-$h'));
-    expect(
-      find.text("Supprimez d'abord les ventes de cette récolte"),
-      findsOneWidget,
-    );
+    expect(find.text("Supprimez d'abord sa vente."), findsOneWidget);
     await confirmDelete(ValueKey('sale-delete-$sale'));
     expect(find.textContaining('Marché Antsirabe'), findsNothing);
     await confirmDelete(ValueKey('harvest-delete-$h'));

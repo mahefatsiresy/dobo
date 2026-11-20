@@ -1543,8 +1543,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get harvestAction => 'Récolter';
 
   @override
-  String get harvestHasSales =>
-      'Supprimez d\'abord les ventes de cette récolte';
+  String harvestHasSales(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Supprimez d\'abord ses $count ventes.',
+      one: 'Supprimez d\'abord sa vente.',
+    );
+    return '$_temp0';
+  }
 
   @override
   String harvestEditTitle(String batch) {
@@ -2779,5 +2786,45 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String deleteDeliveryConfirm(String date, String kg) {
     return 'Supprimer la livraison du $date ($kg) ? Le stock baisse de $kg.';
+  }
+
+  @override
+  String harvestAim(String count, String pond) {
+    return '$count poissons dans $pond';
+  }
+
+  @override
+  String get customerPickTitle => 'Client';
+
+  @override
+  String get doneHarvested => 'Récolté';
+
+  @override
+  String get doneSold => 'Vendu';
+
+  @override
+  String get actionAddCustomer => 'Ajouter le client';
+
+  @override
+  String get actionSaveCustomer => 'Enregistrer le client';
+
+  @override
+  String saleHarvestLeft(String date, String kind, String kg) {
+    return '$date, $kind, reste $kg';
+  }
+
+  @override
+  String saleHarvestChoice(String date, String pond, String kg) {
+    return '$date $pond, reste $kg';
+  }
+
+  @override
+  String deleteHarvestConfirm(String date, String kg, String pond) {
+    return 'Supprimer la récolte du $date ($kg, $pond) ? Les poissons comptent de nouveau dans $pond.';
+  }
+
+  @override
+  String deleteSaleConfirm(String date, String kg, String customer) {
+    return 'Supprimer la vente du $date ($kg, $customer) ? Ces kilos restent à vendre.';
   }
 }
