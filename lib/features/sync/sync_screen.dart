@@ -21,7 +21,7 @@ final _rejectedProvider = StreamProvider<List<RejectedRow>>(
   (ref) => ref.watch(syncStatusRepositoryProvider).watchRejected(),
 );
 
-final _lastSyncProvider = StreamProvider<DateTime?>(
+final lastSyncProvider = StreamProvider<DateTime?>(
   (ref) => ref.watch(syncStatusRepositoryProvider).watchLastSyncAt(),
 );
 
@@ -38,7 +38,7 @@ class SyncScreen extends ConsumerWidget {
         ref.watch(syncCountsProvider).value ?? (pending: 0, rejected: 0);
     final photos = ref.watch(_pendingPhotosProvider).value ?? const [];
     final rejected = ref.watch(_rejectedProvider).value ?? const [];
-    final last = ref.watch(_lastSyncProvider).value;
+    final last = ref.watch(lastSyncProvider).value;
     final worker = ref.watch(sessionProvider).value?.isWorker ?? false;
     final status = switch (view.state) {
       SyncRunState.running => l10n.syncStateRunning,

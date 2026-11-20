@@ -2853,4 +2853,49 @@ class AppLocalizationsMg extends AppLocalizations {
   String deleteSampleConfirm(String date, String batch) {
     return 'Hofafana ve ny fandanjana tamin\'ny $date ($batch) ?';
   }
+
+  @override
+  String get moreGroupFarm => 'Ny toeram-pambolena';
+
+  @override
+  String get moreGroupSheets => 'Taratasy';
+
+  @override
+  String get moreGroupPhone => 'Ity finday ity';
+
+  @override
+  String get moreGroupAdmin => 'Fikambanana';
+
+  @override
+  String moreBatchesSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mandeha',
+      one: '1 mandeha',
+      zero: 'Tsy misy mandeha',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedDaysLeftShort(String days) {
+    return '$days andro';
+  }
+
+  @override
+  String get syncSummaryUpToDate => 'Vaovao';
+
+  @override
+  String syncSummaryPending(String count) {
+    return '$count miandry';
+  }
+
+  @override
+  String syncSummaryRejected(String count) {
+    return '$count nolavina';
+  }
+
+  @override
+  String get syncSummaryNever => 'Tsy mbola nampifandraisina';
 }

@@ -1,6 +1,9 @@
 import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
+import 'package:dobo/db/repositories/customer_repository.dart';
 import 'package:dobo/db/repositories/daily_log_repository.dart';
+import 'package:dobo/db/repositories/feed_repository.dart';
+import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/prep_repository.dart';
@@ -123,4 +126,110 @@ Future<DemoFarm> seedDemoFarm(AppDatabase db) async {
 
   await pond('P2', PondColour.blue);
   return farm;
+}
+
+/// What the batches, feed and sales pages need on top of [seedDemoFarm]
+/// (plan design step 7):
+/// - feed: grower "Lot A" made 70 days before [demoNow] (old), 60 kg;
+///   grower "Lot B" made 14 days ago, 120 kg; a fry lot made 20 days ago,
+///   60 kg; a grower lot made 100 days ago (expired), 25 kg; each delivered
+///   2 days after it was made;
+/// - 300 fish of L-E1 moved from E1 to P2, 5 days ago;
+/// - L-E6 partly harvested yesterday (300 fish, 45 kg from E6), 40 kg sold
+///   fresh to "Marché Anosy";
+/// - customers "Marché Anosy" (market) and "Restaurant Lova" (restaurant);
+/// - a closed batch: pond E7, L-E7 stocked with 1 520 fish of 2 g on
+///   01/10/2025, finally harvested on 02/02/2026 (1 100 fish, 210 kg).
+Future<void> seedDemoTrade(AppDatabase db, DemoFarm farm) async {
+  final session = (await SetupRepository(db).currentSession())!;
+  DateTime daysAgo(int n) => DateTime(2026, 3, 15 - n);
+
+  final feed = FeedRepository(db, session);
+  Future<void> lot(Phase phase, int madeDaysAgo, int kg, {String? label}) =>
+      feed.deliver(
+        FeedDeliveryInput(
+          date: daysAgo(madeDaysAgo - 2),
+          phase: phase,
+          weightG: kg * 1000,
+          manufacturedOn: daysAgo(madeDaysAgo),
+          label: label,
+        ),
+      );
+  await lot(Phase.growout, 100, 25, label: 'Lot C');
+  await lot(Phase.growout, 70, 60, label: 'Lot A');
+  await lot(Phase.growout, 14, 120, label: 'Lot B');
+  await lot(Phase.fry, 20, 60, label: 'Lot D');
+
+  final batches = BatchRepository(db, session);
+  final codes = {
+    for (final b in await db.select(db.batches).get()) b.code: b.id,
+  };
+  await batches.transfer(
+    TransferInput(
+      batchId: codes['L-E1']!,
+      fromPondId: farm['E1']!,
+      toPondId: farm['P2']!,
+      date: daysAgo(5),
+      count: 300,
+    ),
+  );
+
+  final customers = CustomerRepository(db, session);
+  final anosy = await customers.create(
+    const CustomerInput(name: 'Marché Anosy', type: CustomerType.market),
+  );
+  await customers.create(
+    const CustomerInput(name: 'Restaurant Lova', type: CustomerType.restaurant),
+  );
+  final harvests = HarvestRepository(db, session);
+  final h = await harvests.harvest(
+    HarvestInput(
+      batchId: codes['L-E6']!,
+      pondId: farm['E6']!,
+      date: daysAgo(1),
+      count: 300,
+      weightG: 45000,
+      isFinal: false,
+    ),
+  );
+  await harvests.sell(
+    SaleInput(
+      harvestId: h,
+      customerId: anosy,
+      date: daysAgo(1),
+      weightG: 40000,
+      form: ProductForm.fresh,
+    ),
+  );
+
+  farm['E7'] = await PondRepository(db, session).create(
+    const PondInput(
+      code: 'E7',
+      colour: PondColour.green,
+      role: PondRole.growout,
+      lengthM: 25,
+      widthM: 20,
+    ),
+  );
+  final l7 = await batches.stockBatch(
+    StockInput(
+      code: 'L-E7',
+      pondId: farm['E7']!,
+      date: DateTime(2025, 10, 1),
+      count: 1520,
+      avgWeightMg: 2000,
+      hatchery: 'Écloserie Ivato',
+      certificateNo: '1234',
+    ),
+  );
+  await harvests.harvest(
+    HarvestInput(
+      batchId: l7,
+      pondId: farm['E7']!,
+      date: DateTime(2026, 2, 2),
+      count: 1100,
+      weightG: 210000,
+      isFinal: true,
+    ),
+  );
 }

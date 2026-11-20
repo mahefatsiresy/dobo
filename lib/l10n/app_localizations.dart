@@ -4931,6 +4931,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Supprimer la pesée du {date} ({batch}) ?'**
   String deleteSampleConfirm(String date, String batch);
+
+  /// No description provided for @moreGroupFarm.
+  ///
+  /// In fr, this message translates to:
+  /// **'La ferme'**
+  String get moreGroupFarm;
+
+  /// No description provided for @moreGroupSheets.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiches'**
+  String get moreGroupSheets;
+
+  /// No description provided for @moreGroupPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce téléphone'**
+  String get moreGroupPhone;
+
+  /// No description provided for @moreGroupAdmin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Association'**
+  String get moreGroupAdmin;
+
+  /// No description provided for @moreBatchesSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun en cours} =1{1 en cours} other{{count} en cours}}'**
+  String moreBatchesSummary(int count);
+
+  /// No description provided for @feedDaysLeftShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'{days} jours'**
+  String feedDaysLeftShort(String days);
+
+  /// No description provided for @syncSummaryUpToDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'À jour'**
+  String get syncSummaryUpToDate;
+
+  /// No description provided for @syncSummaryPending.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} en attente'**
+  String syncSummaryPending(String count);
+
+  /// No description provided for @syncSummaryRejected.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} refusés'**
+  String syncSummaryRejected(String count);
+
+  /// No description provided for @syncSummaryNever.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jamais synchronisé'**
+  String get syncSummaryNever;
 }
 
 class _AppLocalizationsDelegate

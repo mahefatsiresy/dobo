@@ -5,7 +5,16 @@ import 'package:go_router/go_router.dart';
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../../locale_controller.dart';
+import '../../domain/types.dart';
+import '../../l10n/formatting.dart';
+import '../../sync/providers.dart';
+import '../../theme/tokens.dart';
+import '../admin/members_screen.dart';
+import '../common/estimated.dart';
+import '../feed/feed_providers.dart';
+import '../ponds/pond_overview.dart';
 import '../sync/sync_badge.dart';
+import '../sync/sync_screen.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
@@ -38,102 +47,157 @@ class MoreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final admin = ref.watch(sessionProvider).value?.isAdmin ?? false;
+    final locale = Localizations.localeOf(context);
+    final session = ref.watch(sessionProvider).value;
+    final admin = session?.isAdmin ?? false;
+    final sales = session?.isSales ?? false;
+    final open = ref
+        .watch(batchSummariesProvider)
+        .value
+        ?.where((s) => s.batch.status != BatchStatus.closed)
+        .length;
+    final stock = ref.watch(feedStockProvider).value;
+    final counts = ref.watch(syncCountsProvider).value;
+    final last = ref.watch(lastSyncProvider);
+    final me = session == null
+        ? null
+        : ref
+              .watch(membersProvider)
+              .value
+              ?.where((m) => m.id == session.userId)
+              .firstOrNull;
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
+
+    Widget heading(String key, String title) => Padding(
+      key: ValueKey('more-group-$key'),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 4),
+      child: Text(title, style: text.titleSmall?.copyWith(color: c.inkMuted)),
+    );
+    Widget row(
+      Widget icon,
+      String title,
+      VoidCallback onTap, {
+      Widget? summary,
+      bool chevron = true,
+    }) => ListTile(
+      minTileHeight: 56,
+      leading: icon,
+      title: Text(title),
+      // Under the title, not beside it: on a 360 dp phone the two side by
+      // side cut "Synchronisation" mid-word.
+      subtitle: summary == null
+          ? null
+          : DefaultTextStyle.merge(
+              style: text.bodySmall?.copyWith(color: c.ink),
+              child: summary,
+            ),
+      trailing: chevron ? const Icon(Icons.chevron_right) : null,
+      onTap: onTap,
+    );
+
+    final syncSummary = switch ((counts, last)) {
+      ((rejected: final r, pending: _)?, _) when r > 0 => Text(
+        l10n.syncSummaryRejected(formatCount(r, locale)),
+        style: TextStyle(color: c.danger),
+      ),
+      (_, AsyncData(value: null)) => Text(l10n.syncSummaryNever),
+      ((pending: final p, rejected: _)?, AsyncData()) when p > 0 => Text(
+        l10n.syncSummaryPending(formatCount(p, locale)),
+      ),
+      (_?, AsyncData()) => Text(l10n.syncSummaryUpToDate),
+      _ => null,
+    };
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabMore)),
       body: ListView(
         children: [
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.account_circle),
-            title: Text(l10n.moreAccount),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/account'),
+          heading('farm', l10n.moreGroupFarm),
+          row(
+            const Icon(Icons.set_meal),
+            l10n.moreBatches,
+            () => context.go('/more/batches'),
+            summary: open == null ? null : Text(l10n.moreBatchesSummary(open)),
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.translate),
-            title: Text(l10n.moreLanguage),
-            onTap: () => _language(context, ref),
+          row(
+            const Icon(Icons.inventory_2),
+            l10n.moreFeed,
+            () => context.go('/more/feed'),
+            summary: stock == null
+                ? null
+                : stock.daysLeft == null
+                ? Text(formatKg(stock.onHandG, locale))
+                : EstimatedLabel(
+                    value: l10n.feedDaysLeftShort(
+                      formatDecimal(stock.daysLeft!, locale, decimals: 0),
+                    ),
+                    trailing: ', ${formatKg(stock.onHandG, locale)}',
+                  ),
           ),
-          if (admin)
-            ListTile(
-              minTileHeight: 56,
-              leading: const Icon(Icons.admin_panel_settings),
-              title: Text(l10n.moreAdmin),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.go('/more/admin'),
+          if (sales)
+            row(
+              const Icon(Icons.storefront),
+              l10n.moreSales,
+              () => context.go('/more/sales'),
             ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const SyncBadge(child: Icon(Icons.sync)),
-            title: Text(l10n.moreSync),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/sync'),
+          heading('sheets', l10n.moreGroupSheets),
+          row(
+            const Icon(Icons.edit_note),
+            l10n.transcription,
+            () => context.go('/more/transcription'),
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.agriculture),
-            title: Text(l10n.workerMode),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              ref
-                  .read(localeControllerProvider.notifier)
-                  .set(const Locale('mg'));
-              context.go('/worker');
-            },
+          row(
+            const Icon(Icons.print),
+            l10n.morePaper,
+            () => context.go('/more/paper'),
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.edit_note),
-            title: Text(l10n.transcription),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/transcription'),
+          row(
+            const Icon(Icons.file_download),
+            l10n.moreExports,
+            () => context.go('/more/exports'),
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.print),
-            title: Text(l10n.morePaper),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/paper'),
+          heading('phone', l10n.moreGroupPhone),
+          row(
+            const SyncBadge(child: Icon(Icons.sync)),
+            l10n.moreSync,
+            () => context.go('/more/sync'),
+            summary: syncSummary,
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.file_download),
-            title: Text(l10n.moreExports),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/exports'),
+          row(const Icon(Icons.agriculture), l10n.workerMode, () {
+            ref.read(localeControllerProvider.notifier).set(const Locale('mg'));
+            context.go('/worker');
+          }),
+          row(
+            const Icon(Icons.account_circle),
+            l10n.moreAccount,
+            () => context.go('/more/account'),
+            summary: me == null ? null : Text(me.name),
           ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.set_meal),
-            title: Text(l10n.moreBatches),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/batches'),
-          ),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.inventory_2),
-            title: Text(l10n.moreFeed),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.go('/more/feed'),
-          ),
-          if (ref.watch(sessionProvider).value?.isSales ?? false)
-            ListTile(
-              minTileHeight: 56,
-              leading: const Icon(Icons.storefront),
-              title: Text(l10n.moreSales),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.go('/more/sales'),
+          row(
+            const Icon(Icons.translate),
+            l10n.moreLanguage,
+            () => _language(context, ref),
+            summary: Text(
+              locale.languageCode == 'mg'
+                  ? l10n.languageMalagasy
+                  : l10n.languageFrench,
             ),
-          if (admin)
-            ListTile(
-              minTileHeight: 56,
-              leading: const Icon(Icons.people),
-              title: Text(l10n.morePeople),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.go('/more/people'),
+          ),
+          if (admin) ...[
+            heading('admin', l10n.moreGroupAdmin),
+            row(
+              const Icon(Icons.admin_panel_settings),
+              l10n.moreAdmin,
+              () => context.go('/more/admin'),
             ),
+            row(
+              const Icon(Icons.people),
+              l10n.morePeople,
+              () => context.go('/more/people'),
+            ),
+          ],
+          const SizedBox(height: 16),
         ],
       ),
     );

@@ -803,5 +803,15 @@
   "actionSavePond": "Raketo ny dobo",
   "actionAddPerson": "Ampidiro ny olona",
   "deleteReadingConfirm": "Hofafana ve ny fandrefesana rano tamin'ny {date} ?",
-  "deleteSampleConfirm": "Hofafana ve ny fandanjana tamin'ny {date} ({batch}) ?"
+  "deleteSampleConfirm": "Hofafana ve ny fandanjana tamin'ny {date} ({batch}) ?",
+  "moreGroupFarm": "Ny toeram-pambolena",
+  "moreGroupSheets": "Taratasy",
+  "moreGroupPhone": "Ity finday ity",
+  "moreGroupAdmin": "Fikambanana",
+  "moreBatchesSummary": "{count, plural, =0{Tsy misy mandeha} =1{1 mandeha} other{{count} mandeha}}",
+  "feedDaysLeftShort": "{days} andro",
+  "syncSummaryUpToDate": "Vaovao",
+  "syncSummaryPending": "{count} miandry",
+  "syncSummaryRejected": "{count} nolavina",
+  "syncSummaryNever": "Tsy mbola nampifandraisina"
 }

@@ -113,7 +113,7 @@ void main() {
     await twoPonds(tester, db);
     await enterWorkerMode(tester);
     await tapAndSettle(tester, find.byTooltip('Hiala'));
-    expect(find.text('Mode ouvrier'), findsOneWidget);
+    expect(find.text('La ferme'), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 

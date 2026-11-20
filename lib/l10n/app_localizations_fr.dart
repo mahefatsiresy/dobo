@@ -2855,4 +2855,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String deleteSampleConfirm(String date, String batch) {
     return 'Supprimer la pesée du $date ($batch) ?';
   }
+
+  @override
+  String get moreGroupFarm => 'La ferme';
+
+  @override
+  String get moreGroupSheets => 'Fiches';
+
+  @override
+  String get moreGroupPhone => 'Ce téléphone';
+
+  @override
+  String get moreGroupAdmin => 'Association';
+
+  @override
+  String moreBatchesSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count en cours',
+      one: '1 en cours',
+      zero: 'Aucun en cours',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String feedDaysLeftShort(String days) {
+    return '$days jours';
+  }
+
+  @override
+  String get syncSummaryUpToDate => 'À jour';
+
+  @override
+  String syncSummaryPending(String count) {
+    return '$count en attente';
+  }
+
+  @override
+  String syncSummaryRejected(String count) {
+    return '$count refusés';
+  }
+
+  @override
+  String get syncSummaryNever => 'Jamais synchronisé';
 }
