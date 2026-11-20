@@ -204,7 +204,7 @@ void main() {
       ),
     );
     await farm.open(tester, '/more/batches/${farm.l1}/sell?harvestId=$h');
-    await tapAndSettle(tester, find.text('Client'));
+    await tapAndSettle(tester, find.byKey(const ValueKey('sale-customer')));
     expect(
       tester.getTopLeft(find.text('Zo')).dy,
       lessThan(tester.getTopLeft(find.text('Ando')).dy),
@@ -228,7 +228,7 @@ void main() {
     expect(_field('Bon de livraison (facultatif)'), findsNothing);
     expect(find.byType(DetailsFold), findsOneWidget);
     await enterAndSettle(tester, _field('Poids vendu'), '40');
-    await tapAndSettle(tester, find.text('Client'));
+    await tapAndSettle(tester, find.byKey(const ValueKey('sale-customer')));
     await tapAndSettle(tester, find.text('Marché Anosy'));
     await tapAndSettle(tester, find.text('Frais'));
     await tapAndSettle(tester, _pinned('Vendre'));

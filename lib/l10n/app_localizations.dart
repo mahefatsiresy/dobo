@@ -5021,6 +5021,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'poissons'**
   String get fishUnit;
+
+  /// No description provided for @batchOrigin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Origine'**
+  String get batchOrigin;
+
+  /// No description provided for @batchHarvestedLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récolté {count} poissons, {kg}'**
+  String batchHarvestedLine(String count, String kg);
+
+  /// No description provided for @batchCycleFcr.
+  ///
+  /// In fr, this message translates to:
+  /// **'IC du cycle {value}'**
+  String batchCycleFcr(String value);
+
+  /// No description provided for @unsoldLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reste à vendre : {kg}'**
+  String unsoldLine(String kg);
+
+  /// No description provided for @harvestFinalShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Finale'**
+  String get harvestFinalShort;
+
+  /// No description provided for @harvestRowLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{kind}, {count} poissons, {kg}'**
+  String harvestRowLine(String kind, String count, String kg);
+
+  /// No description provided for @saleRowLine.
+  ///
+  /// In fr, this message translates to:
+  /// **'{customer}, {form}'**
+  String saleRowLine(String customer, String form);
+
+  /// No description provided for @historyFish.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons'**
+  String historyFish(String count);
+
+  /// No description provided for @historyFishWeight.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} poissons, {weight}'**
+  String historyFishWeight(String count, String weight);
 }
 
 class _AppLocalizationsDelegate

@@ -75,7 +75,7 @@ void main() {
     final h = await farm.harvest(count: 950);
     await farm.open(tester, '/more/batches/${farm.l1}');
     expect(find.text('Clôturé'), findsOneWidget);
-    await tapAndSettle(tester, find.byKey(ValueKey('harvest-edit-$h')));
+    await tapAndSettle(tester, find.byKey(ValueKey('harvest-$h')));
     expect(field('Nombre de poissons'), findsOneWidget);
     expect(find.text('950'), findsOneWidget);
     await tapAndSettle(tester, find.text('Partielle'));
@@ -103,8 +103,11 @@ void main() {
       ),
     );
     await farm.open(tester, '/more/batches/${farm.l1}');
-    Future<void> confirmDelete(Key key) async {
-      await tapAndSettle(tester, find.byKey(key));
+    Future<void> delete(Key row, {bool confirm = true}) async {
+      await tapAndSettle(tester, find.byKey(row));
+      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+      await tapAndSettle(tester, find.text('Supprimer'));
+      if (!confirm) return;
       await tapAndSettle(
         tester,
         find.descendant(
@@ -114,13 +117,16 @@ void main() {
       );
     }
 
-    await confirmDelete(ValueKey('harvest-delete-$h'));
+    await delete(ValueKey('harvest-$h'), confirm: false);
     expect(find.text("Supprimez d'abord sa vente."), findsOneWidget);
-    await confirmDelete(ValueKey('sale-delete-$sale'));
+    await tapAndSettle(tester, find.byType(BackButton));
+    await delete(ValueKey('sale-$sale'));
     expect(find.textContaining('Marché Antsirabe'), findsNothing);
-    await confirmDelete(ValueKey('harvest-delete-$h'));
-    await reveal(tester, find.text('Actif'));
-    expect(find.text('Actif'), findsOneWidget);
+    await delete(ValueKey('harvest-$h'));
+    expect(
+      (await db.select(db.batches).getSingle()).status,
+      BatchStatus.active,
+    );
     expect(find.text('Récoltes et ventes'), findsNothing);
   });
 }

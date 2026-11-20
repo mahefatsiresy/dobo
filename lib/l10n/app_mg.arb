@@ -818,5 +818,14 @@
   "batchesClosedCount": "{count, plural, =1{andiany 1} other{andiany {count}}}",
   "batchesStockRow": "Asio trondro ny dobo iray",
   "batchClosedOn": "Vita ny {date}",
-  "fishUnit": "trondro"
+  "fishUnit": "trondro",
+  "batchOrigin": "Fiaviana",
+  "batchHarvestedLine": "Voajono trondro {count}, {kg}",
+  "batchCycleFcr": "IC amin'ny fihodinana {value}",
+  "unsoldLine": "Mbola hamidy : {kg}",
+  "harvestFinalShort": "Farany",
+  "harvestRowLine": "{kind}, trondro {count}, {kg}",
+  "saleRowLine": "{customer}, {form}",
+  "historyFish": "trondro {count}",
+  "historyFishWeight": "trondro {count}, {weight}"
 }

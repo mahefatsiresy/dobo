@@ -2923,4 +2923,45 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get fishUnit => 'trondro';
+
+  @override
+  String get batchOrigin => 'Fiaviana';
+
+  @override
+  String batchHarvestedLine(String count, String kg) {
+    return 'Voajono trondro $count, $kg';
+  }
+
+  @override
+  String batchCycleFcr(String value) {
+    return 'IC amin\'ny fihodinana $value';
+  }
+
+  @override
+  String unsoldLine(String kg) {
+    return 'Mbola hamidy : $kg';
+  }
+
+  @override
+  String get harvestFinalShort => 'Farany';
+
+  @override
+  String harvestRowLine(String kind, String count, String kg) {
+    return '$kind, trondro $count, $kg';
+  }
+
+  @override
+  String saleRowLine(String customer, String form) {
+    return '$customer, $form';
+  }
+
+  @override
+  String historyFish(String count) {
+    return 'trondro $count';
+  }
+
+  @override
+  String historyFishWeight(String count, String weight) {
+    return 'trondro $count, $weight';
+  }
 }

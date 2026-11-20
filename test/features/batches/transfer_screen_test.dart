@@ -73,7 +73,12 @@ void main() {
     await enterAndSettle(tester, countField(), '1000');
     await tapAndSettle(tester, save());
 
-    expect(find.text('Actif'), findsOneWidget);
+    // Out of quarantine: the page names the phase, the batch is active.
+    expect(find.text('Quarantaine'), findsNothing);
+    expect(
+      (await db.select(db.batches).getSingle()).status,
+      BatchStatus.active,
+    );
     expect(find.textContaining('1 000'), findsWidgets);
     expect((await ponds.get(q1)).status, PondStatus.empty);
     expect((await ponds.get(e1)).status, PondStatus.stocked);
@@ -107,7 +112,7 @@ void main() {
     await pickDestination(tester);
     await enterAndSettle(tester, countField(), '1000');
     await tapAndSettle(tester, save());
-    await tapAndSettle(tester, find.text('Corriger').first);
+    await tapAndSettle(tester, find.byKey(const ValueKey('transfer-ponds')));
     await enterAndSettle(tester, countField(), '600');
     await tapAndSettle(tester, save('Enregistrer la correction'));
     expect(find.textContaining('400'), findsWidgets);

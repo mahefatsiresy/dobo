@@ -817,3 +817,12 @@ batchesClosedCount;;{count, plural, =1{1 lot} other{{count} lots}};{count, plura
 batchesStockRow;;Empoissonner un étang;Asio trondro ny dobo iray;
 batchClosedOn;;Terminé le {date};Vita ny {date};
 fishUnit;;poissons;trondro;
+batchOrigin;;Origine;Fiaviana;
+batchHarvestedLine;;Récolté {count} poissons, {kg};Voajono trondro {count}, {kg};
+batchCycleFcr;;IC du cycle {value};IC amin'ny fihodinana {value};
+unsoldLine;;Reste à vendre : {kg};Mbola hamidy : {kg};
+harvestFinalShort;;Finale;Farany;
+harvestRowLine;;{kind}, {count} poissons, {kg};{kind}, trondro {count}, {kg};
+saleRowLine;;{customer}, {form};{customer}, {form};
+historyFish;;{count} poissons;trondro {count};
+historyFishWeight;;{count} poissons, {weight};trondro {count}, {weight};

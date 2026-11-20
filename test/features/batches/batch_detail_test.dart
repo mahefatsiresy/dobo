@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dobo/db/database.dart';
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
@@ -11,6 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
+
+/// Opens the batch's first stocking from its history row.
+Future<void> openStocking(WidgetTester tester, AppDatabase db) async {
+  final first = (await db.select(db.stockings).get()).first;
+  await tapAndSettle(tester, find.byKey(ValueKey('event-${first.id}')));
+}
+
+/// Picks [label] from the batch page's ⋮.
+Future<void> fromMenu(WidgetTester tester, String label) async {
+  await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+  await tapAndSettle(tester, find.text(label));
+}
 
 void main() {
   appTest('a stocking corrected below what was moved out is flagged', (
@@ -59,7 +72,7 @@ void main() {
     await tapAndSettle(tester, find.text('L26-01'));
     expect(find.text('Historique'), findsOneWidget);
 
-    await tapAndSettle(tester, find.text('Corriger').last);
+    await openStocking(tester, db);
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, "Nombre d'alevins"),
@@ -68,6 +81,8 @@ void main() {
     await tapAndSettle(tester, find.text('Enregistrer la correction'));
 
     expect(tester.takeException(), isNull);
+    // The page keeps its place; the band heads it.
+    await reveal(tester, find.text('À vérifier'));
     expect(find.text('À vérifier'), findsOneWidget);
     expect(find.textContaining('800'), findsWidgets);
     final stockings = await db.select(db.stockings).get();
@@ -96,7 +111,8 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Lots'));
     await tapAndSettle(tester, find.text('L26-01'));
-    await tapAndSettle(tester, find.text('Supprimer'));
+    await openStocking(tester, db);
+    await fromMenu(tester, 'Supprimer');
     await tapAndSettle(
       tester,
       find.descendant(
@@ -104,7 +120,6 @@ void main() {
         matching: find.text('Supprimer'),
       ),
     );
-    expect(find.text('Corriger'), findsNothing);
     final rows = await db.select(db.stockings).get();
     expect(rows.where((r) => r.isTombstone), hasLength(1));
   });
@@ -131,7 +146,7 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Lots'));
     await tapAndSettle(tester, find.text('L26-01'));
-    await tapAndSettle(tester, find.byTooltip('Modifier le lot'));
+    await fromMenu(tester, 'Modifier le lot');
     await tapAndSettle(tester, find.text('Plus de détails'));
     await enterAndSettle(
       tester,
@@ -140,7 +155,8 @@ void main() {
     );
     await tapAndSettle(tester, find.text('Oui'));
     await tapAndSettle(tester, find.text('Enregistrer le lot'));
-    expect(find.text('GIFT'), findsOneWidget);
+    await tapAndSettle(tester, find.text('Origine'));
+    expect(find.textContaining('GIFT'), findsOneWidget);
     final b = await db.select(db.batches).getSingle();
     expect((b.strain, b.monosex, b.code), ('GIFT', true, 'L26-01'));
   });
@@ -167,7 +183,7 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Lots'));
     await tapAndSettle(tester, find.text('L26-01'));
-    await tapAndSettle(tester, find.text('Corriger'));
+    await openStocking(tester, db);
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, "Nombre d'alevins"),
@@ -238,7 +254,8 @@ void main() {
       await tapAndSettle(tester, find.text('Plus'));
       await tapAndSettle(tester, find.text('Lots'));
       await tapAndSettle(tester, find.text('L26-01'));
-      await tester.tap(find.byTooltip('Fiche de traçabilité'));
+      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+      await tester.tap(find.text('Fiche de traçabilité'));
       // Database reads run on the test clock, fonts and the PDF off it.
       for (var i = 0; i < 50 && shared.isEmpty; i++) {
         await tester.pump();

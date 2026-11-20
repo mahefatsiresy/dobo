@@ -452,7 +452,19 @@ class _BatchBlock extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(b.batch.code, style: text.titleMedium),
+          InkWell(
+            key: ValueKey('batch-link-${b.batch.code}'),
+            onTap: () => context.go('/more/batches/${b.batch.id}'),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 56),
+              child: Row(
+                children: [
+                  Expanded(child: Text(b.batch.code, style: text.titleMedium)),
+                  const Icon(Icons.chevron_right),
+                ],
+              ),
+            ),
+          ),
           if (showPhase && b.phase != null) Text(l10n.phase(b.phase!)),
           EstimatedLabel(
             value: l10n.pondFishCount(

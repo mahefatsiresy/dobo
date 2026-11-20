@@ -2926,4 +2926,45 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fishUnit => 'poissons';
+
+  @override
+  String get batchOrigin => 'Origine';
+
+  @override
+  String batchHarvestedLine(String count, String kg) {
+    return 'Récolté $count poissons, $kg';
+  }
+
+  @override
+  String batchCycleFcr(String value) {
+    return 'IC du cycle $value';
+  }
+
+  @override
+  String unsoldLine(String kg) {
+    return 'Reste à vendre : $kg';
+  }
+
+  @override
+  String get harvestFinalShort => 'Finale';
+
+  @override
+  String harvestRowLine(String kind, String count, String kg) {
+    return '$kind, $count poissons, $kg';
+  }
+
+  @override
+  String saleRowLine(String customer, String form) {
+    return '$customer, $form';
+  }
+
+  @override
+  String historyFish(String count) {
+    return '$count poissons';
+  }
+
+  @override
+  String historyFishWeight(String count, String weight) {
+    return '$count poissons, $weight';
+  }
 }

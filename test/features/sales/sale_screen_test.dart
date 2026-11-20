@@ -23,10 +23,7 @@ void main() {
     await enterAndSettle(tester, field('Poids vendu'), '200');
     await tapAndSettle(tester, find.text('Frais'));
     await tapAndSettle(tester, find.widgetWithText(FilledButton, 'Vendre'));
-    expect(
-      find.textContaining('Marché Antsirabe · Frais · 200 kg'),
-      findsOneWidget,
-    );
+    expect(find.text('Marché Antsirabe, Frais'), findsOneWidget);
     final s = await db.select(db.sales).getSingle();
     expect(
       (s.customerId, s.batchId, s.weightG, s.form),

@@ -54,7 +54,7 @@ void _formTest(
   await body(tester, db, farm);
 });
 
-const _wide = Size(480, 900);
+const _wide = Size(360, 900);
 
 Finder _field(String label) => find.widgetWithText(TextFormField, label);
 

@@ -6,6 +6,11 @@ import '../../db/database.dart';
 import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/errors.dart';
 import '../../db/repositories/providers.dart';
+import '../../domain/farm_facts.dart';
+import '../../domain/fcr.dart';
+import '../../domain/growth.dart';
+import '../../domain/trace.dart';
+import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../../l10n/labels.dart';
@@ -15,7 +20,11 @@ import '../ponds/pond_overview.dart';
 import 'batch_identity_fields.dart';
 import 'batch_providers.dart';
 import '../sales/sales_providers.dart';
-import '../sales/sales_screen.dart';
+import '../sales/harvest_rows.dart';
+import '../common/coded_band.dart';
+import '../common/folded_section.dart';
+import 'batch_rows.dart';
+import 'batches_screen.dart';
 import '../sales/share_trace.dart';
 import '../common/save_once.dart';
 import '../common/form_body.dart';
@@ -29,291 +38,355 @@ class BatchDetailScreen extends ConsumerWidget {
 
   final String batchId;
 
-  Future<void> _delete(
-    BuildContext context,
-    WidgetRef ref,
-    BatchEvent event,
-  ) async {
-    final l10n = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: Text(l10n.deleteConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-    if (ok != true) return;
-    final repo = ref.read(batchRepositoryProvider);
-    switch (event) {
-      case StockingEvent(:final stocking):
-        await repo.deleteStocking(stocking.id);
-      case TransferEvent(:final transfer):
-        await repo.deleteTransfer(transfer.id);
-    }
-  }
-
-  Future<bool> _confirmDelete(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: Text(l10n.deleteConfirm),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(l10n.cancel),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(l10n.delete),
-              ),
-            ],
-          ),
-        ) ==
-        true;
-  }
-
-  Future<void> _deleteHarvest(
-    BuildContext context,
-    WidgetRef ref,
-    String harvestId,
-  ) async {
-    final l10n = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    if (!await _confirmDelete(context)) return;
-    try {
-      await ref.read(harvestRepositoryProvider).delete(harvestId);
-    } on HarvestHasSalesException {
-      // This page is redrawn in step 7 Task 7; the count is not at hand.
-      messenger.showSnackBar(SnackBar(content: Text(l10n.harvestHasSales(1))));
-    }
-  }
-
-  Future<void> _deleteSale(
-    BuildContext context,
-    WidgetRef ref,
-    String saleId,
-  ) async {
-    if (!await _confirmDelete(context)) return;
-    await ref.read(harvestRepositoryProvider).deleteSale(saleId);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    final theme = Theme.of(context);
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
     final summary = ref
         .watch(batchSummariesProvider)
         .value
         ?.where((s) => s.batch.id == batchId)
         .firstOrNull;
-    final placements = ref.watch(placementsProvider).value;
+    final rows = ref.watch(batchRowsProvider).value;
     final ponds = ref.watch(allPondsByIdProvider).value;
     final history = ref.watch(batchHistoryProvider(batchId)).value;
     final harvests = ref.watch(batchHarvestsProvider(batchId)).value;
     final customers = ref.watch(customersByIdProvider).value;
+    final facts = ref.watch(farmFactsProvider).value;
     final sales = ref.watch(sessionProvider).value?.isSales ?? false;
     if (summary == null ||
-        placements == null ||
+        rows == null ||
         ponds == null ||
         history == null ||
         harvests == null ||
-        customers == null) {
+        customers == null ||
+        facts == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final b = summary.batch;
-    final first = summary.firstStocking;
-    final here = [
-      for (final p in placements)
-        if (p.batchId == batchId && (p.live.count > 0 || p.live.inconsistent))
-          p,
-    ];
-    String pondCode(String id) => ponds[id]?.code ?? '?';
-    Widget badge(String pondId) {
-      final pond = ponds[pondId];
-      return pond == null
-          ? const SizedBox(width: 56)
-          : PondTag(code: pond.code, colour: pond.colour);
-    }
+    final closed = b.status == BatchStatus.closed;
+    final row = rows.where((r) => r.batch.id == batchId).firstOrNull;
+    final places = row?.places ?? const <BatchPlace>[];
+    final live = places.any((p) => p.placement.live.count > 0);
+    String code(String id) => ponds[id]?.code ?? '?';
+    Widget rule() => Divider(height: 1, thickness: 1, color: c.line);
+    Widget heading(String title) => Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      child: Text(title, style: text.titleMedium),
+    );
+    final survival = batchSurvival(facts, batchId);
+    String pct(double v) => formatDecimal(v * 100, locale, decimals: 0);
 
-    final identity = [
-      l10n.batchStatus(b.status),
-      if (b.strain != null) b.strain!,
-      if (b.hatchery != null) b.hatchery!,
-      if (b.certificateNo != null) b.certificateNo!,
-      if (b.monosex == true) l10n.monosex,
-      if (b.plannedHarvestOn != null)
-        l10n.plannedHarvestOn(formatDate(b.plannedHarvestOn!)),
-    ];
+    final pinned = closed
+        ? PinnedAction(
+            icon: Icons.picture_as_pdf,
+            label: l10n.traceTitle,
+            onPressed: () => shareTrace(context, ref, batchId),
+          )
+        : sales && live
+        ? PinnedAction(
+            icon: Icons.set_meal,
+            label: l10n.harvestAction,
+            onPressed: () => context.push('/more/batches/$batchId/harvest'),
+          )
+        : null;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(b.code),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(b.code),
+            Text(
+              row?.phase == null
+                  ? l10n.batchStatus(b.status)
+                  : l10n.phase(row!.phase!),
+              style: text.bodySmall,
+            ),
+          ],
+        ),
         actions: [
-          IconButton(
-            tooltip: l10n.traceTitle,
-            icon: const Icon(Icons.picture_as_pdf),
-            onPressed: () => shareTrace(context, ref, batchId),
-          ),
-          IconButton(
-            tooltip: l10n.batchEdit,
-            icon: const Icon(Icons.edit),
-            onPressed: () => context.go('/more/batches/$batchId/edit'),
+          FormMenu(
+            entries: [
+              FormMenuEntry(
+                label: l10n.batchEdit,
+                icon: Icons.edit,
+                onTap: () => context.go('/more/batches/$batchId/edit'),
+              ),
+              FormMenuEntry(
+                label: l10n.traceTitle,
+                icon: Icons.picture_as_pdf,
+                onTap: () => shareTrace(context, ref, batchId),
+              ),
+            ],
           ),
         ],
       ),
+      bottomNavigationBar: pinned,
       body: ListView(
-        padding: const EdgeInsets.all(16),
         children: [
-          for (final line in identity) Text(line),
-          if (first != null) ...[
-            const SizedBox(height: 8),
+          for (final item in row?.items ?? const <BatchItem>[])
+            CodedBand(
+              severity: item.severity,
+              text: batchItemText(l10n, item, b.code),
+              code: item.pond?.code,
+              colour: item.pond?.colour,
+              onTap: () => context.go(batchItemRoute(item)),
+            ),
+          if (closed)
+            _ClosedOutcome(batchId: batchId, summary: summary, facts: facts)
+          else ...[
+            for (final p in places)
+              InkWell(
+                key: ValueKey('place-${p.pond.id}'),
+                onTap: () => context.go('/ponds/${p.pond.id}'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 72,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: PondCode(
+                            code: p.pond.code,
+                            colour: p.pond.colour,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            EstimatedLabel(
+                              value: l10n.pondFishCount(
+                                formatCount(p.placement.live.count, locale),
+                              ),
+                              style: text.titleMedium,
+                            ),
+                            Text(
+                              [
+                                if (p.placement.avgWeightG != null)
+                                  formatGrams(p.placement.avgWeightG!, locale),
+                                if (p.biomassG != null)
+                                  approx(formatKg(p.biomassG!, locale)),
+                              ].join(', '),
+                              style: text.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.chevron_right, color: c.ink),
+                    ],
+                  ),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (places.length > 1 && row != null)
+                    EstimatedLabel(
+                      value: l10n.pondFishCount(
+                        formatCount(row.liveCount, locale),
+                      ),
+                      trailing: row.biomassG == null
+                          ? ''
+                          : ', ${approx(formatKg(row.biomassG!, locale))}',
+                    ),
+                  if (survival != null) Text(l10n.survivalValue(pct(survival))),
+                ],
+              ),
+            ),
+          ],
+          rule(),
+          if (harvests.isNotEmpty) ...[
+            heading(l10n.harvestsHeading),
+            for (final h in harvests)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: HarvestRows(
+                  entry: h,
+                  ponds: ponds,
+                  customers: customers,
+                ),
+              ),
+            rule(),
+          ],
+          heading(l10n.history),
+          for (final event in history)
+            InkWell(
+              key: ValueKey(
+                'event-${switch (event) {
+                  StockingEvent(:final stocking) => stocking.id,
+                  TransferEvent(:final transfer) => transfer.id,
+                }}',
+              ),
+              onTap: () => context.push(switch (event) {
+                StockingEvent(:final stocking) =>
+                  '/more/batches/$batchId/stockings/${stocking.id}/edit',
+                TransferEvent(:final transfer) =>
+                  '/more/batches/$batchId/transfers/${transfer.id}/edit',
+              }),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 56),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Icon(switch (event) {
+                        StockingEvent() => Icons.add,
+                        TransferEvent() => Icons.swap_horiz,
+                      }),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Wrap(
+                          spacing: 12,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: switch (event) {
+                            StockingEvent(:final stocking) => [
+                              Text(formatDate(stocking.recordedAt)),
+                              Text(
+                                code(stocking.pondId),
+                                style: text.titleSmall,
+                              ),
+                              Text(
+                                l10n.historyFishWeight(
+                                  formatCount(stocking.count, locale),
+                                  formatGrams(
+                                    stocking.avgWeightMg / 1000,
+                                    locale,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            TransferEvent(:final transfer) => [
+                              Text(formatDate(transfer.recordedAt)),
+                              // An icon: the bundled faces have no "→".
+                              Row(
+                                key: const ValueKey('transfer-ponds'),
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    code(transfer.fromPondId),
+                                    style: text.titleSmall,
+                                  ),
+                                  const Icon(Icons.arrow_forward, size: 18),
+                                  Text(
+                                    code(transfer.toPondId),
+                                    style: text.titleSmall,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                l10n.historyFish(
+                                  formatCount(transfer.count, locale),
+                                ),
+                              ),
+                            ],
+                          },
+                        ),
+                      ),
+                      Icon(Icons.chevron_right, color: c.ink),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          rule(),
+          FoldedSection(
+            title: l10n.batchOrigin,
+            summary: [?b.hatchery, ?b.certificateNo].join(', ').isEmpty
+                ? l10n.notSpecified
+                : [?b.hatchery, ?b.certificateNo].join(', '),
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (b.strain != null)
+                  Text(l10n.labelValue(l10n.strain, b.strain!)),
+                if (b.hatchery != null)
+                  Text(l10n.labelValue(l10n.hatchery, b.hatchery!)),
+                if (b.certificateNo != null)
+                  Text(l10n.labelValue(l10n.certificate, b.certificateNo!)),
+                if (b.monosex == true) Text(l10n.monosex),
+                if (b.plannedHarvestOn != null)
+                  Text(l10n.plannedHarvestOn(formatDate(b.plannedHarvestOn!))),
+                if (summary.firstStocking case final first?)
+                  Text(
+                    l10n.initialStock(
+                      formatCount(first.count, locale),
+                      formatGrams(first.avgWeightMg / 1000, locale),
+                      formatDate(first.recordedAt),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+}
+
+/// A closed batch's cycle: what was harvested, its FCR and survival, and
+/// how it started (the traceability sheet's figures).
+class _ClosedOutcome extends StatelessWidget {
+  const _ClosedOutcome({
+    required this.batchId,
+    required this.summary,
+    required this.facts,
+  });
+
+  final String batchId;
+  final BatchSummary summary;
+  final FarmFacts facts;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
+    final t = batchTrace(facts, batchId, status: BatchStatus.closed);
+    final first = summary.firstStocking;
+    // No feed logged for the batch: a ratio of 0 would look measured.
+    final fcr = switch (t.cycleFcr) {
+      _ when t.batchFeedG == 0 => null,
+      FcrValue(:final value) => formatDecimal(value, locale),
+      FcrStalled() => l10n.fcrStalled,
+      null => null,
+    };
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.batchHarvestedLine(
+              formatCount(t.harvestedCount, locale),
+              formatKg(t.harvestedWeightG, locale),
+            ),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          if (fcr != null) Text(l10n.batchCycleFcr(fcr)),
+          if (t.survival != null)
+            Text(
+              l10n.survivalValue(
+                formatDecimal(t.survival! * 100, locale, decimals: 0),
+              ),
+            ),
+          if (first != null)
             Text(
               l10n.initialStock(
                 formatCount(first.count, locale),
                 formatGrams(first.avgWeightMg / 1000, locale),
                 formatDate(first.recordedAt),
-              ),
-            ),
-          ],
-          const SizedBox(height: 16),
-          Text(l10n.fishPerPond, style: theme.textTheme.titleMedium),
-          for (final p in here)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  badge(p.pondId),
-                  const SizedBox(width: 12),
-                  EstimatedLabel(value: formatCount(p.live.count, locale)),
-                  if (p.live.inconsistent) ...[
-                    const SizedBox(width: 12),
-                    Text(
-                      l10n.inconsistent,
-                      style: TextStyle(
-                        color: context.dobo.danger,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          if (sales) ...[
-            if (here.any((p) => p.live.count > 0)) ...[
-              const SizedBox(height: 8),
-              FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(56),
-                ),
-                onPressed: () => context.push('/more/batches/$batchId/harvest'),
-                icon: const Icon(Icons.set_meal),
-                label: Text(l10n.harvestAction),
-              ),
-            ],
-            if (harvests.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(56),
-                ),
-                onPressed: () => context.push('/more/batches/$batchId/sell'),
-                icon: const Icon(Icons.storefront),
-                label: Text(l10n.sellAction),
-              ),
-            ],
-          ],
-          if (harvests.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text(l10n.harvestsHeading, style: theme.textTheme.titleMedium),
-            for (final h in harvests)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: HarvestLines(
-                    entry: h,
-                    ponds: ponds,
-                    customers: customers,
-                    onEdit: sales
-                        ? () => context.push(
-                            '/more/batches/$batchId/harvests/'
-                            '${h.harvest.id}/edit',
-                          )
-                        : null,
-                    onDelete: sales
-                        ? () => _deleteHarvest(context, ref, h.harvest.id)
-                        : null,
-                    onDeleteSale: sales
-                        ? (s) => _deleteSale(context, ref, s.id)
-                        : null,
-                  ),
-                ),
-              ),
-          ],
-          const SizedBox(height: 16),
-          Text(l10n.history, style: theme.textTheme.titleMedium),
-          for (final event in history)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(switch (event) {
-                      StockingEvent(:final stocking) =>
-                        '${formatDate(stocking.recordedAt)} · '
-                            '${l10n.eventStocking} ${pondCode(stocking.pondId)}',
-                      TransferEvent(:final transfer) =>
-                        '${formatDate(transfer.recordedAt)} · '
-                            '${l10n.eventTransfer} ${pondCode(transfer.fromPondId)}'
-                            ' → ${pondCode(transfer.toPondId)}',
-                    }),
-                    Text(switch (event) {
-                      StockingEvent(:final stocking) =>
-                        '${formatCount(stocking.count, locale)} · '
-                            '${formatGrams(stocking.avgWeightMg / 1000, locale)}',
-                      TransferEvent(:final transfer) => [
-                        formatCount(transfer.count, locale),
-                        if (transfer.avgWeightMg != null)
-                          formatGrams(transfer.avgWeightMg! / 1000, locale),
-                      ].join(' · '),
-                    }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size(88, 56),
-                          ),
-                          onPressed: () => context.go(switch (event) {
-                            StockingEvent(:final stocking) =>
-                              '/more/batches/$batchId/stockings/${stocking.id}/edit',
-                            TransferEvent(:final transfer) =>
-                              '/more/batches/$batchId/transfers/${transfer.id}/edit',
-                          }),
-                          child: Text(l10n.correct),
-                        ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size(88, 56),
-                          ),
-                          onPressed: () => _delete(context, ref, event),
-                          child: Text(l10n.delete),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ),
             ),
         ],

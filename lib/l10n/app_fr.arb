@@ -1912,5 +1912,21 @@
   "batchesStockRow": "Empoissonner un étang",
   "batchClosedOn": "Terminé le {date}",
   "@batchClosedOn": {"placeholders": {"date": {"type": "String"}}},
-  "fishUnit": "poissons"
+  "fishUnit": "poissons",
+  "batchOrigin": "Origine",
+  "batchHarvestedLine": "Récolté {count} poissons, {kg}",
+  "@batchHarvestedLine": {"placeholders": {"count": {"type": "String"}, "kg": {"type": "String"}}},
+  "batchCycleFcr": "IC du cycle {value}",
+  "@batchCycleFcr": {"placeholders": {"value": {"type": "String"}}},
+  "unsoldLine": "Reste à vendre : {kg}",
+  "@unsoldLine": {"placeholders": {"kg": {"type": "String"}}},
+  "harvestFinalShort": "Finale",
+  "harvestRowLine": "{kind}, {count} poissons, {kg}",
+  "@harvestRowLine": {"placeholders": {"kind": {"type": "String"}, "count": {"type": "String"}, "kg": {"type": "String"}}},
+  "saleRowLine": "{customer}, {form}",
+  "@saleRowLine": {"placeholders": {"customer": {"type": "String"}, "form": {"type": "String"}}},
+  "historyFish": "{count} poissons",
+  "@historyFish": {"placeholders": {"count": {"type": "String"}}},
+  "historyFishWeight": "{count} poissons, {weight}",
+  "@historyFishWeight": {"placeholders": {"count": {"type": "String"}, "weight": {"type": "String"}}}
 }
