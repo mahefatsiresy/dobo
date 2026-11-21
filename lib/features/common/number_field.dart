@@ -14,6 +14,7 @@ class NumberField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.alert,
+    this.hint,
   });
 
   final String label;
@@ -25,6 +26,10 @@ class NumberField extends StatelessWidget {
 
   /// Shown in red under the field, e.g. a value outside its target.
   final String? alert;
+
+  /// Shown quietly under the field when there is no [alert], e.g. the
+  /// handbook's range for a figure the person measures.
+  final String? hint;
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
@@ -40,8 +45,10 @@ class NumberField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         suffixText: suffix,
-        helperText: alert,
-        helperStyle: TextStyle(color: context.dobo.danger),
+        helperText: alert ?? hint,
+        helperStyle: alert == null
+            ? null
+            : TextStyle(color: context.dobo.danger),
         helperMaxLines: 2,
       ),
       validator: validator,

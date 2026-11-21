@@ -86,21 +86,23 @@ void main() {
     expect(_pinned('Prêt à empoissonner'), findsNothing);
   });
 
-  _prepTest('treating opens its page with today and the dose filled in', (
-    tester,
-    db,
-    farm,
-  ) async {
-    await tapAndSettle(tester, find.text("Fait aujourd'hui"));
-    expect(find.text('15/03/2026'), findsOneWidget);
-    final dose = find.widgetWithText(TextFormField, 'Dose utilisée');
-    expect(tester.widget<TextFormField>(dose).controller!.text, isNotEmpty);
-    await tapAndSettle(tester, find.text('Chaux vive'));
-    await tapAndSettle(tester, _pinned("Enregistrer l'étape"));
-    final p = await (await _repo(db)).progress(farm['P1']!);
-    expect(p.done.keys, contains(PrepStep.treat));
-    expect(p.next, PrepStep.fertilise);
-  });
+  _prepTest(
+    'treating opens its page with today and the handbook dose as a hint',
+    (tester, db, farm) async {
+      await tapAndSettle(tester, find.text("Fait aujourd'hui"));
+      expect(find.text('15/03/2026'), findsOneWidget);
+      // The handbook's range is a hint, never a dose nobody weighed.
+      final dose = find.widgetWithText(TextFormField, 'Dose utilisée');
+      expect(tester.widget<TextFormField>(dose).controller!.text, isEmpty);
+      expect(find.text('50–100 kg'), findsOneWidget);
+      await tapAndSettle(tester, find.text('Chaux vive'));
+      await tapAndSettle(tester, _pinned("Enregistrer l'étape"));
+      final p = await (await _repo(db)).progress(farm['P1']!);
+      expect(p.done.keys, contains(PrepStep.treat));
+      expect(p.done[PrepStep.treat]!.doseG, isNull);
+      expect(p.next, PrepStep.fertilise);
+    },
+  );
 
   _prepTest('a step without a product is done in one tap', (
     tester,

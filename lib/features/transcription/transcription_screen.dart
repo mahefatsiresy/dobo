@@ -107,11 +107,36 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
   bool _typed(String pondId, List<DateTime> days) =>
       days.any((d) => _cells[(pondId, d)]?.typed.isEmpty == false);
 
-  /// Ponds with typing not saved, over every week typed in.
-  List<String> _unsavedPonds(Map<String, Pond> ponds) => {
-    for (final MapEntry(key: (pondId, _), value: cell) in _cells.entries)
-      if (!cell.typed.isEmpty) pondId,
-  }.map((id) => ponds[id]?.code ?? '?').toList()..sort();
+  /// Sheets with typing not saved, over every week typed in: the pond's
+  /// code for this week's, with its week for another's.
+  List<String> _unsavedSheets(
+    Map<String, Pond> ponds, {
+    bool otherWeeksOnly = false,
+  }) {
+    final l10n = AppLocalizations.of(context);
+    final monday = _days.first;
+    final sheets = <(String, DateTime)>{
+      for (final MapEntry(key: (pondId, day), value: cell) in _cells.entries)
+        if (!cell.typed.isEmpty) (pondId, weekOf(day).first),
+    };
+    final labels = [
+      for (final (pondId, week)
+          in sheets.toList()..sort((a, b) {
+            final byWeek = a.$2.compareTo(b.$2);
+            return byWeek != 0
+                ? byWeek
+                : (ponds[a.$1]?.code ?? '').compareTo(ponds[b.$1]?.code ?? '');
+          }))
+        if (!otherWeeksOnly || week != monday)
+          week == monday
+              ? ponds[pondId]?.code ?? '?'
+              : l10n.transcriptionSheetWeek(
+                  ponds[pondId]?.code ?? '?',
+                  formatDate(week),
+                ),
+    ];
+    return labels;
+  }
 
   void _moveWeek(int by) => setState(() {
     _days = weekOf(_days.first.add(Duration(days: 7 * by)));
@@ -217,7 +242,9 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
       _personMissing = _personId == null;
       _missing = r.missingFeed;
     });
-    if (_personId == null || r.missingFeed.isNotEmpty || r.inputs.isEmpty) {
+    if (_personId == null || r.missingFeed.isNotEmpty) return;
+    if (r.inputs.isEmpty) {
+      showRefusal(context, l10n.transcriptionNothing);
       return;
     }
     await ref.read(dailyLogRepositoryProvider).saveWeek(r.inputs);
@@ -286,6 +313,11 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
     final logged = {
       for (final l in logs) (l.pondId, farmDate(l.recordedAt)): l,
     };
+    // A day logged meanwhile (sync, the worker's phone) shows its log; any
+    // typing left for it could neither be seen nor saved, so it goes.
+    for (final key in _cells.keys.where(logged.containsKey).toList()) {
+      _cells.remove(key)!.dispose();
+    }
     final person = people.where((p) => p.id == _personId).firstOrNull;
     // The paper sheet's weekday names: the date library has no Malagasy.
     final dayMonth = DateFormat('dd/MM');
@@ -293,7 +325,8 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
         '${l10n.weekday(d.weekday)} ${dayMonth.format(d)}';
     String iso(DateTime d) => DateFormat('yyyy-MM-dd').format(d);
     final pond = byId[_pondId];
-    final unsaved = _unsavedPonds(byId);
+    final unsaved = _unsavedSheets(byId);
+    final elsewhere = _unsavedSheets(byId, otherWeeksOnly: true);
     bool done(String id) =>
         _saved.contains((id, _days.first)) ||
         _days.every((d) => logged.containsKey((id, d)));
@@ -477,6 +510,14 @@ class _TranscriptionScreenState extends ConsumerState<TranscriptionScreen>
                 ),
               ],
             ),
+            if (elsewhere.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: AttentionBand(
+                  severity: BandSeverity.warning,
+                  text: l10n.transcriptionOtherWeeks(elsewhere.join(', ')),
+                ),
+              ),
             const SizedBox(height: 8),
             PondChoice(
               options: [

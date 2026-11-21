@@ -142,6 +142,58 @@ void main() {
     expect(find.byType(TranscriptionScreen), findsOneWidget);
   });
 
+  _sheetTest('typing on another week is named, with its week', (
+    tester,
+    db,
+    farm,
+  ) async {
+    await _pickRakoto(tester);
+    await _pond(tester, farm, 'E2');
+    await enterAndSettle(tester, _kg(9), '5');
+    await tapAndSettle(tester, find.byTooltip('Semaine précédente'));
+    expect(
+      find.text('Fiches non enregistrées : E2 (semaine du 09/03/2026)'),
+      findsOneWidget,
+    );
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(
+      find.text(
+        'Quitter sans enregistrer les fiches E2 (semaine du 09/03/2026) ?',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  _sheetTest('a typed day logged meanwhile drops its typing', (
+    tester,
+    db,
+    farm,
+  ) async {
+    await _pond(tester, farm, 'E2');
+    await enterAndSettle(tester, _kg(12), '5');
+    final session = (await SetupRepository(db).currentSession())!;
+    await DailyLogRepository(db, session).save(
+      DailyLogInput(
+        pondId: farm['E2']!,
+        date: DateTime(2026, 3, 12),
+        feedGivenG: 4000,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.descendant(
+        of: find.byKey(ValueKey('pond-${farm['E2']}')),
+        matching: find.text('•'),
+      ),
+      findsNothing,
+    );
+    await _pickRakoto(tester);
+    await tapAndSettle(tester, _pinned('Enregistrer la fiche E2'));
+    expect(find.text('Rien à enregistrer sur cette fiche'), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(AlertDialog), findsNothing);
+  });
+
   _sheetTest('deaths without feed: a band, nothing saved', (
     tester,
     db,

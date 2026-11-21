@@ -844,3 +844,6 @@ personAdd;;Ajouter une personne;Ampidiro olona;
 settingsChanged;;{count, plural, =0{Valeurs du manuel} =1{1 modifiée} other{{count} modifiées}};{count, plural, =0{Sandan'ny boky} =1{1 novaina} other{{count} novaina}};
 settingReset;;Rétablir;Avereno;
 inactiveCount;;{count, plural, =1{1 personne} other{{count} personnes}};{count, plural, =1{olona 1} other{olona {count}}};
+transcriptionSheetWeek;;{pond} (semaine du {date});{pond} (herinandro manomboka ny {date});
+transcriptionOtherWeeks;;Fiches non enregistrées : {sheets};Taratasy tsy voaraketa : {sheets};
+transcriptionNothing;;Rien à enregistrer sur cette fiche;Tsy misy horaketina amin'ity taratasy ity;

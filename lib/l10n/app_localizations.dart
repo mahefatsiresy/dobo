@@ -5183,6 +5183,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count, plural, =1{1 personne} other{{count} personnes}}'**
   String inactiveCount(int count);
+
+  /// No description provided for @transcriptionSheetWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'{pond} (semaine du {date})'**
+  String transcriptionSheetWeek(String pond, String date);
+
+  /// No description provided for @transcriptionOtherWeeks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiches non enregistrées : {sheets}'**
+  String transcriptionOtherWeeks(String sheets);
+
+  /// No description provided for @transcriptionNothing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien à enregistrer sur cette fiche'**
+  String get transcriptionNothing;
 }
 
 class _AppLocalizationsDelegate

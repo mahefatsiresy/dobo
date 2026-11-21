@@ -845,5 +845,8 @@
   "personAdd": "Ampidiro olona",
   "settingsChanged": "{count, plural, =0{Sandan'ny boky} =1{1 novaina} other{{count} novaina}}",
   "settingReset": "Avereno",
-  "inactiveCount": "{count, plural, =1{olona 1} other{olona {count}}}"
+  "inactiveCount": "{count, plural, =1{olona 1} other{olona {count}}}",
+  "transcriptionSheetWeek": "{pond} (herinandro manomboka ny {date})",
+  "transcriptionOtherWeeks": "Taratasy tsy voaraketa : {sheets}",
+  "transcriptionNothing": "Tsy misy horaketina amin'ity taratasy ity"
 }

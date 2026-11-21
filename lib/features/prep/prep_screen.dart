@@ -48,11 +48,11 @@ class PrepScreen extends ConsumerStatefulWidget {
 
 class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
   /// Opens [step]'s page: [done] to correct, or a new record dated today
-  /// with [doseKg] filled in.
+  /// with the handbook's [doseHint] under its empty dose.
   Future<void> _open(
     PrepStep step,
     PrepStepFact? done, {
-    double? doseKg,
+    String? doseHint,
   }) async {
     final result = await Navigator.of(context).push<_StepResult>(
       MaterialPageRoute(
@@ -60,7 +60,7 @@ class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
           step: step,
           done: done,
           today: ref.read(farmTodayProvider),
-          doseKg: doseKg,
+          doseHint: doseHint,
           firstDate: ref
               .read(prepProgressProvider(widget.pondId))
               .value
@@ -96,8 +96,10 @@ class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
   }
 
   /// "Fait aujourd'hui": one tap for a step without a product.
-  Future<void> _doneToday(PrepStep step, double? doseKg) async {
-    if (_withDose.contains(step)) return _open(step, null, doseKg: doseKg);
+  Future<void> _doneToday(PrepStep step, String? doseHint) async {
+    if (_withDose.contains(step)) {
+      return _open(step, null, doseHint: doseHint);
+    }
     await saveOnce(
       () => ref
           .read(prepRepositoryProvider)
@@ -180,10 +182,17 @@ class _PrepScreenState extends ConsumerState<PrepScreen> with SaveOnce {
     final surface = o.surfaceM2 == null
         ? ''
         : '${formatNumber(o.surfaceM2!, locale)} m²';
-    // The least the handbook asks for, as a start for the member's figure.
-    double? doseFor(PrepStep step) => switch (step) {
-      PrepStep.treat => doses?.limeKg.min,
-      PrepStep.fertilise => doses?.manureKg.min,
+    // The handbook's range, shown beside the dose actually used: never
+    // filled in for the member, who may have weighed nothing.
+    String? doseFor(PrepStep step) => switch (step) {
+      PrepStep.treat when doses != null => range(
+        doses.limeKg.min,
+        doses.limeKg.max,
+      ),
+      PrepStep.fertilise when doses != null => range(
+        doses.manureKg.min,
+        doses.manureKg.max,
+      ),
       _ => null,
     };
 
@@ -337,7 +346,7 @@ class _StepPage extends StatefulWidget {
     required this.step,
     this.done,
     required this.today,
-    this.doseKg,
+    this.doseHint,
     this.firstDate,
   });
 
@@ -345,8 +354,8 @@ class _StepPage extends StatefulWidget {
   final PrepStepFact? done;
   final DateTime today;
 
-  /// The dose to start from on a new record.
-  final double? doseKg;
+  /// The handbook's range for this pond, under the dose field.
+  final String? doseHint;
 
   /// The day after the pond last held fish: earlier steps belong to no
   /// cycle.
@@ -362,11 +371,9 @@ class _StepPageState extends State<_StepPage> {
       widget.done?.product ??
       (widget.step == PrepStep.fertilise ? PrepProduct.manure : null);
   late final _dose = TextEditingController(
-    text: switch ((widget.done?.doseG, widget.doseKg)) {
-      (final g?, _) => formatForInput(g / 1000),
-      (null, final kg?) => formatForInput(kg),
-      _ => '',
-    },
+    text: widget.done?.doseG == null
+        ? ''
+        : formatForInput(widget.done!.doseG! / 1000),
   );
 
   @override
@@ -452,6 +459,7 @@ class _StepPageState extends State<_StepPage> {
               controller: _dose,
               decimal: true,
               suffix: 'kg',
+              hint: widget.doseHint,
             ),
           ],
         ],

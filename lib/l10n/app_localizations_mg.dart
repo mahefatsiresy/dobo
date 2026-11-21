@@ -3098,4 +3098,18 @@ class AppLocalizationsMg extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String transcriptionSheetWeek(String pond, String date) {
+    return '$pond (herinandro manomboka ny $date)';
+  }
+
+  @override
+  String transcriptionOtherWeeks(String sheets) {
+    return 'Taratasy tsy voaraketa : $sheets';
+  }
+
+  @override
+  String get transcriptionNothing =>
+      'Tsy misy horaketina amin\'ity taratasy ity';
 }

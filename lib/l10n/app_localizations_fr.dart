@@ -3101,4 +3101,17 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String transcriptionSheetWeek(String pond, String date) {
+    return '$pond (semaine du $date)';
+  }
+
+  @override
+  String transcriptionOtherWeeks(String sheets) {
+    return 'Fiches non enregistrées : $sheets';
+  }
+
+  @override
+  String get transcriptionNothing => 'Rien à enregistrer sur cette fiche';
 }

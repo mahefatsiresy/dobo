@@ -1903,5 +1903,10 @@
   "@settingsChanged": {"placeholders": {"count": {"type": "int"}}},
   "settingReset": "Rétablir",
   "inactiveCount": "{count, plural, =1{1 personne} other{{count} personnes}}",
-  "@inactiveCount": {"placeholders": {"count": {"type": "int"}}}
+  "@inactiveCount": {"placeholders": {"count": {"type": "int"}}},
+  "transcriptionSheetWeek": "{pond} (semaine du {date})",
+  "@transcriptionSheetWeek": {"placeholders": {"pond": {"type": "String"}, "date": {"type": "String"}}},
+  "transcriptionOtherWeeks": "Fiches non enregistrées : {sheets}",
+  "@transcriptionOtherWeeks": {"placeholders": {"sheets": {"type": "String"}}},
+  "transcriptionNothing": "Rien à enregistrer sur cette fiche"
 }
