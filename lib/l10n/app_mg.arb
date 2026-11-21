@@ -834,5 +834,7 @@
   "prepStepDone": "Voaraketa ny dingana",
   "prepSaveStep": "Raketo ny dingana",
   "prepDeleteConfirm": "Hofafana ve ny dingana {step} tamin'ny {date} ?",
-  "prepProductLabel": "Fanafody"
+  "prepProductLabel": "Fanafody",
+  "backupSection": "Tahiry",
+  "backupSummary": "Avoaka na ampidiro ny dika"
 }

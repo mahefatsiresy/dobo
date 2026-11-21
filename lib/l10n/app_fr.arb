@@ -1892,5 +1892,7 @@
   "prepSaveStep": "Enregistrer l'étape",
   "prepDeleteConfirm": "Supprimer l'étape {step} du {date} ?",
   "@prepDeleteConfirm": {"placeholders": {"step": {"type": "String"}, "date": {"type": "String"}}},
-  "prepProductLabel": "Produit"
+  "prepProductLabel": "Produit",
+  "backupSection": "Sauvegarde",
+  "backupSummary": "Exporter ou importer une copie"
 }

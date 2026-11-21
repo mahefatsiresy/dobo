@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme/tokens.dart';
+import '../admin/members_screen.dart';
+import '../more/more_screen.dart';
 
 /// Who is signed in on this phone, and signing out (plan Decision 12).
 class AccountScreen extends ConsumerWidget {
@@ -37,32 +40,61 @@ class AccountScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
     final session = ref.watch(sessionProvider).value;
     final canSignOut = ref.watch(accountRepositoryProvider) != null;
+    final me = session == null
+        ? null
+        : ref
+              .watch(membersProvider)
+              .value
+              ?.where((m) => m.id == session.userId)
+              .firstOrNull;
+    final group = ref
+        .watch(groupsProvider)
+        .value
+        ?.where((g) => g.id == me?.groupId)
+        .firstOrNull;
+    final locale = Localizations.localeOf(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.moreAccount)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (me != null) Text(me.name, style: text.titleLarge),
           if (session != null)
-            ListTile(
-              leading: const Icon(Icons.badge),
-              title: Text(l10n.accountRole),
-              subtitle: Text(
+            Text(
+              l10n.labelValue(
+                l10n.accountRole,
                 [
                   session.isWorker ? l10n.roleWorker : l10n.roleMember,
                   if (session.isAdmin) l10n.roleAdmin,
                   if (session.isSales) l10n.roleSales,
-                ].join(' · '),
+                ].join(', '),
               ),
             ),
+          if (group != null) Text(group.name, style: text.bodySmall),
+          const SizedBox(height: 16),
+          Divider(height: 1, color: c.line),
+          ListTile(
+            minTileHeight: 56,
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.translate),
+            title: Text(l10n.moreLanguage),
+            subtitle: Text(
+              locale.languageCode == 'mg'
+                  ? l10n.languageMalagasy
+                  : l10n.languageFrench,
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => chooseLanguage(context, ref),
+          ),
+          Divider(height: 1, color: c.line),
           if (canSignOut) ...[
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             OutlinedButton.icon(
               key: const Key('signOut'),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
               icon: const Icon(Icons.logout),
               label: Text(l10n.accountSignOut),
               onPressed: () => _signOut(context, ref),

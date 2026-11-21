@@ -10,6 +10,9 @@ import '../../sync/providers.dart';
 import '../../sync/sync_controller.dart';
 import '../../sync/sync_status_repository.dart';
 import '../../l10n/formatting.dart';
+import '../common/attention_band.dart';
+import '../common/folded_section.dart';
+import '../common/pinned_action.dart';
 import 'backup_actions.dart';
 import '../../theme/tokens.dart';
 
@@ -49,23 +52,51 @@ class SyncScreen extends ConsumerWidget {
       SyncRunState.failed => l10n.syncStateFailed(view.error ?? ''),
       SyncRunState.idle => null,
     };
-    Widget button(String label, IconData icon, VoidCallback? onPressed) =>
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
+    Widget band(BandSeverity severity, String words) => Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: AttentionBand(severity: severity, text: words),
+    );
+    Widget outlined(String label, IconData icon, VoidCallback onPressed) =>
         Padding(
           padding: const EdgeInsets.only(top: 12),
-          child: FilledButton.icon(
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
-            ),
+          child: OutlinedButton.icon(
             icon: Icon(icon),
             label: Text(label),
             onPressed: onPressed,
           ),
         );
+    final running = view.state == SyncRunState.running;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.moreSync)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.sync,
+        label: l10n.syncNow,
+        onPressed: running ? null : sync.syncNow,
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // The state first (docs/design.md §Step 7b).
+          if (counts.rejected > 0)
+            band(BandSeverity.danger, l10n.syncRejectedCount(counts.rejected)),
+          if (status != null && !running) band(BandSeverity.warning, status),
+          if (running)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text(status ?? '', style: text.bodyLarge)),
+                ],
+              ),
+            ),
           Text(
             last == null
                 ? l10n.syncNever
@@ -73,72 +104,77 @@ class SyncScreen extends ConsumerWidget {
                     '${formatDate(last)} '
                     '${DateFormat('HH:mm').format(last.toUtc().add(farmUtcOffset))}',
                   ),
+            style: text.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(l10n.syncPending(counts.pending)),
-          Text(l10n.syncRejectedCount(counts.rejected)),
-          if (photos.isNotEmpty) ...[
-            Text(l10n.syncPhotosWaiting(photos.length)),
-            if (photos.any((p) => p.$2 == 'cap'))
-              Text(
-                l10n.syncPhotoCap,
-                style: TextStyle(color: context.dobo.danger),
-              ),
-          ],
-          if (status != null) ...[
+          if (photos.isNotEmpty) Text(l10n.syncPhotosWaiting(photos.length)),
+          if (photos.any((p) => p.$2 == 'cap')) ...[
             const SizedBox(height: 8),
-            Text(status, style: Theme.of(context).textTheme.titleSmall),
+            band(BandSeverity.warning, l10n.syncPhotoCap),
           ],
-          button(
-            l10n.syncNow,
-            Icons.sync,
-            view.state == SyncRunState.running ? null : sync.syncNow,
-          ),
+          for (final r in rejected) ...[
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.block, color: c.danger),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${tableLabel(l10n, r.table)}, '
+                        '${formatDate(r.recordedOrUpdatedAt)}',
+                        style: text.titleSmall,
+                      ),
+                      Text(switch (r.errorCode) {
+                        '42501' => l10n.rejectRole,
+                        'P0001' when r.errorMessage == 'last_admin' =>
+                          l10n.rejectLastAdmin,
+                        _ => l10n.rejectOther(
+                          '${r.errorCode} ${r.errorMessage}',
+                        ),
+                      }),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
           if (counts.rejected > 0)
-            button(l10n.syncRetry, Icons.replay, sync.retryRejected),
+            outlined(l10n.syncRetry, Icons.replay, sync.retryRejected),
           if (view.state == SyncRunState.signedOut)
-            button(
+            outlined(
               l10n.syncRelogin,
               Icons.login,
               () => context.push(
                 worker ? '/welcome/login?worker=1' : '/welcome/login',
               ),
             ),
-          const Divider(height: 32),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
+          const SizedBox(height: 16),
+          Divider(height: 1, color: c.line),
+          FoldedSection(
+            title: l10n.backupSection,
+            summary: l10n.backupSummary,
+            builder: (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.save_alt),
+                  label: Text(l10n.backupExport),
+                  onPressed: () => exportAndShare(ref),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.restore),
+                  label: Text(l10n.backupImport),
+                  onPressed: () => pickAndImport(context, ref),
+                ),
+              ],
             ),
-            icon: const Icon(Icons.save_alt),
-            label: Text(l10n.backupExport),
-            onPressed: () => exportAndShare(ref),
           ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
-            ),
-            icon: const Icon(Icons.restore),
-            label: Text(l10n.backupImport),
-            onPressed: () => pickAndImport(context, ref),
-          ),
-          for (final r in rejected)
-            ListTile(
-              leading: Icon(
-                Icons.block,
-                color: Theme.of(context).colorScheme.error,
-              ),
-              title: Text(
-                '${tableLabel(l10n, r.table)} · '
-                '${formatDate(r.recordedOrUpdatedAt)}',
-              ),
-              subtitle: Text(switch (r.errorCode) {
-                '42501' => l10n.rejectRole,
-                'P0001' when r.errorMessage == 'last_admin' =>
-                  l10n.rejectLastAdmin,
-                _ => l10n.rejectOther('${r.errorCode} ${r.errorMessage}'),
-              }),
-            ),
         ],
       ),
     );

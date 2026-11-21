@@ -3020,4 +3020,10 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get prepProductLabel => 'Fanafody';
+
+  @override
+  String get backupSection => 'Tahiry';
+
+  @override
+  String get backupSummary => 'Avoaka na ampidiro ny dika';
 }

@@ -61,6 +61,7 @@ void main() {
     (tester, db) async {
       await tapAndSettle(tester, find.text('Plus'));
       await tapAndSettle(tester, find.text('Synchronisation'));
+      await tapAndSettle(tester, find.text('Sauvegarde'));
       await tapWithFiles(tester, find.text('Exporter une sauvegarde'));
       expect(shared, isNotNull);
       expect(shared!.lengthSync(), greaterThan(0));

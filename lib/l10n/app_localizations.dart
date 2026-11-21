@@ -5117,6 +5117,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Produit'**
   String get prepProductLabel;
+
+  /// No description provided for @backupSection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarde'**
+  String get backupSection;
+
+  /// No description provided for @backupSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter ou importer une copie'**
+  String get backupSummary;
 }
 
 class _AppLocalizationsDelegate

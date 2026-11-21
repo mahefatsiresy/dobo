@@ -833,3 +833,5 @@ prepStepDone;;Étape enregistrée;Voaraketa ny dingana;
 prepSaveStep;;Enregistrer l'étape;Raketo ny dingana;
 prepDeleteConfirm;;Supprimer l'étape {step} du {date} ?;Hofafana ve ny dingana {step} tamin'ny {date} ?;
 prepProductLabel;;Produit;Fanafody;
+backupSection;;Sauvegarde;Tahiry;
+backupSummary;;Exporter ou importer une copie;Avoaka na ampidiro ny dika;

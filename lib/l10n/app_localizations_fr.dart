@@ -3023,4 +3023,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get prepProductLabel => 'Produit';
+
+  @override
+  String get backupSection => 'Sauvegarde';
+
+  @override
+  String get backupSummary => 'Exporter ou importer une copie';
 }

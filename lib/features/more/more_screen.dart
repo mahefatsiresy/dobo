@@ -16,33 +16,33 @@ import '../ponds/pond_overview.dart';
 import '../sync/sync_badge.dart';
 import '../sync/sync_screen.dart';
 
+/// French or Malagasy, for this account on every phone (SPEC §9).
+Future<void> chooseLanguage(BuildContext context, WidgetRef ref) async {
+  final l10n = AppLocalizations.of(context);
+  final code = await showDialog<String>(
+    context: context,
+    builder: (context) => SimpleDialog(
+      title: Text(l10n.moreLanguage),
+      children: [
+        for (final (code, label) in [
+          ('fr', l10n.languageFrench),
+          ('mg', l10n.languageMalagasy),
+        ])
+          SimpleDialogOption(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            onPressed: () => Navigator.pop(context, code),
+            child: Text(label),
+          ),
+      ],
+    ),
+  );
+  if (code == null) return;
+  ref.read(localeControllerProvider.notifier).set(Locale(code));
+  await ref.read(memberRepositoryProvider).setOwnLocale(code);
+}
+
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
-
-  /// French or Malagasy, for this account on every phone (SPEC §9).
-  Future<void> _language(BuildContext context, WidgetRef ref) async {
-    final l10n = AppLocalizations.of(context);
-    final code = await showDialog<String>(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(l10n.moreLanguage),
-        children: [
-          for (final (code, label) in [
-            ('fr', l10n.languageFrench),
-            ('mg', l10n.languageMalagasy),
-          ])
-            SimpleDialogOption(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              onPressed: () => Navigator.pop(context, code),
-              child: Text(label),
-            ),
-        ],
-      ),
-    );
-    if (code == null) return;
-    ref.read(localeControllerProvider.notifier).set(Locale(code));
-    await ref.read(memberRepositoryProvider).setOwnLocale(code);
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -177,7 +177,7 @@ class MoreScreen extends ConsumerWidget {
           row(
             const Icon(Icons.translate),
             l10n.moreLanguage,
-            () => _language(context, ref),
+            () => chooseLanguage(context, ref),
             summary: Text(
               locale.languageCode == 'mg'
                   ? l10n.languageMalagasy

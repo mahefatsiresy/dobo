@@ -288,7 +288,7 @@ Future<void> seedDemoAdmin(AppDatabase db, DemoFarm farm) async {
   await (db.update(db.dailyLogs)..where((l) => l.id.equals(today.id))).write(
     const DailyLogsCompanion(
       syncState: Value(SyncState.rejected),
-      syncError: Value('42501'),
+      syncError: Value('42501: permission denied'),
     ),
   );
 }
