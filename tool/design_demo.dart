@@ -25,7 +25,9 @@ const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 /// for the Alerts tab, `visit-start` for the Visit tab before a visit, or
 /// `visit` for a visit under way (E1 read and inspected), `reports` for the
 /// Reports tab (one published report, one draft) or `report` for that
-/// published report.
+/// published report; with the batches, feed and sales demo (step 7):
+/// `more`, `batches`, `batch` (L-E1), `batch-closed` (L-E7), `feed`,
+/// `sales`, `transfer` (L-E1 out of E1) or `sale` (L-E6's harvest).
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -41,8 +43,17 @@ Future<void> main() async {
     siteName: 'Ambohidratrimo',
     role: worker ? MemberRole.worker : MemberRole.member,
     isAdmin: !worker,
+    isSales: _trade.contains(_page),
   );
   final farm = await seedDemoFarm(db);
+  if (_trade.contains(_page)) await seedDemoTrade(db, farm);
+  final batches = {
+    for (final b in await db.select(db.batches).get()) b.code: b.id,
+  };
+  final harvestE6 = (await db.select(db.harvests).get())
+      .where((h) => h.batchId == batches['L-E6'])
+      .firstOrNull
+      ?.id;
   if (_page == 'visit') await _visitUnderWay(db, farm);
   final container = ProviderContainer(
     overrides: [
@@ -66,6 +77,15 @@ Future<void> main() async {
     'visit' || 'visit-start' => '/visit',
     'reports' => '/reports',
     'report' => '/reports/$reportId',
+    'more' => '/more',
+    'batches' => '/more/batches',
+    'batch' => '/more/batches/${batches['L-E1']}',
+    'batch-closed' => '/more/batches/${batches['L-E7']}',
+    'feed' => '/more/feed',
+    'sales' => '/more/sales',
+    'transfer' =>
+      '/transfer?batchId=${batches['L-E1']}&fromPondId=${farm['E1']}',
+    'sale' => '/more/batches/${batches['L-E6']}/sell?harvestId=$harvestE6',
     _ when _page.startsWith('log-') =>
       '/log/${_pond(farm, _page.substring(4))}',
     _ => '/ponds/${_pond(farm, _page)}',
@@ -80,6 +100,19 @@ Future<void> main() async {
   }
   router.go(path);
 }
+
+/// Pages that show the batches, feed and sales demo, as a member with the
+/// sales flag.
+const _trade = {
+  'more',
+  'batches',
+  'batch',
+  'batch-closed',
+  'feed',
+  'sales',
+  'transfer',
+  'sale',
+};
 
 /// The demo pond's id; a code the demo farm lacks is a mistake, not an
 /// empty page.
