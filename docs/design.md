@@ -116,7 +116,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 4 | Alerts | merged 19/11 |
 | 5 | Visit | merged 19/11 |
 | 6 | Reports | merged 19/11 |
-| 7 | More menu, batches, feed, sales; the form standard for every form | " |
+| 7 | More menu, batches, feed, sales; the form standard for every form | merged 21/11 |
 | 7b | Transcription, paper sheets, exports, sync, account, admin, people, prep | " |
 | 8 | Web console (takes the colours and type) | " |
 
