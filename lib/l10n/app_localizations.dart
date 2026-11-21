@@ -5087,6 +5087,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{pages} : {ponds} × {weeks}'**
   String paperPages(String pages, String ponds, String weeks);
+
+  /// No description provided for @prepDoneToday.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait aujourd\'hui'**
+  String get prepDoneToday;
+
+  /// No description provided for @prepStepDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape enregistrée'**
+  String get prepStepDone;
+
+  /// No description provided for @prepSaveStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer l\'étape'**
+  String get prepSaveStep;
+
+  /// No description provided for @prepDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer l\'étape {step} du {date} ?'**
+  String prepDeleteConfirm(String step, String date);
+
+  /// No description provided for @prepProductLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Produit'**
+  String get prepProductLabel;
 }
 
 class _AppLocalizationsDelegate

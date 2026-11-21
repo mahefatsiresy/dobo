@@ -3003,4 +3003,21 @@ class AppLocalizationsMg extends AppLocalizations {
   String paperPages(String pages, String ponds, String weeks) {
     return '$pages : $ponds × $weeks';
   }
+
+  @override
+  String get prepDoneToday => 'Vita androany';
+
+  @override
+  String get prepStepDone => 'Voaraketa ny dingana';
+
+  @override
+  String get prepSaveStep => 'Raketo ny dingana';
+
+  @override
+  String prepDeleteConfirm(String step, String date) {
+    return 'Hofafana ve ny dingana $step tamin\'ny $date ?';
+  }
+
+  @override
+  String get prepProductLabel => 'Fanafody';
 }

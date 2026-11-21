@@ -61,9 +61,9 @@ void main() {
   ) async {
     final (e1, prep, ponds) = await pond(db);
     await openPrep(tester);
+    // Draining has no product: one tap.
     await tapAndSettle(tester, find.byKey(const ValueKey('done-drain')));
-    await tapAndSettle(tester, find.text('Enregistrer'));
-    expect(find.text('Fait le 20/03/2026'), findsOneWidget);
+    expect(find.text('20/03/2026'), findsOneWidget);
     expect((await prep.progress(e1)).done.keys, [PrepStep.drain]);
     expect((await ponds.get(e1)).status, PondStatus.preparing);
   }, overrides: [clock]);
@@ -71,14 +71,14 @@ void main() {
   appTest('a treatment keeps its product and dose', (tester, db) async {
     final (e1, prep, _) = await pond(db);
     await openPrep(tester);
-    await tapAndSettle(tester, find.byKey(const ValueKey('done-treat')));
+    await tapAndSettle(tester, find.byKey(const ValueKey('step-treat')));
     await tapAndSettle(tester, find.text('Chaux vive'));
     await enterAndSettle(
       tester,
       find.widgetWithText(TextFormField, 'Dose utilisée'),
       '45',
     );
-    await tapAndSettle(tester, find.text('Enregistrer'));
+    await tapAndSettle(tester, find.text("Enregistrer l'étape"));
     final step = (await prep.progress(e1)).done[PrepStep.treat]!;
     expect((step.product, step.doseG), (PrepProduct.quicklime, 45000));
   }, overrides: [clock]);
@@ -112,6 +112,7 @@ void main() {
       find.textContaining('Assèchement au soleil, Traitement'),
       findsOneWidget,
     );
+    // The dialog's own button, not the pinned one under it.
     await tapAndSettle(
       tester,
       find.descendant(

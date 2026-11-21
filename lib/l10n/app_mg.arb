@@ -829,5 +829,10 @@
   "paperPageCount": "{count, plural, =1{pejy 1} other{pejy {count}}}",
   "paperPondCount": "{count, plural, =1{dobo 1} other{dobo {count}}}",
   "paperWeekCount": "{count, plural, =1{herinandro 1} other{herinandro {count}}}",
-  "paperPages": "{pages} : {ponds} × {weeks}"
+  "paperPages": "{pages} : {ponds} × {weeks}",
+  "prepDoneToday": "Vita androany",
+  "prepStepDone": "Voaraketa ny dingana",
+  "prepSaveStep": "Raketo ny dingana",
+  "prepDeleteConfirm": "Hofafana ve ny dingana {step} tamin'ny {date} ?",
+  "prepProductLabel": "Fanafody"
 }

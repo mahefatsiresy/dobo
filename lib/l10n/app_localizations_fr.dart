@@ -3006,4 +3006,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String paperPages(String pages, String ponds, String weeks) {
     return '$pages : $ponds × $weeks';
   }
+
+  @override
+  String get prepDoneToday => 'Fait aujourd\'hui';
+
+  @override
+  String get prepStepDone => 'Étape enregistrée';
+
+  @override
+  String get prepSaveStep => 'Enregistrer l\'étape';
+
+  @override
+  String prepDeleteConfirm(String step, String date) {
+    return 'Supprimer l\'étape $step du $date ?';
+  }
+
+  @override
+  String get prepProductLabel => 'Produit';
 }

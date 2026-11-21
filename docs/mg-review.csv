@@ -828,3 +828,8 @@ paperPageCount;;{count, plural, =1{1 page} other{{count} pages}};{count, plural,
 paperPondCount;;{count, plural, =1{1 étang} other{{count} étangs}};{count, plural, =1{dobo 1} other{dobo {count}}};
 paperWeekCount;;{count, plural, =1{1 semaine} other{{count} semaines}};{count, plural, =1{herinandro 1} other{herinandro {count}}};
 paperPages;;{pages} : {ponds} × {weeks};{pages} : {ponds} × {weeks};
+prepDoneToday;;Fait aujourd'hui;Vita androany;
+prepStepDone;;Étape enregistrée;Voaraketa ny dingana;
+prepSaveStep;;Enregistrer l'étape;Raketo ny dingana;
+prepDeleteConfirm;;Supprimer l'étape {step} du {date} ?;Hofafana ve ny dingana {step} tamin'ny {date} ?;
+prepProductLabel;;Produit;Fanafody;

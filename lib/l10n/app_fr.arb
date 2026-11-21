@@ -1886,5 +1886,11 @@
   "paperWeekCount": "{count, plural, =1{1 semaine} other{{count} semaines}}",
   "@paperWeekCount": {"placeholders": {"count": {"type": "int"}}},
   "paperPages": "{pages} : {ponds} × {weeks}",
-  "@paperPages": {"placeholders": {"pages": {"type": "String"}, "ponds": {"type": "String"}, "weeks": {"type": "String"}}}
+  "@paperPages": {"placeholders": {"pages": {"type": "String"}, "ponds": {"type": "String"}, "weeks": {"type": "String"}}},
+  "prepDoneToday": "Fait aujourd'hui",
+  "prepStepDone": "Étape enregistrée",
+  "prepSaveStep": "Enregistrer l'étape",
+  "prepDeleteConfirm": "Supprimer l'étape {step} du {date} ?",
+  "@prepDeleteConfirm": {"placeholders": {"step": {"type": "String"}, "date": {"type": "String"}}},
+  "prepProductLabel": "Produit"
 }
