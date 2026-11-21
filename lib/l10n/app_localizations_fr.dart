@@ -2968,4 +2968,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get transcriptionQuit => 'Quitter';
+
+  @override
+  String paperPageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pages',
+      one: '1 page',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String paperPondCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count étangs',
+      one: '1 étang',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String paperWeekCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count semaines',
+      one: '1 semaine',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String paperPages(String pages, String ponds, String weeks) {
+    return '$pages : $ponds × $weeks';
+  }
 }

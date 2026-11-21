@@ -825,5 +825,9 @@
   "transcriptionFeedMissing": "{days} : tsy misy ny habetsaky ny sakafo",
   "transcriptionLeave": "Hiala nefa tsy mitahiry ny taratasin'ny {ponds} ?",
   "transcriptionStay": "Hijanona",
-  "transcriptionQuit": "Hiala"
+  "transcriptionQuit": "Hiala",
+  "paperPageCount": "{count, plural, =1{pejy 1} other{pejy {count}}}",
+  "paperPondCount": "{count, plural, =1{dobo 1} other{dobo {count}}}",
+  "paperWeekCount": "{count, plural, =1{herinandro 1} other{herinandro {count}}}",
+  "paperPages": "{pages} : {ponds} × {weeks}"
 }

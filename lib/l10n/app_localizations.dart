@@ -5063,6 +5063,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Quitter'**
   String get transcriptionQuit;
+
+  /// No description provided for @paperPageCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 page} other{{count} pages}}'**
+  String paperPageCount(int count);
+
+  /// No description provided for @paperPondCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 étang} other{{count} étangs}}'**
+  String paperPondCount(int count);
+
+  /// No description provided for @paperWeekCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 semaine} other{{count} semaines}}'**
+  String paperWeekCount(int count);
+
+  /// No description provided for @paperPages.
+  ///
+  /// In fr, this message translates to:
+  /// **'{pages} : {ponds} × {weeks}'**
+  String paperPages(String pages, String ponds, String weeks);
 }
 
 class _AppLocalizationsDelegate

@@ -1878,5 +1878,13 @@
   "transcriptionLeave": "Quitter sans enregistrer les fiches {ponds} ?",
   "@transcriptionLeave": {"placeholders": {"ponds": {"type": "String"}}},
   "transcriptionStay": "Rester",
-  "transcriptionQuit": "Quitter"
+  "transcriptionQuit": "Quitter",
+  "paperPageCount": "{count, plural, =1{1 page} other{{count} pages}}",
+  "@paperPageCount": {"placeholders": {"count": {"type": "int"}}},
+  "paperPondCount": "{count, plural, =1{1 étang} other{{count} étangs}}",
+  "@paperPondCount": {"placeholders": {"count": {"type": "int"}}},
+  "paperWeekCount": "{count, plural, =1{1 semaine} other{{count} semaines}}",
+  "@paperWeekCount": {"placeholders": {"count": {"type": "int"}}},
+  "paperPages": "{pages} : {ponds} × {weeks}",
+  "@paperPages": {"placeholders": {"pages": {"type": "String"}, "ponds": {"type": "String"}, "weeks": {"type": "String"}}}
 }

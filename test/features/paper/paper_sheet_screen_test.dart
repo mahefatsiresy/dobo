@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -67,13 +68,18 @@ void main() {
   appTest('printing sends the chosen ponds and weeks', (tester, db) async {
     await open(tester, db);
     expect(find.text('Semaine du 09/11/2026'), findsOneWidget);
-    await tapAndSettle(tester, find.byKey(const ValueKey('paperPond-E2')));
-    await tapAndSettle(tester, find.byKey(const ValueKey('paperWeeks-2')));
+    await tapAndSettle(tester, find.text('E2'));
+    await tapAndSettle(tester, find.text('2'));
     await tester.tap(find.text('Imprimer'));
     await waitFor(tester, () => printed.isNotEmpty);
     final (name, bytes) = printed.single;
     expect(name, 'fiches-2026-11-09.pdf');
     expect(pageCount(bytes), 4);
+    // The app's typeface (docs/design.md §Step 7b).
+    expect(
+      latin1.decode(bytes, allowInvalid: true),
+      contains('AtkinsonHyperlegibleNext'),
+    );
   }, overrides: overrides);
 
   appTest('share writes the file and opens the share sheet', (
@@ -90,13 +96,13 @@ void main() {
   appTest('no pond ticked disables both buttons', (tester, db) async {
     await open(tester, db);
     for (final code in ['E1', 'E2', 'E3']) {
-      await tapAndSettle(tester, find.byKey(ValueKey('paperPond-$code')));
+      await tapAndSettle(tester, find.text(code));
     }
     for (final label in ['Imprimer', 'Partager le PDF']) {
-      final button = tester.widget<FilledButton>(
+      final button = tester.widget<ButtonStyleButton>(
         find.ancestor(
           of: find.text(label),
-          matching: find.byWidgetPredicate((w) => w is FilledButton),
+          matching: find.byWidgetPredicate((w) => w is ButtonStyleButton),
         ),
       );
       expect(button.onPressed, isNull, reason: label);

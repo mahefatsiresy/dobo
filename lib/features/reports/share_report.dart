@@ -94,6 +94,16 @@ Future<PdfFonts> pdfFonts() async => (
 );
 
 /// The PDF fonts' files, for building a PDF in a background isolate.
+/// The app's PDF fonts' files, for a PDF laid out in the background.
+Future<AppPdfFontData> appPdfFontData() async => (
+  regular: await rootBundle.load(
+    'assets/fonts/AtkinsonHyperlegibleNext-Regular.ttf',
+  ),
+  bold: await rootBundle.load('assets/fonts/AtkinsonHyperlegibleNext-Bold.ttf'),
+  fallback: await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'),
+  symbols: await rootBundle.load('assets/fonts/NotoSansMath-Symbols.ttf'),
+);
+
 Future<PdfFontData> pdfFontData() async => (
   regular: await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'),
   bold: await rootBundle.load('assets/fonts/NotoSans-Bold.ttf'),

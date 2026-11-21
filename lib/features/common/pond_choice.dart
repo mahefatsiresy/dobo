@@ -24,12 +24,21 @@ class PondChoice extends StatefulWidget {
     required this.value,
     required this.onChanged,
     this.allowNone = false,
+    this.multi = false,
+    this.values = const {},
+    this.onChangedMany,
   });
 
   final List<PondOption> options;
   final String? value;
   final ValueChanged<String?> onChanged;
   final bool allowNone;
+
+  /// Many ponds may be picked: [values] holds them and a tap toggles one,
+  /// reported to [onChangedMany]; [value] and [onChanged] are not used.
+  final bool multi;
+  final Set<String> values;
+  final ValueChanged<Set<String>>? onChangedMany;
 
   @override
   State<PondChoice> createState() => _PondChoiceState();
@@ -39,7 +48,8 @@ class _PondChoiceState extends State<PondChoice> {
   @override
   void initState() {
     super.initState();
-    if (!widget.allowNone &&
+    if (!widget.multi &&
+        !widget.allowNone &&
         widget.value == null &&
         widget.options.length == 1) {
       final id = widget.options.single.pond.id;
@@ -59,14 +69,22 @@ class _PondChoiceState extends State<PondChoice> {
         for (final o in widget.options)
           Builder(
             builder: (context) {
-              final picked = o.pond.id == widget.value;
+              final picked = widget.multi
+                  ? widget.values.contains(o.pond.id)
+                  : o.pond.id == widget.value;
               final ink = picked ? c.paper : c.ink;
               return OutlinedButton(
                 key: ValueKey('pond-${o.pond.id}'),
                 style: pickStyle(context, picked: picked),
-                onPressed: () => widget.onChanged(
-                  picked && widget.allowNone ? null : o.pond.id,
-                ),
+                onPressed: widget.multi
+                    ? () => widget.onChangedMany?.call(
+                        picked
+                            ? ({...widget.values}..remove(o.pond.id))
+                            : {...widget.values, o.pond.id},
+                      )
+                    : () => widget.onChanged(
+                        picked && widget.allowNone ? null : o.pond.id,
+                      ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

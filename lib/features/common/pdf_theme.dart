@@ -20,6 +20,24 @@ pw.ThemeData pdfTheme({
 /// `pw.Font` can't).
 typedef PdfFontData = ({ByteData regular, ByteData bold, ByteData symbols});
 
+/// The app's PDF fonts' files (docs/design.md §Step 6): Atkinson, with Noto
+/// Sans then its symbols for the glyphs Atkinson lacks.
+typedef AppPdfFontData = ({
+  ByteData regular,
+  ByteData bold,
+  ByteData fallback,
+  ByteData symbols,
+});
+
+/// [data] as fonts, in the isolate that lays out the PDF.
+({pw.Font regular, pw.Font bold, pw.Font fallback, pw.Font symbols})
+appPdfFontsFrom(AppPdfFontData data) => (
+  regular: pw.Font.ttf(data.regular),
+  bold: pw.Font.ttf(data.bold),
+  fallback: pw.Font.ttf(data.fallback),
+  symbols: pw.Font.ttf(data.symbols),
+);
+
 /// [data] as fonts, in the isolate that lays out the PDF.
 ({pw.Font regular, pw.Font bold, pw.Font symbols}) pdfFontsFrom(
   PdfFontData data,

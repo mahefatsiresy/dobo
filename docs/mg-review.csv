@@ -824,3 +824,7 @@ transcriptionFeedMissing;;{days} : la quantité d'aliment manque;{days} : tsy mi
 transcriptionLeave;;Quitter sans enregistrer les fiches {ponds} ?;Hiala nefa tsy mitahiry ny taratasin'ny {ponds} ?;
 transcriptionStay;;Rester;Hijanona;
 transcriptionQuit;;Quitter;Hiala;
+paperPageCount;;{count, plural, =1{1 page} other{{count} pages}};{count, plural, =1{pejy 1} other{pejy {count}}};
+paperPondCount;;{count, plural, =1{1 étang} other{{count} étangs}};{count, plural, =1{dobo 1} other{dobo {count}}};
+paperWeekCount;;{count, plural, =1{1 semaine} other{{count} semaines}};{count, plural, =1{herinandro 1} other{herinandro {count}}};
+paperPages;;{pages} : {ponds} × {weeks};{pages} : {ponds} × {weeks};

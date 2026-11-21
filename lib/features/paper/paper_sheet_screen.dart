@@ -5,7 +5,9 @@ import '../../db/database.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/formatting.dart';
 import '../common/farm_today.dart';
-import '../common/pond_colour.dart';
+import '../common/choice_buttons.dart';
+import '../common/pinned_action.dart';
+import '../common/pond_choice.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 import '../reports/share_report.dart';
@@ -35,13 +37,10 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
 
   Future<void> _build(List<Pond> ponds, {required bool print}) async {
     final bytes = await buildPaperSheetPdfInBackground(
-      ponds: [
-        for (final p in ponds)
-          if (!_left.contains(p.id)) PaperPond(code: p.code, colour: p.colour),
-      ],
+      ponds: [for (final p in ponds) PaperPond(code: p.code, colour: p.colour)],
       firstWeek: _monday,
       weeks: _weeks,
-      fonts: await pdfFontData(),
+      fonts: await appPdfFontData(),
     );
     final name = paperFileName(_monday);
     if (print) {
@@ -54,17 +53,23 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final ponds = ref.watch(pondsProvider).value;
-    if (ponds == null) {
+    final text = Theme.of(context).textTheme;
+    final pondList = ref.watch(pondsProvider).value;
+    if (pondList == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+    final ponds = [...pondList]..sort((a, b) => a.code.compareTo(b.code));
     final chosen = ponds.where((p) => !_left.contains(p.id)).toList();
     final enabled = chosen.isNotEmpty && !saving;
-    final buttonStyle = FilledButton.styleFrom(
-      minimumSize: const Size.fromHeight(56),
-    );
     return Scaffold(
       appBar: AppBar(title: Text(l10n.morePaper)),
+      bottomNavigationBar: PinnedAction(
+        icon: Icons.print,
+        label: l10n.paperPrint,
+        onPressed: enabled
+            ? () => saveOnce(() => _build(chosen, print: true))
+            : null,
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -79,7 +84,7 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
                 child: Text(
                   l10n.weekOfLabel(formatDate(_monday)),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: text.titleMedium,
                 ),
               ),
               IconButton(
@@ -90,42 +95,40 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
             ],
           ),
           const SizedBox(height: 16),
-          Text(l10n.paperWeeksLabel),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            children: [
-              for (final n in const [1, 2, 4])
-                ChoiceChip(
-                  key: ValueKey('paperWeeks-$n'),
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  label: Text('$n'),
-                  selected: _weeks == n,
-                  onSelected: (_) => setState(() => _weeks = n),
-                ),
+          ChoiceField<int>(
+            label: l10n.paperWeeksLabel,
+            options: [
+              for (final n in const [1, 2, 3, 4]) (n, '$n'),
             ],
+            value: _weeks,
+            onChanged: (n) => setState(() => _weeks = n),
           ),
           const SizedBox(height: 16),
-          Text(l10n.paperPondsLabel),
+          Text(l10n.paperPondsLabel, style: text.titleMedium),
           const SizedBox(height: 8),
           if (ponds.isEmpty) Text(l10n.paperNoPonds),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final p in ponds)
-                FilterChip(
-                  key: ValueKey('paperPond-${p.code}'),
-                  label: PondTag(code: p.code, colour: p.colour),
-                  selected: !_left.contains(p.id),
-                  onSelected: (on) =>
-                      setState(() => on ? _left.remove(p.id) : _left.add(p.id)),
-                ),
-            ],
+          PondChoice(
+            options: [for (final p in ponds) PondOption(pond: p)],
+            value: null,
+            onChanged: (_) {},
+            multi: true,
+            values: {for (final p in chosen) p.id},
+            onChangedMany: (picked) => setState(() {
+              _left
+                ..clear()
+                ..addAll(
+                  ponds.map((p) => p.id).where((id) => !picked.contains(id)),
+                );
+            }),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            l10n.paperPages(
+              l10n.paperPageCount(chosen.length * _weeks),
+              l10n.paperPondCount(chosen.length),
+              l10n.paperWeekCount(_weeks),
+            ),
+            style: text.titleMedium,
           ),
           if (saving) ...[
             const SizedBox(height: 16),
@@ -134,21 +137,11 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
             Text(l10n.exportBuilding),
           ],
           const SizedBox(height: 24),
-          FilledButton.icon(
-            style: buttonStyle,
-            icon: const Icon(Icons.print),
-            label: Text(l10n.paperPrint),
-            onPressed: enabled
-                ? () => saveOnce(() => _build(ponds, print: true))
-                : null,
-          ),
-          const SizedBox(height: 12),
-          FilledButton.icon(
-            style: buttonStyle,
+          OutlinedButton.icon(
             icon: const Icon(Icons.share),
             label: Text(l10n.paperShare),
             onPressed: enabled
-                ? () => saveOnce(() => _build(ponds, print: false))
+                ? () => saveOnce(() => _build(chosen, print: false))
                 : null,
           ),
         ],

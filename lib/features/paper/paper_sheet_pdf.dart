@@ -99,7 +99,9 @@ const _feedW = 80.0;
 const _deathsW = 56.0;
 const _tickW = 26.0;
 const _rowH = 44.0;
-const _line = PdfColors.grey600;
+
+/// The app's ink (docs/design.md, `DoboColors.ink`).
+const _line = PdfColor.fromInt(0xFF17262B);
 
 /// Blank weekly sheets, one A4 landscape page per pond per week, laid out
 /// like the daily log and copied into the transcription grid (SPEC F13,
@@ -110,12 +112,18 @@ Future<Uint8List> buildPaperSheetPdf({
   int weeks = 1,
   required pw.Font regular,
   required pw.Font bold,
+  List<pw.Font> fallback = const [],
   pw.Font? symbols,
 }) {
   final mg = lookupAppLocalizations(const Locale('mg'));
   final fr = lookupAppLocalizations(const Locale('fr'));
   final doc = pw.Document(
-    theme: pdfTheme(regular: regular, bold: bold, symbols: symbols),
+    theme: pdfTheme(
+      regular: regular,
+      bold: bold,
+      fallback: fallback,
+      symbols: symbols,
+    ),
     title: _both(mg.paperTitle, fr.paperTitle),
   );
   const format = PdfPageFormat(
@@ -146,15 +154,16 @@ Future<Uint8List> buildPaperSheetPdfInBackground({
   required List<PaperPond> ponds,
   required DateTime firstWeek,
   int weeks = 1,
-  required PdfFontData fonts,
+  required AppPdfFontData fonts,
 }) => Isolate.run(() {
-  final f = pdfFontsFrom(fonts);
+  final f = appPdfFontsFrom(fonts);
   return buildPaperSheetPdf(
     ponds: ponds,
     firstWeek: firstWeek,
     weeks: weeks,
     regular: f.regular,
     bold: f.bold,
+    fallback: [f.fallback],
     symbols: f.symbols,
   );
 });

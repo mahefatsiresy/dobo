@@ -152,6 +152,46 @@ void main() {
       expect(picked, isNull);
     });
 
+    testWidgets('multi: taps toggle, a lone option is not picked', (t) async {
+      var picked = <String>{'a'};
+      await t.pumpWidget(
+        _frame(
+          StatefulBuilder(
+            builder: (context, setState) => PondChoice(
+              options: ponds,
+              value: null,
+              onChanged: (_) {},
+              multi: true,
+              values: picked,
+              onChangedMany: (v) => setState(() => picked = v),
+            ),
+          ),
+        ),
+      );
+      await t.tap(find.text('E2'));
+      await t.pump();
+      expect(picked, {'a', 'b'});
+      expect(_fill(t, find.text('E2')), _c.ink);
+      await t.tap(find.text('E1'));
+      await t.pump();
+      expect(picked, {'b'});
+      Set<String>? lone;
+      await t.pumpWidget(
+        _frame(
+          PondChoice(
+            options: [ponds.first],
+            value: null,
+            onChanged: (_) {},
+            multi: true,
+            values: const {},
+            onChangedMany: (v) => lone = v,
+          ),
+        ),
+      );
+      await t.pump();
+      expect(lone, isNull);
+    });
+
     testWidgets('a single option is picked by itself', (t) async {
       String? picked;
       await t.pumpWidget(
