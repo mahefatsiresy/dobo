@@ -117,7 +117,7 @@ In `lib/theme/` (look) and `lib/features/common/` (widgets):
 | 5 | Visit | merged 19/11 |
 | 6 | Reports | merged 19/11 |
 | 7 | More menu, batches, feed, sales; the form standard for every form | merged 21/11 |
-| 7b | Transcription, paper sheets, exports, sync, account, admin, people, prep | " |
+| 7b | Transcription, paper sheets, prep, sync, account, admin, exports | " |
 | 8 | Web console (takes the colours and type) | " |
 
 Each step is one branch, merged locally after the user has seen
@@ -520,3 +520,68 @@ Feed                                   A form
   only an out-of-range density is a band. History rows start with `+`
   (stocking) or `⇄` (transfer). Empty pages say what to do. The date is
   a row defaulting to today. **[Claude's call]**
+
+### Step 7b: the tools and admin pages (decided 21/11)
+
+The pages a member opens now and then: copying the workers' paper
+sheets, printing them, preparing a pond, syncing, and running the
+association. The form standard of step 7 applies throughout. **[user]**
+
+```
+Transcription                          Prep
+┌──────────────────────────────┐      ┌──────────────────────────────┐
+│ ← Saisie des fiches          │      │ ← Préparer P1           Vide │
+│ Fiche de  [ Rakoto        › ]│      │ ✓ 1 Vider      07/11/2026  › │
+│ ‹  Semaine du 09/11/2026   › │      │ ✓ 2 Sécher     jusqu'au 21/11│
+│ [■ E1 ✓][■ E2 •][■ E3][■ E4] │      │ ● 3 Traiter à la chaux 12 kg │ ← next, bold
+├──────────────────────────────┤      │     [   Fait aujourd'hui   ] │
+│ Lun 09/11 [7,4 kg] [0 ✝] [+] │      │ ○ 4 Fertiliser  fumier 50 kg │
+│ Mar 10/11 [    kg] [  ✝] [+] │      │ ○ 5 Remplir                  │
+│ Mer 11/11 7,0 kg · ✝ 2     › │      │ ○ 6 Repos                    │
+│ …                            │      ├──────────────────────────────┤
+│ [ ✓ Enregistrer la fiche E1 ]│      │ [      ✓ Marquer prêt      ] │
+└──────────────────────────────┘      └──────────────────────────────┘
+```
+
+- **Order:** transcription and paper sheets, prep, sync and account,
+  admin, exports. The paper sheet PDF takes the app's look (Atkinson,
+  ink, the pond tag on its full colour) and keeps its layout. **[user]**
+- **Transcription, one paper sheet per screen:** the worker on a
+  picker page, the week (‹ ›), then the pond's buttons (✓ saved, •
+  typed and not saved). Seven day rows: feed, deaths, + for leftovers,
+  signs and colour (a picker page; small pictograms show what was
+  picked). A day already logged is read-only and opens its log.
+  "Enregistrer la fiche E1" is pinned and saves that sheet only, then
+  the next pond without a saved sheet is picked. Typing is kept while
+  switching sheets; leaving with unsaved sheets asks first. A day with
+  something typed but no feed gets a danger band and nothing saves.
+  The week grid goes. **[user]**
+- **Paper sheets:** week, 1–4 weeks as option buttons, pond buttons
+  (all picked to start), a line counting the pages, "Imprimer" pinned,
+  "Partager le PDF" above it. **[user]**
+- **Prep:** the six steps numbered, as the sequence they are: ✓ done
+  with its date (opens to correct), ● next in bold with "Fait
+  aujourd'hui", ○ to come; doses from the surface. Steps without a
+  product save in one tap; treating and fertilising open their form
+  with today's date and the dose filled in. "Marquer prêt" is pinned
+  once all are done; a skipped step is a band. **[user]**
+- **Sync:** the state first as a band (offline or failed: warning;
+  refused: danger, one row per record with its reason), then the last
+  sync, what waits, photos waiting. "Synchroniser maintenant" pinned.
+  Backup export and import fold under "Sauvegarde". **[user]**
+- **Account:** name, role and group, language, an outlined "Se
+  déconnecter" whose confirmation says what still waits. **[user]**
+- **Administration:** Membres, Branches and Réglages du site with a
+  summary each. Lists are ruled rows, inactive ones folded at the foot,
+  "+ Ajouter…" as the last row; group renames stay in a dialog. The
+  member form takes the form standard, resets in ⋮. People stay as
+  their own row on More. **[user]**
+- **Settings:** one folded line per section, "N modifiés" as its
+  summary; each value with the handbook's beside it and "Rétablir" when
+  changed; "Enregistrer" pinned. **[user]**
+- **Exports:** the kind as option buttons, the dates, pond buttons
+  (none picked = all), "Partager le PDF" pinned with "CSV" above it, a
+  band when the end is before the start. **[user]**
+- The worker picker lists people without an account first, then
+  members. Feed and deaths use the number pad; deaths empty means 0.
+  An admin's own row in Membres says "vous". **[Claude's call]**
