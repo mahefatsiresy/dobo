@@ -143,11 +143,30 @@ void main() {
         facts: facts,
         from: from,
         to: to,
-        pondId: pond,
+        pondIds: {pond},
       );
       expect(rows.whereType<TransferRow>(), hasLength(1), reason: pond);
       expect(rows.any((r) => r.pondId == 'e3'), isFalse);
     }
+  });
+
+  test('several ponds picked keep their rows only; none picked keeps all', () {
+    final facts = FarmFacts(
+      stockings: [
+        stock('e1', 1),
+        stock('e2', 1, batch: 'b2'),
+        stock('e3', 1, batch: 'b3'),
+      ],
+    );
+    final picked = productionRegister(
+      facts: facts,
+      from: from,
+      to: to,
+      pondIds: {'e1', 'e3'},
+    );
+    expect(picked.map((r) => r.pondId).toSet(), {'e1', 'e3'});
+    final all = productionRegister(facts: facts, from: from, to: to);
+    expect(all.map((r) => r.pondId).toSet(), {'e1', 'e2', 'e3'});
   });
 
   test('from and to are both included, by farm day', () {

@@ -201,9 +201,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get personRenameFromAdmin => 'Renommer depuis Admin › Membres';
 
   @override
-  String get personInactive => 'Inactif';
-
-  @override
   String get save => 'Enregistrer';
 
   @override
@@ -676,10 +673,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get nextWeek => 'Semaine suivante';
-
-  @override
-  String get feedMissing =>
-      'Indiquez l\'aliment pour chaque case remplie (0 si rien n\'a été donné).';
 
   @override
   String weekOfLabel(String date) {
@@ -1219,9 +1212,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get memberNone => 'Aucune';
-
-  @override
-  String get memberInactive => 'Inactif';
 
   @override
   String get groupName => 'Nom de la branche';
@@ -1868,14 +1858,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prepStepRest => 'Repos';
 
   @override
-  String get prepDone => 'Fait';
-
-  @override
-  String prepDoneOn(String date) {
-    return 'Fait le $date';
-  }
-
-  @override
   String prepDryUntil(String from, String to) {
     return 'Séchage : du $from au $to';
   }
@@ -2387,7 +2369,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get exportTo => 'Au';
 
   @override
-  String get exportPond => 'Étang';
+  String get exportPond => 'Étangs';
 
   @override
   String get exportAllPonds => 'Tous les étangs';

@@ -133,14 +133,11 @@ void main() {
       from: DateTime(2026, 3, 1),
       to: DateTime(2026, 3, 31),
     );
-    final pdf = await buildExportPdfInBackground(
-      table,
-      (
-        regular: bytes('NotoSans-Regular.ttf'),
-        bold: bytes('NotoSans-Bold.ttf'),
-        symbols: bytes('NotoSansMath-Symbols.ttf'),
-      ),
-    );
+    final pdf = await buildExportPdfInBackground(table, (
+      regular: bytes('NotoSans-Regular.ttf'),
+      bold: bytes('NotoSans-Bold.ttf'),
+      symbols: bytes('NotoSansMath-Symbols.ttf'),
+    ));
     expect(String.fromCharCodes(pdf.take(4)), '%PDF');
   });
 }

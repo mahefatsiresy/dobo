@@ -63,12 +63,31 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
     final enabled = chosen.isNotEmpty && !saving;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.morePaper)),
-      bottomNavigationBar: PinnedAction(
-        icon: Icons.print,
-        label: l10n.paperPrint,
-        onPressed: enabled
-            ? () => saveOnce(() => _build(chosen, print: true))
-            : null,
+      // The progress sits by the button just tapped, not at the list's foot.
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (saving)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const LinearProgressIndicator(),
+                  const SizedBox(height: 8),
+                  Text(l10n.exportBuilding),
+                ],
+              ),
+            ),
+          PinnedAction(
+            icon: Icons.print,
+            label: l10n.paperPrint,
+            onPressed: enabled
+                ? () => saveOnce(() => _build(chosen, print: true))
+                : null,
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -130,12 +149,6 @@ class _PaperSheetScreenState extends ConsumerState<PaperSheetScreen>
             ),
             style: text.titleMedium,
           ),
-          if (saving) ...[
-            const SizedBox(height: 16),
-            const LinearProgressIndicator(),
-            const SizedBox(height: 8),
-            Text(l10n.exportBuilding),
-          ],
           const SizedBox(height: 24),
           OutlinedButton.icon(
             icon: const Icon(Icons.share),

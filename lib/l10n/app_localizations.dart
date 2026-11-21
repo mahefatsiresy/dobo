@@ -452,12 +452,6 @@ abstract class AppLocalizations {
   /// **'Renommer depuis Admin › Membres'**
   String get personRenameFromAdmin;
 
-  /// No description provided for @personInactive.
-  ///
-  /// In fr, this message translates to:
-  /// **'Inactif'**
-  String get personInactive;
-
   /// No description provided for @save.
   ///
   /// In fr, this message translates to:
@@ -1315,12 +1309,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Semaine suivante'**
   String get nextWeek;
-
-  /// No description provided for @feedMissing.
-  ///
-  /// In fr, this message translates to:
-  /// **'Indiquez l\'aliment pour chaque case remplie (0 si rien n\'a été donné).'**
-  String get feedMissing;
 
   /// No description provided for @weekOfLabel.
   ///
@@ -2305,12 +2293,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune'**
   String get memberNone;
-
-  /// No description provided for @memberInactive.
-  ///
-  /// In fr, this message translates to:
-  /// **'Inactif'**
-  String get memberInactive;
 
   /// No description provided for @groupName.
   ///
@@ -3440,18 +3422,6 @@ abstract class AppLocalizations {
   /// **'Repos'**
   String get prepStepRest;
 
-  /// No description provided for @prepDone.
-  ///
-  /// In fr, this message translates to:
-  /// **'Fait'**
-  String get prepDone;
-
-  /// No description provided for @prepDoneOn.
-  ///
-  /// In fr, this message translates to:
-  /// **'Fait le {date}'**
-  String prepDoneOn(String date);
-
   /// No description provided for @prepDryUntil.
   ///
   /// In fr, this message translates to:
@@ -4300,7 +4270,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportPond.
   ///
   /// In fr, this message translates to:
-  /// **'Étang'**
+  /// **'Étangs'**
   String get exportPond;
 
   /// No description provided for @exportAllPonds.

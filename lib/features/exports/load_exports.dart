@@ -42,12 +42,13 @@ Future<ExportNames> loadExportNames(WidgetRef ref) async {
   );
 }
 
-/// The register's rows from [from] to [to] (farm days), for [pondId] or all.
+/// The register's rows from [from] to [to] (farm days), for [pondIds] or
+/// all ponds when null.
 Future<(List<RegisterRow>, ExportNames)> loadRegister(
   WidgetRef ref, {
   required DateTime from,
   required DateTime to,
-  String? pondId,
+  Set<String>? pondIds,
 }) async {
   final names = await loadExportNames(ref);
   final facts = await _read(ref, farmFactsProvider);
@@ -96,19 +97,19 @@ Future<(List<RegisterRow>, ExportNames)> loadRegister(
     ],
     from: from,
     to: to,
-    pondId: pondId,
+    pondIds: pondIds,
     pondCodes: names.ponds,
   );
   return (rows, names);
 }
 
 /// The weekly sheet's rows over [from]–[to] widened to whole weeks, for
-/// [pondId] or every pond in code order.
+/// [pondIds] (every pond when null), in code order.
 Future<(List<WeeklyRow>, ExportNames)> loadWeekly(
   WidgetRef ref, {
   required DateTime from,
   required DateTime to,
-  String? pondId,
+  Set<String>? pondIds,
 }) async {
   final names = await loadExportNames(ref);
   final facts = await _read(ref, farmFactsProvider);
@@ -117,13 +118,12 @@ Future<(List<WeeklyRow>, ExportNames)> loadWeekly(
       .read(readingRepositoryProvider)
       .watchWaterReadingsBetween(start, end)
       .first;
-  final pondIds = pondId != null
-      ? [pondId]
-      : (names.ponds.keys.toList()..sort(
-          (a, b) => names.ponds[a]!.toLowerCase().compareTo(
-            names.ponds[b]!.toLowerCase(),
-          ),
-        ));
+  final ordered = (pondIds?.toList() ?? names.ponds.keys.toList())
+    ..sort(
+      (a, b) => (names.ponds[a] ?? a).toLowerCase().compareTo(
+        (names.ponds[b] ?? b).toLowerCase(),
+      ),
+    );
   final rows = weeklySheet(
     facts: facts,
     readings: [
@@ -141,7 +141,7 @@ Future<(List<WeeklyRow>, ExportNames)> loadWeekly(
     ],
     from: from,
     to: to,
-    pondIds: pondIds,
+    pondIds: ordered,
   );
   return (rows, names);
 }

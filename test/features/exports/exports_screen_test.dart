@@ -72,11 +72,11 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  FilledButton button(WidgetTester tester, String label) =>
-      tester.widget<FilledButton>(
+  ButtonStyleButton button(WidgetTester tester, String label) =>
+      tester.widget<ButtonStyleButton>(
         find.ancestor(
           of: find.text(label),
-          matching: find.byWidgetPredicate((w) => w is FilledButton),
+          matching: find.byWidgetPredicate((w) => w is ButtonStyleButton),
         ),
       );
 
@@ -85,8 +85,7 @@ void main() {
     await open(tester);
     expect(find.text('13/10/2026'), findsOneWidget);
     expect(find.text('11/11/2026'), findsOneWidget);
-    await tapAndSettle(tester, find.byKey(const ValueKey('exportPond')));
-    await tapAndSettle(tester, find.text('E1').last);
+    await tapAndSettle(tester, find.text('E1'));
     await tester.tap(find.text('CSV'));
     await waitForShare(tester);
     expect(
@@ -125,6 +124,7 @@ void main() {
       findsOneWidget,
     );
     expect(button(tester, 'PDF').onPressed, isNull);
+    await reveal(tester, find.text('CSV'));
     expect(button(tester, 'CSV').onPressed, isNull);
   }, overrides: overrides);
 

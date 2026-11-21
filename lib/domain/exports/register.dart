@@ -152,7 +152,7 @@ List<RegisterRow> productionRegister({
   List<(String pondId, HealthLine)> health = const [],
   required DateTime from,
   required DateTime to,
-  String? pondId,
+  Set<String>? pondIds,
   Map<String, String> pondCodes = const {},
 }) {
   String code(String id) => pondCodes[id] ?? id;
@@ -163,7 +163,7 @@ List<RegisterRow> productionRegister({
     return n >= first && n <= last;
   }
 
-  bool inPond(String id) => pondId == null || id == pondId;
+  bool inPond(String id) => pondIds == null || pondIds.contains(id);
 
   /// Batches in [pond] at the end of the day before [day] or of [day]
   /// itself: fish stocked, moved out or harvested that day still count.

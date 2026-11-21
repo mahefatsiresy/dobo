@@ -202,9 +202,6 @@ class AppLocalizationsMg extends AppLocalizations {
       'Ovay ny anarana ao amin\'ny Admin › Mpikambana';
 
   @override
-  String get personInactive => 'Tsy mavitrika';
-
-  @override
   String get save => 'Tehirizo';
 
   @override
@@ -679,10 +676,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get nextWeek => 'Herinandro manaraka';
-
-  @override
-  String get feedMissing =>
-      'Asio ny sakafo isaky ny efajoro feno (0 raha tsy nisy nomena).';
 
   @override
   String weekOfLabel(String date) {
@@ -1226,9 +1219,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get memberNone => 'Tsy misy';
-
-  @override
-  String get memberInactive => 'Tsy mavitrika';
 
   @override
   String get groupName => 'Anaran\'ny sampana';
@@ -1880,14 +1870,6 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get prepStepRest => 'Fialan-tsasatra';
-
-  @override
-  String get prepDone => 'Vita';
-
-  @override
-  String prepDoneOn(String date) {
-    return 'Vita tamin\'ny $date';
-  }
 
   @override
   String prepDryUntil(String from, String to) {

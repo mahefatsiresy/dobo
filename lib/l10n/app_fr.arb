@@ -111,7 +111,6 @@
   "personOfWorker": "{name} (ouvrier)",
   "@personOfWorker": {"placeholders": {"name": {"type": "String"}}},
   "personRenameFromAdmin": "Renommer depuis Admin › Membres",
-  "personInactive": "Inactif",
   "save": "Enregistrer",
   "add": "Ajouter",
   "peopleEmpty": "Aucune personne : ajoutez les ouvriers et les membres",
@@ -450,7 +449,6 @@
   "sheetOf": "Fiche de",
   "previousWeek": "Semaine précédente",
   "nextWeek": "Semaine suivante",
-  "feedMissing": "Indiquez l'aliment pour chaque case remplie (0 si rien n'a été donné).",
   "weekOfLabel": "Semaine du {date}",
   "@weekOfLabel": {
     "placeholders": {
@@ -723,7 +721,6 @@
   },
   "memberPerson": "Fiche de l'ouvrier (facultatif)",
   "memberNone": "Aucune",
-  "memberInactive": "Inactif",
   "groupName": "Nom de la branche",
   "groupsEmpty": "Aucune branche",
   "adminSettings": "Réglages",
@@ -1108,15 +1105,6 @@
   "prepStepFertilise": "Fertilisation (fumier)",
   "prepStepFill": "Remplissage par l'entrée grillagée",
   "prepStepRest": "Repos",
-  "prepDone": "Fait",
-  "prepDoneOn": "Fait le {date}",
-  "@prepDoneOn": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "prepDryUntil": "Séchage : du {from} au {to}",
   "@prepDryUntil": {
     "placeholders": {
@@ -1400,7 +1388,7 @@
   "exportKindWeekly": "Suivi hebdomadaire (annexe B)",
   "exportFrom": "Du",
   "exportTo": "Au",
-  "exportPond": "Étang",
+  "exportPond": "Étangs",
   "exportAllPonds": "Tous les étangs",
   "exportPdf": "PDF",
   "exportCsv": "CSV",

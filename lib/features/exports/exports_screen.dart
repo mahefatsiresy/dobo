@@ -9,7 +9,10 @@ import '../../domain/exports/weekly.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/date_field.dart';
 import '../common/farm_today.dart';
-import '../common/notice.dart';
+import '../common/attention_band.dart';
+import '../common/choice_buttons.dart';
+import '../common/pinned_action.dart';
+import '../common/pond_choice.dart';
 import '../common/save_once.dart';
 import '../ponds/pond_overview.dart';
 import '../reports/share_report.dart';
@@ -37,7 +40,9 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
   var _kind = ExportKind.register;
   late DateTime _from;
   late DateTime _to;
-  String? _pondId;
+
+  /// Ponds picked; none means every pond.
+  final _pondIds = <String>{};
 
   @override
   void initState() {
@@ -69,7 +74,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
           ref,
           from: _from,
           to: _to,
-          pondId: _pondId,
+          pondIds: _pondIds.isEmpty ? null : {..._pondIds},
         );
         table = registerTable(rows, names, l10n, locale, from: _from, to: _to);
         name = exportFileName(
@@ -84,7 +89,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
           ref,
           from: _from,
           to: _to,
-          pondId: _pondId,
+          pondIds: _pondIds.isEmpty ? null : {..._pondIds},
         );
         final (start, end) = wholeWeeks(_from, _to);
         table = weeklyTable(
@@ -118,40 +123,53 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final ponds = ref.watch(pondsProvider).value ?? const [];
+    final text = Theme.of(context).textTheme;
+    final ponds = [...?ref.watch(pondsProvider).value]
+      ..sort((a, b) => a.code.compareTo(b.code));
     final backwards = daysBetween(_from, _to) < 0;
     final enabled = !backwards && !saving;
-    final style = FilledButton.styleFrom(
-      minimumSize: const Size.fromHeight(56),
-    );
     return Scaffold(
       appBar: AppBar(title: Text(l10n.moreExports)),
+      // The progress sits by the button just tapped, not at the list's foot.
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (saving)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const LinearProgressIndicator(),
+                  const SizedBox(height: 8),
+                  Text(l10n.exportBuilding),
+                ],
+              ),
+            ),
+          PinnedAction(
+            icon: Icons.picture_as_pdf,
+            label: l10n.exportPdf,
+            onPressed: enabled
+                ? () => saveOnce(() => _export(csv: false))
+                : null,
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final (kind, label) in [
-                (ExportKind.register, l10n.exportKindRegister),
-                (ExportKind.weekly, l10n.exportKindWeekly),
-              ])
-                ChoiceChip(
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  label: Text(label),
-                  selected: _kind == kind,
-                  onSelected: (_) => setState(() {
-                    if (_kind == kind) return;
-                    _kind = kind;
-                    _setDefaults();
-                  }),
-                ),
+          ChoiceButtons<ExportKind>(
+            options: [
+              (ExportKind.register, l10n.exportKindRegister),
+              (ExportKind.weekly, l10n.exportKindWeekly),
             ],
+            value: _kind,
+            onChanged: (kind) => setState(() {
+              if (_kind == kind) return;
+              _kind = kind;
+              _setDefaults();
+            }),
           ),
           const SizedBox(height: 16),
           DateField(
@@ -165,41 +183,39 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> with SaveOnce {
             value: _to,
             onChanged: (d) => setState(() => _to = d),
           ),
+          if (backwards)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: AttentionBand(
+                severity: BandSeverity.danger,
+                text: l10n.exportEndBeforeStart,
+              ),
+            ),
           if (_kind == ExportKind.weekly) ...[
             const SizedBox(height: 8),
             Text(l10n.exportWeeklyWholeWeeks),
           ],
-          const SizedBox(height: 12),
-          DropdownButtonFormField<String?>(
-            key: const ValueKey('exportPond'),
-            initialValue: _pondId,
-            decoration: InputDecoration(labelText: l10n.exportPond),
-            items: [
-              DropdownMenuItem(value: null, child: Text(l10n.exportAllPonds)),
-              for (final p in ponds)
-                DropdownMenuItem(value: p.id, child: Text(p.code)),
-            ],
-            onChanged: (v) => setState(() => _pondId = v),
+          const SizedBox(height: 16),
+          Text(l10n.exportPond, style: text.titleMedium),
+          const SizedBox(height: 8),
+          PondChoice(
+            options: [for (final p in ponds) PondOption(pond: p)],
+            value: null,
+            onChanged: (_) {},
+            multi: true,
+            values: _pondIds,
+            onChangedMany: (v) => setState(
+              () => _pondIds
+                ..clear()
+                ..addAll(v),
+            ),
           ),
-          if (backwards) Notice(l10n.exportEndBeforeStart, danger: true),
-          if (saving) ...[
-            const SizedBox(height: 16),
-            const LinearProgressIndicator(),
+          if (_pondIds.isEmpty) ...[
             const SizedBox(height: 8),
-            Text(l10n.exportBuilding),
+            Text(l10n.exportAllPonds, style: text.bodySmall),
           ],
           const SizedBox(height: 24),
-          FilledButton.icon(
-            style: style,
-            icon: const Icon(Icons.picture_as_pdf),
-            label: Text(l10n.exportPdf),
-            onPressed: enabled
-                ? () => saveOnce(() => _export(csv: false))
-                : null,
-          ),
-          const SizedBox(height: 12),
-          FilledButton.icon(
-            style: style,
+          OutlinedButton.icon(
             icon: const Icon(Icons.table_chart),
             label: Text(l10n.exportCsv),
             onPressed: enabled
