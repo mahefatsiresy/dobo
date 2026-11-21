@@ -67,16 +67,6 @@ String paperWeekLabel(
   fr.paperWeek(_day(days.first), _day(days.last)),
 );
 
-String _weekday(AppLocalizations l, int weekday) => switch (weekday) {
-  DateTime.monday => l.weekdayMon,
-  DateTime.tuesday => l.weekdayTue,
-  DateTime.wednesday => l.weekdayWed,
-  DateTime.thursday => l.weekdayThu,
-  DateTime.friday => l.weekdayFri,
-  DateTime.saturday => l.weekdaySat,
-  _ => l.weekdaySun,
-};
-
 /// Every label the sheet prints, as "mg / fr".
 List<String> paperSheetLabels(AppLocalizations mg, AppLocalizations fr) => [
   _both(mg.paperTitle, fr.paperTitle),
@@ -342,9 +332,9 @@ pw.Widget _sheet(
               pw.Column(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 children: [
-                  pw.Text(_weekday(mg, d.weekday), style: header),
+                  pw.Text(mg.weekday(d.weekday), style: header),
                   pw.Text(
-                    '${_weekday(fr, d.weekday)} ${dayLabel.format(d)}',
+                    '${fr.weekday(d.weekday)} ${dayLabel.format(d)}',
                     style: small,
                   ),
                 ],

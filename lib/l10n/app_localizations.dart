@@ -5021,6 +5021,48 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count, plural, =0{Aucun} =1{1 client} other{{count} clients}}'**
   String customersCount(int count);
+
+  /// No description provided for @transcriptionSave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer la fiche {pond}'**
+  String transcriptionSave(String pond);
+
+  /// No description provided for @transcriptionSavedPond.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche {pond} enregistrée'**
+  String transcriptionSavedPond(String pond);
+
+  /// No description provided for @transcriptionLogged.
+  ///
+  /// In fr, this message translates to:
+  /// **'déjà saisi'**
+  String get transcriptionLogged;
+
+  /// No description provided for @transcriptionFeedMissing.
+  ///
+  /// In fr, this message translates to:
+  /// **'{days} : la quantité d\'aliment manque'**
+  String transcriptionFeedMissing(String days);
+
+  /// No description provided for @transcriptionLeave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter sans enregistrer les fiches {ponds} ?'**
+  String transcriptionLeave(String ponds);
+
+  /// No description provided for @transcriptionStay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rester'**
+  String get transcriptionStay;
+
+  /// No description provided for @transcriptionQuit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get transcriptionQuit;
 }
 
 class _AppLocalizationsDelegate

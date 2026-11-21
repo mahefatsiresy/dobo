@@ -26,6 +26,7 @@ import 'features/health/report_problem_screen.dart';
 import 'features/health/treatment_screen.dart';
 import 'features/more/more_screen.dart';
 import 'features/people/people_screen.dart';
+import 'features/people/person_picker.dart';
 import 'features/people/person_form_screen.dart';
 import 'features/ponds/pond_detail_screen.dart';
 import 'features/ponds/pond_form_screen.dart';
@@ -438,6 +439,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                       GoRoute(
                         path: 'new',
                         builder: (context, state) => const PersonFormScreen(),
+                      ),
+                      GoRoute(
+                        path: 'pick',
+                        builder: (context, state) => PersonPickerScreen(
+                          current: state.uri.queryParameters['current'],
+                        ),
                       ),
                       GoRoute(
                         path: ':id',

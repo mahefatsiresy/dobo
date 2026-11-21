@@ -2936,4 +2936,33 @@ class AppLocalizationsMg extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String transcriptionSave(String pond) {
+    return 'Raketo ny taratasin\'ny $pond';
+  }
+
+  @override
+  String transcriptionSavedPond(String pond) {
+    return 'Voaraketa ny taratasin\'ny $pond';
+  }
+
+  @override
+  String get transcriptionLogged => 'efa voasoratra';
+
+  @override
+  String transcriptionFeedMissing(String days) {
+    return '$days : tsy misy ny habetsaky ny sakafo';
+  }
+
+  @override
+  String transcriptionLeave(String ponds) {
+    return 'Hiala nefa tsy mitahiry ny taratasin\'ny $ponds ?';
+  }
+
+  @override
+  String get transcriptionStay => 'Hijanona';
+
+  @override
+  String get transcriptionQuit => 'Hiala';
 }

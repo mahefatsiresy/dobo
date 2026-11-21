@@ -288,4 +288,15 @@ extension EnumLabels on AppLocalizations {
         ? alertWaterHigh(name, value)
         : alertWaterLow(name, value);
   }
+
+  /// A weekday as the paper sheets write it (`DateTime.monday`…).
+  String weekday(int day) => switch (day) {
+    DateTime.monday => weekdayMon,
+    DateTime.tuesday => weekdayTue,
+    DateTime.wednesday => weekdayWed,
+    DateTime.thursday => weekdayThu,
+    DateTime.friday => weekdayFri,
+    DateTime.saturday => weekdaySat,
+    _ => weekdaySun,
+  };
 }

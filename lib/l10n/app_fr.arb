@@ -1867,5 +1867,16 @@
   "feedExpiredBand": "{kg} périmés, à jeter",
   "@feedExpiredBand": {"placeholders": {"kg": {"type": "String"}}},
   "customersCount": "{count, plural, =0{Aucun} =1{1 client} other{{count} clients}}",
-  "@customersCount": {"placeholders": {"count": {"type": "int"}}}
+  "@customersCount": {"placeholders": {"count": {"type": "int"}}},
+  "transcriptionSave": "Enregistrer la fiche {pond}",
+  "@transcriptionSave": {"placeholders": {"pond": {"type": "String"}}},
+  "transcriptionSavedPond": "Fiche {pond} enregistrée",
+  "@transcriptionSavedPond": {"placeholders": {"pond": {"type": "String"}}},
+  "transcriptionLogged": "déjà saisi",
+  "transcriptionFeedMissing": "{days} : la quantité d'aliment manque",
+  "@transcriptionFeedMissing": {"placeholders": {"days": {"type": "String"}}},
+  "transcriptionLeave": "Quitter sans enregistrer les fiches {ponds} ?",
+  "@transcriptionLeave": {"placeholders": {"ponds": {"type": "String"}}},
+  "transcriptionStay": "Rester",
+  "transcriptionQuit": "Quitter"
 }

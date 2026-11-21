@@ -5,10 +5,14 @@ import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/feed_repository.dart';
 import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
+import 'package:dobo/db/repositories/person_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/prep_repository.dart';
 import 'package:dobo/db/repositories/reading_repository.dart';
+import 'package:dobo/db/repositories/settings_repository.dart';
 import 'package:dobo/db/repositories/setup_repository.dart';
+import 'package:dobo/db/sync_state.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:dobo/domain/types.dart';
 
 /// The demo farm's "now": 15/03/2026, 09:00 in Madagascar.
@@ -230,6 +234,61 @@ Future<void> seedDemoTrade(AppDatabase db, DemoFarm farm) async {
       count: 1100,
       weightG: 210000,
       isFinal: true,
+    ),
+  );
+}
+
+/// What the tools and admin pages need on top of [seedDemoFarm] (plan
+/// design step 7b):
+/// - people "Rakoto" (a worker without an account) and "Soa" (inactive);
+/// - a second member "Hery" (member, sales flag);
+/// - the site's oxygen minimum raised to 3,5 mg/L;
+/// - Rakoto's paper sheet for E1 already typed on 10/03 and 11/03;
+/// - E1's log of today refused by the server (a role error).
+Future<void> seedDemoAdmin(AppDatabase db, DemoFarm farm) async {
+  final session = (await SetupRepository(db).currentSession())!;
+  final people = PersonRepository(db, session);
+  final rakoto = await people.create(name: 'Rakoto');
+  farm['Rakoto'] = rakoto;
+  final soa = await people.create(name: 'Soa');
+  await people.update(soa, name: 'Soa', active: false);
+  final me = await (db.select(
+    db.members,
+  )..where((m) => m.id.equals(session.userId))).getSingleOrNull();
+  await db
+      .into(db.members)
+      .insert(
+        MembersCompanion.insert(
+          associationId: session.associationId,
+          enteredBy: session.userId,
+          deviceId: session.deviceId,
+          name: 'Hery',
+          personId: Value(await people.create(name: 'Hery')),
+          role: MemberRole.member,
+          isSales: const Value(true),
+          locale: 'fr',
+          groupId: Value(me?.groupId),
+        ),
+      );
+  await SettingsRepository(db, session).set('minOxygenMgL', 3.5);
+  final logs = DailyLogRepository(db, session);
+  for (final (day, kg) in [(10, 7000), (11, 7200)]) {
+    await logs.save(
+      DailyLogInput(
+        pondId: farm['E1']!,
+        date: DateTime(2026, 3, day),
+        feedGivenG: kg,
+        observedBy: rakoto,
+      ),
+    );
+  }
+  final today = (await db.select(db.dailyLogs).get()).firstWhere(
+    (l) => l.pondId == farm['E1'] && l.recordedAt.day == 15,
+  );
+  await (db.update(db.dailyLogs)..where((l) => l.id.equals(today.id))).write(
+    const DailyLogsCompanion(
+      syncState: Value(SyncState.rejected),
+      syncError: Value('42501'),
     ),
   );
 }

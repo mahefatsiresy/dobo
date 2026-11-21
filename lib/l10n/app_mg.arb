@@ -818,5 +818,12 @@
   "historyFish": "trondro {count}",
   "historyFishWeight": "trondro {count}, {weight}",
   "feedExpiredBand": "{kg} lany daty, ariana",
-  "customersCount": "{count, plural, =0{Tsy misy} =1{mpividy 1} other{mpividy {count}}}"
+  "customersCount": "{count, plural, =0{Tsy misy} =1{mpividy 1} other{mpividy {count}}}",
+  "transcriptionSave": "Raketo ny taratasin'ny {pond}",
+  "transcriptionSavedPond": "Voaraketa ny taratasin'ny {pond}",
+  "transcriptionLogged": "efa voasoratra",
+  "transcriptionFeedMissing": "{days} : tsy misy ny habetsaky ny sakafo",
+  "transcriptionLeave": "Hiala nefa tsy mitahiry ny taratasin'ny {ponds} ?",
+  "transcriptionStay": "Hijanona",
+  "transcriptionQuit": "Hiala"
 }

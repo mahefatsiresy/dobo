@@ -2939,4 +2939,33 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String transcriptionSave(String pond) {
+    return 'Enregistrer la fiche $pond';
+  }
+
+  @override
+  String transcriptionSavedPond(String pond) {
+    return 'Fiche $pond enregistrée';
+  }
+
+  @override
+  String get transcriptionLogged => 'déjà saisi';
+
+  @override
+  String transcriptionFeedMissing(String days) {
+    return '$days : la quantité d\'aliment manque';
+  }
+
+  @override
+  String transcriptionLeave(String ponds) {
+    return 'Quitter sans enregistrer les fiches $ponds ?';
+  }
+
+  @override
+  String get transcriptionStay => 'Rester';
+
+  @override
+  String get transcriptionQuit => 'Quitter';
 }
