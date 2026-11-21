@@ -8,7 +8,10 @@ import '../../domain/config_overrides.dart';
 import '../../l10n/app_localizations.dart';
 import '../../sync/photo_store.dart';
 import '../../l10n/formatting.dart';
-import '../common/form_body.dart';
+import '../../theme/tokens.dart';
+import '../common/folded_section.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/save_once.dart';
 
 /// Per-site overrides of the farming numbers (SPEC F14), each beside the
@@ -62,136 +65,135 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with SaveOnce {
           : await repo.set(photoUploadCapKey, cap);
     }
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.settingsSaved)));
-    context.pop();
+    showDone(context, l10n.settingsSaved);
+    context.canPop() ? context.pop() : context.go('/more/admin');
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+    final text = Theme.of(context).textTheme;
+    final c = context.dobo;
     final overrides = ref.watch(settingOverridesProvider).value;
     if (overrides == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     if (_loaded == null) _load(overrides);
-    final rows = <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(l10n.settingsIntro),
-      ),
-    ];
-    String? section;
-    for (final k in configKeys) {
-      if (k.section != section) {
-        section = k.section;
-        rows.add(
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-            child: Text(
-              settingSection(l10n, k.section),
-              style: Theme.of(context).textTheme.titleSmall,
+
+    /// A value: its name, the handbook's, its field and "Rétablir" when it
+    /// holds one of the site's own.
+    Widget value({
+      required Key key,
+      required String label,
+      required String handbook,
+      required TextEditingController field,
+      bool decimal = true,
+    }) => Padding(
+      key: key,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label),
+                Text(l10n.settingDefault(handbook), style: text.bodySmall),
+                if (field.text.trim().isNotEmpty)
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.centerLeft,
+                    ),
+                    onPressed: () => setState(field.clear),
+                    child: Text(l10n.settingReset),
+                  ),
+              ],
             ),
           ),
-        );
-      }
-      final bound = k.key.endsWith('.min')
-          ? ' – ${l10n.settingMin}'
-          : k.key.endsWith('.max')
-          ? ' – ${l10n.settingMax}'
-          : '';
-      rows.add(
-        Padding(
-          key: Key('setting-${k.key}'),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${settingLabel(l10n, k.subject)}$bound'),
-                    Text(
-                      l10n.settingDefault(
-                        formatNumber(
-                          k.read(DomainConfig.defaults).toDouble(),
-                          locale,
-                        ),
-                      ),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              SizedBox(
-                width: 96,
-                child: TextField(
-                  controller: _fields[k.key],
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ],
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 96,
+            child: TextField(
+              controller: field,
+              keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+              textAlign: TextAlign.end,
+              onChanged: (_) => setState(() {}),
+            ),
           ),
-        ),
-      );
-    }
-    rows.addAll([
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: Text(
-          l10n.settingsPhotos,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
+        ],
       ),
-      Padding(
-        key: const Key('setting-$photoUploadCapKey'),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    );
+
+    final sections = <String, List<ConfigKey>>{};
+    for (final k in configKeys) {
+      (sections[k.section] ??= []).add(k);
+    }
+    int changed(Iterable<TextEditingController> fields) =>
+        fields.where((f) => f.text.trim().isNotEmpty).length;
+    Widget rule() => Divider(height: 1, color: c.line);
+
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.adminSettings)),
+      bottomNavigationBar: PinnedAction(
+        key: const Key('saveSettings'),
+        icon: Icons.check,
+        label: l10n.save,
+        onPressed: saving ? null : () => saveOnce(_save),
+      ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(l10n.settingsIntro),
+          ),
+          rule(),
+          for (final MapEntry(key: section, value: keys)
+              in sections.entries) ...[
+            FoldedSection(
+              title: settingSection(l10n, section),
+              summary: l10n.settingsChanged(
+                changed(keys.map((k) => _fields[k.key]!)),
+              ),
+              builder: (context) => Column(
                 children: [
-                  Text(l10n.settingPhotoUploadCap),
-                  Text(
-                    l10n.settingDefault('$defaultPhotoUploadCap'),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+                  for (final k in keys)
+                    value(
+                      key: Key('setting-${k.key}'),
+                      label:
+                          '${settingLabel(l10n, k.subject)}'
+                          '${k.key.endsWith('.min')
+                              ? ' – ${l10n.settingMin}'
+                              : k.key.endsWith('.max')
+                              ? ' – ${l10n.settingMax}'
+                              : ''}',
+                      handbook: formatNumber(
+                        k.read(DomainConfig.defaults).toDouble(),
+                        locale,
+                      ),
+                      field: _fields[k.key]!,
+                    ),
                 ],
               ),
             ),
-            const SizedBox(width: 12),
-            SizedBox(
-              width: 96,
-              child: TextField(
-                controller: _photoCap,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.end,
-              ),
-            ),
+            rule(),
           ],
-        ),
+          // Not a farming number: kept out of DomainConfig (plan Decision 11).
+          FoldedSection(
+            title: l10n.settingsPhotos,
+            summary: l10n.settingsChanged(changed([_photoCap])),
+            builder: (context) => value(
+              key: const Key('setting-$photoUploadCapKey'),
+              label: l10n.settingPhotoUploadCap,
+              handbook: '$defaultPhotoUploadCap',
+              field: _photoCap,
+              decimal: false,
+            ),
+          ),
+          rule(),
+        ],
       ),
-    ]);
-    rows.add(
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: FilledButton(
-          key: const Key('saveSettings'),
-          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-          onPressed: saving ? null : () => saveOnce(_save),
-          child: Text(l10n.save),
-        ),
-      ),
-    );
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.adminSettings)),
-      body: FormBody(children: rows),
     );
   }
 }

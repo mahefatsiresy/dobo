@@ -11,9 +11,15 @@ import '../../domain/types.dart';
 import '../../l10n/app_localizations.dart';
 import '../../sync/auth_gateway.dart';
 import '../account/account_errors.dart';
+import '../common/attention_band.dart';
+import '../common/choice_buttons.dart';
 import '../common/form_body.dart';
+import '../common/form_menu.dart';
+import '../common/pinned_action.dart';
 import '../common/save_once.dart';
 import '../people/people_providers.dart';
+import '../people/person_picker.dart';
+import 'group_picker.dart';
 import 'members_screen.dart';
 import 'reset_secret_dialog.dart';
 
@@ -144,7 +150,9 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
           locale: _locale,
         );
       }
-      if (mounted) context.pop();
+      if (!mounted) return;
+      showDone(context, AppLocalizations.of(context).doneSaved);
+      context.canPop() ? context.pop() : context.go('/more/admin/members');
     } catch (e) {
       setState(() => _error = accountErrorText(l10n, e));
     }
@@ -173,8 +181,57 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
     final own = widget.memberId == ref.watch(sessionProvider).value?.userId;
     // A build with no server has no accounts to reset.
     final canReset = ref.watch(memberRepositoryProvider).auth != null;
+    final groupName = groups
+        .where((g) => g.id == _groupId)
+        .map((g) => g.name)
+        .firstOrNull;
+    final person = people.where((p) => p.id == _personId).firstOrNull;
+    Widget pickerRow({
+      required Key key,
+      required String label,
+      required String value,
+      required VoidCallback onTap,
+    }) => InkWell(
+      key: key,
+      onTap: onTap,
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          suffixIcon: const Icon(Icons.chevron_right),
+        ),
+        child: Text(value),
+      ),
+    );
+    Widget switchRow(String title, bool value, ValueChanged<bool>? onChanged) =>
+        SwitchListTile(
+          minTileHeight: 56,
+          contentPadding: EdgeInsets.zero,
+          title: Text(title),
+          value: value,
+          onChanged: onChanged,
+        );
+    const gap = SizedBox(height: 16);
     return Scaffold(
-      appBar: AppBar(title: Text(_isNew ? l10n.memberNew : _name.text)),
+      appBar: AppBar(
+        title: Text(_isNew ? l10n.memberNew : _name.text),
+        actions: [
+          if (!_isNew && _hasLogin && canReset)
+            FormMenu(
+              entries: [
+                FormMenuEntry(
+                  label: worker ? l10n.resetPin : l10n.resetPassword,
+                  icon: Icons.key,
+                  onTap: _reset,
+                ),
+              ],
+            ),
+        ],
+      ),
+      bottomNavigationBar: PinnedAction(
+        icon: _isNew ? Icons.person_add : Icons.check,
+        label: _isNew ? l10n.memberAddAction : l10n.save,
+        onPressed: saving || !_valid ? null : () => saveOnce(_save),
+      ),
       body: FormBody(
         children: [
           TextField(
@@ -183,69 +240,60 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(labelText: l10n.memberName),
           ),
-          const SizedBox(height: 16),
-          SegmentedButton<MemberRole>(
-            segments: [
-              ButtonSegment(
-                value: MemberRole.member,
-                label: Text(l10n.roleMember),
-              ),
-              ButtonSegment(
-                value: MemberRole.worker,
-                label: Text(l10n.roleWorker),
-              ),
+          gap,
+          // Nobody changes their own role: one wrong tap could leave the
+          // association without an admin.
+          ChoiceField<MemberRole>(
+            label: l10n.accountRole,
+            options: [
+              (MemberRole.member, l10n.roleMember),
+              (MemberRole.worker, l10n.roleWorker),
             ],
-            selected: {_role},
-            onSelectionChanged: own
+            value: _role,
+            onChanged: own
                 ? null
-                : (s) => setState(() {
-                    _role = s.single;
-                    if (_isNew) {
-                      _locale = _role == MemberRole.worker ? 'mg' : 'fr';
-                    }
+                : (r) => setState(() {
+                    _role = r;
+                    if (_isNew) _locale = r == MemberRole.worker ? 'mg' : 'fr';
                   }),
           ),
-          const SizedBox(height: 16),
-          DropdownButtonFormField<String?>(
+          gap,
+          pickerRow(
             key: const Key('memberGroup'),
-            initialValue: _groupId,
-            decoration: InputDecoration(labelText: l10n.memberGroup),
-            items: [
-              DropdownMenuItem(value: null, child: Text(l10n.memberNone)),
-              for (final g in groups)
-                DropdownMenuItem(value: g.id, child: Text(g.name)),
-            ],
-            onChanged: (v) => setState(() => _groupId = v),
+            label: l10n.memberGroup,
+            value: groupName ?? l10n.memberNone,
+            onTap: () async {
+              final id = await pickGroup(context, current: _groupId);
+              if (id != null && mounted) {
+                setState(() => _groupId = id == noGroup ? null : id);
+              }
+            },
           ),
-          SwitchListTile(
-            title: Text(l10n.roleAdmin),
-            value: _admin,
-            onChanged: own ? null : (v) => setState(() => _admin = v),
+          const SizedBox(height: 8),
+          switchRow(
+            l10n.roleAdmin,
+            _admin,
+            own ? null : (v) => setState(() => _admin = v),
           ),
-          SwitchListTile(
-            title: Text(l10n.roleSales),
-            value: _sales,
-            onChanged: (v) => setState(() => _sales = v),
-          ),
+          switchRow(l10n.roleSales, _sales, (v) => setState(() => _sales = v)),
           if (!_isNew)
-            SwitchListTile(
-              title: Text(l10n.memberActive),
-              value: _active,
-              onChanged: own ? null : (v) => setState(() => _active = v),
+            switchRow(
+              l10n.memberActive,
+              _active,
+              own ? null : (v) => setState(() => _active = v),
             ),
-          const SizedBox(height: 8),
-          Text(l10n.moreLanguage),
-          const SizedBox(height: 8),
-          SegmentedButton<String>(
-            segments: [
-              ButtonSegment(value: 'fr', label: Text(l10n.languageFrench)),
-              ButtonSegment(value: 'mg', label: Text(l10n.languageMalagasy)),
+          gap,
+          ChoiceField<String>(
+            label: l10n.moreLanguage,
+            options: [
+              ('fr', l10n.languageFrench),
+              ('mg', l10n.languageMalagasy),
             ],
-            selected: {_locale},
-            onSelectionChanged: (s) => setState(() => _locale = s.single),
+            value: _locale,
+            onChanged: (v) => setState(() => _locale = v),
           ),
           if (_isNew) ...[
-            const SizedBox(height: 16),
+            gap,
             TextField(
               key: const Key('login'),
               controller: _login,
@@ -257,7 +305,7 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
                 labelText: worker ? l10n.loginUsername : l10n.loginEmail,
               ),
             ),
-            const SizedBox(height: 16),
+            gap,
             TextField(
               key: const Key('secret'),
               controller: _secret,
@@ -277,50 +325,24 @@ class _MemberFormScreenState extends ConsumerState<MemberFormScreen>
               ),
             ),
             if (worker) ...[
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String?>(
-                initialValue: _personId,
-                decoration: InputDecoration(labelText: l10n.memberPerson),
-                items: [
-                  DropdownMenuItem(value: null, child: Text(l10n.memberNone)),
-                  for (final p in people.where((p) => p.active))
-                    DropdownMenuItem(
-                      value: p.id,
-                      child: Text(personLabel(l10n, p, roles[p.id])),
-                    ),
-                ],
-                onChanged: (v) => setState(() => _personId = v),
+              gap,
+              pickerRow(
+                key: const Key('memberPerson'),
+                label: l10n.memberPerson,
+                value: person == null
+                    ? l10n.memberNone
+                    : personLabel(l10n, person, roles[person.id]),
+                onTap: () async {
+                  final id = await pickPerson(context, current: _personId);
+                  if (id != null && mounted) setState(() => _personId = id);
+                },
               ),
             ],
           ],
           if (_error != null) ...[
-            const SizedBox(height: 16),
-            Text(
-              _error!,
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
+            gap,
+            AttentionBand(severity: BandSeverity.danger, text: _error!),
           ],
-          const SizedBox(height: 24),
-          if (!_isNew && _hasLogin && canReset) ...[
-            OutlinedButton.icon(
-              key: const Key('resetSecret'),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              icon: const Icon(Icons.key),
-              label: Text(worker ? l10n.resetPin : l10n.resetPassword),
-              onPressed: _reset,
-            ),
-            const SizedBox(height: 16),
-          ],
-          FilledButton(
-            key: const Key('saveMember'),
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(56),
-            ),
-            onPressed: saving || !_valid ? null : () => saveOnce(_save),
-            child: Text(l10n.save),
-          ),
         ],
       ),
     );

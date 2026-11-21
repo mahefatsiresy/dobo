@@ -835,3 +835,17 @@ prepDeleteConfirm;;Supprimer l'étape {step} du {date} ?;Hofafana ve ny dingana 
 prepProductLabel;;Produit;Fanafody;
 backupSection;;Sauvegarde;Tahiry;
 backupSummary;;Exporter ou importer une copie;Avoaka na ampidiro ny dika;
+adminMembersSummary;;{active} actifs, {workers};{active} mavitrika, {workers};
+adminWorkersCount;;{count, plural, =0{aucun ouvrier} =1{1 ouvrier} other{{count} ouvriers}};{count, plural, =0{tsy misy mpiasa} =1{mpiasa 1} other{mpiasa {count}}};
+adminGroupsSummary;;{count, plural, =0{Aucune branche} =1{1 branche} other{{count} branches}};{count, plural, =0{Tsy misy sampana} =1{sampana 1} other{sampana {count}}};
+adminSettingsSummary;;{count, plural, =0{Valeurs du manuel} =1{1 valeur modifiée} other{{count} valeurs modifiées}};{count, plural, =0{Sandan'ny boky} =1{sanda 1 novaina} other{sanda {count} novaina}};
+memberYou;;{name} (vous);{name} (ianao);
+membersInactive;;Inactifs;Tsy mavitrika;
+memberAdd;;Ajouter un membre;Ampidiro mpikambana;
+memberAddAction;;Ajouter le membre;Ampidiro ny mpikambana;
+groupAdd;;Ajouter une branche;Ampidiro sampana;
+groupPickTitle;;Branche;Sampana;
+personAdd;;Ajouter une personne;Ampidiro olona;
+settingsChanged;;{count, plural, =0{Valeurs du manuel} =1{1 modifiée} other{{count} modifiées}};{count, plural, =0{Sandan'ny boky} =1{1 novaina} other{{count} novaina}};
+settingReset;;Rétablir;Avereno;
+inactiveCount;;{count, plural, =1{1 personne} other{{count} personnes}};{count, plural, =1{olona 1} other{olona {count}}};

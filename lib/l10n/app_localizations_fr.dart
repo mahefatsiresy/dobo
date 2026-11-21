@@ -3029,4 +3029,94 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get backupSummary => 'Exporter ou importer une copie';
+
+  @override
+  String adminMembersSummary(int active, String workers) {
+    return '$active actifs, $workers';
+  }
+
+  @override
+  String adminWorkersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ouvriers',
+      one: '1 ouvrier',
+      zero: 'aucun ouvrier',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adminGroupsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count branches',
+      one: '1 branche',
+      zero: 'Aucune branche',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adminSettingsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count valeurs modifiées',
+      one: '1 valeur modifiée',
+      zero: 'Valeurs du manuel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String memberYou(String name) {
+    return '$name (vous)';
+  }
+
+  @override
+  String get membersInactive => 'Inactifs';
+
+  @override
+  String get memberAdd => 'Ajouter un membre';
+
+  @override
+  String get memberAddAction => 'Ajouter le membre';
+
+  @override
+  String get groupAdd => 'Ajouter une branche';
+
+  @override
+  String get groupPickTitle => 'Branche';
+
+  @override
+  String get personAdd => 'Ajouter une personne';
+
+  @override
+  String settingsChanged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count modifiées',
+      one: '1 modifiée',
+      zero: 'Valeurs du manuel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingReset => 'Rétablir';
+
+  @override
+  String inactiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count personnes',
+      one: '1 personne',
+    );
+    return '$_temp0';
+  }
 }

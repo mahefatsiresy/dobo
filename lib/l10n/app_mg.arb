@@ -836,5 +836,19 @@
   "prepDeleteConfirm": "Hofafana ve ny dingana {step} tamin'ny {date} ?",
   "prepProductLabel": "Fanafody",
   "backupSection": "Tahiry",
-  "backupSummary": "Avoaka na ampidiro ny dika"
+  "backupSummary": "Avoaka na ampidiro ny dika",
+  "adminMembersSummary": "{active} mavitrika, {workers}",
+  "adminWorkersCount": "{count, plural, =0{tsy misy mpiasa} =1{mpiasa 1} other{mpiasa {count}}}",
+  "adminGroupsSummary": "{count, plural, =0{Tsy misy sampana} =1{sampana 1} other{sampana {count}}}",
+  "adminSettingsSummary": "{count, plural, =0{Sandan'ny boky} =1{sanda 1 novaina} other{sanda {count} novaina}}",
+  "memberYou": "{name} (ianao)",
+  "membersInactive": "Tsy mavitrika",
+  "memberAdd": "Ampidiro mpikambana",
+  "memberAddAction": "Ampidiro ny mpikambana",
+  "groupAdd": "Ampidiro sampana",
+  "groupPickTitle": "Sampana",
+  "personAdd": "Ampidiro olona",
+  "settingsChanged": "{count, plural, =0{Sandan'ny boky} =1{1 novaina} other{{count} novaina}}",
+  "settingReset": "Avereno",
+  "inactiveCount": "{count, plural, =1{olona 1} other{olona {count}}}"
 }

@@ -16,6 +16,7 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Administration'));
     await tapAndSettle(tester, find.text('Réglages'));
+    await tapAndSettle(tester, find.text("Qualité de l'eau"));
     final row = find.byKey(const Key('setting-minOxygenMgL'));
     expect(
       find.descendant(of: row, matching: find.textContaining('3')),
@@ -69,6 +70,7 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Administration'));
     await tapAndSettle(tester, find.text('Réglages'));
+    await tapAndSettle(tester, find.text('Photos'));
     final row = find.byKey(const Key('setting-photoUploadCap'));
     await enterAndSettle(
       tester,

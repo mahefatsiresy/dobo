@@ -5129,6 +5129,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Exporter ou importer une copie'**
   String get backupSummary;
+
+  /// No description provided for @adminMembersSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'{active} actifs, {workers}'**
+  String adminMembersSummary(int active, String workers);
+
+  /// No description provided for @adminWorkersCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{aucun ouvrier} =1{1 ouvrier} other{{count} ouvriers}}'**
+  String adminWorkersCount(int count);
+
+  /// No description provided for @adminGroupsSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune branche} =1{1 branche} other{{count} branches}}'**
+  String adminGroupsSummary(int count);
+
+  /// No description provided for @adminSettingsSummary.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Valeurs du manuel} =1{1 valeur modifiée} other{{count} valeurs modifiées}}'**
+  String adminSettingsSummary(int count);
+
+  /// No description provided for @memberYou.
+  ///
+  /// In fr, this message translates to:
+  /// **'{name} (vous)'**
+  String memberYou(String name);
+
+  /// No description provided for @membersInactive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inactifs'**
+  String get membersInactive;
+
+  /// No description provided for @memberAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter un membre'**
+  String get memberAdd;
+
+  /// No description provided for @memberAddAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter le membre'**
+  String get memberAddAction;
+
+  /// No description provided for @groupAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une branche'**
+  String get groupAdd;
+
+  /// No description provided for @groupPickTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Branche'**
+  String get groupPickTitle;
+
+  /// No description provided for @personAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une personne'**
+  String get personAdd;
+
+  /// No description provided for @settingsChanged.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Valeurs du manuel} =1{1 modifiée} other{{count} modifiées}}'**
+  String settingsChanged(int count);
+
+  /// No description provided for @settingReset.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rétablir'**
+  String get settingReset;
+
+  /// No description provided for @inactiveCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 personne} other{{count} personnes}}'**
+  String inactiveCount(int count);
 }
 
 class _AppLocalizationsDelegate

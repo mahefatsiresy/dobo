@@ -28,7 +28,9 @@ class ChoiceButtons<T> extends StatelessWidget {
 
   final List<(T, String)> options;
   final T? value;
-  final ValueChanged<T> onChanged;
+
+  /// Null shows the choices without letting them change.
+  final ValueChanged<T>? onChanged;
 
   /// Before an option's label, such as a pond colour's swatch.
   final Widget Function(T value)? leading;
@@ -41,7 +43,7 @@ class ChoiceButtons<T> extends StatelessWidget {
       for (final (v, label) in options)
         OutlinedButton(
           style: pickStyle(context, picked: v == value),
-          onPressed: () => onChanged(v),
+          onPressed: onChanged == null ? null : () => onChanged!(v),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -70,7 +72,9 @@ class ChoiceField<T> extends StatelessWidget {
   final String label;
   final List<(T, String)> options;
   final T? value;
-  final ValueChanged<T> onChanged;
+
+  /// Null shows the choices without letting them change.
+  final ValueChanged<T>? onChanged;
   final String? requiredText;
   final Widget Function(T value)? leading;
 
@@ -87,10 +91,12 @@ class ChoiceField<T> extends StatelessWidget {
           options: options,
           value: value,
           leading: leading,
-          onChanged: (v) {
-            onChanged(v);
-            state.didChange(v);
-          },
+          onChanged: onChanged == null
+              ? null
+              : (v) {
+                  onChanged!(v);
+                  state.didChange(v);
+                },
         ),
         if (state.hasError)
           Padding(

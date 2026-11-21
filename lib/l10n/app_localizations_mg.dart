@@ -3026,4 +3026,94 @@ class AppLocalizationsMg extends AppLocalizations {
 
   @override
   String get backupSummary => 'Avoaka na ampidiro ny dika';
+
+  @override
+  String adminMembersSummary(int active, String workers) {
+    return '$active mavitrika, $workers';
+  }
+
+  @override
+  String adminWorkersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'mpiasa $count',
+      one: 'mpiasa 1',
+      zero: 'tsy misy mpiasa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adminGroupsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sampana $count',
+      one: 'sampana 1',
+      zero: 'Tsy misy sampana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adminSettingsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sanda $count novaina',
+      one: 'sanda 1 novaina',
+      zero: 'Sandan\'ny boky',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String memberYou(String name) {
+    return '$name (ianao)';
+  }
+
+  @override
+  String get membersInactive => 'Tsy mavitrika';
+
+  @override
+  String get memberAdd => 'Ampidiro mpikambana';
+
+  @override
+  String get memberAddAction => 'Ampidiro ny mpikambana';
+
+  @override
+  String get groupAdd => 'Ampidiro sampana';
+
+  @override
+  String get groupPickTitle => 'Sampana';
+
+  @override
+  String get personAdd => 'Ampidiro olona';
+
+  @override
+  String settingsChanged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count novaina',
+      one: '1 novaina',
+      zero: 'Sandan\'ny boky',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingReset => 'Avereno';
+
+  @override
+  String inactiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'olona $count',
+      one: 'olona 1',
+    );
+    return '$_temp0';
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../db/database.dart';
 import '../../db/repositories/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme/tokens.dart';
 import 'members_screen.dart';
 
 /// Family branches (SPEC §3): add and rename, offline.
@@ -24,27 +25,33 @@ class GroupsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final groups = ref.watch(groupsProvider).value ?? const <Group>[];
+    final c = context.dobo;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.adminGroups)),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: null, // Tabs keep each branch alive: shared tags clash.
-        onPressed: () => _edit(context, ref),
-        icon: const Icon(Icons.add),
-        label: Text(l10n.add),
-      ),
-      body: groups.isEmpty
-          ? Center(child: Text(l10n.groupsEmpty))
-          : ListView(
-              children: [
-                for (final g in groups)
-                  ListTile(
-                    minTileHeight: 56,
-                    title: Text(g.name),
-                    trailing: const Icon(Icons.edit),
-                    onTap: () => _edit(context, ref, g),
-                  ),
-              ],
+      body: ListView(
+        children: [
+          if (groups.isEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(l10n.groupsEmpty),
             ),
+          for (final g in groups) ...[
+            ListTile(
+              minTileHeight: 56,
+              title: Text(g.name),
+              trailing: const Icon(Icons.edit),
+              onTap: () => _edit(context, ref, g),
+            ),
+            Divider(height: 1, color: c.line),
+          ],
+          ListTile(
+            minTileHeight: 56,
+            leading: const Icon(Icons.add),
+            title: Text(l10n.groupAdd),
+            onTap: () => _edit(context, ref),
+          ),
+        ],
+      ),
     );
   }
 }

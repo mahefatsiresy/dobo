@@ -5,6 +5,7 @@ import 'package:dobo/db/repositories/daily_log_repository.dart';
 import 'package:dobo/db/repositories/feed_repository.dart';
 import 'package:dobo/db/repositories/harvest_repository.dart';
 import 'package:dobo/db/repositories/health_repository.dart';
+import 'package:dobo/db/repositories/member_repository.dart';
 import 'package:dobo/db/repositories/person_repository.dart';
 import 'package:dobo/db/repositories/pond_repository.dart';
 import 'package:dobo/db/repositories/prep_repository.dart';
@@ -241,7 +242,8 @@ Future<void> seedDemoTrade(AppDatabase db, DemoFarm farm) async {
 /// What the tools and admin pages need on top of [seedDemoFarm] (plan
 /// design step 7b):
 /// - people "Rakoto" (a worker without an account) and "Soa" (inactive);
-/// - a second member "Hery" (member, sales flag);
+/// - the signed-in member "Rado" (admin, sales) and a second member "Hery"
+///   (member, sales flag), both in the branch "Rabe";
 /// - the site's oxygen minimum raised to 3,5 mg/L;
 /// - Rakoto's paper sheet for E1 already typed on 10/03 and 11/03;
 /// - E1's log of today refused by the server (a role error).
@@ -252,9 +254,24 @@ Future<void> seedDemoAdmin(AppDatabase db, DemoFarm farm) async {
   farm['Rakoto'] = rakoto;
   final soa = await people.create(name: 'Soa');
   await people.update(soa, name: 'Soa', active: false);
-  final me = await (db.select(
-    db.members,
-  )..where((m) => m.id.equals(session.userId))).getSingleOrNull();
+  final rabe = await GroupRepository(db, session).create('Rabe');
+  // The signed-in admin, as an account found online would be.
+  await db
+      .into(db.members)
+      .insert(
+        MembersCompanion.insert(
+          id: Value(session.userId),
+          associationId: session.associationId,
+          enteredBy: session.userId,
+          deviceId: session.deviceId,
+          name: 'Rado',
+          role: MemberRole.member,
+          isAdmin: const Value(true),
+          isSales: const Value(true),
+          locale: 'fr',
+          groupId: Value(rabe),
+        ),
+      );
   await db
       .into(db.members)
       .insert(
@@ -267,7 +284,7 @@ Future<void> seedDemoAdmin(AppDatabase db, DemoFarm farm) async {
           role: MemberRole.member,
           isSales: const Value(true),
           locale: 'fr',
-          groupId: Value(me?.groupId),
+          groupId: Value(rabe),
         ),
       );
   await SettingsRepository(db, session).set('minOxygenMgL', 3.5);

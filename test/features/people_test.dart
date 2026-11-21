@@ -54,26 +54,25 @@ void main() {
   appTest('add a person, then mark them inactive', (tester, db) async {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Personnes'));
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter une personne'));
     await tester.enterText(field('Nom'), 'Rakoto');
     await tapAndSettle(tester, find.text('Plus de détails'));
     await tester.enterText(field('Téléphone'), '034 00 000 00');
     await tapAndSettle(tester, find.text('Ajouter la personne'));
     expect(find.text('Rakoto'), findsOneWidget);
 
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter une personne'));
     await tester.enterText(field('Nom'), 'Soa');
     await tapAndSettle(tester, find.text('Ajouter la personne'));
 
     await tapAndSettle(tester, find.text('Rakoto'));
     await tapAndSettle(tester, find.text('Actif'));
     await tapAndSettle(tester, find.text('Enregistrer'));
-    final rows = tester
-        .widgetList<ListTile>(find.byType(ListTile))
-        .map((t) => ((t.title! as Text).data, t.enabled))
-        .toList();
-    expect(rows, [('Soa', true), ('Rakoto', true)]);
-    expect(find.text('Inactif'), findsOneWidget);
+    // Inactive people fold at the foot (docs/design.md §Step 7b).
+    expect(find.text('Soa'), findsOneWidget);
+    expect(find.text('Rakoto'), findsNothing);
+    await tapAndSettle(tester, find.text('Inactifs'));
+    expect(find.text('Rakoto'), findsOneWidget);
     final rakoto = (await db.select(db.people).get()).singleWhere(
       (p) => p.name == 'Rakoto',
     );
@@ -83,7 +82,7 @@ void main() {
   appTest('a person needs a name', (tester, db) async {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Personnes'));
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter une personne'));
     await tapAndSettle(tester, find.text('Ajouter la personne'));
     expect(find.text('Obligatoire'), findsOneWidget);
     expect(await db.select(db.people).get(), isEmpty);

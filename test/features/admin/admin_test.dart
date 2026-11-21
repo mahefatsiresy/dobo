@@ -7,11 +7,18 @@ import 'package:dobo/domain/types.dart';
 import 'package:dobo/router.dart';
 import 'package:dobo/sync/providers.dart';
 import 'package:drift/drift.dart' show Value;
+import 'package:dobo/features/common/choice_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers.dart';
 import '../../sync/fake_auth_gateway.dart';
+
+/// The member form's pinned action, "Ajouter le membre" or "Enregistrer".
+Finder saveMember() => find.descendant(
+  of: find.byType(SafeArea),
+  matching: find.byWidgetPredicate((w) => w is FilledButton),
+);
 
 void main() {
   late FakeAuthGateway auth;
@@ -41,21 +48,21 @@ void main() {
           ),
         );
     await openMembers(tester);
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter un membre'));
     await enterAndSettle(tester, find.byKey(const Key('memberName')), 'Rakoto');
     await tapAndSettle(tester, find.text('Ouvrier'));
     await tapAndSettle(tester, find.byKey(const Key('memberGroup')));
     await tapAndSettle(tester, find.text('Branche Rabe').last);
     await enterAndSettle(tester, find.byKey(const Key('login')), 'rakoto');
     await enterAndSettle(tester, find.byKey(const Key('secret')), '123456');
-    await tapAndSettle(tester, find.byKey(const Key('saveMember')));
+    await tapAndSettle(tester, saveMember());
 
     final sent = auth.createdAccounts.single;
     expect(
       (sent.role, sent.login, sent.groupId),
       (MemberRole.worker, 'rakoto', 'g1'),
     );
-    expect(find.text('Branche Rabe'), findsOneWidget);
+    expect(find.textContaining('Branche Rabe'), findsOneWidget);
     expect(find.text('Rakoto'), findsOneWidget);
   }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
 
@@ -74,7 +81,7 @@ void main() {
     await tapAndSettle(tester, find.text('Plus'));
     await tapAndSettle(tester, find.text('Administration'));
     await tapAndSettle(tester, find.text('Branches'));
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter une branche'));
     await tester.enterText(find.byType(TextField), 'Branche Rabe');
     await tapAsKeyboardCloses(tester, find.text('Enregistrer'));
     expect(tester.takeException(), isNull);
@@ -83,14 +90,12 @@ void main() {
 
   appTest('a 5-digit PIN keeps Save disabled', (tester, db) async {
     await openMembers(tester);
-    await tapAndSettle(tester, find.text('Ajouter'));
+    await tapAndSettle(tester, find.text('Ajouter un membre'));
     await enterAndSettle(tester, find.byKey(const Key('memberName')), 'Rakoto');
     await tapAndSettle(tester, find.text('Ouvrier'));
     await enterAndSettle(tester, find.byKey(const Key('login')), 'rakoto');
     await enterAndSettle(tester, find.byKey(const Key('secret')), '12345');
-    final save = tester.widget<FilledButton>(
-      find.byKey(const Key('saveMember')),
-    );
+    final save = tester.widget<FilledButton>(saveMember());
     expect(save.onPressed, isNull);
   }, overrides: [authGatewayProvider.overrideWith((ref) => auth)]);
 
@@ -157,11 +162,11 @@ void main() {
           ),
         );
     await openMembers(tester);
-    await tapAndSettle(tester, find.text('Soa'));
-    final role = tester.widget<SegmentedButton<MemberRole>>(
-      find.byType(SegmentedButton<MemberRole>),
+    await tapAndSettle(tester, find.text('Soa (vous)'));
+    final role = tester.widget<ChoiceButtons<MemberRole>>(
+      find.byType(ChoiceButtons<MemberRole>),
     );
-    expect(role.onSelectionChanged, isNull);
+    expect(role.onChanged, isNull);
     for (final label in ['Administrateur', 'Actif']) {
       final tile = tester.widget<SwitchListTile>(
         find.widgetWithText(SwitchListTile, label),
@@ -196,8 +201,8 @@ void main() {
     await addWorker(db, tester);
     await openMembers(tester);
     await tapAndSettle(tester, find.text('Rakoto'));
-    await reveal(tester, find.byKey(const Key('resetSecret')));
-    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.byIcon(Icons.key));
     expect(find.text('Nouveau code PIN'), findsWidgets);
     await enterAndSettle(tester, find.byKey(const Key('newSecret')), '654321');
     await tapAndSettle(tester, find.byKey(const Key('confirmReset')));
@@ -210,8 +215,8 @@ void main() {
     await addWorker(db, tester);
     await openMembers(tester);
     await tapAndSettle(tester, find.text('Rakoto'));
-    await reveal(tester, find.byKey(const Key('resetSecret')));
-    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.byIcon(Icons.key));
     await enterAndSettle(tester, find.byKey(const Key('newSecret')), '65432');
     final confirm = tester.widget<FilledButton>(
       find.byKey(const Key('confirmReset')),
@@ -226,8 +231,8 @@ void main() {
     await addWorker(db, tester);
     await openMembers(tester);
     await tapAndSettle(tester, find.text('Rakoto'));
-    await reveal(tester, find.byKey(const Key('resetSecret')));
-    await tapAndSettle(tester, find.byKey(const Key('resetSecret')));
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.byIcon(Icons.key));
     await enterAndSettle(tester, find.byKey(const Key('newSecret')), '654321');
     auth.offline = true;
     await tapAndSettle(tester, find.byKey(const Key('confirmReset')));

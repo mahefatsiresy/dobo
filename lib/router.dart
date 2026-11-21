@@ -41,6 +41,7 @@ import 'features/account/login_screen.dart';
 import 'features/account/welcome_screen.dart';
 import 'features/sync/sync_screen.dart';
 import 'features/admin/admin_screen.dart';
+import 'features/admin/group_picker.dart';
 import 'features/admin/groups_screen.dart';
 import 'features/admin/member_form_screen.dart';
 import 'features/admin/members_screen.dart';
@@ -425,6 +426,14 @@ final routerProvider = Provider<GoRouter>((ref) {
                       GoRoute(
                         path: 'groups',
                         builder: (context, state) => const GroupsScreen(),
+                        routes: [
+                          GoRoute(
+                            path: 'pick',
+                            builder: (context, state) => GroupPickerScreen(
+                              current: state.uri.queryParameters['current'],
+                            ),
+                          ),
+                        ],
                       ),
                       GoRoute(
                         path: 'settings',
