@@ -10,7 +10,8 @@
 # `visit-start` (the Visit tab before a visit), `visit` (one under way),
 # `reports` (the Reports tab), `report` (a published report), or for
 # step 7 `more`, `batches`, `batch`, `batch-closed`, `feed`, `sales`,
-# `transfer` or `sale`;
+# `transfer` or `sale`, or for step 7b `transcription`, `paper`, `prep`,
+# `sync`, `account`, `admin`, `members`, `member`, `settings` or `exports`;
 # by default `list E1 E2 P1`.
 #
 # The demo build replaces the app on the device, signed with the same debug

@@ -27,7 +27,10 @@ const _locale = String.fromEnvironment('DEMO_LOCALE', defaultValue: 'fr');
 /// Reports tab (one published report, one draft) or `report` for that
 /// published report; with the batches, feed and sales demo (step 7):
 /// `more`, `batches`, `batch` (L-E1), `batch-closed` (L-E7), `feed`,
-/// `sales`, `transfer` (L-E1 out of E1) or `sale` (L-E6's harvest).
+/// `sales`, `transfer` (L-E1 out of E1) or `sale` (L-E6's harvest); with
+/// the tools and admin demo (step 7b): `transcription`, `paper`, `prep`
+/// (P1), `sync`, `account`, `admin`, `members`, `member` (Hery),
+/// `settings` or `exports`.
 const _page = String.fromEnvironment('DEMO_PAGE', defaultValue: 'list');
 
 /// The app on the demo farm, for screenshots of the redesigned screens
@@ -47,6 +50,11 @@ Future<void> main() async {
   );
   final farm = await seedDemoFarm(db);
   if (_trade.contains(_page)) await seedDemoTrade(db, farm);
+  if (_admin.contains(_page)) await seedDemoAdmin(db, farm);
+  final hery = (await db.select(db.members).get())
+      .where((m) => m.name == 'Hery')
+      .firstOrNull
+      ?.id;
   final batches = {
     for (final b in await db.select(db.batches).get()) b.code: b.id,
   };
@@ -86,6 +94,16 @@ Future<void> main() async {
     'transfer' =>
       '/transfer?batchId=${batches['L-E1']}&fromPondId=${farm['E1']}',
     'sale' => '/more/batches/${batches['L-E6']}/sell?harvestId=$harvestE6',
+    'transcription' => '/more/transcription',
+    'paper' => '/more/paper',
+    'prep' => '/ponds/${farm['P1']}/prep',
+    'sync' => '/more/sync',
+    'account' => '/more/account',
+    'admin' => '/more/admin',
+    'members' => '/more/admin/members',
+    'member' => '/more/admin/members/$hery',
+    'settings' => '/more/admin/settings',
+    'exports' => '/more/exports',
     _ when _page.startsWith('log-') =>
       '/log/${_pond(farm, _page.substring(4))}',
     _ => '/ponds/${_pond(farm, _page)}',
@@ -112,6 +130,20 @@ const _trade = {
   'sales',
   'transfer',
   'sale',
+};
+
+/// Pages that show the tools and admin demo (step 7b).
+const _admin = {
+  'transcription',
+  'paper',
+  'prep',
+  'sync',
+  'account',
+  'admin',
+  'members',
+  'member',
+  'settings',
+  'exports',
 };
 
 /// The demo pond's id; a code the demo farm lacks is a mistake, not an
