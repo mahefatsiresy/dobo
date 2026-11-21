@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/database.dart';
 import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/errors.dart';
 import '../../db/repositories/providers.dart';
@@ -53,6 +54,9 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
 
   bool get _correcting => widget.stockingId != null;
 
+  /// The stocking as saved, which a delete names (not what was typed).
+  Stocking? _saved;
+
   @override
   void initState() {
     super.initState();
@@ -89,6 +93,7 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
           .where((s) => s.id == widget.stockingId)
           .firstOrNull;
       if (s == null) return false;
+      _saved = s;
       _pondId = s.pondId;
       _date = farmDate(s.recordedAt);
       _count.text = '${s.count}';
@@ -159,11 +164,12 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
 
   Future<void> _delete(String pondCode) async {
     final l10n = AppLocalizations.of(context);
+    final saved = _saved!;
     final ok = await confirmDelete(
       context,
       l10n.deleteStockingConfirm(
-        formatDate(_date),
-        formatCount(_countValue ?? 0, Localizations.localeOf(context)),
+        formatDate(saved.recordedAt),
+        formatCount(saved.count, Localizations.localeOf(context)),
         pondCode,
       ),
     );
@@ -233,7 +239,14 @@ class _StockScreenState extends ConsumerState<StockScreen> with SaveOnce {
                 FormMenuEntry(
                   label: l10n.delete,
                   icon: Icons.delete_outline,
-                  onTap: () => _delete(target?.pond.code ?? '?'),
+                  onTap: () => _delete(
+                    ponds
+                            .where((o) => o.pond.id == _saved?.pondId)
+                            .firstOrNull
+                            ?.pond
+                            .code ??
+                        '?',
+                  ),
                 ),
               ],
             ),

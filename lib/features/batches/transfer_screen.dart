@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/database.dart';
 import '../../db/repositories/batch_repository.dart';
 import '../../db/repositories/errors.dart';
 import '../../db/repositories/providers.dart';
@@ -56,6 +57,9 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
 
   bool get _correcting => widget.transferId != null;
 
+  /// The move as saved, which a delete names (not what was typed).
+  Transfer? _saved;
+
   @override
   void dispose() {
     _count.dispose();
@@ -84,6 +88,7 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
           .where((t) => t.id == widget.transferId)
           .firstOrNull;
       if (t == null) return false;
+      _saved = t;
       _fromPondId = t.fromPondId;
       _toPondId = t.toPondId;
       _date = farmDate(t.recordedAt);
@@ -187,10 +192,16 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
                 FormMenuEntry(
                   label: l10n.delete,
                   icon: Icons.delete_outline,
-                  onTap: () => _delete(
-                    source?.pond.code ?? '?',
-                    target?.pond.code ?? '?',
-                  ),
+                  onTap: () {
+                    String code(String? id) =>
+                        overviews
+                            .where((o) => o.pond.id == id)
+                            .firstOrNull
+                            ?.pond
+                            .code ??
+                        '?';
+                    _delete(code(_saved?.fromPondId), code(_saved?.toPondId));
+                  },
                 ),
               ],
             ),
@@ -293,8 +304,8 @@ class _TransferScreenState extends ConsumerState<TransferScreen> with SaveOnce {
     final ok = await confirmDelete(
       context,
       l10n.deleteTransferConfirm(
-        formatDate(_date),
-        formatCount(_countValue ?? 0, Localizations.localeOf(context)),
+        formatDate(_saved!.recordedAt),
+        formatCount(_saved!.count, Localizations.localeOf(context)),
         from,
         to,
       ),

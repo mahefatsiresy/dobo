@@ -141,7 +141,12 @@ class _SaleScreenState extends ConsumerState<SaleScreen> with SaveOnce {
     }
     if (sale != null && !_loaded) {
       _loaded = true;
-      _harvestId = sale.harvestId;
+      // The harvest as it now stands: a sale keeps the id of the version it
+      // was sold from, which a later correction of the harvest replaced.
+      _harvestId = harvests
+          .firstWhere((h) => h.sales.any((s) => s.id == sale.id))
+          .harvest
+          .id;
       _customerId = sale.customerId;
       _productForm = sale.form;
       _date = farmDate(sale.recordedAt);

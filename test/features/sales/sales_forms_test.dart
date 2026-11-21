@@ -1,11 +1,13 @@
 import 'package:dobo/db/repositories/batch_repository.dart';
 import 'package:dobo/db/repositories/facts_repository.dart';
 import 'package:dobo/db/repositories/harvest_repository.dart';
+import 'package:dobo/db/repositories/health_repository.dart';
 import 'package:dobo/domain/types.dart';
 import 'package:dobo/features/common/attention_band.dart';
 import 'package:dobo/features/common/choice_buttons.dart';
 import 'package:dobo/features/common/details_fold.dart';
 import 'package:dobo/features/common/estimated.dart';
+import 'package:dobo/features/common/farm_today.dart';
 import 'package:dobo/features/common/pond_choice.dart';
 import 'package:dobo/l10n/formatting.dart';
 import 'package:dobo/locale_controller.dart';
@@ -28,11 +30,20 @@ Finder _snack(String text) =>
 
 String _n(int v) => formatCount(v, const Locale('fr'));
 
+/// The day after the fixture's harvests, so dates on screen never follow
+/// the real calendar (a golden showed today's date).
+final _clock = clockProvider.overrideWithValue(
+  () => DateTime.utc(2026, 6, 2, 6),
+);
+
 void _salesTest(
   String description,
   Future<void> Function(WidgetTester tester, SalesFarm farm) body, {
   Size size = const Size(480, 900),
-}) => appTest(description, isSales: true, (tester, db) async {
+}) => appTest(description, isSales: true, overrides: [_clock], (
+  tester,
+  db,
+) async {
   tester.view.physicalSize = size * 2;
   tester.view.devicePixelRatio = 2;
   addTearDown(tester.view.reset);
@@ -274,6 +285,91 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  _salesTest('a sale whose harvest was corrected below it shows both', (
+    tester,
+    farm,
+  ) async {
+    final h = await farm.harvest(kg: 50, isFinal: false);
+    final c = await farm.customer('Marché Anosy');
+    final s = await farm.harvests.sell(
+      SaleInput(
+        harvestId: h,
+        customerId: c,
+        date: DateTime(2026, 6, 2),
+        weightG: 40000,
+        form: ProductForm.fresh,
+      ),
+    );
+    await farm.harvests.correct(
+      h,
+      HarvestInput(
+        batchId: farm.l1,
+        pondId: farm.e1,
+        date: DateTime(2026, 6, 1),
+        count: 950,
+        weightG: 30000,
+        isFinal: false,
+      ),
+    );
+    await farm.open(tester, '/more/batches/${farm.l1}/sales/$s/edit');
+    expect(
+      find.widgetWithText(
+        AttentionBand,
+        'Plus que le poids récolté pas encore vendu (30 kg)',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  _salesTest('the has-sales refusal floats clear of the pinned button', (
+    tester,
+    farm,
+  ) async {
+    final h = await farm.harvest(isFinal: false);
+    final c = await farm.customer('Marché Anosy');
+    await farm.harvests.sell(
+      SaleInput(
+        harvestId: h,
+        customerId: c,
+        date: DateTime(2026, 6, 2),
+        weightG: 10000,
+        form: ProductForm.fresh,
+      ),
+    );
+    await farm.open(tester, '/more/batches/${farm.l1}/harvests/$h/edit');
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.text('Supprimer'));
+    final words = find.text("Supprimez d'abord sa vente.");
+    expect(words, findsOneWidget);
+    expect(
+      tester.getRect(words).bottom,
+      lessThanOrEqualTo(
+        tester.getRect(_pinned('Enregistrer la correction')).top,
+      ),
+    );
+  });
+
+  _salesTest('correcting a harvest keeps its pond, isolated since', (
+    tester,
+    farm,
+  ) async {
+    final h = await farm.harvest(isFinal: false);
+    await HealthRepository(farm.db, farm.session).report(
+      pondId: farm.e1,
+      signs: const {},
+      isolate: true,
+      technicianCalled: false,
+    );
+    await farm.open(tester, '/more/batches/${farm.l1}/harvests/$h/edit');
+    final e1 = find.byKey(ValueKey('pond-${farm.e1}'));
+    expect(e1, findsOneWidget);
+    expect(
+      tester.widget<OutlinedButton>(e1).style?.backgroundColor?.resolve({}),
+      isNot(Colors.white),
+    );
+    expect(_pinned('Enregistrer la correction'), findsOneWidget);
   });
 
   _salesTest('customer form: type buttons, contact folded, ⋮ to remove', (

@@ -101,6 +101,18 @@ void main() {
     expect(await currentEvents(db, db.feedDeliveries).get(), isEmpty);
   }, overrides: [_clock]);
 
+  appTest('the delete names the saved delivery, not what was typed', (
+    tester,
+    db,
+  ) async {
+    final id = await _lot(db);
+    await _go(tester, '/more/feed/$id');
+    await enterAndSettle(tester, _field('Poids livré'), '100');
+    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+    await tapAndSettle(tester, find.text('Supprimer'));
+    expect(find.textContaining('(120 kg)'), findsOneWidget);
+  }, overrides: [_clock]);
+
   appTest('discard: the lot as a header, reason buttons, Jeter', (
     tester,
     db,

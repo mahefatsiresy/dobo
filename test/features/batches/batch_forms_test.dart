@@ -209,6 +209,31 @@ void main() {
   );
 
   _formTest(
+    'the delete names the saved stocking, not what was typed',
+    (_, batches) => '/more/batches/${batches['L-E1']}',
+    (tester, db, farm) async {
+      final batch = (await (db.select(
+        db.batches,
+      )..where((b) => b.code.equals('L-E1'))).getSingle()).id;
+      final stocking = await _stockingOf(db, batch);
+      appContainer(tester)
+          .read(routerProvider)
+          .go('/more/batches/$batch/stockings/$stocking/edit');
+      await tester.pumpAndSettle();
+      await enterAndSettle(tester, _field("Nombre d'alevins"), '1000');
+      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
+      await tapAndSettle(tester, find.text('Supprimer'));
+      expect(
+        find.textContaining(
+          '(${formatCount(1240, const Locale('fr'))} poissons, E1)',
+        ),
+        findsOneWidget,
+      );
+    },
+    size: _wide,
+  );
+
+  _formTest(
     'batch edit: details open when filled; Enregistrer le lot',
     (_, batches) => '/more/batches/${batches['L-E1']}/edit',
     (tester, db, farm) async {

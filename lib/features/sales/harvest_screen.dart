@@ -84,8 +84,7 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
   Future<void> _delete(Harvest old, int sales, String pond) async {
     final l10n = AppLocalizations.of(context);
     if (sales > 0) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(l10n.harvestHasSales(sales))));
+      showRefusal(context, l10n.harvestHasSales(sales));
       return;
     }
     final ok = await confirmDelete(
@@ -100,6 +99,10 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
     try {
       await ref.read(harvestRepositoryProvider).delete(old.id);
     } on HarvestHasSalesException {
+      // Sales arrived by sync since the page opened.
+      if (mounted) {
+        showRefusal(context, l10n.harvestHasSales(sales < 1 ? 1 : sales));
+      }
       return;
     }
     if (!mounted) return;
@@ -149,16 +152,10 @@ class _HarvestScreenState extends ConsumerState<HarvestScreen> with SaveOnce {
             ponds[p.pondId] != null &&
             ponds[p.pondId]!.status != PondStatus.isolated)
           p.pondId,
-      // A correction keeps its pond, emptied by the harvest itself.
-      if (old != null &&
-          !placements.any(
-            (p) =>
-                p.batchId == widget.batchId &&
-                p.pondId == old.pondId &&
-                p.live.count > 0,
-          ))
-        old.pondId,
     ];
+    // A correction keeps its own pond, emptied by the harvest itself or
+    // isolated since: it must never move the harvest to another pond.
+    if (old != null && !here.contains(old.pondId)) here.add(old.pondId);
     if (_pondId != null && !here.contains(_pondId)) _pondId = null;
     final live = placements
         .where((p) => p.batchId == widget.batchId && p.pondId == _pondId)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../db/database.dart';
 import '../../db/repositories/feed_repository.dart';
 import '../../db/repositories/providers.dart';
 import '../../domain/dates.dart';
@@ -50,6 +51,9 @@ class _FeedDeliveryState extends ConsumerState<FeedDeliveryScreen>
 
   bool get _correcting => widget.lotId != null;
 
+  /// The delivery as saved, which a delete names (not what was typed).
+  FeedDelivery? _saved;
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +68,7 @@ class _FeedDeliveryState extends ConsumerState<FeedDeliveryScreen>
       return;
     }
     setState(() {
+      _saved = d;
       _phase = d.phase;
       _weight.text = formatForInput(d.weightG / 1000);
       _madeOn = farmDate(d.manufacturedOn);
@@ -120,13 +125,11 @@ class _FeedDeliveryState extends ConsumerState<FeedDeliveryScreen>
 
   Future<void> _delete() async {
     final l10n = AppLocalizations.of(context);
-    final kg = formatKg(
-      ((parseDecimal(_weight.text) ?? 0) * 1000).round(),
-      Localizations.localeOf(context),
-    );
+    final saved = _saved!;
+    final kg = formatKg(saved.weightG, Localizations.localeOf(context));
     final ok = await confirmDelete(
       context,
-      l10n.deleteDeliveryConfirm(formatDate(_deliveredOn), kg),
+      l10n.deleteDeliveryConfirm(formatDate(saved.recordedAt), kg),
     );
     if (!ok || !mounted) return;
     await ref.read(feedRepositoryProvider).deleteDelivery(widget.lotId!);

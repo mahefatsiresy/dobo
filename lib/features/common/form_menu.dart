@@ -75,8 +75,15 @@ Future<bool> confirmDelete(BuildContext context, String message) async {
 /// The member shell shows snackbars in its outer Scaffold, under which the
 /// next page's [PinnedAction] sits: it floats clear of that bar (80 dp) so
 /// it never covers the next thing to tap.
-void showDone(BuildContext context, String text) {
-  final c = context.dobo;
+void showDone(BuildContext context, String text) =>
+    _float(context, Icons.check_circle, context.dobo.okFill, text);
+
+/// Says why an action was refused ("Supprimez d'abord sa vente."), floating
+/// clear of the pinned action like [showDone].
+void showRefusal(BuildContext context, String text) =>
+    _float(context, Icons.info_outline, context.dobo.warningFill, text);
+
+void _float(BuildContext context, IconData icon, Color colour, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       behavior: SnackBarBehavior.floating,
@@ -84,7 +91,7 @@ void showDone(BuildContext context, String text) {
       duration: const Duration(seconds: 3),
       content: Row(
         children: [
-          Icon(Icons.check_circle, color: c.okFill),
+          Icon(icon, color: colour),
           const SizedBox(width: 12),
           Expanded(child: Text(text)),
         ],
